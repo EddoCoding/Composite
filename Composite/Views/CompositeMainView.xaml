@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="Composite.Views.CompositeMainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Composite.Views" mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" FontFamily="Arial">
+    <UserControl.Resources>
+        <Style x:Key="ButtonTab" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border>
+                            <ContentPresenter/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="Red"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="CustomTabItem" TargetType="TabItem">
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Background" Value="#E6E6E6"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border BorderThickness="1" BorderBrush="LightGray" Margin="0" Background="{TemplateBinding Background}">
+                            <Grid Margin="5,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <ContentPresenter Grid.Column="0" Content="{Binding TitleTab}" VerticalAlignment="Center"/>
+                                <Button Grid.Column="1" Content="X" Margin="10,0,0,0" VerticalAlignment="Center" Style="{StaticResource ButtonTab}" 
+                                        Command="{Binding CloseTabCommand}"/>
+                                
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <TabControl Background="White" Margin="0,0,10,10" BorderThickness="0" ItemContainerStyle="{StaticResource CustomTabItem}"
+                ItemsSource="{Binding TabService.Tabs}" SelectedItem="{Binding TabService.SelectedTab}">
+        <TabControl.Effect>
+            <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
+        </TabControl.Effect>
+        <TabControl.ContentTemplate>
+            <DataTemplate>
+                <ContentPresenter Content="{Binding ContentTab}"/>
+            </DataTemplate>
+        </TabControl.ContentTemplate>
+    </TabControl>
+
+</UserControl>

@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Common\Images\close.png" />
+    <None Remove="Common\Images\dots.png" />
+    <None Remove="Common\Images\eye.png" />
+    <None Remove="Common\Images\lock.png" />
+    <None Remove="Common\Images\menu.png" />
+    <None Remove="Common\Images\notes.png" />
+    <None Remove="Common\Images\projects.png" />
+    <None Remove="Common\Images\tasks.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Common\Images\eye.png" />
+    <Resource Include="Common\Images\lock.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Common\Images\dots.png" />
+    <Resource Include="Common\Images\close.png" />
+    <Resource Include="Common\Images\notes.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Dapper" Version="2.1.66" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.7" />
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="9.0.7" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.6" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+    <PackageReference Include="SQLitePCLRaw.core" Version="2.1.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Common\Images\menu.png" />
+    <Resource Include="Common\Images\projects.png" />
+    <Resource Include="Common\Images\tasks.png" />
+  </ItemGroup>
+
+</Project>

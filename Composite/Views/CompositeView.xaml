@@ -1,0 +1,34 @@
+﻿<Window x:Class="Composite.Views.CompositeView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Composite.Views"
+        MouseDown="MoveWindow" Background="WhiteSmoke" WindowStyle="None" 
+        WindowStartupLocation="CenterScreen" RenderOptions.BitmapScalingMode="NearestNeighbor"
+        Title="{Binding Header.Title}" Height="600" Width="1000" ResizeMode="CanResizeWithGrip" 
+        AllowsTransparency="True" BorderBrush="LightGray" BorderThickness="1" FontFamily="Arial">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <local:CompositeHeaderView Grid.Row="0" DataContext="{Binding Header}"/>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <local:CompositeMenuView Grid.Column="0" DataContext="{Binding Menu}"/>
+
+            <local:CompositeMainView Grid.Column="1" DataContext="{Binding Main}"/>
+            
+        </Grid>
+        
+    </Grid>
+
+</Window>

@@ -1,0 +1,63 @@
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using Composite.Common.Message;
+using Composite.Services;
+using Composite.Services.TabService;
+
+namespace Composite.ViewModels.Notes
+{
+    public partial class AddNoteViewModel : ObservableObject
+    {
+        readonly IViewService _viewService;
+        readonly ITabService _tabService;
+        readonly IMessenger _messenger;
+        readonly INoteService _noteService;
+
+        public NoteVM NoteVM { get; set; } = new NoteVM();
+
+        [ObservableProperty] string namePasswordButton = "Установить пароль";
+
+        public AddNoteViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, INoteService noteService)
+        {
+            _viewService = viewService;
+            _tabService = tabService;
+            _messenger = messenger;
+            _noteService = noteService;
+
+            messenger.Register<PasswordNoteMessage>(this, (r, m) => 
+            {
+                NoteVM.Password = m.Password;
+                NamePasswordButton = "Сбросить пароль";
+            });
+        }
+
+        [RelayCommand] async void AddNote()
+        {
+            if(await _noteService.AddNoteAsync(NoteVM))
+            {
+                _messenger.Send(new NoteMessage(NoteVM));
+                _tabService.RemoveTab<AddNoteViewModel>();
+            }
+        }
+
+        //Функция пароля
+        [RelayCommand] void CheckPassword() 
+        {
+            if (string.IsNullOrEmpty(NoteVM.Password)) OpenViewSetPassword();
+            else
+            {
+                NoteVM.Password = string.Empty;
+                NamePasswordButton = "Установить пароль";
+            }
+        }
+        void OpenViewSetPassword() => _viewService.ShowView<SetPasswordViewModel>();
+
+        //Функция предварительного осмотра
+        [RelayCommand] void SetPreview()
+        {
+            if (NoteVM.Preview == true) NoteVM.Preview = false;
+            else NoteVM.Preview = true;
+        }
+    }
+}
