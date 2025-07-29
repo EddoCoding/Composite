@@ -15,5 +15,33 @@ namespace Composite.Services
 
             return false;
         }
+        public IEnumerable<NoteVM> GetNotes()
+        {
+            var notes = noteRepository.Read();
+
+            List<NoteVM> notesVM = new();
+
+            foreach (var note in notes)
+            {
+                var noteVM = new NoteVM()
+                {
+                    Id = Guid.Parse(note.Id),
+                    Title = note.Title,
+                    Content = note.Content,
+                    DateCreate = DateTime.Now,
+                    Password = note.Password,
+                    Preview = note.Preview == 1
+                };
+                notesVM.Add(noteVM);
+            }
+
+            return notesVM;
+        }
+        public async Task<bool> DeleteNoteAsync(Guid id)
+        {
+            if(await noteRepository.Delete(id.ToString())) return true;
+
+            return false;
+        }
     }
 }

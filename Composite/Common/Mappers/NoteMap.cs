@@ -7,7 +7,7 @@ namespace Composite.Common.Mappers
     {
         public Note MapToModel(NoteVM noteVM) => new Note()
         {
-            Id = noteVM.Id,
+            Id = noteVM.Id.ToString(),
             Title = noteVM.Title,
             Content = noteVM.Content,
             DateCreate = noteVM.DateCreate,
@@ -17,7 +17,7 @@ namespace Composite.Common.Mappers
 
         public NoteVM MapToViewModel(Note note) => new NoteVM()
         {
-            Id = note.Id,
+            Id = Guid.Parse(note.Id),
             Title = note.Title,
             Content = note.Content,
             DateCreate = note.DateCreate,

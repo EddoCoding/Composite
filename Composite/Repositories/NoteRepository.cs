@@ -20,5 +20,31 @@ namespace Composite.Repositories
 
             return false;
         }
+        public IEnumerable<Note> Read()
+        {
+            using (var connection = dbConnectionFactory.CreateConnection())
+            {
+                connection.Open();
+
+                var queryGetNotes = "Select * From Notes";
+                var resultGetNotese = connection.Query<Note>(queryGetNotes);
+
+                return resultGetNotese;
+            }
+        }
+        public async Task<bool> Delete(string id)
+        {
+            using (var connection = dbConnectionFactory.CreateConnection())
+            {
+                connection.Open();
+
+                var queryDeleteNote = "Delete From Notes Where Id = @id";
+                var resultDeleteNote = await connection.ExecuteAsync(queryDeleteNote, new { id });
+
+                if(resultDeleteNote > 0) return true;
+
+                return false;
+            }
+        }
     }
 }

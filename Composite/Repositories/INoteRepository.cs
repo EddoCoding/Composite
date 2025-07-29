@@ -5,5 +5,7 @@ namespace Composite.Repositories
     public interface INoteRepository
     {
         Task<bool> Create(Note note);
+        IEnumerable<Note> Read();
+        Task<bool> Delete(string id);
     }
 }

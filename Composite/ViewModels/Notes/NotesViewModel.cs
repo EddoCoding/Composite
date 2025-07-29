@@ -13,16 +13,17 @@ namespace Composite.ViewModels.Notes
         readonly IViewService _viewService;
         readonly ITabService _tabService;
         readonly IMessenger _messenger;
+        readonly INoteService _noteService;
 
         public ObservableCollection<NoteBaseVM> Notes { get; set; }
         //public NoteBaseVM SelectedNote { get; set; }
 
-        public NotesViewModel(IViewService viewService, ITabService tabService, IMessenger messenger)
+        public NotesViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, INoteService noteService)
         {
             _viewService = viewService;
             _tabService = tabService;
             //_messenger = messenger;
-            //_noteService = noteService;
+            _noteService = noteService;
             //_dbConnectionFactory = dbConnectionFactory;
 
             //messenger.Register<CheckPasswordNoteBackMessage>(this, (r, m) =>
@@ -35,22 +36,15 @@ namespace Composite.ViewModels.Notes
 
             Notes = new() { new NoteButton() };
 
-            //GetNotes();
+            GetNotes();
         }
 
         [RelayCommand] void AddNote() => _tabService.CreateTab<AddNoteViewModel>("Новая заметка");
 
-
-
-
-
-
-
-
-        //[RelayCommand] async void DeleteNote(NoteBaseVM note)
-        //{
-        //    if (await _noteService.DeleteNoteAsync(note.Id)) Notes.Remove(note);
-        //}
+        [RelayCommand] async void DeleteNote(NoteBaseVM note)
+        {
+            if (await _noteService.DeleteNoteAsync(note.Id)) Notes.Remove(note);
+        }
         //[RelayCommand] async void DuplicateNote(NoteVM noteVM)
         //{
         //    var noteVMDuplicate = await _noteService.DuplicateNoteVM(noteVM);
@@ -70,9 +64,9 @@ namespace Composite.ViewModels.Notes
         //    _tabService.CreateTab<ChangeNoteViewModel>("Заметка");
         //    _messenger.Send(new NoteMessage(noteVM));
         //}
-        //void GetNotes()
-        //{
-        //    foreach (var noteVM in _noteService.GetNotes()) Notes.Insert(Notes.Count - 1, noteVM);
-        //}
+        void GetNotes()
+        {
+            foreach (var noteVM in _noteService.GetNotes()) Notes.Insert(Notes.Count - 1, noteVM);
+        }
     }
 }
