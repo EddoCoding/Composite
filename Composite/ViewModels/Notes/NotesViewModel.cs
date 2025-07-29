@@ -40,16 +40,15 @@ namespace Composite.ViewModels.Notes
         }
 
         [RelayCommand] void AddNote() => _tabService.CreateTab<AddNoteViewModel>("Новая заметка");
-
         [RelayCommand] async void DeleteNote(NoteBaseVM note)
         {
             if (await _noteService.DeleteNoteAsync(note.Id)) Notes.Remove(note);
         }
-        //[RelayCommand] async void DuplicateNote(NoteVM noteVM)
-        //{
-        //    var noteVMDuplicate = await _noteService.DuplicateNoteVM(noteVM);
-        //    if(noteVMDuplicate != null) Notes.Insert(Notes.Count - 1, noteVMDuplicate);
-        //}
+        [RelayCommand] async void DuplicateNote(NoteVM noteVM)
+        {
+            var noteVMDuplicate = await _noteService.DuplicateNoteVM(noteVM);
+            if(noteVMDuplicate != null) Notes.Insert(Notes.Count - 1, noteVMDuplicate);
+        }
         //[RelayCommand] void CheckPasswordNote(NoteVM noteVM)
         //{
         //    if (string.IsNullOrEmpty(noteVM.Password)) OpenNote(noteVM);

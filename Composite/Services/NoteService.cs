@@ -43,5 +43,28 @@ namespace Composite.Services
 
             return false;
         }
+
+        public async Task<NoteVM> DuplicateNoteVM(NoteVM noteVM)
+        {
+            var note = noteMap.MapToModel(noteVM);
+
+            var id = Guid.NewGuid();
+            var dateCreate = DateTime.Now;
+
+            note.Id = id.ToString();
+            note.DateCreate = dateCreate;
+
+            if (await noteRepository.Create(note)) return new NoteVM()
+            {
+                Id = id,
+                Title = note.Title,
+                Content = note.Content,
+                DateCreate = note.DateCreate,
+                Password = note.Password,
+                Preview = note.Preview == 1
+            };
+
+            return null;
+        }
     }
 }
