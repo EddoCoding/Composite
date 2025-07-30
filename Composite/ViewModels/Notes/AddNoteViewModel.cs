@@ -9,26 +9,30 @@ namespace Composite.ViewModels.Notes
 {
     public partial class AddNoteViewModel : ObservableObject
     {
+        readonly Guid _id;
         readonly IViewService _viewService;
         readonly ITabService _tabService;
         readonly IMessenger _messenger;
         readonly INoteService _noteService;
-
         public NoteVM NoteVM { get; set; } = new NoteVM();
 
         [ObservableProperty] string namePasswordButton = "Установить пароль";
 
         public AddNoteViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, INoteService noteService)
         {
+            _id = Guid.NewGuid();
             _viewService = viewService;
             _tabService = tabService;
             _messenger = messenger;
             _noteService = noteService;
 
-            messenger.Register<PasswordNoteMessage>(this, (r, m) => 
+            messenger.Register<PasswordNoteBackMessage>(this, (r, m) => 
             {
-                NoteVM.Password = m.Password;
-                NamePasswordButton = "Сбросить пароль";
+                if(_id == m.Id)
+                {
+                    NoteVM.Password = m.Password;
+                    NamePasswordButton = "Сбросить пароль";
+                }
             });
         }
 
@@ -44,7 +48,11 @@ namespace Composite.ViewModels.Notes
         //Функция пароля
         [RelayCommand] void CheckPassword() 
         {
-            if (string.IsNullOrEmpty(NoteVM.Password)) OpenViewSetPassword();
+            if (string.IsNullOrEmpty(NoteVM.Password))
+            {
+                OpenViewSetPassword();
+                _messenger.Send(new PasswordNoteMessage(_id));
+            }
             else
             {
                 NoteVM.Password = string.Empty;

@@ -1,7 +1,7 @@
 ﻿namespace Composite.Common.Message
 {
-    public class PasswordNoteMessage(string password)
+    public class PasswordNoteMessage(Guid id)
     {
-        public string Password { get; set; } = password;
+        public Guid Id { get; set; } = id;
     }
 }
