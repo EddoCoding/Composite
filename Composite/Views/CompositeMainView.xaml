@@ -36,9 +36,8 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
-                                <ContentPresenter Grid.Column="0" Content="{Binding TitleTab}" VerticalAlignment="Center"/>
-                                <Button Grid.Column="1" Content="X" Margin="10,0,0,0" VerticalAlignment="Center" Style="{StaticResource ButtonTab}" 
-                                        Command="{Binding CloseTabCommand}"/>
+                                <ContentPresenter Grid.Column="0" Content="{Binding TitleTab}" VerticalAlignment="Center" MaxWidth="200"/>
+                                <Button Grid.Column="1" Content="X" Margin="5,0,0,0" VerticalAlignment="Center" Style="{StaticResource ButtonTab}" Command="{Binding CloseTabCommand}"/>
                                 
                             </Grid>
                         </Border>

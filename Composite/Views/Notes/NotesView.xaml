@@ -99,9 +99,12 @@
                                         <Grid.ContextMenu>
                                             <ContextMenu/>
                                         </Grid.ContextMenu>
+                                        
                                         <TextBlock Grid.Row="0" Text="{Binding Title}" Margin="5" FontSize="13" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
-                                        <ScrollViewer x:Name="scroll" Grid.Row="1" Style="{StaticResource scrollMini}" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled">
-                                            <TextBlock x:Name="content" Text="{Binding Content}" Margin="5,0" FontSize="13" Visibility="Collapsed"/>
+                                        
+                                        <ScrollViewer x:Name="scroll" Grid.Row="1" Style="{StaticResource scrollMini}" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled"
+                                                      Focusable="False">
+                                            <TextBlock x:Name="content" Text="{Binding Content}" Margin="5,0" FontSize="13" Visibility="Collapsed" TextTrimming="CharacterEllipsis"/>
                                         </ScrollViewer>
                                         
                                         <Grid Grid.Row="2" Margin="5,0,5,3">
@@ -112,7 +115,9 @@
                                             </Grid.ColumnDefinitions>
 
                                             <TextBlock Grid.Column="0" Text="{Binding DateCreate, Converter={StaticResource DateToStringConverter}}" FontSize="13" VerticalAlignment="Center"/>
+                                            
                                             <Image Grid.Column="1" x:Name="imageLock" Source="/Common/Images/lock.png" Height="18" Width="18" Visibility="Visible" HorizontalAlignment="Right" RenderOptions.BitmapScalingMode="Fant"/>
+                                            
                                             <Image Grid.Column="2" x:Name="imageEye" Source="/Common/Images/eye.png" Margin="5,0,0,0" Height="18" Width="18" Visibility="Collapsed" HorizontalAlignment="Right" RenderOptions.BitmapScalingMode="Fant"/>
 
                                         </Grid>

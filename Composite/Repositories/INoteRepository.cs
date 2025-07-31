@@ -6,6 +6,7 @@ namespace Composite.Repositories
     {
         Task<bool> Create(Note note);
         IEnumerable<Note> Read();
+        Task<bool> Update(Note note);
         Task<bool> Delete(string id);
     }
 }

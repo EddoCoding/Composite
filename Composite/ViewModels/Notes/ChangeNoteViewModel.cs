@@ -7,28 +7,34 @@ using Composite.Services.TabService;
 
 namespace Composite.ViewModels.Notes
 {
-    public partial class AddNoteViewModel : ObservableObject
+    public partial class ChangeNoteViewModel : ObservableObject
     {
-        readonly Guid _id;
         readonly IViewService _viewService;
         readonly ITabService _tabService;
         readonly IMessenger _messenger;
         readonly INoteService _noteService;
-        public NoteVM NoteVM { get; set; } = new NoteVM();
+
+        [ObservableProperty] NoteVM noteVM;
 
         [ObservableProperty] string namePasswordButton = "Установить пароль";
 
-        public AddNoteViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, INoteService noteService)
+        public ChangeNoteViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, INoteService noteService)
         {
-            _id = Guid.NewGuid();
             _viewService = viewService;
             _tabService = tabService;
             _messenger = messenger;
             _noteService = noteService;
 
-            messenger.Register<PasswordNoteBackMessage>(this, (r, m) => 
+            messenger.Register<ChangeNoteMessage>(this, (r, m) => 
             {
-                if(_id == m.Id)
+                CopyNoteVM(m.NoteVM);
+                if (!string.IsNullOrEmpty(m.NoteVM.Password)) NamePasswordButton = "Сбросить пароль";
+
+                messenger.Unregister<ChangeNoteMessage>(this);
+            });
+            messenger.Register<PasswordNoteBackMessage>(this, (r, m) =>
+            {
+                if (NoteVM.Id == m.Id)
                 {
                     NoteVM.Password = m.Password;
                     NamePasswordButton = "Сбросить пароль";
@@ -36,20 +42,20 @@ namespace Composite.ViewModels.Notes
             });
         }
 
-        [RelayCommand] async void AddNote()
+        [RelayCommand] async void ChangeNote()
         {
-            if(await _noteService.AddNoteAsync(NoteVM))
+            if (await _noteService.UpdateNoteAsync(NoteVM))
             {
-                _messenger.Send(new NoteMessage(NoteVM));
-                _tabService.RemoveTab<AddNoteViewModel>();
+                _messenger.Send(new ChangeNoteBackMessage(NoteVM));
+                _tabService.RemoveTab<ChangeNoteViewModel>();
             }
         }
-        [RelayCommand] void CheckPassword() 
+        [RelayCommand] void CheckPassword()
         {
             if (string.IsNullOrEmpty(NoteVM.Password))
             {
                 OpenViewSetPassword();
-                _messenger.Send(new PasswordNoteMessage(_id));
+                _messenger.Send(new PasswordNoteMessage(NoteVM.Id));
             }
             else
             {
@@ -64,5 +70,6 @@ namespace Composite.ViewModels.Notes
         }
 
         void OpenViewSetPassword() => _viewService.ShowView<SetPasswordViewModel>();
+        void CopyNoteVM(NoteVM originalNoteVM) => NoteVM = _noteService.CreateNoteVM(originalNoteVM);
     }
 }

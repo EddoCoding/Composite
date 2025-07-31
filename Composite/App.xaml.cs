@@ -55,6 +55,7 @@ namespace Composite
             services.AddTransient<INoteService, NoteService>();
             services.AddTransient<INoteRepository, NoteRepository>();
             services.AddTransient<INoteMap, NoteMap>();
+            services.AddTransient<INoteFactory, NoteFactory>();
         }
 
         void RegisterView()
@@ -68,7 +69,9 @@ namespace Composite
             //Заметки
             _serviceView.Register<NotesView, NotesViewModel>();
             _serviceView.Register<AddNoteView, AddNoteViewModel>();
+            _serviceView.Register<ChangeNoteView, ChangeNoteViewModel>();
             _serviceView.Register<SetPasswordView, SetPasswordViewModel>();
+            _serviceView.Register<InputPasswordView, InputPasswordViewModel>();
 
             //Задачи
             _serviceView.Register<TasksView, TasksViewModel>();
@@ -81,11 +84,7 @@ namespace Composite
                 connection.Open();
                 
                 var queryCreateNotes = "Create table if not exists Notes(Id Text primary key, Title Text Not Null, Content Text, DateCreate DateTime not null, Password Varchar(24), Preview Integer default 0)";
-                //var queryCreateContentNote = "Create table if not exists ContentBase(Id Text primary key, NoteId Text Not Null, Text Text Not Null," +
-                //    "ContentType Varchar(50) Not Null Default 'Text', Foreign Key (NoteId) References Notes(Id) On Delete Cascade)";
-        
                 connection.Execute(queryCreateNotes);
-                //connection.Execute(queryCreateContentNote);
             }
         }
     }

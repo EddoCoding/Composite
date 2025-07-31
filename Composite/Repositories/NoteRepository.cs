@@ -32,6 +32,19 @@ namespace Composite.Repositories
                 return resultGetNotese;
             }
         }
+        public async Task<bool> Update(Note note)
+        {
+            using (var connection = dbConnectionFactory.CreateConnection())
+            {
+                connection.Open();
+
+                var queryUpdateNote = "Update Notes Set Title = @Title, Content = @Content, DateCreate = @DateCreate, Password = @Password, Preview = @Preview Where Id = @Id";
+                var resultUpdateNote = await connection.ExecuteAsync(queryUpdateNote, note);
+
+                if (resultUpdateNote > 0) return true;
+            }
+            return false;
+        }
         public async Task<bool> Delete(string id)
         {
             using (var connection = dbConnectionFactory.CreateConnection())

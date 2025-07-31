@@ -4,7 +4,7 @@ namespace Composite.ViewModels.Notes
 {
     public partial class NoteVM : NoteBaseVM
     {
-        public string Content { get; set; }
+        [ObservableProperty] string content;
         [ObservableProperty] DateTime dateCreate;
         [ObservableProperty] string password = string.Empty;
         [ObservableProperty] bool preview;

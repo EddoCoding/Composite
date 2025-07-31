@@ -10,10 +10,8 @@
 
   <ItemGroup>
     <None Remove="Common\Images\close.png" />
-    <None Remove="Common\Images\dots.png" />
     <None Remove="Common\Images\eye.png" />
     <None Remove="Common\Images\lock.png" />
-    <None Remove="Common\Images\menu.png" />
     <None Remove="Common\Images\notes.png" />
     <None Remove="Common\Images\projects.png" />
     <None Remove="Common\Images\tasks.png" />
@@ -25,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Common\Images\dots.png" />
     <Resource Include="Common\Images\close.png" />
     <Resource Include="Common\Images\notes.png" />
   </ItemGroup>
@@ -41,7 +38,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Common\Images\menu.png" />
     <Resource Include="Common\Images\projects.png" />
     <Resource Include="Common\Images\tasks.png" />
   </ItemGroup>

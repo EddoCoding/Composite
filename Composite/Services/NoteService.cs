@@ -1,10 +1,11 @@
-﻿using Composite.Common.Mappers;
+﻿using Composite.Common.Factories;
+using Composite.Common.Mappers;
 using Composite.Repositories;
 using Composite.ViewModels.Notes;
 
 namespace Composite.Services
 {
-    public class NoteService(INoteMap noteMap, INoteRepository noteRepository) : INoteService
+    public class NoteService(INoteMap noteMap, INoteRepository noteRepository, INoteFactory noteFactory) : INoteService
     {
         public async Task<bool> AddNoteAsync(NoteVM noteVM)
         {
@@ -20,27 +21,24 @@ namespace Composite.Services
             var notes = noteRepository.Read();
 
             List<NoteVM> notesVM = new();
-
             foreach (var note in notes)
             {
-                var noteVM = new NoteVM()
-                {
-                    Id = Guid.Parse(note.Id),
-                    Title = note.Title,
-                    Content = note.Content,
-                    DateCreate = DateTime.Now,
-                    Password = note.Password,
-                    Preview = note.Preview == 1
-                };
+                var noteVM = noteMap.MapToViewModel(note);
                 notesVM.Add(noteVM);
             }
-
             return notesVM;
         }
         public async Task<bool> DeleteNoteAsync(Guid id)
         {
             if(await noteRepository.Delete(id.ToString())) return true;
 
+            return false;
+        }
+        public async Task<bool> UpdateNoteAsync(NoteVM noteVM)
+        {
+            var note = noteMap.MapToModel(noteVM);
+
+            if (await noteRepository.Update(note)) return true;
             return false;
         }
 
@@ -54,17 +52,16 @@ namespace Composite.Services
             note.Id = id.ToString();
             note.DateCreate = dateCreate;
 
-            if (await noteRepository.Create(note)) return new NoteVM()
+            if (await noteRepository.Create(note))
             {
-                Id = id,
-                Title = note.Title,
-                Content = note.Content,
-                DateCreate = note.DateCreate,
-                Password = note.Password,
-                Preview = note.Preview == 1
-            };
+                var duplicateNoteVM = noteMap.MapToViewModel(note);
+                duplicateNoteVM.Id = id;
+
+                return duplicateNoteVM;
+            }
 
             return null;
         }
+        public NoteVM CreateNoteVM(NoteVM noteVM) => noteFactory.CreateNoteVM(noteVM); 
     }
 }
