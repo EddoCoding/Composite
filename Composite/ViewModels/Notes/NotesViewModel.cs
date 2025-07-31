@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 
 namespace Composite.ViewModels.Notes
 {
-    public partial class NotesViewModel : ObservableObject
+    public partial class NotesViewModel : ObservableObject, IDisposable
     {
         readonly IViewService _viewService;
         readonly ITabService _tabService;
@@ -76,6 +76,12 @@ namespace Composite.ViewModels.Notes
         void GetNotes()
         {
             foreach (var noteVM in _noteService.GetNotes()) Notes.Insert(Notes.Count - 1, noteVM);
+        }
+
+        public void Dispose()
+        {
+            _messenger.UnregisterAll(this);
+            Notes?.Clear();
         }
     }
 }

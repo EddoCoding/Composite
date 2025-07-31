@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Composite.ViewModels.Notes;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows.Controls;
@@ -25,7 +26,13 @@ namespace Composite.Services.TabService
             Tabs.Add(tab);
         }
 
-        public void RemoveTab(TabViewModel tab) => Tabs.Remove(tab);
+        public void RemoveTab(TabViewModel tab)
+        {
+            var uc = (UserControl)tab.ContentTab;
+            if(uc.DataContext is NotesViewModel notesViewModel) notesViewModel.Dispose();
+
+            Tabs.Remove(tab);
+        }
         public void RemoveTab<ViewModel>()
         {
             foreach (var tab in Tabs)
