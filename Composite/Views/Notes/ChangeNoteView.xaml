@@ -36,15 +36,18 @@
             </Setter>
         </Style>
         <Style x:Key="ContentTextBox" TargetType="TextBox">
-            <Setter Property="FontSize" Value="17"/>
+            <Setter Property="FontFamily" Value="{Binding NoteVM.FontFamily}"/>
+            <Setter Property="FontSize" Value="{Binding NoteVM.FontSize}"/>
             <Setter Property="SelectionBrush" Value="LightGray"/>
             <Setter Property="CaretBrush" Value="Gray"/>
-            <Setter Property="FontFamily" Value="Arial"/>
-            <Setter Property="Height" Value="20"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="AcceptsReturn" Value="True"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
-                        <Border BorderThickness="0" Background="{TemplateBinding Background}" VerticalAlignment="Center">
+                        <Border BorderThickness="0" Background="{TemplateBinding Background}">
                             <ScrollViewer Grid.Column="1" x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
                         </Border>
                     </ControlTemplate>
@@ -140,11 +143,12 @@
 
         <TextBox Grid.Row="0" Text="{Binding NoteVM.Title}" Style="{StaticResource TitleTextBox}" Margin="5,5,5,0"/>
 
-        <TextBox Grid.Row="1" Text="{Binding NoteVM.Content}" FontSize="18" TextWrapping="Wrap" AcceptsReturn="True" BorderThickness="0" 
-             ScrollViewer.VerticalScrollBarVisibility="Auto" CaretBrush="Gray" SelectionBrush="Gray"/>
+        <TextBox Grid.Row="1" Text="{Binding NoteVM.Content}" Style="{StaticResource ContentTextBox}"/>
 
         <Grid Grid.Row="2" Background="White" Margin="-1">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -153,11 +157,17 @@
                 <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
             </Grid.Effect>
 
-            <Button Grid.Column="0" Content="{Binding NamePasswordButton}" Style="{StaticResource PasswordButton}" Margin="10,0,0,0" Command="{Binding CheckPasswordCommand}"/>
+            <ComboBox Grid.Column="0" ItemsSource="{Binding Fonts}" SelectedItem="{Binding NoteVM.FontFamily}" Style="{StaticResource ComboBoxCustom}" ItemContainerStyle="{StaticResource ComboBoxItemCustom}" 
+                Margin="5,0,0,0"/>
 
-            <Button Grid.Column="1" Content="Предварительный просмотр" Style="{StaticResource PreviewButton}" Command="{Binding SetPreviewCommand}"/>
+            <ComboBox Grid.Column="1" ItemsSource="{Binding FontSizes}" SelectedItem="{Binding NoteVM.FontSize}" Style="{StaticResource ComboBoxCustom}" ItemContainerStyle="{StaticResource ComboBoxItemCustom}"
+                Margin="5,0,0,0"/>
 
-            <Button Grid.Column="2" Content="Сохранить" Style="{StaticResource ChangeNoteButton}" Command="{Binding ChangeNoteCommand}"/>
+            <Button Grid.Column="2" Content="{Binding NamePasswordButton}" Style="{StaticResource PasswordButton}" Margin="10,0,0,0" Command="{Binding CheckPasswordCommand}"/>
+
+            <Button Grid.Column="3" Content="Предварительный просмотр" Style="{StaticResource PreviewButton}" Command="{Binding SetPreviewCommand}"/>
+
+            <Button Grid.Column="4" Content="Сохранить" Style="{StaticResource ChangeNoteButton}" Command="{Binding ChangeNoteCommand}"/>
 
         </Grid>
 

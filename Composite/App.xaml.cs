@@ -83,7 +83,8 @@ namespace Composite
             {
                 connection.Open();
                 
-                var queryCreateNotes = "Create table if not exists Notes(Id Text primary key, Title Text Not Null, Content Text, DateCreate DateTime not null, Password Varchar(24), Preview Integer default 0)";
+                var queryCreateNotes = "Create table if not exists Notes(Id Text primary key, Title Text Not Null, Content Text, DateCreate DateTime not null, " +
+                                       "Password Varchar(24), Preview Integer default 0, FontFamily Text, FontSize Real)";
                 connection.Execute(queryCreateNotes);
             }
         }

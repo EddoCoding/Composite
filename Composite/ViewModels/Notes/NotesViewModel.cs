@@ -40,6 +40,8 @@ namespace Composite.ViewModels.Notes
                     notevm.DateCreate = m.NoteVM.DateCreate;
                     notevm.Password = m.NoteVM.Password;
                     notevm.Preview = m.NoteVM.Preview;
+                    notevm.FontFamily = m.NoteVM.FontFamily;
+                    notevm.FontSize = m.NoteVM.FontSize;
                 }
             });
 

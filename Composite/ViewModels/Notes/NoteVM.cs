@@ -8,6 +8,8 @@ namespace Composite.ViewModels.Notes
         [ObservableProperty] DateTime dateCreate;
         [ObservableProperty] string password = string.Empty;
         [ObservableProperty] bool preview;
+        [ObservableProperty] string fontFamily = "Times New Roman";
+        [ObservableProperty] double fontSize = 18;
 
         public NoteVM() => Id = Guid.NewGuid();
     }

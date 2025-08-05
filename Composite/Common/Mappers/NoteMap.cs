@@ -12,9 +12,10 @@ namespace Composite.Common.Mappers
             Content = noteVM.Content,
             DateCreate = noteVM.DateCreate,
             Password = noteVM.Password,
-            Preview = noteVM.Preview ? 1 : 0
+            Preview = noteVM.Preview ? 1 : 0,
+            FontFamily = noteVM.FontFamily,
+            FontSize = noteVM.FontSize
         };
-
         public NoteVM MapToViewModel(Note note) => new NoteVM()
         {
             Id = Guid.Parse(note.Id),
@@ -22,7 +23,9 @@ namespace Composite.Common.Mappers
             Content = note.Content,
             DateCreate = note.DateCreate,
             Password = note.Password,
-            Preview = note.Preview == 1
+            Preview = note.Preview == 1,
+            FontFamily = note.FontFamily,
+            FontSize = note.FontSize
         };
     }
 }

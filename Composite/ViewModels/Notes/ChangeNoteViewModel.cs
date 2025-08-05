@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using Composite.Common.Message;
 using Composite.Services;
 using Composite.Services.TabService;
+using System.Collections.ObjectModel;
 
 namespace Composite.ViewModels.Notes
 {
@@ -15,7 +16,8 @@ namespace Composite.ViewModels.Notes
         readonly INoteService _noteService;
 
         [ObservableProperty] NoteVM noteVM;
-
+        public ObservableCollection<string> Fonts { get; }
+        public ObservableCollection<double> FontSizes { get; }
         [ObservableProperty] string namePasswordButton = "Установить пароль";
 
         public ChangeNoteViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, INoteService noteService)
@@ -24,6 +26,12 @@ namespace Composite.ViewModels.Notes
             _tabService = tabService;
             _messenger = messenger;
             _noteService = noteService;
+
+            Fonts = new(System.Windows.Media.Fonts.SystemFontFamilies
+               .Select(x => x.Source)
+               .OrderBy(x => x));
+
+            FontSizes = new() { 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25 };
 
             messenger.Register<ChangeNoteMessage>(this, (r, m) => 
             {
