@@ -72,6 +72,7 @@ namespace Composite
             _serviceView.Register<ChangeNoteView, ChangeNoteViewModel>();
             _serviceView.Register<SetPasswordView, SetPasswordViewModel>();
             _serviceView.Register<InputPasswordView, InputPasswordViewModel>();
+            _serviceView.Register<InputPasswordDeleteView, InputPasswordDeleteViewModel>();
 
             //Задачи
             _serviceView.Register<TasksView, TasksViewModel>();

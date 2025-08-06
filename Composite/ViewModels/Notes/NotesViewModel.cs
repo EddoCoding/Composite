@@ -44,6 +44,11 @@ namespace Composite.ViewModels.Notes
                     notevm.FontSize = m.NoteVM.FontSize;
                 }
             });
+            messenger.Register<InputPasswordDeleteBackMessage>(this, async (r, m) => 
+            {
+                NoteBaseVM? noteVM = Notes.FirstOrDefault(x => x.Id == m.Id);
+                if (await _noteService.DeleteNoteAsync(noteVM.Id)) Notes.Remove(noteVM);
+            });
 
             Notes = new() { new NoteButton() };
 
@@ -51,9 +56,14 @@ namespace Composite.ViewModels.Notes
         }
 
         [RelayCommand] void AddNote() => _tabService.CreateTab<AddNoteViewModel>("Новая заметка");
-        [RelayCommand] async void DeleteNote(NoteBaseVM note)
+        [RelayCommand] async void DeleteNote(NoteBaseVM noteVM)
         {
-            if (await _noteService.DeleteNoteAsync(note.Id)) Notes.Remove(note);
+            if (!string.IsNullOrEmpty(((NoteVM)noteVM).Password))
+            {
+                CheckPassword(noteVM);
+                return;
+            }
+            if(await _noteService.DeleteNoteAsync(noteVM.Id)) Notes.Remove(noteVM);
         }
         [RelayCommand] async void DuplicateNote(NoteVM noteVM)
         {
@@ -78,6 +88,12 @@ namespace Composite.ViewModels.Notes
         void GetNotes()
         {
             foreach (var noteVM in _noteService.GetNotes()) Notes.Insert(Notes.Count - 1, noteVM);
+        }
+        void CheckPassword(NoteBaseVM noteVM)
+        {
+            var notevm = noteVM as NoteVM;
+            _viewService.ShowView<InputPasswordDeleteViewModel>();
+            _messenger.Send(new InputPasswordDeleteMessage(notevm.Id, notevm.Password));
         }
 
         public void Dispose()
