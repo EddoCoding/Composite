@@ -8,5 +8,6 @@
         public int Preview { get; set; }
         public string FontFamily { get; set; } = string.Empty;
         public double FontSize { get; set; }
+        public string Category { get; set; } = string.Empty;
     }
 }

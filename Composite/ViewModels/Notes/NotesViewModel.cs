@@ -14,15 +14,21 @@ namespace Composite.ViewModels.Notes
         readonly ITabService _tabService;
         readonly IMessenger _messenger;
         readonly INoteService _noteService;
+        readonly ICategoryNoteService _categoryNoteService;
 
         public ObservableCollection<NoteBaseVM> Notes { get; set; }
+        public NotesManagementViewModel NotesManagementViewModel { get; set; }
 
-        public NotesViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, INoteService noteService)
+        public NotesViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, INoteService noteService, ICategoryNoteService categoryNoteService)
         {
             _viewService = viewService;
             _tabService = tabService;
             _messenger = messenger;
             _noteService = noteService;
+            _categoryNoteService = categoryNoteService;
+
+            Notes = new() { new NoteButton() };
+            NotesManagementViewModel = new(viewService, messenger, categoryNoteService);
 
             messenger.Register<InputPasswordBackMessage>(this, (r, m) =>
             {
@@ -42,6 +48,7 @@ namespace Composite.ViewModels.Notes
                     notevm.Preview = m.NoteVM.Preview;
                     notevm.FontFamily = m.NoteVM.FontFamily;
                     notevm.FontSize = m.NoteVM.FontSize;
+                    notevm.Category = m.NoteVM.Category;
                 }
             });
             messenger.Register<InputPasswordDeleteBackMessage>(this, async (r, m) => 
@@ -49,8 +56,6 @@ namespace Composite.ViewModels.Notes
                 NoteBaseVM? noteVM = Notes.FirstOrDefault(x => x.Id == m.Id);
                 if (await _noteService.DeleteNoteAsync(noteVM.Id)) Notes.Remove(noteVM);
             });
-
-            Notes = new() { new NoteButton() };
 
             GetNotes();
         }
@@ -77,6 +82,19 @@ namespace Composite.ViewModels.Notes
             {
                 _viewService.ShowView<InputPasswordViewModel>();
                 _messenger.Send(new InputPasswordMessage(noteVM.Id, noteVM.Password));
+            }
+        }
+        [RelayCommand]
+        async void DeleteCategory(string nameCategory)
+        {
+            if (await _categoryNoteService.DeleteCategory(nameCategory))
+            {
+                NotesManagementViewModel.DeleteCategory(nameCategory);
+                var notesVM = Notes
+                    .OfType<NoteVM>()
+                    .Where(x => x.Category == nameCategory);
+
+                foreach (var noteVM in notesVM) noteVM.Category = "Без категории";
             }
         }
 

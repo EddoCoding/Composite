@@ -31,7 +31,6 @@ namespace Composite.Services
         public async Task<bool> DeleteNoteAsync(Guid id)
         {
             if(await noteRepository.Delete(id.ToString())) return true;
-
             return false;
         }
         public async Task<bool> UpdateNoteAsync(NoteVM noteVM)

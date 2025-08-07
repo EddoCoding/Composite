@@ -10,7 +10,7 @@ namespace Composite.ViewModels.Notes
         [ObservableProperty] bool preview;
         [ObservableProperty] string fontFamily = "Times New Roman";
         [ObservableProperty] double fontSize = 18;
-
+        [ObservableProperty] string category = "Без категории";
         public NoteVM() => Id = Guid.NewGuid();
     }
 }

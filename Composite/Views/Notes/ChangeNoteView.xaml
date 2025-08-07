@@ -151,6 +151,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.Effect>
@@ -163,14 +164,16 @@
             <ComboBox Grid.Column="1" ItemsSource="{Binding FontSizes}" SelectedItem="{Binding NoteVM.FontSize}" Style="{StaticResource ComboBoxCustom}" ItemContainerStyle="{StaticResource ComboBoxItemCustom}"
                 Margin="5,0,0,0"/>
 
-            <Button Grid.Column="2" Content="{Binding NamePasswordButton}" Style="{StaticResource PasswordButton}" Margin="10,0,0,0" Command="{Binding CheckPasswordCommand}"/>
+            <ComboBox Grid.Column="2" ItemsSource="{Binding Categories}" SelectedItem="{Binding NoteVM.Category}" Style="{StaticResource ComboBoxCustom}" ItemContainerStyle="{StaticResource ComboBoxItemCustom}"
+                Margin="5,0,0,0"/>
+            
+            <Button Grid.Column="3" Content="{Binding NamePasswordButton}" Style="{StaticResource PasswordButton}" Margin="10,0,0,0" Command="{Binding CheckPasswordCommand}"/>
 
-            <Button Grid.Column="3" Content="Предварительный просмотр" Style="{StaticResource PreviewButton}" Command="{Binding SetPreviewCommand}"/>
+            <Button Grid.Column="4" Content="Предварительный просмотр" Style="{StaticResource PreviewButton}" Command="{Binding SetPreviewCommand}"/>
 
-            <Button Grid.Column="4" Content="Сохранить" Style="{StaticResource ChangeNoteButton}" Command="{Binding ChangeNoteCommand}"/>
+            <Button Grid.Column="5" Content="Сохранить" Style="{StaticResource ChangeNoteButton}" Command="{Binding ChangeNoteCommand}"/>
 
         </Grid>
-
 
     </Grid>
 

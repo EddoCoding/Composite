@@ -13,7 +13,8 @@ namespace Composite.Common.Factories
             Password = noteVM.Password,
             Preview = noteVM.Preview,
             FontFamily = noteVM.FontFamily,
-            FontSize = noteVM.FontSize
+            FontSize = noteVM.FontSize,
+            Category = noteVM.Category
         };
     }
 }

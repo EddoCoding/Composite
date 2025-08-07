@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Composite.Views" mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" FontFamily="Arial">
+             d:DesignHeight="450" d:DesignWidth="800" FontFamily="Verdana">
     <UserControl.Resources>
         <Style x:Key="ButtonTab" TargetType="Button">
             <Setter Property="Template">
@@ -58,8 +58,8 @@
         </Style>
     </UserControl.Resources>
 
-    <TabControl Background="White" Margin="0,0,10,10" BorderThickness="0" ItemContainerStyle="{StaticResource CustomTabItem}"
-                ItemsSource="{Binding TabService.Tabs}" SelectedItem="{Binding TabService.SelectedTab}">
+    <TabControl Grid.Row="0" Background="White" Margin="0,0,10,10" BorderThickness="0" ItemContainerStyle="{StaticResource CustomTabItem}"
+            ItemsSource="{Binding TabService.Tabs}" SelectedItem="{Binding TabService.SelectedTab}">
         <TabControl.Effect>
             <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
         </TabControl.Effect>

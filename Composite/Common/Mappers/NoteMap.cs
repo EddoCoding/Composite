@@ -14,7 +14,8 @@ namespace Composite.Common.Mappers
             Password = noteVM.Password,
             Preview = noteVM.Preview ? 1 : 0,
             FontFamily = noteVM.FontFamily,
-            FontSize = noteVM.FontSize
+            FontSize = noteVM.FontSize,
+            Category = noteVM.Category
         };
         public NoteVM MapToViewModel(Note note) => new NoteVM()
         {
@@ -25,7 +26,8 @@ namespace Composite.Common.Mappers
             Password = note.Password,
             Preview = note.Preview == 1,
             FontFamily = note.FontFamily,
-            FontSize = note.FontSize
+            FontSize = note.FontSize,
+            Category = note.Category
         };
     }
 }

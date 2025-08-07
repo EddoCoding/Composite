@@ -19,9 +19,10 @@ namespace Composite.ViewModels.Notes
         public NoteVM NoteVM { get; set; } = new NoteVM();
         public ObservableCollection<string> Fonts { get; }
         public ObservableCollection<double> FontSizes { get; }
+        public ObservableCollection<string> Categories { get; set; }
         [ObservableProperty] string namePasswordButton = "Установить пароль";
 
-        public AddNoteViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, INoteService noteService)
+        public AddNoteViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, INoteService noteService, ICategoryNoteService categoryNoteService)
         {
             _id = Guid.NewGuid();
             _viewService = viewService;
@@ -34,6 +35,8 @@ namespace Composite.ViewModels.Notes
                 .OrderBy(x => x));
 
             FontSizes = new() { 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25 };
+
+            Categories = new(categoryNoteService.GetCategoryNotes());
 
             messenger.Register<PasswordNoteBackMessage>(this, (r, m) => 
             {

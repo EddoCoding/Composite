@@ -53,8 +53,11 @@ namespace Composite
 
             //Заметки
             services.AddTransient<INoteService, NoteService>();
+            services.AddTransient<ICategoryNoteService, CategoryNoteService>();
             services.AddTransient<INoteRepository, NoteRepository>();
+            services.AddTransient<ICategoryNoteRepository, CategoryNoteRepository>();
             services.AddTransient<INoteMap, NoteMap>();
+            services.AddTransient<ICategoryNoteMap, CategoryNoteMap>();
             services.AddTransient<INoteFactory, NoteFactory>();
         }
 
@@ -73,6 +76,7 @@ namespace Composite
             _serviceView.Register<SetPasswordView, SetPasswordViewModel>();
             _serviceView.Register<InputPasswordView, InputPasswordViewModel>();
             _serviceView.Register<InputPasswordDeleteView, InputPasswordDeleteViewModel>();
+            _serviceView.Register<AddCategoryView, AddCategoryViewModel>();
 
             //Задачи
             _serviceView.Register<TasksView, TasksViewModel>();
@@ -84,9 +88,14 @@ namespace Composite
             {
                 connection.Open();
                 
-                var queryCreateNotes = "Create table if not exists Notes(Id Text primary key, Title Text Not Null, Content Text, DateCreate DateTime not null, " +
-                                       "Password Varchar(24), Preview Integer default 0, FontFamily Text, FontSize Real)";
+                var queryCreateNotes = "Create Table If Not Exists Notes(Id Text Primary Key, Title Text Not Null, Content Text, DateCreate DateTime Not Null, " +
+                                       "Password Varchar(24), Preview Integer Default 0, FontFamily Text, FontSize Real, Category Text)";
+                var queryCreateCategory = "Create Table If Not Exists Categories(NameCategory Text Primary Key Not Null)";
+                var queryInsertCategory = "Insert Or Ignore Into Categories(NameCategory) VALUES(@NameCategory)";
+
                 connection.Execute(queryCreateNotes);
+                connection.Execute(queryCreateCategory);
+                connection.Execute(queryInsertCategory, new { NameCategory = "Без категории" });
             }
         }
     }
