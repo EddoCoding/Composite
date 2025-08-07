@@ -6,9 +6,10 @@ using System.Collections.ObjectModel;
 
 namespace Composite.ViewModels.Notes
 {
-    public partial class NotesManagementViewModel
+    public partial class NotesManagementViewModel : IDisposable
     {
         readonly IViewService _viewService;
+        readonly IMessenger _messenger;
         readonly ICategoryNoteService _categoryNoteService;
 
         public ObservableCollection<string> Categories { get; set; } = new();
@@ -16,6 +17,7 @@ namespace Composite.ViewModels.Notes
         public NotesManagementViewModel(IViewService viewService, IMessenger messenger, ICategoryNoteService categoryNoteService)
         {
             _viewService = viewService;
+            _messenger = messenger;
             _categoryNoteService = categoryNoteService;
 
             messenger.Register<AddCategoryMessage>(this, (r, m) => { AddCategory(m.CategoryNoteVM); });
@@ -38,6 +40,12 @@ namespace Composite.ViewModels.Notes
         {
             var category = Categories.FirstOrDefault(x => x == nameCategory);
             Categories.Remove(category);
+        }
+
+        public void Dispose()
+        {
+            _messenger.UnregisterAll(this);
+            Categories.Clear();
         }
     }
 }

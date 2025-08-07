@@ -116,6 +116,7 @@ namespace Composite.ViewModels.Notes
 
         public void Dispose()
         {
+            NotesManagementViewModel.Dispose();
             _messenger.UnregisterAll(this);
             Notes?.Clear();
         }
