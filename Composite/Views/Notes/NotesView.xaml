@@ -208,6 +208,25 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="ButtonSearch" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontFamily" Value="Verdana"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderThickness="0.3,0,0,0" BorderBrush="Black">
+                            <ContentPresenter Content="Поиск" Margin="7,0" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="WhiteSmoke"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
 
     <Grid>
@@ -233,8 +252,8 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
@@ -244,7 +263,7 @@
             <TextBlock Grid.Column="1" Text="Категории" VerticalAlignment="Center" FontSize="14" Margin="5,5,0,5"/>
 
             <ListView Grid.Column="2" ItemsSource="{Binding NotesManagementViewModel.Categories}" ItemContainerStyle="{StaticResource CategoryItem}"
-                      BorderThickness="0" Margin="4" VerticalAlignment="Center" Width="350" 
+                      BorderThickness="0" Margin="4" VerticalAlignment="Center" Width="350" HorizontalAlignment="Left"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -259,6 +278,11 @@
                     </ControlTemplate>
                 </ListView.Template>
             </ListView>
+
+            <TextBox Grid.Column="3" Text="{Binding NotesManagementViewModel.TextSearch}" Style="{StaticResource CustomTextBoxSearch}"
+                     VerticalContentAlignment="Center" TextOptions.TextFormattingMode="Ideal"/>
+
+            <Button Grid.Column="4" Style="{StaticResource ButtonSearch}" Command="{Binding SearchNoteCommand}"/>
 
         </Grid>
 

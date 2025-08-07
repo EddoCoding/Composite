@@ -42,5 +42,24 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style x:Key="CustomTextBoxSearch" TargetType="TextBox">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="SelectionBrush" Value="LightGray"/>
+        <Setter Property="CaretBrush" Value="Gray"/>
+        <Setter Property="FontFamily" Value="Verdana"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Grid>
+
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="Black" SnapsToDevicePixels="True" BorderThickness="0.3,0,0,0">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Padding="0" Margin="3,0"/>
+                        </Border>
+
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
 </ResourceDictionary>

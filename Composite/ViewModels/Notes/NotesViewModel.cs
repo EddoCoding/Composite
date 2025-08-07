@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Composite.Common.Message;
-using Composite.Models;
 using Composite.Services;
 using Composite.Services.TabService;
 using System.Collections.ObjectModel;
@@ -121,6 +120,13 @@ namespace Composite.ViewModels.Notes
             foreach (var noteVM in notesVM) Notes.Add(noteVM);
             Notes.Add(_noteButton);
         }
+        [RelayCommand] void SearchNote()
+        {
+            Notes.Clear();
+            var notesVM = _allNotes.Where(x => x.Title.Contains(NotesManagementViewModel.TextSearch));
+            foreach (var noteVM in notesVM) Notes.Add(noteVM);
+            Notes.Add(_noteButton);
+        }
 
         void OpenNote(NoteVM noteVM)
         {
@@ -148,6 +154,7 @@ namespace Composite.ViewModels.Notes
         {
             NotesManagementViewModel.Dispose();
             _messenger.UnregisterAll(this);
+            _allNotes?.Clear();
             Notes?.Clear();
         }
     }

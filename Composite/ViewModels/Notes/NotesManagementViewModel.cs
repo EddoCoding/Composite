@@ -13,6 +13,7 @@ namespace Composite.ViewModels.Notes
         readonly ICategoryNoteService _categoryNoteService;
 
         public ObservableCollection<string> Categories { get; set; } 
+        public string TextSearch { get; set; }
 
         public NotesManagementViewModel(IViewService viewService, IMessenger messenger, ICategoryNoteService categoryNoteService)
         {
