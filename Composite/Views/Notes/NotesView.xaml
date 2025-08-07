@@ -202,7 +202,8 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="ListViewItem">
                         <Button Content="{Binding}" Style="{StaticResource ButtonCategory}" 
-                                Command="{Binding DataContext.NotesManagementViewModel.SelectedCategoryCommand, RelativeSource={RelativeSource AncestorType=ListView}}"/>
+                                Command="{Binding DataContext.SelectedCategoryCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                                CommandParameter="{Binding}"/>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -216,8 +217,7 @@
         </Grid.RowDefinitions>
         
         <ScrollViewer Grid.Row="0">
-            <ListView ItemsSource="{Binding Notes}" SelectedItem="{Binding SelectedNote}" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                      BorderThickness="0" ItemContainerStyle="{StaticResource CustomListViewItem}">
+            <ListView ItemsSource="{Binding Notes}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" BorderThickness="0" ItemContainerStyle="{StaticResource CustomListViewItem}">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel Orientation="Horizontal" IsItemsHost="True" Width="{Binding ActualWidth, ElementName=userControl}"/>

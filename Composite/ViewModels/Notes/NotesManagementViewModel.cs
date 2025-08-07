@@ -12,7 +12,7 @@ namespace Composite.ViewModels.Notes
         readonly IMessenger _messenger;
         readonly ICategoryNoteService _categoryNoteService;
 
-        public ObservableCollection<string> Categories { get; set; } = new();
+        public ObservableCollection<string> Categories { get; set; } 
 
         public NotesManagementViewModel(IViewService viewService, IMessenger messenger, ICategoryNoteService categoryNoteService)
         {
@@ -22,12 +22,12 @@ namespace Composite.ViewModels.Notes
 
             messenger.Register<AddCategoryMessage>(this, (r, m) => { AddCategory(m.CategoryNoteVM); });
 
+            Categories = new() { "Все" };
             GetCategories();
         }
 
         [RelayCommand] void OpenViewAddCategory() => _viewService.ShowView<AddCategoryViewModel>();
-        [RelayCommand] void SelectedCategory() { }
-
+       
         async void AddCategory(CategoryNoteVM categoryNoteVM)
         {
             if(await _categoryNoteService.AddCategory(categoryNoteVM)) Categories.Add(categoryNoteVM.NameCategory);

@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Composite.Common.Message;
+using Composite.Models;
 using Composite.Services;
 using Composite.Services.TabService;
 using System.Collections.ObjectModel;
@@ -15,8 +16,10 @@ namespace Composite.ViewModels.Notes
         readonly IMessenger _messenger;
         readonly INoteService _noteService;
         readonly ICategoryNoteService _categoryNoteService;
+        ObservableCollection<NoteVM> _allNotes = new();
 
-        public ObservableCollection<NoteBaseVM> Notes { get; set; }
+        NoteButton _noteButton = new();
+        public ObservableCollection<NoteBaseVM> Notes { get; set; } = new();
         public NotesManagementViewModel NotesManagementViewModel { get; set; }
 
         public NotesViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, INoteService noteService, ICategoryNoteService categoryNoteService)
@@ -27,7 +30,6 @@ namespace Composite.ViewModels.Notes
             _noteService = noteService;
             _categoryNoteService = categoryNoteService;
 
-            Notes = new() { new NoteButton() };
             NotesManagementViewModel = new(viewService, messenger, categoryNoteService);
 
             messenger.Register<InputPasswordBackMessage>(this, (r, m) =>
@@ -35,7 +37,11 @@ namespace Composite.ViewModels.Notes
                 NoteBaseVM? noteVM = Notes.FirstOrDefault(x => x.Id == m.Id);
                 if (noteVM is NoteVM notevm) OpenNote(notevm);
             });
-            messenger.Register<NoteMessage>(this, (r, m) => { Notes.Insert(Notes.Count - 1, m.NoteVM); });
+            messenger.Register<NoteMessage>(this, (r, m) => 
+            {
+                _allNotes.Add(m.NoteVM);
+                Notes.Insert(Notes.Count - 1, m.NoteVM);
+            });
             messenger.Register<ChangeNoteBackMessage>(this, (r, m) => 
             {
                 NoteBaseVM? noteVM = Notes.FirstOrDefault(x => x.Id == m.NoteVM.Id);
@@ -68,7 +74,11 @@ namespace Composite.ViewModels.Notes
                 CheckPassword(noteVM);
                 return;
             }
-            if(await _noteService.DeleteNoteAsync(noteVM.Id)) Notes.Remove(noteVM);
+            if(await _noteService.DeleteNoteAsync(noteVM.Id))
+            {
+                _allNotes.Remove(noteVM as NoteVM);
+                Notes.Remove(noteVM);
+            }
         }
         [RelayCommand] async void DuplicateNote(NoteVM noteVM)
         {
@@ -84,8 +94,7 @@ namespace Composite.ViewModels.Notes
                 _messenger.Send(new InputPasswordMessage(noteVM.Id, noteVM.Password));
             }
         }
-        [RelayCommand]
-        async void DeleteCategory(string nameCategory)
+        [RelayCommand] async void DeleteCategory(string nameCategory)
         {
             if (await _categoryNoteService.DeleteCategory(nameCategory))
             {
@@ -97,6 +106,21 @@ namespace Composite.ViewModels.Notes
                 foreach (var noteVM in notesVM) noteVM.Category = "Без категории";
             }
         }
+        [RelayCommand] void SelectedCategory(string nameCategory)
+        {
+            Notes.Clear();
+
+            if(nameCategory == "Все")
+            {
+                foreach (var noteVM in _allNotes) Notes.Add(noteVM);
+                Notes.Add(_noteButton);
+                return;
+            }
+
+            var notesVM = _allNotes.Where(x => x.Category == nameCategory);
+            foreach (var noteVM in notesVM) Notes.Add(noteVM);
+            Notes.Add(_noteButton);
+        }
 
         void OpenNote(NoteVM noteVM)
         {
@@ -105,7 +129,13 @@ namespace Composite.ViewModels.Notes
         }
         void GetNotes()
         {
-            foreach (var noteVM in _noteService.GetNotes()) Notes.Insert(Notes.Count - 1, noteVM);
+            foreach (var noteVM in _noteService.GetNotes())
+            {
+                _allNotes.Add(noteVM);
+                Notes.Add(noteVM);
+            }
+
+            Notes.Add(_noteButton);
         }
         void CheckPassword(NoteBaseVM noteVM)
         {

@@ -28,7 +28,7 @@ namespace Composite.Services
         }
         public async Task<bool> DeleteCategory(string nameCategory)
         {
-            if(nameCategory == "Без категории") return false;
+            if(nameCategory == "Без категории" || nameCategory == "Все") return false;
             if (await categoryNoteRepository.Delete(nameCategory)) return true;
             return false;
         }
