@@ -97,7 +97,7 @@
             </Setter>
         </Style>
         <DataTemplate DataType="{x:Type note:NoteVM}">
-            <Button Margin="10,5,0,0" SnapsToDevicePixels="True" Width="180" Height="210"
+            <Button Margin="10,5,0,0" SnapsToDevicePixels="True" Width="180" Height="210" Background="{Binding Color}"
                     Command="{Binding DataContext.CheckPasswordNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
                 <Button.Style>
                     <Style TargetType="Button">
@@ -176,6 +176,7 @@
             <Button Margin="10,15,10,10" Style="{StaticResource AddNoteButton}"
                     Command="{Binding DataContext.AddNoteCommand,RelativeSource={RelativeSource AncestorType=ItemsControl}}"/>
         </DataTemplate>
+        
         <Style x:Key="ButtonCategory" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Template">

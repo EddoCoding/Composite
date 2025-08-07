@@ -1,4 +1,6 @@
-﻿namespace Composite.Models
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace Composite.Models
 {
     public class Note : NoteBase
     {
@@ -9,5 +11,6 @@
         public string FontFamily { get; set; } = string.Empty;
         public double FontSize { get; set; }
         public string Category { get; set; } = string.Empty;
+        public string Color { get; set; } = string.Empty;
     }
 }

@@ -14,7 +14,8 @@ namespace Composite.Common.Factories
             Preview = noteVM.Preview,
             FontFamily = noteVM.FontFamily,
             FontSize = noteVM.FontSize,
-            Category = noteVM.Category
+            Category = noteVM.Category,
+            Color = noteVM.Color
         };
     }
 }

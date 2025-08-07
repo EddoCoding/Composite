@@ -54,6 +54,7 @@ namespace Composite.ViewModels.Notes
                     notevm.FontFamily = m.NoteVM.FontFamily;
                     notevm.FontSize = m.NoteVM.FontSize;
                     notevm.Category = m.NoteVM.Category;
+                    notevm.Color = m.NoteVM.Color;
                 }
             });
             messenger.Register<InputPasswordDeleteBackMessage>(this, async (r, m) => 

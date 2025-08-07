@@ -4,7 +4,8 @@ using CommunityToolkit.Mvvm.Messaging;
 using Composite.Common.Message;
 using Composite.Services;
 using Composite.Services.TabService;
-using System.Collections.ObjectModel;
+using System.Reflection;
+using System.Windows.Media;
 
 namespace Composite.ViewModels.Notes
 {
@@ -17,9 +18,11 @@ namespace Composite.ViewModels.Notes
         readonly INoteService _noteService;
 
         public NoteVM NoteVM { get; set; } = new NoteVM();
-        public ObservableCollection<string> Fonts { get; }
-        public ObservableCollection<double> FontSizes { get; }
-        public ObservableCollection<string> Categories { get; set; }
+        public List<string> Fonts { get; }
+        public List<double> FontSizes { get; }
+        public List<string> Categories { get; set; }
+        public List<string> Colors { get; set; }
+        [ObservableProperty] string selectedColor = "White";
         [ObservableProperty] string namePasswordButton = "Установить пароль";
 
         public AddNoteViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, INoteService noteService, ICategoryNoteService categoryNoteService)
@@ -38,6 +41,12 @@ namespace Composite.ViewModels.Notes
 
             Categories = new(categoryNoteService.GetCategoryNotes());
 
+            Colors = new();
+            Colors = typeof(Colors)
+            .GetProperties(BindingFlags.Static | BindingFlags.Public)
+            .Select(prop => prop.Name)
+            .ToList();
+
             messenger.Register<PasswordNoteBackMessage>(this, (r, m) => 
             {
                 if(_id == m.Id)
@@ -50,6 +59,7 @@ namespace Composite.ViewModels.Notes
 
         [RelayCommand] async void AddNote()
         {
+            NoteVM.Color = SelectedColor;
             if(await _noteService.AddNoteAsync(NoteVM))
             {
                 _messenger.Send(new NoteMessage(NoteVM));

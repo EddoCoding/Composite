@@ -15,7 +15,8 @@ namespace Composite.Common.Mappers
             Preview = noteVM.Preview ? 1 : 0,
             FontFamily = noteVM.FontFamily,
             FontSize = noteVM.FontSize,
-            Category = noteVM.Category
+            Category = noteVM.Category,
+            Color = noteVM.Color
         };
         public NoteVM MapToViewModel(Note note) => new NoteVM()
         {
@@ -27,7 +28,8 @@ namespace Composite.Common.Mappers
             Preview = note.Preview == 1,
             FontFamily = note.FontFamily,
             FontSize = note.FontSize,
-            Category = note.Category
+            Category = note.Category,
+            Color = note.Color
         };
     }
 }

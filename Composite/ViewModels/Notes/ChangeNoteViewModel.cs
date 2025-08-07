@@ -4,7 +4,8 @@ using CommunityToolkit.Mvvm.Messaging;
 using Composite.Common.Message;
 using Composite.Services;
 using Composite.Services.TabService;
-using System.Collections.ObjectModel;
+using System.Reflection;
+using System.Windows.Media;
 
 namespace Composite.ViewModels.Notes
 {
@@ -16,9 +17,11 @@ namespace Composite.ViewModels.Notes
         readonly INoteService _noteService;
 
         [ObservableProperty] NoteVM noteVM;
-        public ObservableCollection<string> Fonts { get; }
-        public ObservableCollection<double> FontSizes { get; }
-        public ObservableCollection<string> Categories { get; set; }
+        public List<string> Fonts { get; }
+        public List<double> FontSizes { get; }
+        public List<string> Categories { get; set; }
+        public List<string> Colors { get; set; }
+        [ObservableProperty] string selectedColor = "White";
         [ObservableProperty] string namePasswordButton = "Установить пароль";
 
         public ChangeNoteViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, INoteService noteService, ICategoryNoteService categoryNoteService)
@@ -36,8 +39,15 @@ namespace Composite.ViewModels.Notes
 
             Categories = new(categoryNoteService.GetCategoryNotes());
 
+            Colors = new();
+            Colors = typeof(Colors)
+            .GetProperties(BindingFlags.Static | BindingFlags.Public)
+            .Select(prop => prop.Name)
+            .ToList();
+
             messenger.Register<ChangeNoteMessage>(this, (r, m) => 
             {
+                SelectedColor = m.NoteVM.Color;
                 CopyNoteVM(m.NoteVM);
                 if (!string.IsNullOrEmpty(m.NoteVM.Password)) NamePasswordButton = "Сбросить пароль";
 
@@ -55,6 +65,7 @@ namespace Composite.ViewModels.Notes
 
         [RelayCommand] async void ChangeNote()
         {
+            NoteVM.Color = SelectedColor;
             if (await _noteService.UpdateNoteAsync(NoteVM))
             {
                 _messenger.Send(new ChangeNoteBackMessage(NoteVM));
