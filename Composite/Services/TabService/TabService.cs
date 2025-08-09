@@ -29,8 +29,7 @@ namespace Composite.Services.TabService
         public void RemoveTab(TabViewModel tab)
         {
             var uc = (UserControl)tab.ContentTab;
-            if(uc.DataContext is NotesViewModel notesViewModel) notesViewModel.Dispose();
-
+            if(uc.DataContext is IDisposable vm) vm.Dispose();
             Tabs.Remove(tab);
         }
         public void RemoveTab<ViewModel>()
