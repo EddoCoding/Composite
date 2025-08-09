@@ -88,11 +88,7 @@ namespace Composite.ViewModels.Notes
         [RelayCommand] void CheckPasswordNote(NoteVM noteVM)
         {
             if (string.IsNullOrEmpty(noteVM.Password)) OpenNote(noteVM);
-            else
-            {
-                _viewService.ShowView<InputPasswordViewModel>();
-                _messenger.Send(new InputPasswordMessage(noteVM.Id, noteVM.Password));
-            }
+            else if(_viewService.ShowView<InputPasswordViewModel>()) _messenger.Send(new InputPasswordMessage(noteVM.Id, noteVM.Password));
         }
         [RelayCommand] async void DeleteCategory(string nameCategory)
         {
@@ -147,8 +143,7 @@ namespace Composite.ViewModels.Notes
         void CheckPassword(NoteBaseVM noteVM)
         {
             var notevm = noteVM as NoteVM;
-            _viewService.ShowView<InputPasswordDeleteViewModel>();
-            _messenger.Send(new InputPasswordDeleteMessage(notevm.Id, notevm.Password));
+            if(_viewService.ShowView<InputPasswordDeleteViewModel>()) _messenger.Send(new InputPasswordDeleteMessage(notevm.Id, notevm.Password));
         }
 
         bool _disposed = false;

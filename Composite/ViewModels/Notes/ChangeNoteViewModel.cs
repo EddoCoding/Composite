@@ -74,11 +74,7 @@ namespace Composite.ViewModels.Notes
         }
         [RelayCommand] void CheckPassword()
         {
-            if (string.IsNullOrEmpty(NoteVM.Password))
-            {
-                OpenViewSetPassword();
-                _messenger.Send(new PasswordNoteMessage(NoteVM.Id));
-            }
+            if (string.IsNullOrEmpty(NoteVM.Password) && OpenViewSetPassword()) _messenger.Send(new PasswordNoteMessage(NoteVM.Id));
             else
             {
                 NoteVM.Password = string.Empty;
@@ -91,7 +87,7 @@ namespace Composite.ViewModels.Notes
             else NoteVM.Preview = true;
         }
 
-        void OpenViewSetPassword() => _viewService.ShowView<SetPasswordViewModel>();
+        bool OpenViewSetPassword() => _viewService.ShowView<SetPasswordViewModel>();
         void CopyNoteVM(NoteVM originalNoteVM) => NoteVM = _noteService.CreateNoteVM(originalNoteVM);
 
         bool _disposed = false;

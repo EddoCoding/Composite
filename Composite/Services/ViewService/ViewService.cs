@@ -26,10 +26,11 @@ namespace Composite.Services
 
             return (ViewModel)Activator.CreateInstance(typeof(ViewModel), dependencies.ToArray());
         }
-        public void ShowView<ViewModel>()
+        public bool ShowView<ViewModel>()
         {
             foreach (var item in container)
             {
+                if (openViews.Any(kv => kv.Value.GetType() == typeof(ViewModel))) return false;
                 if (item.Value == typeof(ViewModel))
                 {
                     var view = (Window)Activator.CreateInstance(item.Key);
@@ -41,9 +42,10 @@ namespace Composite.Services
                     openViews.Add(view, viewModel);
                     view.Closed += (sender, e) => OnViewClosed((Window)sender);
 
-                    break;
+                    return true;
                 }
             }
+            return false;
         }
         void OnViewClosed(Window view)
         {

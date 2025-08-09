@@ -28,7 +28,7 @@ namespace Composite.ViewModels.Notes
         }
 
         [RelayCommand] void OpenViewAddCategory() => _viewService.ShowView<AddCategoryViewModel>();
-       
+
         async void AddCategory(CategoryNoteVM categoryNoteVM)
         {
             if(await _categoryNoteService.AddCategory(categoryNoteVM)) Categories.Add(categoryNoteVM.NameCategory);
