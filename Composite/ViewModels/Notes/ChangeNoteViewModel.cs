@@ -9,7 +9,7 @@ using System.Windows.Media;
 
 namespace Composite.ViewModels.Notes
 {
-    public partial class ChangeNoteViewModel : ObservableObject
+    public partial class ChangeNoteViewModel : ObservableObject, IDisposable
     {
         readonly IViewService _viewService;
         readonly ITabService _tabService;
@@ -41,9 +41,9 @@ namespace Composite.ViewModels.Notes
 
             Colors = new();
             Colors = typeof(Colors)
-            .GetProperties(BindingFlags.Static | BindingFlags.Public)
-            .Select(prop => prop.Name)
-            .ToList();
+                .GetProperties(BindingFlags.Static | BindingFlags.Public)
+                .Select(prop => prop.Name)
+                .ToList();
 
             messenger.Register<ChangeNoteMessage>(this, (r, m) => 
             {
@@ -93,5 +93,28 @@ namespace Composite.ViewModels.Notes
 
         void OpenViewSetPassword() => _viewService.ShowView<SetPasswordViewModel>();
         void CopyNoteVM(NoteVM originalNoteVM) => NoteVM = _noteService.CreateNoteVM(originalNoteVM);
+
+        bool _disposed = false;
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    Fonts.Clear();
+                    FontSizes.Clear();
+                    Categories.Clear();
+                    Colors.Clear();
+
+                    _messenger.UnregisterAll(this);
+                }
+                _disposed = true;
+            }
+        }
     }
 }

@@ -151,12 +151,22 @@ namespace Composite.ViewModels.Notes
             _messenger.Send(new InputPasswordDeleteMessage(notevm.Id, notevm.Password));
         }
 
-        public void Dispose()
+        bool _disposed = false;
+        public virtual void Dispose()
         {
-            NotesManagementViewModel.Dispose();
-            _messenger.UnregisterAll(this);
-            _allNotes?.Clear();
-            Notes?.Clear();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                NotesManagementViewModel.Dispose();
+                _messenger.UnregisterAll(this);
+                _allNotes?.Clear();
+                Notes?.Clear();
+                _disposed = true;
+            }
         }
     }
 }

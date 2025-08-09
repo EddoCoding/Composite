@@ -2,10 +2,11 @@
 using CommunityToolkit.Mvvm.Messaging;
 using Composite.Common.Message;
 using Composite.Services;
+using System.Windows.Media;
 
 namespace Composite.ViewModels.Notes
 {
-    public partial class InputPasswordDeleteViewModel
+    public partial class InputPasswordDeleteViewModel : IDisposable
     {
         readonly IViewService _viewService;
         readonly IMessenger _messenger;
@@ -32,5 +33,20 @@ namespace Composite.ViewModels.Notes
             }
         }
         [RelayCommand] void Close() => _viewService.CloseView<InputPasswordDeleteViewModel>();
+
+        bool _disposed = false;
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing) _messenger.UnregisterAll(this);
+                _disposed = true;
+            }
+        }
     }
 }

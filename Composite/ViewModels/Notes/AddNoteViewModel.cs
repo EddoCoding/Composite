@@ -9,7 +9,7 @@ using System.Windows.Media;
 
 namespace Composite.ViewModels.Notes
 {
-    public partial class AddNoteViewModel : ObservableObject
+    public partial class AddNoteViewModel : ObservableObject, IDisposable
     {
         readonly Guid _id;
         readonly IViewService _viewService;
@@ -86,5 +86,28 @@ namespace Composite.ViewModels.Notes
         }
 
         void OpenViewSetPassword() => _viewService.ShowView<SetPasswordViewModel>();
+
+        bool _disposed = false;
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    Fonts.Clear();
+                    FontSizes.Clear();
+                    Categories.Clear();
+                    Colors.Clear();
+
+                    _messenger.UnregisterAll(this);
+                }
+                _disposed = true;
+            }
+        }
     }
 }

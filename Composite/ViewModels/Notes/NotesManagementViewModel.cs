@@ -43,10 +43,20 @@ namespace Composite.ViewModels.Notes
             Categories.Remove(category);
         }
 
-        public void Dispose()
+        bool _disposed = false;
+        public virtual void Dispose()
         {
-            _messenger.UnregisterAll(this);
-            Categories.Clear();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                _messenger.UnregisterAll(this);
+                Categories.Clear();
+                _disposed = true;
+            }
         }
     }
 }

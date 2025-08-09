@@ -5,7 +5,7 @@ using Composite.Services;
 
 namespace Composite.ViewModels.Notes
 {
-    public partial class SetPasswordViewModel
+    public partial class SetPasswordViewModel: IDisposable
     {
         readonly IViewService _viewService;
         readonly IMessenger _messenger;
@@ -28,5 +28,20 @@ namespace Composite.ViewModels.Notes
             Close();
         }
         [RelayCommand] void Close() => _viewService.CloseView<SetPasswordViewModel>();
+
+        bool _disposed = false;
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                _messenger.UnregisterAll(this);
+                _disposed = true;
+            }
+        }
     }
 }
