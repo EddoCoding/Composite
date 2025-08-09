@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Composite.ViewModels.Notes;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows.Controls;
@@ -18,12 +17,20 @@ namespace Composite.Services.TabService
             Tabs.CollectionChanged += OnTabsChanged;
         }
 
-        public void CreateTab<ViewModel>(string titleTab)
+        public bool CreateTab<ViewModel>(string titleTab)
         {
+            var doubleTab = Tabs.FirstOrDefault(x => x.TitleTab == titleTab);
+            if (doubleTab != null && doubleTab.TitleTab != "Новая заметка")
+            {
+                SelectedTab = doubleTab;
+                return false;
+            }
+
             var userControl = _serviceView.GetUserControl<ViewModel>();
             var tab = new TabViewModel(titleTab, userControl);
             SelectedTab = tab;
             Tabs.Add(tab);
+            return true;
         }
         public void RemoveTab(TabViewModel tab)
         {

@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Messaging;
 using Composite.Common.Message;
 using Composite.Services;
-using System.Windows.Media;
 
 namespace Composite.ViewModels.Notes
 {

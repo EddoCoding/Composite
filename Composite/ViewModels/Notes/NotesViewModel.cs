@@ -127,8 +127,7 @@ namespace Composite.ViewModels.Notes
 
         void OpenNote(NoteVM noteVM)
         {
-            _tabService.CreateTab<ChangeNoteViewModel>($"{noteVM.Title}");
-            _messenger.Send(new ChangeNoteMessage(noteVM));
+            if(_tabService.CreateTab<ChangeNoteViewModel>($"{noteVM.Title}")) _messenger.Send(new ChangeNoteMessage(noteVM));
         }
         void GetNotes()
         {
