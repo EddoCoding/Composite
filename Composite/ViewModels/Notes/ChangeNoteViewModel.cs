@@ -5,7 +5,6 @@ using Composite.Common.Message;
 using Composite.Services;
 using Composite.Services.TabService;
 using System.Reflection;
-using System.Security.Cryptography;
 using System.Windows.Media;
 
 namespace Composite.ViewModels.Notes
@@ -71,7 +70,7 @@ namespace Composite.ViewModels.Notes
             });
         }
 
-        [RelayCommand] async void CheckNote() => _messenger.Send(new CheckChangeNoteMessage(_id, NoteVM.Title));
+        [RelayCommand] async void CheckNote() => _messenger.Send(new CheckChangeNoteMessage(_id, NoteVM.Id, NoteVM.Title));
         [RelayCommand] void CheckPassword()
         {
             if (string.IsNullOrEmpty(NoteVM.Password) && OpenViewSetPassword()) _messenger.Send(new PasswordNoteMessage(NoteVM.Id));

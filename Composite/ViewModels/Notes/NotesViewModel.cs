@@ -44,6 +44,9 @@ namespace Composite.ViewModels.Notes
             });
             messenger.Register<CheckChangeNoteMessage>(this, (r, m) =>
             {
+                var note = Notes.FirstOrDefault(x => x.Id == m.IdNote);
+                if (note != null) messenger.Send(new CheckChangeNoteBackMessage(m.Id, true));
+
                 var checkTitleNote = Notes.FirstOrDefault(x => x.Title == m.TitleNote);
                 if (checkTitleNote != null) messenger.Send(new CheckChangeNoteBackMessage(m.Id, false, "Заметка с таким заголовком уже существует."));
                 else messenger.Send(new CheckChangeNoteBackMessage(m.Id, true));
