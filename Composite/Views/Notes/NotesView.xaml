@@ -10,6 +10,7 @@
              mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800" FontFamily="Verdana">
     <UserControl.Resources>
         <converter:DateToStringConverter x:Key="DateToStringConverter"/>
+        <converter:ColorLightenConverter x:Key="ColorLightenConverter"/>
 
         <Style TargetType="Button">
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
@@ -97,11 +98,11 @@
             </Setter>
         </Style>
         <DataTemplate DataType="{x:Type note:NoteVM}">
-            <Button Margin="10,5,0,0" SnapsToDevicePixels="True" Width="180" Height="210" Background="{Binding Color}"
+            <Button x:Name="button" Margin="10,5,0,0" SnapsToDevicePixels="True" Width="180" Height="210"
                     Command="{Binding DataContext.CheckPasswordNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
                 <Button.Style>
                     <Style TargetType="Button">
-                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="Background" Value="{Binding Color}"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="Button">
@@ -139,6 +140,9 @@
 
                                     </Grid>
                                     <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{Binding Color, Converter={StaticResource ColorLightenConverter}}"/>
+                                        </Trigger>
                                         <DataTrigger Binding="{Binding Password.Length}" Value="0">
                                             <Setter TargetName="imageLock" Property="Visibility" Value="Hidden"/>
                                             <Setter TargetName="content" Property="Visibility" Value="Visible"/>
@@ -161,9 +165,7 @@
                             </Setter.Value>
                         </Setter>
                         <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="WhiteSmoke"/>
-                            </Trigger>
+                            
                         </Style.Triggers>
                     </Style>
                 </Button.Style>
