@@ -63,7 +63,7 @@ namespace Composite.ViewModels.Notes
             if(await _noteService.AddNoteAsync(NoteVM))
             {
                 _messenger.Send(new NoteMessage(NoteVM));
-                _tabService.RemoveTab<AddNoteViewModel>();
+                _tabService.RemoveTab(this);
             }
         }
         [RelayCommand] void CheckPassword() 

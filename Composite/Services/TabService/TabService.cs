@@ -25,20 +25,18 @@ namespace Composite.Services.TabService
             SelectedTab = tab;
             Tabs.Add(tab);
         }
-
         public void RemoveTab(TabViewModel tab)
         {
             var uc = (UserControl)tab.ContentTab;
             if(uc.DataContext is IDisposable vm) vm.Dispose();
             Tabs.Remove(tab);
         }
-        public void RemoveTab<ViewModel>()
+        public void RemoveTab(object viewModel)
         {
             foreach (var tab in Tabs)
             {
                 var uc = (UserControl)tab.ContentTab;
-
-                if (uc.DataContext.GetType() == typeof(ViewModel))
+                if (uc.DataContext == viewModel)
                 {
                     RemoveTab(tab);
                     return;
