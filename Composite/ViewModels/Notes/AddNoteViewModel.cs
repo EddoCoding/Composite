@@ -43,9 +43,9 @@ namespace Composite.ViewModels.Notes
 
             Colors = new();
             Colors = typeof(Colors)
-            .GetProperties(BindingFlags.Static | BindingFlags.Public)
-            .Select(prop => prop.Name)
-            .ToList();
+                .GetProperties(BindingFlags.Static | BindingFlags.Public)
+                .Select(prop => prop.Name)
+                .ToList();
 
             messenger.Register<PasswordNoteBackMessage>(this, (r, m) => 
             {

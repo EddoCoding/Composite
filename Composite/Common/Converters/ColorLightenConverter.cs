@@ -19,6 +19,10 @@ namespace Composite.Common.Converters
                 if (value is string colorString)
                 {
                     if (string.IsNullOrWhiteSpace(colorString)) return null;
+                    if (colorString == "White")
+                    {
+                        return new SolidColorBrush(Color.FromRgb(245, 245, 245));
+                    }
                     else
                     {
                         try { color = (Color)ColorConverter.ConvertFromString(colorString); }

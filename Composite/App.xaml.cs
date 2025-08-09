@@ -12,7 +12,6 @@ using Composite.Views.Notes;
 using Composite.Views.Tasks;
 using Dapper;
 using Microsoft.Extensions.DependencyInjection;
-using System.Net.Mail;
 using System.Windows;
 
 namespace Composite
