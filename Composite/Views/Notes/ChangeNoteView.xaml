@@ -227,6 +227,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <TextBox Grid.Row="0" Text="{Binding NoteVM.Title}" Style="{StaticResource TitleTextBox}" Margin="5,5,5,0"/>
@@ -263,8 +264,27 @@
 
             <Button Grid.Column="5" Content="Предварительный просмотр" Style="{StaticResource PreviewButton}" Command="{Binding SetPreviewCommand}"/>
 
-            <Button Grid.Column="6" Content="Сохранить" Style="{StaticResource ChangeNoteButton}" Command="{Binding ChangeNoteCommand}"/>
+            <Button Grid.Column="6" Content="Сохранить" Style="{StaticResource ChangeNoteButton}" Command="{Binding CheckNoteCommand}"/>
 
+        </Grid>
+
+        <Grid Grid.Row="3" Background="White" Margin="0,2,0,0">
+            <Grid.Effect>
+                <DropShadowEffect Opacity="0" ShadowDepth="0"/>
+            </Grid.Effect>
+
+            <TextBlock Text="{Binding Message}" Foreground="OrangeRed" Margin="10,3,0,3"/>
+
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Message}" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
         </Grid>
 
     </Grid>

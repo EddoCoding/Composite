@@ -36,6 +36,18 @@ namespace Composite.ViewModels.Notes
                 NoteBaseVM? noteVM = Notes.FirstOrDefault(x => x.Id == m.Id);
                 if (noteVM is NoteVM notevm) OpenNote(notevm);
             });
+            messenger.Register<CheckNoteMessage>(this, (r, m) =>
+            {
+                var checkTitleNote = Notes.FirstOrDefault(x => x.Title == m.TitleNote);
+                if (checkTitleNote != null) messenger.Send(new CheckNoteBackMessage(m.Id, false, "Заметка с таким заголовком уже существует."));
+                else messenger.Send(new CheckNoteBackMessage(m.Id, true));
+            });
+            messenger.Register<CheckChangeNoteMessage>(this, (r, m) =>
+            {
+                var checkTitleNote = Notes.FirstOrDefault(x => x.Title == m.TitleNote);
+                if (checkTitleNote != null) messenger.Send(new CheckChangeNoteBackMessage(m.Id, false, "Заметка с таким заголовком уже существует."));
+                else messenger.Send(new CheckChangeNoteBackMessage(m.Id, true));
+            });
             messenger.Register<NoteMessage>(this, (r, m) => 
             {
                 _allNotes.Add(m.NoteVM);

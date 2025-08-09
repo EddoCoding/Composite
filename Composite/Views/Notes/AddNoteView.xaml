@@ -4,10 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Composite.Views.Notes"
+             xmlns:converter="clr-namespace:Composite.Common.Converters"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800" FontFamily="Verdana" TextOptions.TextFormattingMode="Ideal"
              xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
     <UserControl.Resources>
+        <converter:StringIsNullOrEmptyConverter x:Key="StringIsNullOrEmptyConverter"/>
+
         <Style x:Key="TitleTextBox" TargetType="TextBox">
             <Setter Property="FontSize" Value="17"/>
             <Setter Property="SelectionBrush" Value="LightGray"/>
@@ -229,13 +232,14 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <TextBox Grid.Row="0" Text="{Binding NoteVM.Title}" Style="{StaticResource TitleTextBox}" Margin="5,5,5,0"/>
 
         <TextBox Grid.Row="1" Text="{Binding NoteVM.Content}" Style="{StaticResource ContentTextBox}"/>
 
-        <Grid Grid.Row="2" Background="White" Margin="-1">
+        <Grid Grid.Row="2" Background="White" Margin="-2,-1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -265,10 +269,28 @@
 
             <Button Grid.Column="5" Content="Предварительный просмотр" Style="{StaticResource PreviewButton}" Command="{Binding SetPreviewCommand}"/>
 
-            <Button Grid.Column="6" Content="Сохранить" Style="{StaticResource AddNoteButton}" Command="{Binding AddNoteCommand}"/>
+            <Button Grid.Column="6" Content="Сохранить" Style="{StaticResource AddNoteButton}" Command="{Binding CheckNoteCommand}"/>
             
         </Grid>
-        
+
+        <Grid Grid.Row="3" Background="White" Margin="0,2,0,0">
+            <Grid.Effect>
+                <DropShadowEffect Opacity="0" ShadowDepth="0"/>
+            </Grid.Effect>
+
+            <TextBlock Text="{Binding Message}" Foreground="OrangeRed" Margin="10,3,0,3"/>
+
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Message}" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+        </Grid>
 
     </Grid>
 

@@ -5,18 +5,21 @@ using Composite.Common.Message;
 using Composite.Services;
 using Composite.Services.TabService;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Windows.Media;
 
 namespace Composite.ViewModels.Notes
 {
     public partial class ChangeNoteViewModel : ObservableObject, IDisposable
     {
+        readonly Guid _id;
         readonly IViewService _viewService;
         readonly ITabService _tabService;
         readonly IMessenger _messenger;
         readonly INoteService _noteService;
 
         [ObservableProperty] NoteVM noteVM;
+        [ObservableProperty] string message;
         public List<string> Fonts { get; }
         public List<double> FontSizes { get; }
         public List<string> Categories { get; set; }
@@ -61,17 +64,14 @@ namespace Composite.ViewModels.Notes
                     NamePasswordButton = "Сбросить пароль";
                 }
             });
+            messenger.Register<CheckChangeNoteBackMessage>(this, (r, m) =>
+            {
+                if (m.TitleNote) { ChangeNote(); }
+                if (_id == m.Id) Message = m.ErrorMessage;
+            });
         }
 
-        [RelayCommand] async void ChangeNote()
-        {
-            NoteVM.Color = SelectedColor;
-            if (await _noteService.UpdateNoteAsync(NoteVM))
-            {
-                _messenger.Send(new ChangeNoteBackMessage(NoteVM));
-                _tabService.RemoveTab(this);
-            }
-        }
+        [RelayCommand] async void CheckNote() => _messenger.Send(new CheckChangeNoteMessage(_id, NoteVM.Title));
         [RelayCommand] void CheckPassword()
         {
             if (string.IsNullOrEmpty(NoteVM.Password) && OpenViewSetPassword()) _messenger.Send(new PasswordNoteMessage(NoteVM.Id));
@@ -87,6 +87,15 @@ namespace Composite.ViewModels.Notes
             else NoteVM.Preview = true;
         }
 
+        async void ChangeNote()
+        {
+            NoteVM.Color = SelectedColor;
+            if (await _noteService.UpdateNoteAsync(NoteVM))
+            {
+                _messenger.Send(new ChangeNoteBackMessage(NoteVM));
+                _tabService.RemoveTab(this);
+            }
+        }
         bool OpenViewSetPassword() => _viewService.ShowView<SetPasswordViewModel>();
         void CopyNoteVM(NoteVM originalNoteVM) => NoteVM = _noteService.CreateNoteVM(originalNoteVM);
 

@@ -18,6 +18,7 @@ namespace Composite.ViewModels.Notes
         readonly INoteService _noteService;
 
         public NoteVM NoteVM { get; set; } = new NoteVM();
+        [ObservableProperty] string message;
         public List<string> Fonts { get; }
         public List<double> FontSizes { get; }
         public List<string> Categories { get; set; }
@@ -55,17 +56,14 @@ namespace Composite.ViewModels.Notes
                     NamePasswordButton = "Сбросить пароль";
                 }
             });
+            messenger.Register<CheckNoteBackMessage>(this, (r, m) => 
+            { 
+                if (m.TitleNote) { AddNote(); }
+                if(_id == m.Id) Message = m.ErrorMessage;
+            });
         }
 
-        [RelayCommand] async void AddNote()
-        {
-            NoteVM.Color = SelectedColor;
-            if(await _noteService.AddNoteAsync(NoteVM))
-            {
-                _messenger.Send(new NoteMessage(NoteVM));
-                _tabService.RemoveTab(this);
-            }
-        }
+        [RelayCommand] void CheckNote() => _messenger.Send(new CheckNoteMessage(_id, NoteVM.Title));
         [RelayCommand] void CheckPassword() 
         {
             if (string.IsNullOrEmpty(NoteVM.Password) && OpenViewSetPassword()) _messenger.Send(new PasswordNoteMessage(_id));
@@ -81,6 +79,15 @@ namespace Composite.ViewModels.Notes
             else NoteVM.Preview = true;
         }
 
+        async void AddNote() 
+        {
+            NoteVM.Color = SelectedColor;
+            if (await _noteService.AddNoteAsync(NoteVM))
+            {
+                _messenger.Send(new NoteMessage(NoteVM));
+                _tabService.RemoveTab(this);
+            }
+        }
         bool OpenViewSetPassword() => _viewService.ShowView<SetPasswordViewModel>();
 
         bool _disposed = false;

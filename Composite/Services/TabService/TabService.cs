@@ -20,7 +20,7 @@ namespace Composite.Services.TabService
         public bool CreateTab<ViewModel>(string titleTab)
         {
             var doubleTab = Tabs.FirstOrDefault(x => x.TitleTab == titleTab);
-            if (doubleTab != null && doubleTab.TitleTab != "Новая заметка")
+            if (doubleTab != null)
             {
                 SelectedTab = doubleTab;
                 return false;
