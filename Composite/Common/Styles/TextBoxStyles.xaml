@@ -6,7 +6,7 @@
         <Setter Property="SelectionBrush" Value="LightGray"/>
         <Setter Property="CaretBrush" Value="Gray"/>
         <Setter Property="FontStyle" Value="Italic"/>
-        <Setter Property="FontFamily" Value="Arial"/>
+        <Setter Property="FontFamily" Value="Verdana"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
@@ -22,6 +22,40 @@
                         <TextBlock Grid.Row="0" Text="{TemplateBinding Tag}" Margin="5,3" FontStyle="Normal" Foreground="DimGray"/>
 
                         <Border Grid.Row="1" x:Name="border" Margin="5,0,5,7" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0,0,0,1" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Padding="0"/>
+                        </Border>
+
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="PART_ContentHost" Property="Background" Value="White"/>
+                            <Setter Property="BorderBrush" Value="Black"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" Value="Gray"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="CustomTextBox2" TargetType="TextBox">
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="SelectionBrush" Value="LightGray"/>
+        <Setter Property="CaretBrush" Value="Gray"/>
+        <Setter Property="FontFamily" Value="Verdana"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Grid Background="White">
+                        <Grid.Effect>
+                            <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
+                        </Grid.Effect>
+
+                        <Border x:Name="border" Margin="5,5,5,3" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0,0,0,1" SnapsToDevicePixels="True">
                             <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Padding="0"/>
                         </Border>
 

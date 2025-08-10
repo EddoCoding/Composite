@@ -10,22 +10,30 @@
 
   <ItemGroup>
     <None Remove="Common\Images\addCategory.png" />
+    <None Remove="Common\Images\back.png" />
     <None Remove="Common\Images\close.png" />
     <None Remove="Common\Images\eye.png" />
+    <None Remove="Common\Images\folder.png" />
     <None Remove="Common\Images\lock.png" />
+    <None Remove="Common\Images\next.png" />
     <None Remove="Common\Images\notes.png" />
+    <None Remove="Common\Images\playStop.png" />
     <None Remove="Common\Images\projects.png" />
+    <None Remove="Common\Images\settingMediaPlayer.png" />
     <None Remove="Common\Images\tasks.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Common\Images\addCategory.png" />
+    <Resource Include="Common\Images\back.png" />
     <Resource Include="Common\Images\eye.png" />
+    <Resource Include="Common\Images\folder.png" />
     <Resource Include="Common\Images\lock.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Common\Images\close.png" />
+    <Resource Include="Common\Images\next.png" />
     <Resource Include="Common\Images\notes.png" />
   </ItemGroup>
 
@@ -40,7 +48,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Common\Images\playStop.png" />
     <Resource Include="Common\Images\projects.png" />
+    <Resource Include="Common\Images\settingMediaPlayer.png" />
     <Resource Include="Common\Images\tasks.png" />
   </ItemGroup>
 

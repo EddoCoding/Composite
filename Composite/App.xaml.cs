@@ -50,6 +50,8 @@ namespace Composite
             services.AddSingleton<ITabService, TabService>();
             services.AddSingleton<IMessenger, WeakReferenceMessenger>();
             services.AddTransient<IDbConnectionFactory, DbConnectionFactory>();
+            services.AddTransient<ISettingMediaPlayerService, SettingMediaPlayerService>();
+            services.AddTransient<ISettingMediaPlayerRepository, SettingMediaPlayerRepository>();
 
             //Заметки
             services.AddTransient<INoteService, NoteService>();
@@ -68,6 +70,7 @@ namespace Composite
             _serviceView.Register<CompositeView, CompositeViewModel>();
             _serviceView.Register<CompositeMenuView, CompositeMenuViewModel>();
             _serviceView.Register<CompositeMainView, CompositeMainViewModel>();
+            _serviceView.Register<SettingMediaPlayerView, SettingMediaPlayerViewModel>();
 
             //Заметки
             _serviceView.Register<NotesView, NotesViewModel>();
@@ -92,10 +95,12 @@ namespace Composite
                                        "Password Varchar(24), Preview Integer Default 0, FontFamily Text, FontSize Real, Category Text, Color Text)";
                 var queryCreateCategory = "Create Table If Not Exists Categories(NameCategory Text Primary Key Not Null)";
                 var queryInsertCategory = "Insert Or Ignore Into Categories(NameCategory) VALUES(@NameCategory)";
+                var queryCreatePathFolder = "Create Table If Not Exists PathFolder(Path Text)";
 
                 connection.Execute(queryCreateNotes);
                 connection.Execute(queryCreateCategory);
                 connection.Execute(queryInsertCategory, new { NameCategory = "Без категории" });
+                connection.Execute(queryCreatePathFolder);
             }
         }
     }
