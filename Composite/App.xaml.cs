@@ -52,6 +52,7 @@ namespace Composite
             services.AddTransient<IDbConnectionFactory, DbConnectionFactory>();
             services.AddTransient<ISettingMediaPlayerService, SettingMediaPlayerService>();
             services.AddTransient<ISettingMediaPlayerRepository, SettingMediaPlayerRepository>();
+            services.AddTransient<ISongMap, SongMap>();
 
             //Заметки
             services.AddTransient<INoteService, NoteService>();
@@ -95,12 +96,12 @@ namespace Composite
                                        "Password Varchar(24), Preview Integer Default 0, FontFamily Text, FontSize Real, Category Text, Color Text)";
                 var queryCreateCategory = "Create Table If Not Exists Categories(NameCategory Text Primary Key Not Null)";
                 var queryInsertCategory = "Insert Or Ignore Into Categories(NameCategory) VALUES(@NameCategory)";
-                var queryCreatePathFolder = "Create Table If Not Exists PathFolder(Path Text)";
-
+                var queryCreateSongs = "Create Table If Not Exists Songs(Id Text Primary Key, Title Text, Data Blob)";
+                
                 connection.Execute(queryCreateNotes);
                 connection.Execute(queryCreateCategory);
                 connection.Execute(queryInsertCategory, new { NameCategory = "Без категории" });
-                connection.Execute(queryCreatePathFolder);
+                connection.Execute(queryCreateSongs);
             }
         }
     }

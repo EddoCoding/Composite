@@ -3,18 +3,18 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Composite.Common.Message;
 using Composite.Services;
+using System.Collections.ObjectModel;
 
 namespace Composite.ViewModels
 {
-    public partial class SettingMediaPlayerViewModel : ObservableObject
+    public partial class SettingMediaPlayerViewModel : ObservableObject, IDisposable
     {
         readonly IViewService _viewService;
         readonly IMessenger _messenger;
         readonly ISettingMediaPlayerService _settingMediaPlayerService;
 
         public string Title { get; set; } = "Настройка медиаплеера";
-
-        [ObservableProperty] string pathFolder;
+        public ObservableCollection<SongVM> Songs { get; set; }
 
         public SettingMediaPlayerViewModel(IViewService viewService, IMessenger messenger, ISettingMediaPlayerService settingMediaPlayerService)
         {
@@ -22,18 +22,45 @@ namespace Composite.ViewModels
             _messenger = messenger;
             _settingMediaPlayerService = settingMediaPlayerService;
 
-            PathFolder = settingMediaPlayerService.GetPath();
+            Songs = new(settingMediaPlayerService.GetSongsVM());
         }
 
-        [RelayCommand] void SelectPathFolder() => PathFolder = _settingMediaPlayerService.SelectPathFolder();
-        [RelayCommand] async void Save()
+        [RelayCommand] void Select(SongVM songVM)
         {
-            if (await _settingMediaPlayerService.InsertUpdatePath(PathFolder)) 
+            _messenger.Send(new ManagementSongMessage("Select", null, songVM));
+            Close();
+        }
+        [RelayCommand] async void SelectSongs()
+        {
+            foreach(var songVM in await _settingMediaPlayerService.SelectSongs())
             {
-                _messenger.Send(new PathFolderMessage(PathFolder));
-                Close();
+                Songs.Add(songVM);
+                _messenger.Send(new ManagementSongMessage("Add", null, songVM));
+            }
+        }
+        [RelayCommand] async void DeleteSong(SongVM song)
+        {
+            if (await _settingMediaPlayerService.DeleteSong(song.Id))
+            {
+                Songs.Remove(song);
+                _messenger.Send(new ManagementSongMessage("Delete", song.Id));
             }
         }
         [RelayCommand] void Close() => _viewService.CloseView<SettingMediaPlayerViewModel>();
+
+        bool _disposed = false;
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing) Songs.Clear();
+                _disposed = true;
+            }
+        }
     }
 }

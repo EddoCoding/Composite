@@ -15,7 +15,7 @@ namespace Composite.ViewModels
         readonly IMessenger _messenger;
 
         MediaPlayer _mediaPlayer;
-        List<string> _songs = new();
+        List<SongVM> _songs = new();
         bool _isPlaying;
         DispatcherTimer _positionTimer;
         bool _isUserSeeking;
@@ -28,6 +28,8 @@ namespace Composite.ViewModels
         [ObservableProperty] string _currentTime = "0:00";
         [ObservableProperty] string _totalTime = "0:00";
 
+        string _tempFilePath;
+
         public HeaderMediaPlayerViewModel(IViewService viewService, IMessenger messenger, ISettingMediaPlayerService settingMediaPlayerService)
         {
             _viewService = viewService;
@@ -36,12 +38,10 @@ namespace Composite.ViewModels
             _mediaPlayer = new MediaPlayer();
             _mediaPlayer.Volume = Volume;
 
-            var path = settingMediaPlayerService.GetPath();
-            if (Directory.Exists(path))
-            {
-                _songs = Directory.GetFiles(path, "*.mp3").ToList();
-                TimerManagement();
-            }
+            _songs = new (settingMediaPlayerService.GetSongsVM());
+
+            TimerManagement();
+
             if (_songs.Any())
             {
                 _currentSongIndex = 0;
@@ -64,37 +64,40 @@ namespace Composite.ViewModels
             }
             else NameSong = "No songs found";
 
-            messenger.Register<PathFolderMessage>(this, (r, m) => 
+            messenger.Register<ManagementSongMessage>(this, (r, m) =>
             {
-                _songs.Clear();
-                _positionTimer?.Stop();
-                _mediaPlayer?.Close();
-                if (Directory.Exists(m.Path))
+                if (m.Message == "Delete")
                 {
-                    _songs = Directory.GetFiles(m.Path, "*.mp3").ToList();
-                    TimerManagement();
+                    var songVM = _songs.FirstOrDefault(x => x.Id == m.Id);
+                    _songs.Remove(songVM);
+                    if (NameSong == songVM.Title) Next();
+                    if (_songs.Count == 0)
+                    {
+                        NameSong = "No songs found";
+                        _mediaPlayer.Stop();
+                    };
                 }
-                if (_songs.Any())
+                if (m.Message == "Add")
                 {
-                    _currentSongIndex = 0;
-                    UpdateNameSong(_currentSongIndex);
+                    _songs.Add(m.SongVM);
+                    if(_songs.Count == 1) NameSong = m.SongVM.Title;
+                }
+                if (m.Message == "Select")
+                {
+                    var selectedSongIndex = _songs.FindIndex(x => x.Id == m.SongVM.Id);
 
-                    _mediaPlayer.MediaOpened += (s, e) =>
+                    if (selectedSongIndex >= 0)
                     {
-                        if (_mediaPlayer.NaturalDuration.HasTimeSpan)
-                        {
-                            Duration = _mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
-                            TotalTime = FormatTime(Duration);
-                        }
-                    };
-                    _mediaPlayer.MediaEnded += (s, e) =>
-                    {
-                        if (_songs.Count == 0) return;
-                        _currentSongIndex = (_currentSongIndex + 1) % _songs.Count;
+                        _currentSongIndex = selectedSongIndex;
                         PlaySong(_currentSongIndex);
-                    };
+                    }
+                    else
+                    {
+                        _songs.Add(m.SongVM);
+                        _currentSongIndex = _songs.Count - 1;
+                        PlaySong(_currentSongIndex);
+                    }
                 }
-                else NameSong = "No songs found";
             });
         }
 
@@ -105,8 +108,11 @@ namespace Composite.ViewModels
             if (!_isPlaying)
             {
                 if (_mediaPlayer.Source == null) PlaySong(_currentSongIndex);
-                else _mediaPlayer.Play();
-                _positionTimer.Start();
+                else
+                {
+                    _mediaPlayer.Play();
+                    _positionTimer.Start();
+                }
             }
             else
             {
@@ -138,7 +144,6 @@ namespace Composite.ViewModels
             }
         }
         [RelayCommand] void StartSeeking() => _isUserSeeking = true;
-
         [RelayCommand] void StopSeeking(object parameter)
         {
             _isUserSeeking = false;
@@ -150,18 +155,50 @@ namespace Composite.ViewModels
                 CurrentTime = FormatTime(finalPosition);
             }
         }
+        [RelayCommand] void OpenViewSettingMediaPlayer() => _viewService.ShowView<SettingMediaPlayerViewModel>();
+
+        public void PlaySong(SongVM songvm)
+        {
+            if (songvm?.Data != null)
+            {
+                _tempFilePath = Path.GetTempFileName() + ".mp3";
+                File.WriteAllBytes(_tempFilePath, songvm.Data);
+
+                _mediaPlayer.Open(new Uri(_tempFilePath));
+                _mediaPlayer.Play();
+                _isPlaying = true;
+                _positionTimer.Start();
+            }
+        }
+        void _mediaPlayer_MediaEnded(object sender, EventArgs e)
+        {
+            _mediaPlayer.Stop();
+            _mediaPlayer.Close();
+            CleanupTempFile();
+        }
+        void CleanupTempFile()
+        {
+            if (!string.IsNullOrEmpty(_tempFilePath) && File.Exists(_tempFilePath))
+            {
+                File.Delete(_tempFilePath);
+                _tempFilePath = null;
+            }
+        }
 
         void PlaySong(int index)
         {
-            _mediaPlayer.Open(new Uri(_songs[index]));
-            _mediaPlayer.Play();
-            _isPlaying = true;
-            _positionTimer.Start();
+            if (index < 0 || index >= _songs.Count) return;
+
+            var song = _songs[index];
+            PlaySong(song);
             UpdateNameSong(index);
             Position = 0;
             CurrentTime = "0:00";
         }
-        void UpdateNameSong(int index) => NameSong = Path.GetFileNameWithoutExtension(_songs[index]);
+        void UpdateNameSong(int index)
+        {
+            if (index >= 0 && index < _songs.Count) NameSong = _songs[index].Title ?? "Unknown Song";
+        }
         partial void OnVolumeChanged(double value) => _mediaPlayer.Volume = value;
         void UpdatePosition(object sender, EventArgs e)
         {
@@ -199,14 +236,13 @@ namespace Composite.ViewModels
                 if (disposing)
                 {
                     _positionTimer?.Stop();
+                    _mediaPlayer?.Stop();
                     _mediaPlayer?.Close();
-
-                    _messenger.UnregisterAll(this);
+                    CleanupTempFile();
+                    _messenger?.UnregisterAll(this);
                 }
                 _disposed = true;
             }
         }
-
-        [RelayCommand] void OpenViewSettingMediaPlayer() => _viewService.ShowView<SettingMediaPlayerViewModel>();
     };
 }
