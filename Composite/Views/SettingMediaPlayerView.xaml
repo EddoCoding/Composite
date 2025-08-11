@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Composite.Views"
         MouseDown="MoveWindow" Background="WhiteSmoke" WindowStyle="None" 
         WindowStartupLocation="CenterScreen" RenderOptions.BitmapScalingMode="NearestNeighbor"
-        Title="{Binding Header.Title}" Height="200" Width="500" ResizeMode="CanResizeWithGrip" 
+        Title="{Binding Header.Title}" Height="200" Width="550" ResizeMode="CanResizeWithGrip" 
         AllowsTransparency="True" BorderBrush="LightGray" BorderThickness="1" FontFamily="Verdana"
         TextOptions.TextFormattingMode="Display">
     <Window.Resources>
@@ -66,16 +66,21 @@
                     <ControlTemplate TargetType="ListViewItem">
 
                         <Grid Background="{TemplateBinding Background}">
-                            <TextBlock Text="{Binding Title}" Padding="5,3" HorizontalAlignment="Left"
-                                       TextTrimming="CharacterEllipsis" MaxWidth="410">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Grid.Column="0" Text="{Binding Title}" Padding="5,3" HorizontalAlignment="Left">
                                 <TextBlock.InputBindings>
                                     <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding DataContext.SelectCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                                                   CommandParameter="{Binding}"/>
                                 </TextBlock.InputBindings>
                             </TextBlock>
-                            <Button Content="delete" Style="{StaticResource deleteButton}" HorizontalAlignment="Right" Margin="0,3,5,3"
+                            <Button Grid.Column="1" Content="delete" Style="{StaticResource deleteButton}" HorizontalAlignment="Right" Margin="0,3,5,3"
                                     Command="{Binding DataContext.DeleteSongCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                                     CommandParameter="{Binding}"/>
+                            
                         </Grid>
                         
                         <ControlTemplate.Triggers>

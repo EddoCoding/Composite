@@ -38,9 +38,9 @@ namespace Composite
         {
             base.OnStartup(e);
 
-            _serviceView.ShowView<CompositeViewModel>();
-
             InitializeDatabase();
+
+            _serviceView.ShowView<CompositeViewModel>();
         }
 
         void Configure(ServiceCollection services)
