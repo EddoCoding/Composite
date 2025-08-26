@@ -7,5 +7,6 @@ namespace Composite.Common.Mappers
     {
         Song MapToModel(SongVM songVM);
         SongVM MapToViewModel(Song song);
+        SongVM MapToViewModelWithoutData(Song song);
     }
 }

@@ -17,5 +17,10 @@ namespace Composite.Common.Mappers
             Title = song.Title,
             Data = song.Data
         };
+        public SongVM MapToViewModelWithoutData(Song song) => new SongVM()
+        {
+            Id = Guid.Parse(song.Id),
+            Title = song.Title
+        };
     }
 }

@@ -44,6 +44,8 @@
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="9.0.7" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.6" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+    <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="NAudio.Lame" Version="2.1.0" />
     <PackageReference Include="SQLitePCLRaw.core" Version="2.1.11" />
   </ItemGroup>
 

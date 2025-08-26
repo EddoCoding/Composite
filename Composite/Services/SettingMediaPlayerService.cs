@@ -1,22 +1,18 @@
-﻿using Composite.Common.Mappers;
+﻿using System.IO;
+using Composite.Common.Mappers;
 using Composite.Models;
 using Composite.Repositories;
 using Composite.ViewModels;
 using Microsoft.Win32;
-using System.IO;
 
 namespace Composite.Services
 {
     public class SettingMediaPlayerService(ISongMap songMap, ISettingMediaPlayerRepository settingMediaPlayerRepository) : ISettingMediaPlayerService
     {
-        public async Task<bool> AddSongs(IEnumerable<Song> songs)
-        {
-            if (songs != null && await settingMediaPlayerRepository.Create(songs)) return true;
-            return false;
-        }
+        public async Task<bool> AddSongs(IEnumerable<Song> songs) => songs?.Any() == true && await settingMediaPlayerRepository.Create(songs);
         public IEnumerable<SongVM> GetSongsVM()
         {
-            var songs = settingMediaPlayerRepository.ReadSong();
+            var songs = settingMediaPlayerRepository.ReadMetaData();
 
             if (songs != null)
             {
@@ -30,43 +26,68 @@ namespace Composite.Services
             }
             return Enumerable.Empty<SongVM>();
         }
+        public async Task<byte[]> GetArrayBytesById(Guid id)
+        {
+            var idString = id.ToString();
+            var arrayBytes = await settingMediaPlayerRepository.ReadArrayBytes(idString);
+            return arrayBytes;
+        }
         public async Task<bool> DeleteSong(Guid id)
         {
             if(await settingMediaPlayerRepository.Delete(id.ToString())) return true;
             return false;
         }
-
+        public async Task DeleteSongs() => await settingMediaPlayerRepository.DeleteAll();
         public async Task<IEnumerable<SongVM>> SelectSongs()
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Multiselect = true;
-            openFileDialog.Filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*";
-            openFileDialog.Title = "Выбор песен";
-
-            List<Song> songs;
-            List<SongVM> songsVM;
-            if (openFileDialog.ShowDialog() == true)
+            OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                songs = new();
-                songsVM = new();
+                Multiselect = true,
+                Filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*",
+                Title = "Выбор песен"
+            };
+
+            if (openFileDialog.ShowDialog() != true) return Enumerable.Empty<SongVM>();
+
+            try
+            {
+                var songs = new List<Song>();
+                var idList = new List<string>();
 
                 foreach (string file in openFileDialog.FileNames)
                 {
+                    if (!File.Exists(file)) continue;
+
                     var song = new Song
                     {
                         Id = Guid.NewGuid().ToString(),
                         Title = Path.GetFileNameWithoutExtension(file),
-                        Data = File.ReadAllBytes(file)
+                        Data = await File.ReadAllBytesAsync(file)
                     };
                     songs.Add(song);
-
-                    var songVM = songMap.MapToViewModel(song);
-                    songsVM.Add(songVM);
+                    idList.Add(song.Id);
                 }
                 await AddSongs(songs);
-                return songsVM;
+
+                foreach (var s in songs) s.Data = null;
+                songs.Clear();
+                songs = null;
+
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                GC.Collect();
+
+                var metaDataModels = await settingMediaPlayerRepository.ReadMetaDataAsync(idList);
+                List<SongVM> metaDataViewModels = new List<SongVM>();
+                foreach(var dataModel in metaDataModels)
+                {
+                    var metaDataViewModel = songMap.MapToViewModelWithoutData(dataModel);
+                    metaDataViewModels.Add(metaDataViewModel);
+                }
+
+                return metaDataViewModels;
             }
-            return Enumerable.Empty<SongVM>();
+            catch (Exception ex) { return Enumerable.Empty<SongVM>(); }
         }
     }
 }

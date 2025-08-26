@@ -1,11 +1,34 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
+﻿using System.Windows;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Composite.Common.Factories;
 using Composite.Services;
 
 namespace Composite.ViewModels
 {
-    public class CompositeHeaderViewModel(IViewService viewService, IMessenger messenger, ISettingMediaPlayerService settingMediaPlayerService)
+    public partial class CompositeHeaderViewModel(IMediaPlayerFactory mediaPlayerFactory) : ObservableObject
     {
         public string Title { get; set; } = "Composite";
-        public HeaderMediaPlayerViewModel HeaderMediaPlayerViewModel { get; set; } = new(viewService, messenger, settingMediaPlayerService);
+
+        [ObservableProperty] string nameButtonStartStopMediaPlayer = "Вкл. плеер";
+        [ObservableProperty] IMediaPlayerService mediaPlayerService;
+        [ObservableProperty] Visibility visibility = Visibility.Collapsed;
+
+        [RelayCommand] void StarStopMediaPlayer()
+        {
+            if (MediaPlayerService == null)
+            {
+                MediaPlayerService = mediaPlayerFactory.Create();
+                Visibility = Visibility.Visible;
+                NameButtonStartStopMediaPlayer = "Откл. плеер";
+            }
+            else
+            {
+                MediaPlayerService.Dispose();
+                MediaPlayerService = null;
+                Visibility = Visibility.Collapsed;
+                NameButtonStartStopMediaPlayer = "Вкл. плеер";
+            }
+        }
     }
 }

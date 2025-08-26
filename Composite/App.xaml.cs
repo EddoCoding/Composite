@@ -50,6 +50,11 @@ namespace Composite
             services.AddSingleton<ITabService, TabService>();
             services.AddSingleton<IMessenger, WeakReferenceMessenger>();
             services.AddTransient<IDbConnectionFactory, DbConnectionFactory>();
+
+            services.AddTransient<IMediaPlayerService, MediaPlayerService>();
+            services.AddTransient<IMediaPlayerFactory, MediaPlayerFactory>();
+
+
             services.AddTransient<ISettingMediaPlayerService, SettingMediaPlayerService>();
             services.AddTransient<ISettingMediaPlayerRepository, SettingMediaPlayerRepository>();
             services.AddTransient<ISongMap, SongMap>();
@@ -71,7 +76,6 @@ namespace Composite
             _serviceView.Register<CompositeView, CompositeViewModel>();
             _serviceView.Register<CompositeMenuView, CompositeMenuViewModel>();
             _serviceView.Register<CompositeMainView, CompositeMainViewModel>();
-            _serviceView.Register<SettingMediaPlayerView, SettingMediaPlayerViewModel>();
 
             //Заметки
             _serviceView.Register<NotesView, NotesViewModel>();
