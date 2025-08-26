@@ -17,8 +17,10 @@
     <None Remove="Common\Images\lock.png" />
     <None Remove="Common\Images\next.png" />
     <None Remove="Common\Images\notes.png" />
+    <None Remove="Common\Images\notRepeat.png" />
     <None Remove="Common\Images\playStop.png" />
     <None Remove="Common\Images\projects.png" />
+    <None Remove="Common\Images\repeat.png" />
     <None Remove="Common\Images\settingMediaPlayer.png" />
     <None Remove="Common\Images\tasks.png" />
   </ItemGroup>
@@ -50,8 +52,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Common\Images\notRepeat.png" />
     <Resource Include="Common\Images\playStop.png" />
     <Resource Include="Common\Images\projects.png" />
+    <Resource Include="Common\Images\repeat.png" />
     <Resource Include="Common\Images\settingMediaPlayer.png" />
     <Resource Include="Common\Images\tasks.png" />
   </ItemGroup>

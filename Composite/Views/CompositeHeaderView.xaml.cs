@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -10,15 +9,12 @@ namespace Composite.Views
         public CompositeHeaderView() => InitializeComponent();
 
         private DispatcherTimer closeTimer;
-        private const int CLOSE_DELAY_MS = 50; // Задержка перед закрытием
+        private const int CLOSE_DELAY_MS = 50;
 
         void SongTextBlock_MouseEnter(object sender, MouseEventArgs e)
         {
             StopCloseTimer();
-            try
-            {
-                SongActionsPopup.IsOpen = true;
-            }
+            try { SongActionsPopup.IsOpen = true; }
             catch { }
         }
 
@@ -30,11 +26,12 @@ namespace Composite.Views
 
         void StartCloseTimer()
         {
-            StopCloseTimer(); // На всякий случай останавливаем предыдущий
+            StopCloseTimer();
 
             closeTimer = new DispatcherTimer();
             closeTimer.Interval = TimeSpan.FromMilliseconds(CLOSE_DELAY_MS);
-            closeTimer.Tick += (s, e) => {
+            closeTimer.Tick += (s, e) => 
+            {
                 SongActionsPopup.IsOpen = false;
                 StopCloseTimer();
             };

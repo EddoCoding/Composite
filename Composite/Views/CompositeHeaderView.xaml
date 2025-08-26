@@ -124,21 +124,8 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-
-                <!--<TextBlock Grid.Column="0" Text="{Binding MediaPlayerService.NameSong}" VerticalAlignment="Center" HorizontalAlignment="Right"
-                           Margin="5,0,0,0" FontSize="11" MaxWidth="500" Visibility="{Binding Visibility}">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding MediaPlayerService}" Value="{x:Null}">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>-->
-
 
                 <TextBlock Grid.Column="0" Text="{Binding MediaPlayerService.NameSong}" Name="SongTextBlock" VerticalAlignment="Center" HorizontalAlignment="Right" TextTrimming="WordEllipsis"
                     Margin="5,0,0,0" FontSize="11" MaxWidth="500" Visibility="{Binding Visibility}" MouseEnter="SongTextBlock_MouseEnter" MouseLeave="SongTextBlock_MouseLeave">
@@ -211,7 +198,7 @@
                                             <Button Grid.Column="1" Content="delete" Style="{StaticResource DefaultButton}" HorizontalAlignment="Right"
                                                     Command="{Binding DataContext.MediaPlayerService.DeleteSongCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
                                                     CommandParameter="{Binding}"/>
-                                            
+
                                         </Grid>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
@@ -240,7 +227,6 @@
                         </Grid>
                     </Border>
                 </Popup>
-
 
                 <Grid Grid.Column="1" Margin="10,0" Visibility="{Binding Visibility}" VerticalAlignment="Center">
                     <Grid.ColumnDefinitions>
@@ -291,9 +277,12 @@
 
                 </StackPanel>
 
-                <Slider Grid.Column="3" Value="{Binding MediaPlayerService.Volume}" Style="{StaticResource customSlider}" Width="80" Visibility="{Binding Visibility}"/>
+                <Button Grid.Column="3" Content="{Binding MediaPlayerService.PathImageRepeat}" Style="{StaticResource ImageButton}" Height="21" Width="21" Margin="5,0,0,0"
+                        RenderOptions.BitmapScalingMode="Fant" Visibility="{Binding Visibility}" Command="{Binding MediaPlayerService.RepeatCommand}"/>
 
-                <Button Grid.Column="4" Content="{Binding NameButtonStartStopMediaPlayer}" Style="{StaticResource DefaultButton}" Margin="0,0,5,0"
+                <Slider Grid.Column="4" Value="{Binding MediaPlayerService.Volume}" Style="{StaticResource customSlider}" Width="80" Visibility="{Binding Visibility}"/>
+
+                <Button Grid.Column="5" Content="{Binding NameButtonStartStopMediaPlayer}" Style="{StaticResource DefaultButton}" Margin="0,0,5,0"
                         RenderOptions.BitmapScalingMode="Fant" Command="{Binding StarStopMediaPlayerCommand}"/>
 
             </Grid>

@@ -19,6 +19,7 @@ namespace Composite.Services
         DispatcherTimer _positionTimer;
         bool _isPlaying;
         bool _isUserSeeking;
+        bool _isRepeat;
 
         public ObservableCollection<SongVM> Songs { get; set; }
 
@@ -29,6 +30,7 @@ namespace Composite.Services
         [ObservableProperty] double _duration;
         [ObservableProperty] string _currentTime = "0:00";
         [ObservableProperty] string _totalTime = "0:00";
+        [ObservableProperty] string _pathImageRepeat = "/Common/Images/notRepeat.png";
 
         public MediaPlayerService(ISettingMediaPlayerService settingMediaPlayerService)
         {
@@ -44,28 +46,6 @@ namespace Composite.Services
                 UpdateNameSong(_currentSongIndex);
             }
             else NameSong = "No songs found";
-        }
-
-        private async void OnPlaybackStopped(object sender, StoppedEventArgs e)
-        {
-            // Автоматический переход к следующей песне при окончании текущей
-            if (_isPlaying && Songs.Count > 0 && e.Exception == null)
-            {
-                await Application.Current.Dispatcher.InvokeAsync(async () =>
-                {
-                    // Очищаем ресурсы текущей песни
-                    ClearCurrentSongData();
-
-                    _currentSongIndex = (_currentSongIndex + 1) % Songs.Count;
-                    await PlaySong(_currentSongIndex);
-                });
-            }
-            else if (e.Exception != null)
-            {
-                // Если была ошибка, очищаем все ресурсы
-                DisposeAudioResources();
-                _isPlaying = false;
-            }
         }
 
         [RelayCommand] async Task Play()
@@ -107,6 +87,19 @@ namespace Composite.Services
             StopAndCleanCurrentSong();
             _currentSongIndex = (_currentSongIndex - 1 + Songs.Count) % Songs.Count;
             await PlaySongOptimized(_currentSongIndex);
+        }
+        [RelayCommand] void Repeat()
+        {
+            if (PathImageRepeat == "/Common/Images/notRepeat.png")
+            {
+                _isRepeat = true;
+                PathImageRepeat = "/Common/Images/repeat.png";
+            }
+            else
+            {
+                PathImageRepeat = "/Common/Images/notRepeat.png";
+                _isRepeat = false;
+            }
         }
 
         [RelayCommand] async Task SelectSongs()
@@ -275,6 +268,7 @@ namespace Composite.Services
 
         void InitializeAudioPlayer()
         {
+
             if (_outputDevice != null)
             {
                 _outputDevice.PlaybackStopped -= OnPlaybackStopped;
@@ -284,6 +278,32 @@ namespace Composite.Services
             _outputDevice = new WaveOutEvent();
             _outputDevice.Volume = (float)Volume;
             _outputDevice.PlaybackStopped += OnPlaybackStopped;
+        }
+        async void OnPlaybackStopped(object sender, StoppedEventArgs e)
+        {
+            if (e.Exception != null)
+            {
+                DisposeAudioResources();
+                _isPlaying = false;
+                return;
+            }
+
+            if (!_isPlaying || Songs.Count == 0) return;
+
+            await Application.Current.Dispatcher.InvokeAsync(async () =>
+            {
+                if (_isRepeat)
+                {
+                    StopAndCleanCurrentSong();
+                    await PlaySong(_currentSongIndex);
+                }
+                else
+                {
+                    ClearCurrentSongData();
+                    _currentSongIndex = (_currentSongIndex + 1) % Songs.Count;
+                    await PlaySong(_currentSongIndex);
+                }
+            });
         }
         async Task<byte[]> SetMetaData(Guid id)
         {
@@ -332,6 +352,9 @@ namespace Composite.Services
             try
             {
                 _outputDevice?.Stop();
+                _outputDevice?.Dispose();
+                _outputDevice = null;
+
                 _positionTimer?.Stop();
                 _isPlaying = false;
 
@@ -340,35 +363,22 @@ namespace Composite.Services
 
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
+
+                InitializeAudioPlayer();
             }
-            catch (Exception ex) { }
+            catch { }
         }
         void DisposeAudioResources()
         {
             try
             {
-                if (_outputDevice?.PlaybackState == PlaybackState.Playing) _outputDevice.Stop();
-
                 _audioReader?.Dispose();
                 _audioReader = null;
 
                 _currentAudioStream?.Dispose();
                 _currentAudioStream = null;
-
-                try
-                {
-                    _outputDevice?.Dispose();
-                    _outputDevice = new WaveOutEvent();
-                    _outputDevice.Volume = (float)Volume;
-                    _outputDevice.PlaybackStopped += OnPlaybackStopped;
-                }
-                catch { InitializeAudioPlayer(); }
             }
-            catch (Exception ex)
-            {
-                try { InitializeAudioPlayer(); }
-                catch { }
-            }
+            catch { }
         }
         void ClearCurrentSongData()
         {
