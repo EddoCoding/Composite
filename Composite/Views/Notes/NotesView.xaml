@@ -43,6 +43,7 @@
                             <Grid.Effect>
                                 <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
                             </Grid.Effect>
+                            
                             <Button Grid.Row="0" Content="Удалить" Click="ContextMenuButton_Click"
                                 Command="{Binding DataContext.DeleteNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
                             <Button Grid.Row="1" Content="Дублировать" Click="ContextMenuButton_Click"
@@ -60,8 +61,10 @@
                             <Grid.Effect>
                                 <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
                             </Grid.Effect>
+                            
                             <Button Grid.Row="0" Content="Удалить" Click="ContextMenuButton_Click"
                                 Command="{Binding DataContext.DeleteCategoryCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+                        
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -85,8 +88,10 @@
                             <Border.Effect>
                                 <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
                             </Border.Effect>
+                            
                             <TextBlock Text="{Binding Title}" FontSize="16" Margin="10" TextWrapping="Wrap" SnapsToDevicePixels="True" 
                                        VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center"/>
+                        
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -118,7 +123,7 @@
 
                                         <TextBlock Grid.Row="0" Text="{Binding Title}" Margin="5" FontSize="13" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
 
-                                        <ScrollViewer x:Name="scroll" Grid.Row="1" Style="{StaticResource scrollMini}" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled"
+                                        <ScrollViewer x:Name="scroll" Grid.Row="1" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled"
                                                       Focusable="False">
                                             <TextBlock x:Name="content" Text="{Binding Content}" Margin="5,0" FontSize="13" Visibility="Collapsed" TextTrimming="CharacterEllipsis"/>
                                         </ScrollViewer>
@@ -235,7 +240,6 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
-        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
             <ListView ItemsSource="{Binding Notes}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" BorderThickness="0" ItemContainerStyle="{StaticResource CustomListViewItem}">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -243,48 +247,47 @@
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
             </ListView>
-        </ScrollViewer>
 
-        <Grid Grid.Row="1" Background="White" Margin="-1,5,-1,-1">
-            <Grid.Effect>
-                <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
-            </Grid.Effect>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="1" Background="White" Margin="-1,5,-1,-1">
+                <Grid.Effect>
+                    <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
+                </Grid.Effect>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Style="{StaticResource ImageButton}" Content="/Common/Images/addCategory.png" Height="20" Width="20" Margin="5" RenderOptions.BitmapScalingMode="Fant"
-                    Command="{Binding NotesManagementViewModel.OpenViewAddCategoryCommand}"/>
+                <Button Grid.Column="0" Style="{StaticResource ImageButton}" Content="/Common/Images/addCategory.png" Height="20" Width="20" Margin="5" RenderOptions.BitmapScalingMode="Fant"
+                        Command="{Binding NotesManagementViewModel.OpenViewAddCategoryCommand}"/>
 
-            <TextBlock Grid.Column="1" Text="Категории" VerticalAlignment="Center" FontSize="14" Margin="5,5,0,5"/>
+                <TextBlock Grid.Column="1" Text="Категории" VerticalAlignment="Center" FontSize="14" Margin="5,5,0,5"/>
 
-            <ListView Grid.Column="2" ItemsSource="{Binding NotesManagementViewModel.Categories}" ItemContainerStyle="{StaticResource CategoryItem}"
-                      BorderThickness="0" Margin="4" VerticalAlignment="Center" Width="350" HorizontalAlignment="Left"
-                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False">
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal"/>
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-                <ListView.Template>
-                    <ControlTemplate TargetType="ListView">
+                <ListView Grid.Column="2" ItemsSource="{Binding NotesManagementViewModel.Categories}" ItemContainerStyle="{StaticResource CategoryItem}"
+                          BorderThickness="0" Margin="4" VerticalAlignment="Center" Width="350" HorizontalAlignment="Left"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.Template>
+                        <ControlTemplate TargetType="ListView">
                         <ScrollViewer Name="ScrollViewer" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled" CanContentScroll="False" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
                             <ItemsPresenter/>
                         </ScrollViewer>
                     </ControlTemplate>
-                </ListView.Template>
-            </ListView>
+                    </ListView.Template>
+                </ListView>
 
-            <TextBox Grid.Column="3" Text="{Binding NotesManagementViewModel.TextSearch}" Style="{StaticResource CustomTextBoxSearch}"
-                     VerticalContentAlignment="Center" TextOptions.TextFormattingMode="Ideal"/>
+                <TextBox Grid.Column="3" Text="{Binding NotesManagementViewModel.TextSearch}" Style="{StaticResource CustomTextBoxSearch}"
+                         VerticalContentAlignment="Center" TextOptions.TextFormattingMode="Ideal"/>
 
-            <Button Grid.Column="4" Style="{StaticResource ButtonSearch}" Command="{Binding SearchNoteCommand}"/>
+                <Button Grid.Column="4" Style="{StaticResource ButtonSearch}" Command="{Binding SearchNoteCommand}"/>
 
-        </Grid>
+            </Grid>
 
     </Grid>
 
