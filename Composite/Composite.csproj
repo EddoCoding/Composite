@@ -13,6 +13,7 @@
     <None Remove="Common\Images\back.png" />
     <None Remove="Common\Images\close.png" />
     <None Remove="Common\Images\collapse.png" />
+    <None Remove="Common\Images\composite.png" />
     <None Remove="Common\Images\eye.png" />
     <None Remove="Common\Images\folder.png" />
     <None Remove="Common\Images\lock.png" />
@@ -30,6 +31,7 @@
     <Resource Include="Common\Images\addCategory.png" />
     <Resource Include="Common\Images\back.png" />
     <Resource Include="Common\Images\collapse.png" />
+    <Resource Include="Common\Images\composite.png" />
     <Resource Include="Common\Images\eye.png" />
     <Resource Include="Common\Images\folder.png" />
     <Resource Include="Common\Images\lock.png" />

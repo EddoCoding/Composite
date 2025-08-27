@@ -8,7 +8,7 @@
         WindowStartupLocation="CenterScreen" RenderOptions.BitmapScalingMode="NearestNeighbor"
         Title="{Binding Header.Title}" Height="600" Width="1000" ResizeMode="CanResizeWithGrip" 
         AllowsTransparency="True" BorderBrush="LightGray" BorderThickness="1" FontFamily="Verdana"
-        TextOptions.TextFormattingMode="Display">
+        TextOptions.TextFormattingMode="Display" Icon="/Common/Images/composite.png">
 
     <Grid>
         <Grid.RowDefinitions>
