@@ -1,6 +1,6 @@
 ﻿using Composite.Common.Mappers;
 using Composite.Repositories;
-using Composite.ViewModels.Notes;
+using Composite.ViewModels.Notes.Note;
 
 namespace Composite.Services
 {

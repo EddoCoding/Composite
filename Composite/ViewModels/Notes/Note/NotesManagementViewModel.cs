@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Messaging;
 using Composite.Common.Message;
 using Composite.Services;
+using Composite.ViewModels.Notes.Note;
 using System.Collections.ObjectModel;
 
 namespace Composite.ViewModels.Notes

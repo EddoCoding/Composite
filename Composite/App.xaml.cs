@@ -6,6 +6,7 @@ using Composite.Services;
 using Composite.Services.TabService;
 using Composite.ViewModels;
 using Composite.ViewModels.Notes;
+using Composite.ViewModels.Notes.Note;
 using Composite.ViewModels.Tasks;
 using Composite.Views;
 using Composite.Views.Notes;

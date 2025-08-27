@@ -25,6 +25,25 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="ImageModuleCollapseButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="7" Padding="3,5">
+                            <Grid>
+                                <Image Source="{Binding Content, RelativeSource={RelativeSource AncestorType=Button}}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Yellow"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style x:Key="ImageModuleCloseButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Template">
@@ -52,6 +71,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.Effect>
             <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
@@ -65,7 +85,10 @@
         
         <Button Grid.Row="2" Content="/Common/Images/projects.png" Height="35" Width="35" Margin="3" Style="{StaticResource ImageModuleButton}" ToolTip="Проекты"/>
 
-        <Button Grid.Row="3" Content="/Common/Images/close.png" Height="33" Width="33" Margin="3" VerticalAlignment="Bottom" RenderOptions.BitmapScalingMode="Fant"
+        <Button Grid.Row="3" Content="/Common/Images/collapse.png" Height="33" Width="33" Margin="3" VerticalAlignment="Bottom" RenderOptions.BitmapScalingMode="Fant"
+                Style="{StaticResource ImageModuleCollapseButton}" ToolTip="Свернуть" Command="{Binding CollapseCommand}"/>
+        
+        <Button Grid.Row="4" Content="/Common/Images/close.png" Height="33" Width="33" Margin="3" VerticalAlignment="Bottom" RenderOptions.BitmapScalingMode="Fant"
                 Style="{StaticResource ImageModuleCloseButton}" ToolTip="Выход" Command="{Binding CloseCommand}"/>
 
     </Grid>

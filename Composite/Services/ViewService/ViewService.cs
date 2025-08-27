@@ -57,8 +57,13 @@ namespace Composite.Services
         }
         public void CloseView<ViewModel>()
         {
-            var viewToClose = openViews.FirstOrDefault(kv => kv.Value.GetType() == typeof(ViewModel));
+            var viewToClose = openViews.FirstOrDefault(x => x.Value.GetType() == typeof(ViewModel));
             viewToClose.Key.Close();
+        }
+        public void CollapseView<ViewModel>()
+        {
+            var viewToCollapse = openViews.FirstOrDefault(kv => kv.Value.GetType() == typeof(ViewModel));
+            viewToCollapse.Key.WindowState = WindowState.Minimized;
         }
         public UserControl GetUserControl<ViewModel>()
         {

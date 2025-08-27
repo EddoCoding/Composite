@@ -8,5 +8,6 @@ namespace Composite.Services
         bool ShowView<ViewModel>();
         UserControl GetUserControl<ViewModel>();
         void CloseView<ViewModel>();
+        void CollapseView<ViewModel>();
     }
 }

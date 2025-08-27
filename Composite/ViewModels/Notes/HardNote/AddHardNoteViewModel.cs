@@ -1,4 +1,4 @@
-﻿namespace Composite.ViewModels.Notes
+﻿namespace Composite.ViewModels.Notes.Note
 {
     public class AddHardNoteViewModel : IDisposable
     {

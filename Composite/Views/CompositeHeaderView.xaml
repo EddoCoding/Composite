@@ -222,6 +222,10 @@
                                 </ListView.ItemContainerStyle>
                             </ListView>
 
+                            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="5,5,0,0">
+                                <TextBlock Text="Кол-во песен:" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding MediaPlayerService.Songs.Count}" Margin="5,0,0,0"/>
+                            </StackPanel>
                         </Grid>
                     </Border>
                 </Popup>
