@@ -93,7 +93,7 @@ namespace Composite.ViewModels.Notes
             GetNotes();
         }
 
-        [RelayCommand] void AddNote() => _tabService.CreateTab<AddNoteViewModel>("Новая заметка");
+        [RelayCommand] void SelectTypeNote() => _viewService.ShowView<SelectTypeNoteViewModel>();
         [RelayCommand] async void DeleteNote(NoteBaseVM noteVM)
         {
             if (!string.IsNullOrEmpty(((NoteVM)noteVM).Password))

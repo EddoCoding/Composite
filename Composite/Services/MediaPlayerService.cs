@@ -529,5 +529,4 @@ namespace Composite.Services
 
         ~MediaPlayerService() => Dispose(false);
     }
-
 }
