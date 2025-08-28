@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Documents;
 using Composite.Common.Helpers;
+using Composite.ViewModels.Notes.HardNote;
 
 namespace Composite.Common.Properties
 {
@@ -16,6 +17,8 @@ namespace Composite.Common.Properties
 
             textBox.Loaded += (s, _) => ShowOrHidePlaceholder(textBox);
             textBox.TextChanged += (s, _) => ShowOrHidePlaceholder(textBox);
+            textBox.MouseEnter += (s, _) => ShowOrHidePlaceholder(textBox);
+            textBox.MouseLeave += (s, _) => ShowOrHidePlaceholder(textBox);
         }
         static void ShowOrHidePlaceholder(TextBox textBox)
         {
@@ -23,13 +26,25 @@ namespace Composite.Common.Properties
             if (layer == null) return;
 
             var existing = layer.GetAdorners(textBox);
-            if (!string.IsNullOrEmpty(textBox.Text))
+
+            bool isEmpty = string.IsNullOrEmpty(textBox.Text);
+            bool isTextComposite = textBox.DataContext is TextComposite;
+            bool isHeaderComposite = textBox.DataContext is HeaderComposite;
+
+            bool shouldShow = isEmpty && ((isTextComposite && textBox.IsMouseOver) || isHeaderComposite);
+
+            if (!shouldShow)
             {
-                if (existing != null) foreach (var adorner in existing) if (adorner is PlaceHolderAdorner) layer.Remove(adorner);
+                if (existing != null)
+                {
+                    foreach (var adorner in existing)
+                        if (adorner is PlaceHolderAdorner) layer.Remove(adorner);
+                }
             }
             else
             {
-                if (existing == null || !Array.Exists(existing, a => a is PlaceHolderAdorner)) layer.Add(new PlaceHolderAdorner(textBox, GetPlaceHolder(textBox)));
+                if (existing == null || !Array.Exists(existing, a => a is PlaceHolderAdorner))
+                    layer.Add(new PlaceHolderAdorner(textBox, GetPlaceHolder(textBox)));
             }
         }
     }

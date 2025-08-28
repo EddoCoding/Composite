@@ -48,7 +48,7 @@
             <TextBox Style="{StaticResource MainHeader}" property:PlaceHolder.PlaceHolder="Headline" PreviewKeyDown="TextBox_PreviewKeyDown"/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:TextComposite}">
-            <TextBox Style="{DynamicResource Text}" property:PlaceHolder.PlaceHolder="Enter text" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+            <TextBox Style="{DynamicResource Text}" PreviewKeyDown="TextBox_PreviewKeyDown" property:PlaceHolder.PlaceHolder="Enter text"/>
         </DataTemplate>
 
     </UserControl.Resources>
