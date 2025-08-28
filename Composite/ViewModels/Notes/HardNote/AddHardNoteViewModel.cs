@@ -1,7 +1,10 @@
-﻿namespace Composite.ViewModels.Notes.Note
+﻿using Composite.ViewModels.Notes.HardNote;
+
+namespace Composite.ViewModels.Notes.Note
 {
     public class AddHardNoteViewModel : IDisposable
     {
+        public HardNoteVM HardNoteVM { get; set; } = new();
 
 
         bool _disposed = false;

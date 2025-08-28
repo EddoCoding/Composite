@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using Composite.Common.Message;
 using Composite.Services;
 using Composite.Services.TabService;
+using Composite.ViewModels.Notes.HardNote;
 using System.Collections.ObjectModel;
 
 namespace Composite.ViewModels.Notes
