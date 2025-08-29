@@ -382,6 +382,9 @@
             </Setter>
         </Style>
     </UserControl.Resources>
+    <UserControl.InputBindings>
+        <KeyBinding Gesture="CTRL+S" Command="{Binding CheckNoteCommand}"/>
+    </UserControl.InputBindings>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -391,9 +394,9 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBox Grid.Row="0" Text="{Binding NoteVM.Title}" Style="{StaticResource TitleTextBox}" Margin="5,5,5,0"/>
+        <TextBox Grid.Row="0" Text="{Binding NoteVM.Title, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TitleTextBox}" Margin="5,5,5,0"/>
 
-        <TextBox Grid.Row="1" Text="{Binding NoteVM.Content}" Style="{StaticResource ContentTextBox}"/>
+        <TextBox Grid.Row="1" Text="{Binding NoteVM.Content, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ContentTextBox}"/>
 
         <Grid Grid.Row="2" Background="White" Margin="-1">
             <Grid.ColumnDefinitions>
