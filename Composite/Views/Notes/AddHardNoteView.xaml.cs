@@ -12,16 +12,15 @@ namespace Composite.Views.Notes
     {
         public AddHardNoteView() => InitializeComponent();
 
-
-        //Создание объекта по нажатию Enter и перенос каретки
+        //Нажатия клавиш в TextBox
         void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter && sender is TextBox textBox)
+            if (e.Key == Key.Enter && sender is TextBox textBox1)
             {
-                int caretIndex = textBox.CaretIndex;
-                if (textBox.DataContext is CompositeBase currentComposite)
+                int caretIndex = textBox1.CaretIndex;
+                if (textBox1.DataContext is CompositeBase currentComposite)
                 {
-                    var listView = FindParent<ListView>(textBox);
+                    var listView = FindParent<ListView>(textBox1);
                     if (listView?.DataContext is AddHardNoteViewModel viewModel)
                     {
                         var newItem = viewModel.HardNoteVM.AddTextComposite(currentComposite, caretIndex);
@@ -39,8 +38,31 @@ namespace Composite.Views.Notes
                             }
                         }), DispatcherPriority.Background);
                     }
+                    e.Handled = true;
                 }
-                e.Handled = true;
+
+            }
+            if (e.Key == Key.Back)
+            {
+                var textBox2 = sender as TextBox;
+                var textComposite = textBox2.DataContext as TextComposite;
+
+                if (string.IsNullOrEmpty(textBox2.Text))
+                {
+                    var listView = FindParent<ListView>(textBox2);
+                    if (listView?.DataContext is AddHardNoteViewModel viewModel)
+                    {
+                        int currentIndex = viewModel.HardNoteVM.Composites.IndexOf(textComposite);
+                        viewModel.HardNoteVM.DeleteTextComposite(textComposite);
+
+                        if (currentIndex > 0 && viewModel.HardNoteVM.Composites.Count > 0)
+                        {
+                            int previousIndex = currentIndex - 1;
+                            MoveFocusToTextBox(previousIndex);
+                        }
+                    }
+                    e.Handled = true;
+                }
             }
         }
 
@@ -103,6 +125,25 @@ namespace Composite.Views.Notes
                 if (result != null) return result;
             }
             return null;
+        }
+
+
+        void MoveFocusToTextBox(int index)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                var listViewItem = listComposite.ItemContainerGenerator.ContainerFromIndex(index) as ListViewItem;
+
+                if (listViewItem != null)
+                {
+                    var textBox = FindChild<TextBox>(listViewItem);
+                    if (textBox != null)
+                    {
+                        textBox.Focus();
+                        textBox.CaretIndex = textBox.Text.Length;
+                    }
+                }
+            }), DispatcherPriority.Input);
         }
     }
 }

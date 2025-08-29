@@ -40,12 +40,13 @@ namespace Composite.ViewModels.Notes.HardNote
                 {
                     var textAfter = textComposite.Text.Substring(caretIndex);
                     newItem.Text = textAfter;
-                    textComposite.Text = textComposite.Text.Substring(0, caretIndex);  // Берем текст до каретки
+                    textComposite.Text = textComposite.Text.Substring(0, caretIndex);
                     Composites.Insert(index + 1, newItem);
                     return newItem;
                 }
             }
             return null;
         }
+        public void DeleteTextComposite(TextComposite textComposite) => Composites.Remove(textComposite);
     }
 }
