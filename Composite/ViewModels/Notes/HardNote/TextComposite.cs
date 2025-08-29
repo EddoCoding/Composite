@@ -1,7 +1,9 @@
-﻿namespace Composite.ViewModels.Notes.HardNote
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace Composite.ViewModels.Notes.HardNote
 {
-    public class TextComposite : CompositeBase
+    public partial class TextComposite : CompositeBase
     {
-        public string Text { get; set; } = string.Empty;
+        [ObservableProperty] string text = string.Empty;
     }
 }

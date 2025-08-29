@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.Input;
 
 namespace Composite.ViewModels.Notes.HardNote
 {
@@ -37,7 +36,14 @@ namespace Composite.ViewModels.Notes.HardNote
                     Composites.Insert(index + 1, newItem);
                     return newItem;
                 }
-                else return null;
+                else
+                {
+                    var textAfter = textComposite.Text.Substring(caretIndex);
+                    newItem.Text = textAfter;
+                    textComposite.Text = textComposite.Text.Substring(0, caretIndex);  // Берем текст до каретки
+                    Composites.Insert(index + 1, newItem);
+                    return newItem;
+                }
             }
             return null;
         }
