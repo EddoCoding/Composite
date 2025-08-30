@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
+﻿using System.Windows;
+using CommunityToolkit.Mvvm.Messaging;
 using Composite.Common.Factories;
 using Composite.Common.Mappers;
 using Composite.Repositories;
@@ -7,13 +8,10 @@ using Composite.Services.TabService;
 using Composite.ViewModels;
 using Composite.ViewModels.Notes;
 using Composite.ViewModels.Notes.Note;
-using Composite.ViewModels.Tasks;
 using Composite.Views;
 using Composite.Views.Notes;
-using Composite.Views.Tasks;
 using Dapper;
 using Microsoft.Extensions.DependencyInjection;
-using System.Windows;
 
 namespace Composite
 {
