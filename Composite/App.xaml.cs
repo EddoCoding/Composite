@@ -89,9 +89,6 @@ namespace Composite
             _serviceView.Register<SelectTypeNoteView, SelectTypeNoteViewModel>();
 
             _serviceView.Register<AddHardNoteView, AddHardNoteViewModel>();
-
-            //Задачи
-            _serviceView.Register<TasksView, TasksViewModel>();
         }
 
         void InitializeDatabase()

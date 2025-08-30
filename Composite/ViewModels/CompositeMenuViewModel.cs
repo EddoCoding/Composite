@@ -2,7 +2,6 @@
 using Composite.Services;
 using Composite.Services.TabService;
 using Composite.ViewModels.Notes;
-using Composite.ViewModels.Tasks;
 
 namespace Composite.ViewModels
 {
@@ -10,7 +9,6 @@ namespace Composite.ViewModels
     {
 
         [RelayCommand] void OpenNotes() => tabService.CreateTab<NotesViewModel>("Заметки");
-        [RelayCommand] void OpenTasks() => tabService.CreateTab<TasksViewModel>("Задачи");
 
         [RelayCommand] void Collapse() => viewService.CollapseView<CompositeViewModel>();
         [RelayCommand] void Close() => viewService.CloseView<CompositeViewModel>();

@@ -24,7 +24,6 @@
     <None Remove="Common\Images\projects.png" />
     <None Remove="Common\Images\repeat.png" />
     <None Remove="Common\Images\settingMediaPlayer.png" />
-    <None Remove="Common\Images\tasks.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -61,7 +60,6 @@
     <Resource Include="Common\Images\projects.png" />
     <Resource Include="Common\Images\repeat.png" />
     <Resource Include="Common\Images\settingMediaPlayer.png" />
-    <Resource Include="Common\Images\tasks.png" />
   </ItemGroup>
 
 </Project>
