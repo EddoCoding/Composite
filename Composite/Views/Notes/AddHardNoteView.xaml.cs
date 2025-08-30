@@ -64,6 +64,80 @@ namespace Composite.Views.Notes
                     e.Handled = true;
                 }
             }
+            if (e.Key == Key.Delete)
+            {
+                var textBox3 = sender as TextBox;
+                var textComposite = textBox3.DataContext as TextComposite;
+
+                if (textComposite == null) return;
+
+                var listView = FindParent<ListView>(textBox3);
+
+                if (listView?.DataContext is AddHardNoteViewModel viewModel)
+                {
+                    int currentIndex = viewModel.HardNoteVM.Composites.IndexOf(textComposite);
+
+                    if (string.IsNullOrEmpty(textBox3.Text))
+                    {
+                        viewModel.HardNoteVM.DeleteTextComposite(textComposite);
+
+                        TextComposite nextTextComposite = null;
+                        int nextTextIndex = -1;
+
+                        for (int i = currentIndex; i < viewModel.HardNoteVM.Composites.Count; i++)
+                        {
+                            if (viewModel.HardNoteVM.Composites[i] is TextComposite textComp)
+                            {
+                                nextTextComposite = textComp;
+                                nextTextIndex = i;
+                                break;
+                            }
+                        }
+
+                        if (nextTextComposite == null)
+                        {
+                            for (int i = Math.Min(currentIndex - 1, viewModel.HardNoteVM.Composites.Count - 1); i >= 0; i--)
+                            {
+                                if (viewModel.HardNoteVM.Composites[i] is TextComposite textComp)
+                                {
+                                    nextTextComposite = textComp;
+                                    nextTextIndex = i;
+                                    break;
+                                }
+                            }
+                        }
+                        if (nextTextComposite != null) MoveFocusToTextBox(nextTextIndex);
+
+                        e.Handled = true;
+                    }
+                    else if (textBox3.CaretIndex == textBox3.Text.Length && currentIndex + 1 < viewModel.HardNoteVM.Composites.Count)
+                    {
+                        var nextElement = viewModel.HardNoteVM.Composites[currentIndex + 1];
+
+                        if (nextElement is TextComposite nextComposite)
+                        {
+                            if (string.IsNullOrEmpty(nextComposite.Text))
+                            {
+                                viewModel.HardNoteVM.DeleteTextComposite(nextComposite);
+                                e.Handled = true;
+                            }
+                            else
+                            {
+                                int originalCaretPosition = textComposite.Text.Length;
+                                textComposite.Text += nextComposite.Text;
+                                viewModel.HardNoteVM.DeleteTextComposite(nextComposite);
+
+                                textBox3.Dispatcher.BeginInvoke(new Action(() =>
+                                {
+                                    textBox3.CaretIndex = originalCaretPosition;
+                                }), DispatcherPriority.Input);
+
+                                e.Handled = true;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         //Проход по элементам ListView стрелочками и перенос каретки в конец значения

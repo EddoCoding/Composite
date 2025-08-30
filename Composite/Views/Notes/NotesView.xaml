@@ -71,6 +71,7 @@
             </Setter>
         </Style>
         <Style x:Key="CustomListViewItem" TargetType="ListViewItem">
+            <Setter Property="Focusable" Value="False"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListViewItem">
@@ -102,12 +103,14 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        
         <DataTemplate DataType="{x:Type note:NoteVM}">
             <Button x:Name="button" Margin="10,5,0,0" SnapsToDevicePixels="True" Width="180" Height="210"
                     Command="{Binding DataContext.CheckPasswordNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Background" Value="{Binding Color}"/>
+                        <Setter Property="Focusable" Value="False"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="Button">
