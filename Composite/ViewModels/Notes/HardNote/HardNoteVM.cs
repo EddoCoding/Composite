@@ -46,11 +46,19 @@ namespace Composite.ViewModels.Notes.HardNote
                 }
                 else
                 {
-                    var textAfter = textComposite.Text.Substring(caretIndex);
-                    newItem.Text = textAfter;
-                    textComposite.Text = textComposite.Text.Substring(0, caretIndex);
-                    Composites.Insert(index + 1, newItem);
-                    return newItem;
+                    if (caretIndex >= 0 && caretIndex < textComposite.Text.Length)
+                    {
+                        var textAfter = textComposite.Text.Substring(caretIndex);
+                        newItem.Text = textAfter;
+                        textComposite.Text = textComposite.Text.Substring(0, caretIndex);
+                        Composites.Insert(index + 1, newItem);
+                        return newItem;
+                    }
+                    else
+                    {
+                        Composites.Insert(index + 1, newItem);
+                        return newItem;
+                    }
                 }
             }
             return null;
