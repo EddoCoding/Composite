@@ -28,8 +28,16 @@ namespace Composite.ViewModels.Notes.HardNote
                 int index = Composites.IndexOf(textComposite);
                 if (caretIndex == 0)
                 {
-                    Composites.Insert(index, newItem);
-                    return newItem;
+                    if (string.IsNullOrEmpty(textComposite.Text))
+                    {
+                        Composites.Insert(index + 1, newItem);
+                        return newItem;
+                    }
+                    else
+                    {
+                        Composites.Insert(index, newItem);
+                        return newItem;
+                    }
                 }
                 else if (caretIndex == textComposite.Text.Length)
                 {
