@@ -1,5 +1,5 @@
 ﻿using Composite.Common.Factories;
-using Composite.Models;
+using Composite.Models.Notes.Note;
 using Dapper;
 
 namespace Composite.Repositories

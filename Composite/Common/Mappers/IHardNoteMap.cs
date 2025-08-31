@@ -1,4 +1,4 @@
-﻿using Composite.Models;
+﻿using Composite.Models.Notes.HardNote;
 using Composite.ViewModels.Notes.HardNote;
 
 namespace Composite.Common.Mappers

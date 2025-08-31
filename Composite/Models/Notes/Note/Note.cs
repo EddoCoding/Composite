@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Composite.Models
+namespace Composite.Models.Notes.Note
 {
     public class Note : NoteBase
     {

@@ -1,4 +1,4 @@
-﻿namespace Composite.Models
+﻿namespace Composite.Models.Notes.HardNote
 {
     public class HeaderComposite : CompositeBase
     {

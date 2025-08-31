@@ -1,7 +1,7 @@
 ﻿using System.Data.Common;
 using System.Transactions;
 using Composite.Common.Factories;
-using Composite.Models;
+using Composite.Models.Notes.HardNote;
 using Dapper;
 
 namespace Composite.Repositories

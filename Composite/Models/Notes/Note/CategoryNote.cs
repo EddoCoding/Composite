@@ -1,4 +1,4 @@
-﻿namespace Composite.Models
+﻿namespace Composite.Models.Notes.Note
 {
     public class CategoryNote
     {
