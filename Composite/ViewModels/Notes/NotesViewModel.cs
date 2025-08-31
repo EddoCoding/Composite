@@ -16,6 +16,7 @@ namespace Composite.ViewModels.Notes
         readonly ITabService _tabService;
         readonly IMessenger _messenger;
         readonly INoteService _noteService;
+        readonly IHardNoteService _hardNoteService;
         readonly ICategoryNoteService _categoryNoteService;
         ObservableCollection<NoteBaseVM> _allNotes = new();
 
@@ -23,12 +24,14 @@ namespace Composite.ViewModels.Notes
         public ObservableCollection<NoteBaseVM> Notes { get; set; } = new();
         public NotesManagementViewModel NotesManagementViewModel { get; set; }
 
-        public NotesViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, INoteService noteService, ICategoryNoteService categoryNoteService)
+        public NotesViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, INoteService noteService, 
+            IHardNoteService hardNoteService, ICategoryNoteService categoryNoteService)
         {
             _viewService = viewService;
             _tabService = tabService;
             _messenger = messenger;
             _noteService = noteService;
+            _hardNoteService = hardNoteService;
             _categoryNoteService = categoryNoteService;
 
             NotesManagementViewModel = new(viewService, messenger, categoryNoteService);
@@ -101,6 +104,8 @@ namespace Composite.ViewModels.Notes
             });
 
             GetNotes();
+            GetHardNotes();
+            GetButtonAddNote();
         }
 
         [RelayCommand] void SelectTypeNote() => _viewService.ShowView<SelectTypeNoteViewModel>();
@@ -173,9 +178,16 @@ namespace Composite.ViewModels.Notes
                 _allNotes.Add(noteVM);
                 Notes.Add(noteVM);
             }
-
-            Notes.Add(_noteButton);
         }
+        void GetHardNotes()
+        {
+            foreach (var hardNoteVM in _hardNoteService.GetNotes())
+            {
+                _allNotes.Add(hardNoteVM);
+                Notes.Add(hardNoteVM);
+            }
+        }
+        void GetButtonAddNote() => Notes.Add(_noteButton);
         void CheckPassword(NoteBaseVM noteVM)
         {
             var notevm = noteVM as NoteVM;

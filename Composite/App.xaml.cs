@@ -99,22 +99,27 @@ namespace Composite
             {
                 connection.Open();
                 
+                //Простые заметки
                 var queryCreateNotes = "Create Table If Not Exists Notes(Id Text Primary Key, Title Text Not Null, Content Text, DateCreate DateTime Not Null, " +
                                        "Password Varchar(24), Preview Integer Default 0, FontFamily Text, FontSize Real, Category Text, Color Text)";
                 var queryCreateCategory = "Create Table If Not Exists Categories(NameCategory Text Primary Key Not Null)";
                 var queryInsertCategory = "Insert Or Ignore Into Categories(NameCategory) VALUES(@NameCategory)";
+
+                //Функциональные заметки
+                var queryCreateHardNotes = "Create Table If Not Exists HardNotes(Id Text Primary Key, Category Text Default '')";
+                var queryCreateComposites = "Create Table If Not Exists Composites(Id Text Primary Key, Tag Text, Comment Text, Header Text, Text Text, " +
+                                            "HardNoteId TEXT NOT NULL, CompositeType TEXT NOT NULL, Foreign Key (HardNoteId) References HardNotes(Id) On Delete Cascade)";
+
+                //Песни
                 var queryCreateSongs = "Create Table If Not Exists Songs(Id Text Primary Key, Title Text, Data Blob)";
                 
                 connection.Execute(queryCreateNotes);
                 connection.Execute(queryCreateCategory);
                 connection.Execute(queryInsertCategory, new { NameCategory = "Без категории" });
+                connection.Execute(queryCreateHardNotes);
+                connection.Execute(queryCreateComposites);
                 connection.Execute(queryCreateSongs);
-
-                connection.Execute("Create Table If Not Exists HardNotes(Id Text Primary Key, Category Text Default '')");
-                connection.Execute("Create Table If Not Exists Composites(Id Text Primary Key, Tag Text, Comment Text, Header Text, Text Text, " +
-                    "HardNoteId TEXT NOT NULL, CompositeType TEXT NOT NULL, Foreign Key (HardNoteId) References HardNotes(Id) On Delete Cascade)");
             }
         }
     }
 }
-//<Setter Property="FontFamily" Value="Trebuchet MS"/> Поменять шрифт везде

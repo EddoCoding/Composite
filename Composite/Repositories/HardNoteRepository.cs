@@ -1,8 +1,8 @@
-﻿using System.Data.Common;
-using System.Transactions;
-using Composite.Common.Factories;
+﻿using Composite.Common.Factories;
+using Composite.Models;
 using Composite.Models.Notes.HardNote;
 using Dapper;
+using SQLitePCL;
 
 namespace Composite.Repositories
 {
@@ -46,10 +46,6 @@ namespace Composite.Repositories
 
             return false;
         }
-        public IEnumerable<HardNote> Read()
-        {
-            throw new NotImplementedException();
-        }
         public async Task<bool> Update(HardNote hardNote)
         {
             throw new NotImplementedException();
@@ -57,6 +53,25 @@ namespace Composite.Repositories
         public async Task<bool> Delete(string id)
         {
             throw new NotImplementedException();
+        }
+        public IEnumerable<HardNote> Read()
+        {
+            using (var connection = dbConnectionFactory.CreateConnection())
+            {
+                connection.Open();
+
+                var queryGetHardNotes = "Select * From HardNotes";
+                var resultGetHardNotes = connection.Query<HardNote>(queryGetHardNotes).ToList();
+
+                foreach (var hardNote in resultGetHardNotes)
+                {
+                    var queryGetComposites = "Select * From Composites Where HardNoteId = @HardNoteId";
+                    var composites = connection.Query<CompositeBase>(queryGetComposites, new { HardNoteId = hardNote.Id });
+                    hardNote.Composites = composites.ToList();
+                }
+
+                return resultGetHardNotes;
+            }
         }
     }
 }

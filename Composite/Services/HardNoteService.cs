@@ -1,5 +1,5 @@
 ﻿using Composite.Common.Mappers;
-using Composite.Models;
+using Composite.Models.Notes.HardNote;
 using Composite.Repositories;
 using Composite.ViewModels.Notes.HardNote;
 
@@ -29,9 +29,15 @@ namespace Composite.Services
         }
         public IEnumerable<HardNoteVM> GetNotes()
         {
-            var q = hardNoteRepository.Read();
+            var hardNotes = hardNoteRepository.Read();
 
-            return Enumerable.Empty<HardNoteVM>();
+            List<HardNoteVM> hardNotesVM = new();
+            foreach (var hardNote in hardNotes)
+            {
+                var hardNoteVM = hardNoteMap.MapToViewModel(hardNote);
+                hardNotesVM.Add(hardNoteVM);
+            }
+            return hardNotesVM;
         }
     }
 }
