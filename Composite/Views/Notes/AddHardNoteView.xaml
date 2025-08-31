@@ -42,11 +42,33 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="AddNoteButton" TargetType="Button">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" BorderThickness="0" HorizontalAlignment="Right" Background="White" Margin="0,8,8,8">
+                            <Border.Effect>
+                                <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
+                            </Border.Effect>
 
-        <DataTemplate DataType="{x:Type viewModel:HeaderComposite}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="6"/>
+
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="WhiteSmoke"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <DataTemplate DataType="{x:Type viewModel:HeaderCompositeVM}">
             <TextBox Style="{StaticResource MainHeader}" property:PlaceHolder.PlaceHolder="Headline" PreviewKeyDown="TextBox_PreviewKeyDown"/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type viewModel:TextComposite}">
+        <DataTemplate DataType="{x:Type viewModel:TextCompositeVM}">
             <TextBox Style="{DynamicResource Text}" property:PlaceHolder.PlaceHolder="Enter text"
                      PreviewKeyDown="TextBox_PreviewKeyDown"/>
         </DataTemplate>
@@ -54,7 +76,12 @@
     </UserControl.Resources>
 
     <Grid>
-        <ListView x:Name="listComposite" ItemsSource="{Binding HardNoteVM.Composites}" Margin="0,30,0,0" BorderThickness="0" HorizontalContentAlignment="Stretch"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <ListView Grid.Row="0" x:Name="listComposite" ItemsSource="{Binding HardNoteVM.Composites}" Margin="0,30,0,0" BorderThickness="0" HorizontalContentAlignment="Stretch"
                   Focusable="False" PreviewKeyDown="ListView_PreviewKeyDown">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
@@ -70,6 +97,10 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
+
+        <Button Grid.Row="1" Content="Сохранить" Style="{StaticResource AddNoteButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                Command="{Binding AddHardNoteCommand}" />
+
     </Grid>
 
 </UserControl>

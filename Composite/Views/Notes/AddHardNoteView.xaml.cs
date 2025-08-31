@@ -18,7 +18,7 @@ namespace Composite.Views.Notes
             if (e.Key == Key.Enter && sender is TextBox textBox1)
             {
                 int caretIndex = textBox1.CaretIndex;
-                if (textBox1.DataContext is CompositeBase currentComposite)
+                if (textBox1.DataContext is CompositeBaseVM currentComposite)
                 {
                     var listView = FindParent<ListView>(textBox1);
                     if (listView?.DataContext is AddHardNoteViewModel viewModel)
@@ -45,7 +45,7 @@ namespace Composite.Views.Notes
             if (e.Key == Key.Back)
             {
                 var textBox2 = sender as TextBox;
-                var textComposite = textBox2.DataContext as TextComposite;
+                var textComposite = textBox2.DataContext as TextCompositeVM;
 
                 if (string.IsNullOrEmpty(textBox2.Text))
                 {
@@ -67,7 +67,7 @@ namespace Composite.Views.Notes
             if (e.Key == Key.Delete)
             {
                 var textBox3 = sender as TextBox;
-                var textComposite = textBox3.DataContext as TextComposite;
+                var textComposite = textBox3.DataContext as TextCompositeVM;
 
                 if (textComposite == null) return;
 
@@ -81,12 +81,12 @@ namespace Composite.Views.Notes
                     {
                         viewModel.HardNoteVM.DeleteTextComposite(textComposite);
 
-                        TextComposite nextTextComposite = null;
+                        TextCompositeVM nextTextComposite = null;
                         int nextTextIndex = -1;
 
                         for (int i = currentIndex; i < viewModel.HardNoteVM.Composites.Count; i++)
                         {
-                            if (viewModel.HardNoteVM.Composites[i] is TextComposite textComp)
+                            if (viewModel.HardNoteVM.Composites[i] is TextCompositeVM textComp)
                             {
                                 nextTextComposite = textComp;
                                 nextTextIndex = i;
@@ -98,7 +98,7 @@ namespace Composite.Views.Notes
                         {
                             for (int i = Math.Min(currentIndex - 1, viewModel.HardNoteVM.Composites.Count - 1); i >= 0; i--)
                             {
-                                if (viewModel.HardNoteVM.Composites[i] is TextComposite textComp)
+                                if (viewModel.HardNoteVM.Composites[i] is TextCompositeVM textComp)
                                 {
                                     nextTextComposite = textComp;
                                     nextTextIndex = i;
@@ -114,7 +114,7 @@ namespace Composite.Views.Notes
                     {
                         var nextElement = viewModel.HardNoteVM.Composites[currentIndex + 1];
 
-                        if (nextElement is TextComposite nextComposite)
+                        if (nextElement is TextCompositeVM nextComposite)
                         {
                             if (string.IsNullOrEmpty(nextComposite.Text))
                             {
@@ -145,8 +145,8 @@ namespace Composite.Views.Notes
         {
             if (e.Key != Key.Up && e.Key != Key.Down) return;
             if (Keyboard.FocusedElement is not TextBox currentTextBox) return;
-            if (currentTextBox.DataContext is not CompositeBase currentItem) return;
-            if (listComposite.ItemsSource is not IList<CompositeBase> items) return;
+            if (currentTextBox.DataContext is not CompositeBaseVM currentItem) return;
+            if (listComposite.ItemsSource is not IList<CompositeBaseVM> items) return;
 
             int index = items.IndexOf(currentItem);
             if (index == -1) return;

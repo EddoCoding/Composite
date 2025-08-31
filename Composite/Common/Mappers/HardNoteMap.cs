@@ -1,0 +1,97 @@
+﻿using System.Collections.ObjectModel;
+using Composite.Models;
+using Composite.ViewModels.Notes.HardNote;
+
+namespace Composite.Common.Mappers
+{
+    public class HardNoteMap : IHardNoteMap
+    {
+        public HardNote MapToModel(HardNoteVM hardNoteVM)
+        {
+            List<CompositeBase> composites;
+            if (hardNoteVM.Composites.Any())
+            {
+                composites = new List<CompositeBase>();
+                foreach (var compositeVM in hardNoteVM.Composites)
+                {
+                    var composite = GetComposite(hardNoteVM.Id, compositeVM);
+                    composites.Add(composite);
+                }
+            }
+            else composites = new List<CompositeBase>();
+
+            return new HardNote()
+            {
+                Id = hardNoteVM.Id.ToString(),
+                Category = hardNoteVM.Category,
+                Composites = composites
+            };
+        }
+        public HardNoteVM MapToViewModel(HardNote hardNote)
+        {
+            List<CompositeBaseVM> compositesVM;
+            if (hardNote.Composites.Any())
+            {
+                compositesVM = new List<CompositeBaseVM>();
+                foreach (var composite in hardNote.Composites)
+                {
+                    var compositeVM = GetCompositeVM(hardNote.Id, composite);
+                    compositesVM.Add(compositeVM);
+                }
+            }
+            else compositesVM = new List<CompositeBaseVM>();
+
+            return new HardNoteVM()
+            {
+                Id = Guid.Parse(hardNote.Id),
+                Category = hardNote.Category,
+                Composites = new ObservableCollection<CompositeBaseVM>(compositesVM)
+            };
+        }
+
+        CompositeBase GetComposite(Guid Id, CompositeBaseVM compositeBaseVM)
+        {
+            if(compositeBaseVM is HeaderCompositeVM headerCompositeVM)
+            {
+                return new HeaderComposite()
+                {
+                    Id = headerCompositeVM.Id.ToString(),
+                    Header = headerCompositeVM.Header,
+                    HardNoteId = Id.ToString()
+                };
+            }
+            else if (compositeBaseVM is TextCompositeVM textCompositeVM)
+            {
+                return new TextComposite()
+                {
+                    Id = textCompositeVM.Id.ToString(),
+                    Text = textCompositeVM.Text,
+                    HardNoteId = Id.ToString()
+                };
+            }
+
+            return null;
+        }
+        CompositeBaseVM GetCompositeVM(string Id, CompositeBase compositeBase)
+        {
+            if (compositeBase is HeaderComposite headerComposite)
+            {
+                return new HeaderCompositeVM()
+                {
+                    Id = Guid.Parse(headerComposite.Id),
+                    Header = headerComposite.Header
+                };
+            }
+            else if (compositeBase is TextComposite textComposite)
+            {
+                return new TextCompositeVM()
+                {
+                    Id = Guid.Parse(textComposite.Id),
+                    Text = textComposite.Text
+                };
+            }
+
+            return null;
+        }
+    }
+}

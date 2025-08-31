@@ -28,8 +28,8 @@ namespace Composite.Common.Properties
             var existing = layer.GetAdorners(textBox);
 
             bool isEmpty = string.IsNullOrEmpty(textBox.Text);
-            bool isTextComposite = textBox.DataContext is TextComposite;
-            bool isHeaderComposite = textBox.DataContext is HeaderComposite;
+            bool isTextComposite = textBox.DataContext is TextCompositeVM;
+            bool isHeaderComposite = textBox.DataContext is HeaderCompositeVM;
 
             bool shouldShow = isEmpty && ((isTextComposite && textBox.IsMouseOver) || isHeaderComposite);
 

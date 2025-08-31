@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Composite.Common.Message;
+using Composite.Common.Message.Notes;
 using Composite.Services;
 using Composite.Services.TabService;
 using Composite.ViewModels.Notes.HardNote;
@@ -16,7 +17,7 @@ namespace Composite.ViewModels.Notes
         readonly IMessenger _messenger;
         readonly INoteService _noteService;
         readonly ICategoryNoteService _categoryNoteService;
-        ObservableCollection<NoteVM> _allNotes = new();
+        ObservableCollection<NoteBaseVM> _allNotes = new();
 
         NoteButton _noteButton = new();
         public ObservableCollection<NoteBaseVM> Notes { get; set; } = new();
@@ -32,6 +33,7 @@ namespace Composite.ViewModels.Notes
 
             NotesManagementViewModel = new(viewService, messenger, categoryNoteService);
 
+            //Сообщения простых заметок
             messenger.Register<InputPasswordBackMessage>(this, (r, m) =>
             {
                 NoteBaseVM? noteVM = Notes.FirstOrDefault(x => x.Id == m.Id);
@@ -89,6 +91,13 @@ namespace Composite.ViewModels.Notes
             {
                 NoteBaseVM? noteVM = Notes.FirstOrDefault(x => x.Id == m.Id);
                 if (await _noteService.DeleteNoteAsync(noteVM.Id)) Notes.Remove(noteVM);
+            });
+
+            //Сообщения функциональных заметок
+            messenger.Register<AddHardNoteMessage>(this, (r, m) =>
+            {
+                _allNotes.Add(m.HardNoteVM);
+                Notes.Insert(Notes.Count - 1, m.HardNoteVM);
             });
 
             GetNotes();

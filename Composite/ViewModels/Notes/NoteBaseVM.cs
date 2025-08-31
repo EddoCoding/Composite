@@ -6,5 +6,6 @@ namespace Composite.ViewModels.Notes
     {
         public Guid Id { get; set; }
         [ObservableProperty] string title = string.Empty;
+        [ObservableProperty] string category = "Без категории";
     }
 }

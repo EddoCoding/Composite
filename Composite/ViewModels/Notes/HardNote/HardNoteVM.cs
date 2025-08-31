@@ -4,26 +4,27 @@ namespace Composite.ViewModels.Notes.HardNote
 {
     public partial class HardNoteVM : NoteBaseVM
     {
-        public ObservableCollection<CompositeBase> Composites { get; set; }
+        public ObservableCollection<CompositeBaseVM> Composites { get; set; }
 
         public HardNoteVM()
         {
+            Id = Guid.NewGuid();
             Composites = new();
 
-            Composites.Add(new HeaderComposite());
-            Composites.Add(new TextComposite() { Text = "Проверка текста1"});
+            Composites.Add(new HeaderCompositeVM());
+            Composites.Add(new TextCompositeVM() { Text = "Проверка текста1"});
         }
 
-        public TextComposite AddTextComposite(CompositeBase current, int caretIndex)
+        public TextCompositeVM AddTextComposite(CompositeBaseVM current, int caretIndex)
         {
-            var newItem = new TextComposite { Text = string.Empty };
-            if (current is HeaderComposite headerComposite)
+            var newItem = new TextCompositeVM { Text = string.Empty };
+            if (current is HeaderCompositeVM headerComposite)
             {
                 int index = Composites.IndexOf(headerComposite);
                 Composites.Insert(index + 1, newItem);
                 return newItem;
             }
-            else if (current is TextComposite textComposite)
+            else if (current is TextCompositeVM textComposite)
             {
                 int index = Composites.IndexOf(textComposite);
                 if (caretIndex == 0)
@@ -63,6 +64,6 @@ namespace Composite.ViewModels.Notes.HardNote
             }
             return null;
         }
-        public void DeleteTextComposite(TextComposite textComposite) => Composites.Remove(textComposite);
+        public void DeleteTextComposite(TextCompositeVM textComposite) => Composites.Remove(textComposite);
     }
 }

@@ -2,8 +2,13 @@
 
 namespace Composite.ViewModels.Notes.HardNote
 {
-    public partial class TextComposite : CompositeBase
+    public partial class TextCompositeVM : CompositeBaseVM
     {
         [ObservableProperty] string text = string.Empty;
+
+        public TextCompositeVM()
+        {
+            Id = Guid.NewGuid();
+        }
     }
 }

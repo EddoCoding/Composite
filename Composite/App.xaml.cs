@@ -66,6 +66,10 @@ namespace Composite
             services.AddTransient<INoteMap, NoteMap>();
             services.AddTransient<ICategoryNoteMap, CategoryNoteMap>();
             services.AddTransient<INoteFactory, NoteFactory>();
+
+            services.AddTransient<IHardNoteService, HardNoteService>();
+            services.AddTransient<IHardNoteRepository, HardNoteRepository>();
+            services.AddTransient<IHardNoteMap, HardNoteMap>();
         }
 
         void RegisterView()
@@ -105,7 +109,12 @@ namespace Composite
                 connection.Execute(queryCreateCategory);
                 connection.Execute(queryInsertCategory, new { NameCategory = "Без категории" });
                 connection.Execute(queryCreateSongs);
+
+                connection.Execute("Create Table If Not Exists HardNotes(Id Text Primary Key, Category Text Default '')");
+                connection.Execute("Create Table If Not Exists Composites(Id Text Primary Key, Tag Text, Comment Text, Header Text, Text Text, " +
+                    "HardNoteId TEXT NOT NULL, CompositeType TEXT NOT NULL, Foreign Key (HardNoteId) References HardNotes(Id) On Delete Cascade)");
             }
         }
     }
 }
+//<Setter Property="FontFamily" Value="Trebuchet MS"/> Поменять шрифт везде
