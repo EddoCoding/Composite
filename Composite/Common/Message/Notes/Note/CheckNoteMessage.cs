@@ -1,4 +1,4 @@
-﻿namespace Composite.Common.Message
+﻿namespace Composite.Common.Message.Notes.Note
 {
     public class CheckNoteMessage(Guid id, string titleNote)
     {

@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Composite.Common.Message;
+using Composite.Common.Message.Notes.Note;
 using Composite.Services;
 using Composite.Services.TabService;
 using System.Reflection;

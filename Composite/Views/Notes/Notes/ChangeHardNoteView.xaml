@@ -9,7 +9,7 @@
              mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800" FontFamily="Verdana" TextOptions.TextFormattingMode="Ideal">
     <UserControl.Resources>
         <Style x:Key="MainHeader" TargetType="TextBox">
-            <Setter Property="Text" Value="{Binding Header}"/>
+            <Setter Property="Text" Value="{Binding Header, UpdateSourceTrigger=PropertyChanged}"/>
             <Setter Property="FontSize" Value="26"/>
             <Setter Property="FontFamily" Value="Trebuchet MS"/>
             <Setter Property="SelectionBrush" Value="LightGray"/>
@@ -73,6 +73,9 @@
         </DataTemplate>
 
     </UserControl.Resources>
+    <UserControl.InputBindings>
+        <KeyBinding Gesture="CTRL+S" Command="{Binding UpdateHardNoteCommand}"/>
+    </UserControl.InputBindings>
 
     <Grid>
         <Grid.RowDefinitions>

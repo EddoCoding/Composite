@@ -4,7 +4,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using Composite.ViewModels.Notes.HardNote;
-using Composite.ViewModels.Notes.Note;
 
 namespace Composite.Views.Notes.Notes
 {

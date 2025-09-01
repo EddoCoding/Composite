@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Composite.Common.Message.Notes;
+using Composite.Common.Message.Notes.HardNote;
 using Composite.Services;
 using Composite.Services.TabService;
 using Composite.ViewModels.Notes.HardNote;
@@ -23,7 +24,7 @@ namespace Composite.ViewModels.Notes.Note
             _hardNoteService = hardNoteService;
         }
 
-        [RelayCommand] async Task AddHardNote()
+        [RelayCommand] async Task SaveHardNote()
         {
             if(await _hardNoteService.AddHardNoteAsync(HardNoteVM))
             {
@@ -31,9 +32,6 @@ namespace Composite.ViewModels.Notes.Note
                 _tabService.RemoveTab(this);
             }
         }
-
-
-
 
         bool _disposed = false;
         public virtual void Dispose()
