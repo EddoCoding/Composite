@@ -212,7 +212,7 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type hardNote:HardNoteVM}">
             <Button Margin="10,5,0,0" SnapsToDevicePixels="True" Width="180" Height="210"
-                    Command="{Binding DataContext.OpenHardNoteCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}">
+                    Command="{Binding DataContext.OpenHardNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Background" Value="White"/>

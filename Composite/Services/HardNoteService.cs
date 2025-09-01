@@ -1,12 +1,12 @@
-﻿using Composite.Common.Mappers;
-using Composite.Models.Notes.HardNote;
+﻿using Composite.Common.Factories;
+using Composite.Common.Mappers;
 using Composite.Repositories;
 using Composite.ViewModels.Notes;
 using Composite.ViewModels.Notes.HardNote;
 
 namespace Composite.Services
 {
-    public class HardNoteService(IHardNoteRepository hardNoteRepository, IHardNoteMap hardNoteMap) : IHardNoteService
+    public class HardNoteService(IHardNoteRepository hardNoteRepository, IHardNoteMap hardNoteMap, IHardNoteFactory hardNoteFactory) : IHardNoteService
     {
         public async Task<bool> AddHardNoteAsync(HardNoteVM hardNoteVM)
         {
@@ -24,7 +24,9 @@ namespace Composite.Services
         }
         public async Task<bool> UpdateHardNoteAsync(HardNoteVM hardNoteVM)
         {
-            var q = hardNoteRepository.Update(new HardNote());
+            var hardNote = hardNoteMap.MapToModel(hardNoteVM);
+
+            if (await hardNoteRepository.Update(hardNote)) return true;
 
             return false;
         }
@@ -58,5 +60,6 @@ namespace Composite.Services
 
             return null;
         }
+        public HardNoteVM CreateHardNoteVM(HardNoteVM hardNoteVM) => hardNoteFactory.CreateHardNoteVM(hardNoteVM);
     }
 }

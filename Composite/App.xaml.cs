@@ -7,9 +7,11 @@ using Composite.Services;
 using Composite.Services.TabService;
 using Composite.ViewModels;
 using Composite.ViewModels.Notes;
+using Composite.ViewModels.Notes.HardNote;
 using Composite.ViewModels.Notes.Note;
 using Composite.Views;
 using Composite.Views.Notes;
+using Composite.Views.Notes.Notes;
 using Dapper;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -70,6 +72,7 @@ namespace Composite
             services.AddTransient<IHardNoteService, HardNoteService>();
             services.AddTransient<IHardNoteRepository, HardNoteRepository>();
             services.AddTransient<IHardNoteMap, HardNoteMap>();
+            services.AddTransient<IHardNoteFactory, HardNoteFactory>();
         }
 
         void RegisterView()
@@ -91,6 +94,7 @@ namespace Composite
             _serviceView.Register<SelectTypeNoteView, SelectTypeNoteViewModel>();
 
             _serviceView.Register<AddHardNoteView, AddHardNoteViewModel>();
+            _serviceView.Register<ChangeHardNoteView, ChangeHardNoteViewModel>();
         }
 
         void InitializeDatabase()

@@ -1,8 +1,10 @@
-﻿namespace Composite.ViewModels.Notes.HardNote
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace Composite.ViewModels.Notes.HardNote
 {
-    public class HeaderCompositeVM : CompositeBaseVM
+    public partial class HeaderCompositeVM : CompositeBaseVM
     {
-        public string Header { get; set; } = string.Empty;
+        [ObservableProperty] string header = string.Empty;
 
         public HeaderCompositeVM()
         {

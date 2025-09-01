@@ -42,10 +42,7 @@ namespace Composite.ViewModels.Notes
             Categories = new(categoryNoteService.GetCategoryNotes());
 
             Colors = new();
-            Colors = typeof(Colors)
-                .GetProperties(BindingFlags.Static | BindingFlags.Public)
-                .Select(prop => prop.Name)
-                .ToList();
+            Colors = typeof(Colors).GetProperties(BindingFlags.Static | BindingFlags.Public).Select(x => x.Name).ToList();
 
             messenger.Register<ChangeNoteMessage>(this, (r, m) => 
             {

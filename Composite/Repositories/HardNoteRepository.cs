@@ -45,7 +45,41 @@ namespace Composite.Repositories
         }
         public async Task<bool> Update(HardNote hardNote)
         {
-            throw new NotImplementedException();
+            using (var connection = dbConnectionFactory.CreateConnection())
+            {
+                connection.Open();
+                
+                 var queryUpdateHardNote = "Update HardNotes Set Category = @Category Where Id = @Id";
+                 var resultUpdateHardNote = await connection.ExecuteAsync(queryUpdateHardNote, hardNote);
+
+                 if (resultUpdateHardNote == 0) return false;
+
+                 var queryDeleteComposites = "Delete From Composites Where HardNoteId = @Id";
+                 await connection.ExecuteAsync(queryDeleteComposites, new { Id = hardNote.Id });
+
+                  if (hardNote.Composites?.Count > 0)
+                  {
+                      var queryInsertComposites = @"Insert Into Composites (Id, Tag, Comment, Header, Text, HardNoteId, CompositeType) 
+                                                  Values (@Id, @Tag, @Comment, @Header, @Text, @HardNoteId, @CompositeType)";
+
+                      var compositeData = hardNote.Composites.Select(c => new
+                      {
+                          Id = c.Id,
+                          Tag = c.Tag,
+                          Comment = c.Comment,
+                          Header = c.Header,
+                          Text = c.Text,
+                          HardNoteId = hardNote.Id,
+                          CompositeType = c.CompositeType
+                      });
+
+                      var resultInsertComposites = await connection.ExecuteAsync(queryInsertComposites, compositeData);
+
+                      if (resultInsertComposites != hardNote.Composites.Count) return false;
+                  }
+
+                  return true;
+            }
         }
         public async Task<bool> Delete(string id)
         {

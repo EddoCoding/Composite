@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Composite.Common.Message;
 using Composite.Common.Message.Notes;
+using Composite.Models.Notes.Note;
 using Composite.Services;
 using Composite.Services.TabService;
 using Composite.ViewModels.Notes.HardNote;
@@ -102,6 +103,17 @@ namespace Composite.ViewModels.Notes
                 _allNotes.Add(m.HardNoteVM);
                 Notes.Insert(Notes.Count - 1, m.HardNoteVM);
             });
+            messenger.Register<ChangeHardNoteBackMessage>(this, (r, m) =>
+            {
+                NoteBaseVM? hardNoteVM = Notes.FirstOrDefault(x => x.Id == m.HardNoteVM.Id);
+                if (hardNoteVM is HardNoteVM hardnotevm)
+                {
+                    hardnotevm.Category = m.HardNoteVM.Category;
+                    hardnotevm.Composites.Clear();
+
+                    foreach (var compositeVM in m.HardNoteVM.Composites) hardnotevm.Composites.Add(compositeVM);
+                }
+            });
 
             GetNotes();
             GetHardNotes();
@@ -174,7 +186,7 @@ namespace Composite.ViewModels.Notes
         //Команды функциональной заметки
         [RelayCommand] void OpenHardNote(HardNoteVM note)
         {
-
+            if (_tabService.CreateTab<ChangeHardNoteViewModel>($"{note.Composites[0]}")) { _messenger.Send(new ChangeHardNoteMessage(note)); }
         }
         [RelayCommand] async Task DeleteHardNote(NoteBaseVM note)
         {
