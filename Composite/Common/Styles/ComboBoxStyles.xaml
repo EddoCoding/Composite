@@ -15,8 +15,6 @@
                         <Border x:Name="splitBorder" BorderBrush="LightGray" BorderThickness="0" HorizontalAlignment="Right" Margin="0" SnapsToDevicePixels="true" 
                                 Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}">
                             
-                            
-                            
                             <Path x:Name="arrow" Data="F1 M 0,0 L 2.667,2.66665 L 5.3334,0 L 5.3334,-1.78168 L 2.6667,0.88501 L0,-1.78168 L0,0 Z" 
                                   Fill="Gray" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center"/>
                         </Border>
@@ -44,7 +42,7 @@
 
                         <Popup x:Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" 
                                Margin="1" Placement="Bottom" PopupAnimation="Fade">
-                            <theme:SystemDropShadowChrome x:Name="shadow" Color="Red" MinWidth="{Binding ActualWidth, ElementName=templateRoot}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                            <theme:SystemDropShadowChrome x:Name="shadow" Color="Black" MinWidth="{Binding ActualWidth, ElementName=templateRoot}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
                                 <Border x:Name="dropDownBorder" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" BorderThickness="0.5">
                                     <ScrollViewer x:Name="DropDownScrollViewer">
                                         <Grid x:Name="grid" RenderOptions.ClearTypeHint="Enabled">
