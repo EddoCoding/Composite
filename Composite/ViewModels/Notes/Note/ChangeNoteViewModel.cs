@@ -68,7 +68,7 @@ namespace Composite.ViewModels.Notes
             });
         }
 
-        [RelayCommand] async void CheckNote() => _messenger.Send(new CheckChangeNoteMessage(_id, NoteVM.Id, NoteVM.Title));
+        [RelayCommand] async Task CheckNote() => _messenger.Send(new CheckChangeNoteMessage(_id, NoteVM.Id, NoteVM.Title));
         [RelayCommand] void CheckPassword()
         {
             if (string.IsNullOrEmpty(NoteVM.Password) && OpenViewSetPassword()) _messenger.Send(new PasswordNoteMessage(NoteVM.Id));

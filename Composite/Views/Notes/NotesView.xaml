@@ -215,6 +215,7 @@
                     Command="{Binding DataContext.OpenHardNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
                 <Button.Style>
                     <Style TargetType="Button">
+                        <Setter Property="Focusable" Value="False"/>
                         <Setter Property="Background" Value="White"/>
                         <Setter Property="Template">
                             <Setter.Value>
@@ -224,7 +225,7 @@
                                             <ContextMenu Style="{StaticResource HardNoteMenu}"/>
                                         </Grid.ContextMenu>
 
-                                        <ItemsControl ItemsSource="{Binding Composites}" Background="{TemplateBinding Background}"/>
+                                        <ItemsControl ItemsSource="{Binding Composites}" Background="{TemplateBinding Background}" Focusable="False"/>
 
                                     </Grid>
                                     <ControlTemplate.Triggers>
@@ -269,10 +270,11 @@
             </Setter>
         </Style>
         <Style x:Key="CategoryItem" TargetType="ListViewItem">
+            <Setter Property="Focusable" Value="False"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListViewItem">
-                        <Button Content="{Binding}" Style="{StaticResource ButtonCategory}" 
+                        <Button Content="{Binding}" Style="{StaticResource ButtonCategory}" Focusable="False"
                                 Command="{Binding DataContext.SelectedCategoryCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                                 CommandParameter="{Binding}"/>
                     </ControlTemplate>
@@ -327,12 +329,12 @@
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="0" Style="{StaticResource ImageButton}" Content="/Common/Images/addCategory.png" Height="20" Width="20" Margin="5" RenderOptions.BitmapScalingMode="Fant"
-                        Command="{Binding NotesManagementViewModel.OpenViewAddCategoryCommand}"/>
+                        Focusable="False" Command="{Binding NotesManagementViewModel.OpenViewAddCategoryCommand}"/>
 
                 <TextBlock Grid.Column="1" Text="Категории" VerticalAlignment="Center" FontSize="14" Margin="5,5,0,5"/>
 
                 <ListView Grid.Column="2" ItemsSource="{Binding NotesManagementViewModel.Categories}" ItemContainerStyle="{StaticResource CategoryItem}"
-                          BorderThickness="0" Margin="4" VerticalAlignment="Center" Width="350" HorizontalAlignment="Left"
+                          BorderThickness="0" Margin="4" VerticalAlignment="Center" Width="350" HorizontalAlignment="Left" Focusable="False"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
