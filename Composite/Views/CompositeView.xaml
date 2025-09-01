@@ -7,7 +7,7 @@
         MouseDown="MoveWindow" Background="WhiteSmoke" WindowStyle="None" 
         WindowStartupLocation="CenterScreen" RenderOptions.BitmapScalingMode="NearestNeighbor"
         Title="{Binding Header.Title}" Height="850" Width="1500" ResizeMode="CanResizeWithGrip" 
-        AllowsTransparency="True" BorderBrush="LightGray" BorderThickness="1" FontFamily="Verdana"
+        AllowsTransparency="True" BorderBrush="LightGray" BorderThickness="1" FontFamily="Trebuchet MS"
         TextOptions.TextFormattingMode="Display" Icon="/Common/Images/composite.png">
 
     <Grid>

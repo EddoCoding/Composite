@@ -7,7 +7,7 @@
         MouseDown="MoveWindow" Background="WhiteSmoke" WindowStyle="None" 
         WindowStartupLocation="CenterScreen" RenderOptions.BitmapScalingMode="NearestNeighbor"
         Title="{Binding Title}" MinHeight="360" MinWidth="650" MaxHeight="360" MaxWidth="650" ResizeMode="CanResizeWithGrip" 
-        AllowsTransparency="True" BorderBrush="LightGray" BorderThickness="1" FontFamily="Verdana">
+        AllowsTransparency="True" BorderBrush="LightGray" BorderThickness="1" FontFamily="Trebuchet MS">
     <Window.Resources>
         <Style x:Key="defaultNoteButton" TargetType="Button">
             <Setter Property="Background" Value="WhiteSmoke"/>
