@@ -1,4 +1,5 @@
-﻿using Composite.ViewModels.Notes.HardNote;
+﻿using Composite.ViewModels.Notes;
+using Composite.ViewModels.Notes.HardNote;
 
 namespace Composite.Services
 {
@@ -8,5 +9,6 @@ namespace Composite.Services
         Task<bool> DeleteHardNoteAsync(Guid id);
         Task<bool> UpdateHardNoteAsync(HardNoteVM hardNoteVM);
         IEnumerable<HardNoteVM> GetNotes();
+        Task<HardNoteVM> DuplicateHardNoteVM(NoteBaseVM hardNoteVM);
     }
 }

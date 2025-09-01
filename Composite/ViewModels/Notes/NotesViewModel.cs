@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Composite.Common.Message;
@@ -6,8 +7,6 @@ using Composite.Common.Message.Notes;
 using Composite.Services;
 using Composite.Services.TabService;
 using Composite.ViewModels.Notes.HardNote;
-using System.Collections.ObjectModel;
-using System.Windows;
 
 namespace Composite.ViewModels.Notes
 {
@@ -126,7 +125,11 @@ namespace Composite.ViewModels.Notes
         [RelayCommand] async void DuplicateNote(NoteVM noteVM)
         {
             var noteVMDuplicate = await _noteService.DuplicateNoteVM(noteVM);
-            if(noteVMDuplicate != null) Notes.Insert(Notes.Count - 1, noteVMDuplicate);
+            if(noteVMDuplicate != null)
+            {
+                _allNotes.Add(noteVMDuplicate);
+                Notes.Insert(Notes.Count - 1, noteVMDuplicate);
+            }
         }
         [RelayCommand] void CheckPasswordNote(NoteVM noteVM)
         {
@@ -168,8 +171,7 @@ namespace Composite.ViewModels.Notes
             Notes.Add(_noteButton);
         }
 
-
-        //Для проверки функц. заметкти
+        //Команды функциональной заметки
         [RelayCommand] void OpenHardNote(HardNoteVM note)
         {
 
@@ -184,9 +186,13 @@ namespace Composite.ViewModels.Notes
         }
         [RelayCommand] async void DuplicateHardNote(NoteBaseVM note)
         {
-            MessageBox.Show(note.Id.ToString());
-        } ///// Сделать дублирование ХардНот
-        //Для проверки функц. заметкти
+            var hardNoteVMDuplicate = await _hardNoteService.DuplicateHardNoteVM(note);
+            if (hardNoteVMDuplicate != null)
+            {
+                _allNotes.Add(hardNoteVMDuplicate);
+                Notes.Insert(Notes.Count - 1, hardNoteVMDuplicate);
+            }
+        }
 
         void OpenNote(NoteVM noteVM)
         {

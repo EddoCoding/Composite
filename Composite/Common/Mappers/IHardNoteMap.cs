@@ -6,6 +6,7 @@ namespace Composite.Common.Mappers
     public interface IHardNoteMap
     {
         HardNote MapToModel(HardNoteVM hardNoteVM);
+        HardNote MapToModelWithNewIdComposite(HardNoteVM hardNoteVM);
         HardNoteVM MapToViewModel(HardNote hardNote);
     }
 }

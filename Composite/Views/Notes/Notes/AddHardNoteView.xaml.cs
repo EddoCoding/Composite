@@ -201,7 +201,6 @@ namespace Composite.Views.Notes
             return null;
         }
 
-
         void MoveFocusToTextBox(int index)
         {
             Dispatcher.BeginInvoke(new Action(() =>

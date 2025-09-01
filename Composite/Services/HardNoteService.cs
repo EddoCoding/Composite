@@ -1,6 +1,7 @@
 ﻿using Composite.Common.Mappers;
 using Composite.Models.Notes.HardNote;
 using Composite.Repositories;
+using Composite.ViewModels.Notes;
 using Composite.ViewModels.Notes.HardNote;
 
 namespace Composite.Services
@@ -38,6 +39,24 @@ namespace Composite.Services
                 hardNotesVM.Add(hardNoteVM);
             }
             return hardNotesVM;
+        }
+
+        public async Task<HardNoteVM> DuplicateHardNoteVM(NoteBaseVM hardNoteVM)
+        {
+            var id = Guid.NewGuid();
+            hardNoteVM.Id = id;
+            var note = hardNoteMap.MapToModelWithNewIdComposite((HardNoteVM)hardNoteVM);
+            
+
+            if (await hardNoteRepository.Create(note))
+            {
+                var duplicateHardNoteVM = hardNoteMap.MapToViewModel(note);
+                duplicateHardNoteVM.Id = id;
+
+                return duplicateHardNoteVM;
+            }
+
+            return null;
         }
     }
 }

@@ -1,9 +1,7 @@
 ﻿using Composite.Common.Factories;
 using Composite.Models;
 using Composite.Models.Notes.HardNote;
-using Composite.ViewModels.Notes.HardNote;
 using Dapper;
-using SQLitePCL;
 
 namespace Composite.Repositories
 {
@@ -25,18 +23,16 @@ namespace Composite.Repositories
 
                     if (headerComposites.Any())
                     {
-                        var queryHeaders = @"
-                        Insert Into Composites(Id, Tag, Comment, Header, HardNoteId, CompositeType) 
-                        Values (@Id, @Tag, @Comment, @Header, @HardNoteId, @CompositeType)";
+                        var queryHeaders = @"Insert Into Composites(Id, Tag, Comment, Header, HardNoteId, CompositeType) 
+                                           Values (@Id, @Tag, @Comment, @Header, @HardNoteId, @CompositeType)";
 
                         await connection.ExecuteAsync(queryHeaders, headerComposites);
                     }
 
                     if (textComposites.Any())
                     {
-                        var queryTexts = @"
-                        Insert Into Composites(Id, Tag, Comment, Text, HardNoteId, CompositeType) 
-                        Values (@Id, @Tag, @Comment, @Text, @HardNoteId, @CompositeType)";
+                        var queryTexts = @"Insert Into Composites(Id, Tag, Comment, Text, HardNoteId, CompositeType) 
+                                         Values (@Id, @Tag, @Comment, @Text, @HardNoteId, @CompositeType)";
 
                         await connection.ExecuteAsync(queryTexts, textComposites);
                     }

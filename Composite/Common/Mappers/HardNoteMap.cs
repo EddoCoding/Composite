@@ -28,6 +28,27 @@ namespace Composite.Common.Mappers
                 Composites = composites
             };
         }
+        public HardNote MapToModelWithNewIdComposite(HardNoteVM hardNoteVM)
+        {
+            List<CompositeBase> composites;
+            if (hardNoteVM.Composites.Any())
+            {
+                composites = new List<CompositeBase>();
+                foreach (var compositeVM in hardNoteVM.Composites)
+                {
+                    var composite = GetCompositeNewId(hardNoteVM.Id, compositeVM);
+                    composites.Add(composite);
+                }
+            }
+            else composites = new List<CompositeBase>();
+
+            return new HardNote()
+            {
+                Id = hardNoteVM.Id.ToString(),
+                Category = hardNoteVM.Category,
+                Composites = composites
+            };
+        }
         public HardNoteVM MapToViewModel(HardNote hardNote)
         {
             List<CompositeBaseVM> compositesVM;
@@ -66,6 +87,29 @@ namespace Composite.Common.Mappers
                 return new TextComposite()
                 {
                     Id = textCompositeVM.Id.ToString(),
+                    Text = textCompositeVM.Text,
+                    HardNoteId = id.ToString()
+                };
+            }
+
+            return null;
+        }
+        CompositeBase GetCompositeNewId(Guid id, CompositeBaseVM compositeBaseVM)
+        {
+            if (compositeBaseVM is HeaderCompositeVM headerCompositeVM)
+            {
+                return new HeaderComposite()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Header = headerCompositeVM.Header,
+                    HardNoteId = id.ToString()
+                };
+            }
+            else if (compositeBaseVM is TextCompositeVM textCompositeVM)
+            {
+                return new TextComposite()
+                {
+                    Id = Guid.NewGuid().ToString(),
                     Text = textCompositeVM.Text,
                     HardNoteId = id.ToString()
                 };
