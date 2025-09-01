@@ -36,7 +36,7 @@ namespace Composite.Common.Mappers
                 compositesVM = new List<CompositeBaseVM>();
                 foreach (var composite in hardNote.Composites)
                 {
-                    var compositeVM = GetCompositeVM(hardNote.Id, composite);
+                    var compositeVM = GetCompositeVM(composite);
                     compositesVM.Add(compositeVM);
                 }
             }
@@ -50,7 +50,7 @@ namespace Composite.Common.Mappers
             };
         }
 
-        CompositeBase GetComposite(Guid Id, CompositeBaseVM compositeBaseVM)
+        CompositeBase GetComposite(Guid id, CompositeBaseVM compositeBaseVM)
         {
             if(compositeBaseVM is HeaderCompositeVM headerCompositeVM)
             {
@@ -58,7 +58,7 @@ namespace Composite.Common.Mappers
                 {
                     Id = headerCompositeVM.Id.ToString(),
                     Header = headerCompositeVM.Header,
-                    HardNoteId = Id.ToString()
+                    HardNoteId = id.ToString()
                 };
             }
             else if (compositeBaseVM is TextCompositeVM textCompositeVM)
@@ -67,28 +67,28 @@ namespace Composite.Common.Mappers
                 {
                     Id = textCompositeVM.Id.ToString(),
                     Text = textCompositeVM.Text,
-                    HardNoteId = Id.ToString()
+                    HardNoteId = id.ToString()
                 };
             }
 
             return null;
         }
-        CompositeBaseVM GetCompositeVM(string Id, CompositeBase compositeBase)
+        CompositeBaseVM GetCompositeVM(CompositeBase compositeBase)
         {
-            if (compositeBase is HeaderComposite headerComposite)
+            if (compositeBase.CompositeType == "HeaderComposite")
             {
                 return new HeaderCompositeVM()
                 {
-                    Id = Guid.Parse(headerComposite.Id),
-                    Header = headerComposite.Header
+                    Id = Guid.Parse(compositeBase.Id),
+                    Header = compositeBase.Header
                 };
             }
-            else if (compositeBase is TextComposite textComposite)
+            else if (compositeBase.CompositeType == "TextComposite")
             {
                 return new TextCompositeVM()
                 {
-                    Id = Guid.Parse(textComposite.Id),
-                    Text = textComposite.Text
+                    Id = Guid.Parse(compositeBase.Id),
+                    Text = compositeBase.Text
                 };
             }
 

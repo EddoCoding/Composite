@@ -17,7 +17,7 @@ namespace Composite.Services
         }
         public async Task<bool> DeleteHardNoteAsync(Guid id)
         {
-            var q = hardNoteRepository.Delete(id.ToString());
+            if(await hardNoteRepository.Delete(id.ToString())) return true;
 
             return false;
         }

@@ -19,7 +19,6 @@ namespace Composite.Views.Notes
                 if (parent is ContextMenu contextMenu) contextMenu.IsOpen = false;
             }
         }
-
         void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             ScrollViewer scrollViewer = sender as ScrollViewer;

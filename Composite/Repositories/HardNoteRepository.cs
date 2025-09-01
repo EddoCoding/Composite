@@ -1,6 +1,7 @@
 ﻿using Composite.Common.Factories;
 using Composite.Models;
 using Composite.Models.Notes.HardNote;
+using Composite.ViewModels.Notes.HardNote;
 using Dapper;
 using SQLitePCL;
 
@@ -14,7 +15,7 @@ namespace Composite.Repositories
             {
                 connection.Open();
 
-                var queryAddHardNote = "INSERT INTO HardNotes(Id, Category) VALUES (@Id, @Category)";
+                var queryAddHardNote = "Insert Into HardNotes(Id, Category) Values (@Id, @Category)";
                 var resultAddHardNote = await connection.ExecuteAsync(queryAddHardNote, hardNote);
 
                 if (hardNote.Composites?.Any() == true)
@@ -25,8 +26,8 @@ namespace Composite.Repositories
                     if (headerComposites.Any())
                     {
                         var queryHeaders = @"
-                        INSERT INTO Composites(Id, Tag, Comment, Header, HardNoteId, CompositeType) 
-                        VALUES (@Id, @Tag, @Comment, @Header, @HardNoteId, @CompositeType)";
+                        Insert Into Composites(Id, Tag, Comment, Header, HardNoteId, CompositeType) 
+                        Values (@Id, @Tag, @Comment, @Header, @HardNoteId, @CompositeType)";
 
                         await connection.ExecuteAsync(queryHeaders, headerComposites);
                     }
@@ -34,8 +35,8 @@ namespace Composite.Repositories
                     if (textComposites.Any())
                     {
                         var queryTexts = @"
-                        INSERT INTO Composites(Id, Tag, Comment, Text, HardNoteId, CompositeType) 
-                        VALUES (@Id, @Tag, @Comment, @Text, @HardNoteId, @CompositeType)";
+                        Insert Into Composites(Id, Tag, Comment, Text, HardNoteId, CompositeType) 
+                        Values (@Id, @Tag, @Comment, @Text, @HardNoteId, @CompositeType)";
 
                         await connection.ExecuteAsync(queryTexts, textComposites);
                     }
@@ -52,7 +53,17 @@ namespace Composite.Repositories
         }
         public async Task<bool> Delete(string id)
         {
-            throw new NotImplementedException();
+            using (var connection = dbConnectionFactory.CreateConnection())
+            {
+                connection.Open();
+
+                var queryDeleteHardNote = "Delete From HardNotes Where Id = @id";
+                var resultDeleteHardNote = await connection.ExecuteAsync(queryDeleteHardNote, new { id });
+
+                if (resultDeleteHardNote > 0) return true;
+
+                return false;
+            }
         }
         public IEnumerable<HardNote> Read()
         {

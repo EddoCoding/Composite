@@ -7,6 +7,7 @@ using Composite.Services;
 using Composite.Services.TabService;
 using Composite.ViewModels.Notes.HardNote;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace Composite.ViewModels.Notes
 {
@@ -166,6 +167,26 @@ namespace Composite.ViewModels.Notes
             foreach (var noteVM in notesVM) Notes.Add(noteVM);
             Notes.Add(_noteButton);
         }
+
+
+        //Для проверки функц. заметкти
+        [RelayCommand] void OpenHardNote(HardNoteVM note)
+        {
+
+        }
+        [RelayCommand] async Task DeleteHardNote(NoteBaseVM note)
+        {
+            if(await _hardNoteService.DeleteHardNoteAsync(note.Id))
+            {
+                _allNotes.Remove(note);
+                Notes.Remove(note);
+            }
+        }
+        [RelayCommand] async void DuplicateHardNote(NoteBaseVM note)
+        {
+            MessageBox.Show(note.Id.ToString());
+        } ///// Сделать дублирование ХардНот
+        //Для проверки функц. заметкти
 
         void OpenNote(NoteVM noteVM)
         {
