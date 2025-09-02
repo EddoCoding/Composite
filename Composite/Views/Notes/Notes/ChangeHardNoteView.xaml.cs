@@ -73,7 +73,7 @@ namespace Composite.Views.Notes.Notes
         {
             if (e.Key == Key.Enter)
             {
-                if (DataContext is AddHardNoteViewModel viewModel)
+                if (DataContext is ChangeHardNoteViewModel viewModel)
                 {
                     var newItem = new TextCompositeVM { Text = string.Empty };
                     viewModel.HardNoteVM.Composites.Insert(0, newItem);
@@ -202,7 +202,7 @@ namespace Composite.Views.Notes.Notes
                 if (textBox1.DataContext is CompositeBaseVM currentComposite)
                 {
                     var listView = FindParent<ListView>(textBox1);
-                    if (listView?.DataContext is AddHardNoteViewModel viewModel)
+                    if (listView?.DataContext is ChangeHardNoteViewModel viewModel)
                     {
                         var newItem = viewModel.HardNoteVM.AddTextComposite(currentComposite, caretIndex);
                         Dispatcher.BeginInvoke(new Action(() =>
@@ -229,7 +229,7 @@ namespace Composite.Views.Notes.Notes
                 if (string.IsNullOrEmpty(textBox2.Text))
                 {
                     var listView = FindParent<ListView>(textBox2);
-                    if (listView?.DataContext is AddHardNoteViewModel viewModel)
+                    if (listView?.DataContext is ChangeHardNoteViewModel viewModel)
                     {
                         int currentIndex = viewModel.HardNoteVM.Composites.IndexOf(textComposite);
                         viewModel.HardNoteVM.DeleteTextComposite(textComposite);
@@ -289,7 +289,7 @@ namespace Composite.Views.Notes.Notes
 
                 var listView = FindParent<ListView>(textBox3);
 
-                if (listView?.DataContext is AddHardNoteViewModel viewModel)
+                if (listView?.DataContext is ChangeHardNoteViewModel viewModel)
                 {
                     int currentIndex = viewModel.HardNoteVM.Composites.IndexOf(textComposite);
 

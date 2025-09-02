@@ -48,7 +48,6 @@ namespace Composite.Services
             var id = Guid.NewGuid();
             hardNoteVM.Id = id;
             var note = hardNoteMap.MapToModelWithNewIdComposite((HardNoteVM)hardNoteVM);
-            
 
             if (await hardNoteRepository.Create(note))
             {
@@ -57,7 +56,6 @@ namespace Composite.Services
 
                 return duplicateHardNoteVM;
             }
-
             return null;
         }
         public HardNoteVM CreateHardNoteVM(HardNoteVM hardNoteVM) => hardNoteFactory.CreateHardNoteVM(hardNoteVM);
