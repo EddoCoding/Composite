@@ -109,6 +109,7 @@ namespace Composite.ViewModels.Notes
                 NoteBaseVM? hardNoteVM = Notes.FirstOrDefault(x => x.Id == m.HardNoteVM.Id);
                 if (hardNoteVM is HardNoteVM hardnotevm)
                 {
+                    hardnotevm.Title = m.HardNoteVM.Title;
                     hardnotevm.Category = m.HardNoteVM.Category;
                     hardnotevm.Composites.Clear();
 

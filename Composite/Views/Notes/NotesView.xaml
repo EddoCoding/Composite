@@ -204,9 +204,6 @@
                 </Button.Effect>
             </Button>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type hardNote:HeaderCompositeVM}">
-            <TextBlock Text="{Binding Header}" Margin="5" FontSize="13" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
-        </DataTemplate>
         <DataTemplate DataType="{x:Type hardNote:TextCompositeVM}">
             <TextBlock Text="{Binding Text}" Margin="5,0" TextTrimming="CharacterEllipsis"/>
         </DataTemplate>
@@ -220,12 +217,18 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="Button">
-                                    <Grid>
+                                    <Grid Background="{TemplateBinding Background}">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
                                         <Grid.ContextMenu>
                                             <ContextMenu Style="{StaticResource HardNoteMenu}"/>
                                         </Grid.ContextMenu>
 
-                                        <ItemsControl ItemsSource="{Binding Composites}" Background="{TemplateBinding Background}" Focusable="False"/>
+                                        <TextBlock Grid.Row="0" Text="{Binding Title}" Margin="5" FontSize="13" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
+
+                                        <ItemsControl Grid.Row="1" ItemsSource="{Binding Composites}" Focusable="False"/>
 
                                     </Grid>
                                     <ControlTemplate.Triggers>

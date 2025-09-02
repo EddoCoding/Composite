@@ -20,18 +20,17 @@ namespace Composite.Common.Properties
             textBox.MouseEnter += (s, _) => ShowOrHidePlaceholder(textBox);
             textBox.MouseLeave += (s, _) => ShowOrHidePlaceholder(textBox);
         }
+
         static void ShowOrHidePlaceholder(TextBox textBox)
         {
             var layer = AdornerLayer.GetAdornerLayer(textBox);
             if (layer == null) return;
 
             var existing = layer.GetAdorners(textBox);
-
             bool isEmpty = string.IsNullOrEmpty(textBox.Text);
             bool isTextComposite = textBox.DataContext is TextCompositeVM;
-            bool isHeaderComposite = textBox.DataContext is HeaderCompositeVM;
 
-            bool shouldShow = isEmpty && ((isTextComposite && textBox.IsMouseOver) || isHeaderComposite);
+            bool shouldShow = isEmpty && (isTextComposite ? textBox.IsMouseOver : true);
 
             if (!shouldShow)
             {

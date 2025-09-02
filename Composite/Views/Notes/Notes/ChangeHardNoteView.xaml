@@ -8,9 +8,9 @@
              xmlns:property="clr-namespace:Composite.Common.Properties"
              mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800" FontFamily="Trebuchet MS" TextOptions.TextFormattingMode="Ideal">
     <UserControl.Resources>
-        <Style x:Key="MainHeader" TargetType="TextBox">
-            <Setter Property="Text" Value="{Binding Header, UpdateSourceTrigger=PropertyChanged}"/>
+        <Style x:Key="TitleTextBox" TargetType="TextBox">
             <Setter Property="FontSize" Value="26"/>
+            <Setter Property="Margin" Value="0,30,0,0"/>
             <Setter Property="FontFamily" Value="Trebuchet MS"/>
             <Setter Property="SelectionBrush" Value="LightGray"/>
             <Setter Property="CaretBrush" Value="Gray"/>
@@ -20,13 +20,13 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
                         <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"
-                                  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
+                      HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
         <Style x:Key="Text" TargetType="TextBox">
-            <Setter Property="Text" Value="{Binding Text}"/>
+            <Setter Property="Text" Value="{Binding Text, UpdateSourceTrigger=PropertyChanged}"/>
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="FontFamily" Value="Trebuchet MS"/>
             <Setter Property="SelectionBrush" Value="LightGray"/>
@@ -65,11 +65,8 @@
             </Setter>
         </Style>
 
-        <DataTemplate DataType="{x:Type viewModel:HeaderCompositeVM}">
-            <TextBox Style="{StaticResource MainHeader}" property:PlaceHolder.PlaceHolder="Headline" PreviewKeyDown="TextBox_PreviewKeyDown"/>
-        </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:TextCompositeVM}">
-            <TextBox Style="{DynamicResource Text}" property:PlaceHolder.PlaceHolder="Enter text" PreviewKeyDown="TextBox_PreviewKeyDown"/>
+            <TextBox Style="{DynamicResource Text}" property:PlaceHolder.PlaceHolder="Enter text" PreviewKeyDown="ListView_TextBox_PreviewKeyDown"/>
         </DataTemplate>
 
     </UserControl.Resources>
@@ -77,13 +74,17 @@
         <KeyBinding Gesture="CTRL+S" Command="{Binding UpdateHardNoteCommand}"/>
     </UserControl.InputBindings>
 
-    <Grid>
+    <Grid PreviewKeyDown="Grid_PreviewKeyDown">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <ListView Grid.Row="0" x:Name="listComposite" ItemsSource="{Binding HardNoteVM.Composites}" Margin="0,30,0,0" BorderThickness="0" HorizontalContentAlignment="Stretch"
+        <TextBox x:Name="titleTextBox" Grid.Row="0" Text="{Binding HardNoteVM.Title, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TitleTextBox}" 
+         property:PlaceHolder.PlaceHolder="Headline" PreviewKeyDown="TitleTextBox_PreviewKeyDown"/>
+
+        <ListView Grid.Row="1" x:Name="listComposite" ItemsSource="{Binding HardNoteVM.Composites}" BorderThickness="0" HorizontalContentAlignment="Stretch"
               Focusable="False" PreviewKeyDown="ListView_PreviewKeyDown">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
@@ -100,7 +101,7 @@
             </ListView.ItemContainerStyle>
         </ListView>
 
-        <Button Grid.Row="1" Content="Сохранить" Style="{StaticResource AddNoteButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right"
+        <Button Grid.Row="2" Content="Сохранить" Style="{StaticResource AddNoteButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right"
             Command="{Binding UpdateHardNoteCommand}" />
 
     </Grid>

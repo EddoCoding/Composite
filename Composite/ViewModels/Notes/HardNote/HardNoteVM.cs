@@ -11,7 +11,6 @@ namespace Composite.ViewModels.Notes.HardNote
             Id = Guid.NewGuid();
             Composites = new();
 
-            Composites.Add(new HeaderCompositeVM());
             Composites.Add(new TextCompositeVM() { Text = "Проверка текста1"});
         }
 

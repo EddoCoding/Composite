@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Composite.Common.Message.Notes;
 using Composite.Common.Message.Notes.HardNote;
 using Composite.Services;
 using Composite.Services.TabService;

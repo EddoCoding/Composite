@@ -4,6 +4,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using Composite.ViewModels.Notes.HardNote;
+using Composite.ViewModels.Notes.Note;
 
 namespace Composite.Views.Notes.Notes
 {
@@ -11,8 +12,189 @@ namespace Composite.Views.Notes.Notes
     {
         public ChangeHardNoteView() => InitializeComponent();
 
-        //Нажатия клавиш в TextBox
-        void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        T? FindParent<T>(DependencyObject child) where T : DependencyObject
+        {
+            DependencyObject? parentObject = VisualTreeHelper.GetParent(child);
+            if (parentObject == null) return null;
+
+            if (parentObject is T parent) return parent;
+            else return FindParent<T>(parentObject);
+        }
+        T? FindChild<T>(DependencyObject parent) where T : DependencyObject
+        {
+            if (parent == null) return null;
+
+            int childCount = VisualTreeHelper.GetChildrenCount(parent);
+
+            for (int i = 0; i < childCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+
+                if (child is T typedChild) return typedChild;
+
+                var result = FindChild<T>(child);
+                if (result != null) return result;
+            }
+            return null;
+        }
+
+        void MoveFocusToTextBox(int index)
+        {
+            if (listComposite.ItemsSource is IList<CompositeBaseVM> items &&
+                index >= 0 && index < items.Count)
+            {
+                var targetItem = items[index];
+                listComposite.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    var container = listComposite.ItemContainerGenerator.ContainerFromItem(targetItem) as ListViewItem;
+                    if (container != null)
+                    {
+                        var targetTextBox = FindChild<TextBox>(container);
+                        if (targetTextBox != null)
+                        {
+                            targetTextBox.Focus();
+                            targetTextBox.CaretIndex = targetTextBox.Text.Length;
+                        }
+                    }
+                }), DispatcherPriority.Background);
+            }
+            else FocusTitleTextBox();
+        }
+        void Grid_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Up && e.Key != Key.Down) return;
+            if (Keyboard.FocusedElement is TextBox focusedTextBox)
+            {
+                if (focusedTextBox == titleTextBox) HandleTitleTextBoxNavigation(e);
+                else if (IsTextBoxInListView(focusedTextBox)) HandleListViewNavigation(focusedTextBox, e);
+            }
+        }
+        void TitleTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                if (DataContext is AddHardNoteViewModel viewModel)
+                {
+                    var newItem = new TextCompositeVM { Text = string.Empty };
+                    viewModel.HardNoteVM.Composites.Insert(0, newItem);
+
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        var container = listComposite.ItemContainerGenerator.ContainerFromItem(newItem) as ListViewItem;
+                        if (container != null)
+                        {
+                            var newTextBox = FindChild<TextBox>(container);
+                            if (newTextBox != null)
+                            {
+                                newTextBox.Focus();
+                                newTextBox.CaretIndex = 0;
+                            }
+                        }
+                    }), DispatcherPriority.Background);
+                }
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Down)
+            {
+                FocusFirstListViewItem();
+                e.Handled = true;
+            }
+        }
+        void ListView_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Up && e.Key != Key.Down) return;
+            if (Keyboard.FocusedElement is not TextBox currentTextBox) return;
+            if (currentTextBox.DataContext is not CompositeBaseVM currentItem) return;
+            if (listComposite.ItemsSource is not IList<CompositeBaseVM> items) return;
+
+            int index = items.IndexOf(currentItem);
+            if (index == -1) return;
+            if (e.Key == Key.Up && index == 0)
+            {
+                FocusTitleTextBox();
+                e.Handled = true;
+                return;
+            }
+
+            int targetIndex = e.Key == Key.Up ? index - 1 : index + 1;
+            if (targetIndex < 0 || targetIndex >= items.Count) return;
+
+            var targetItem = items[targetIndex];
+            listComposite.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                var container = listComposite.ItemContainerGenerator.ContainerFromItem(targetItem) as ListViewItem;
+                if (container != null)
+                {
+                    var targetTextBox = FindChild<TextBox>(container);
+                    if (targetTextBox != null)
+                    {
+                        targetTextBox.Focus();
+                        targetTextBox.CaretIndex = targetTextBox.Text.Length;
+                    }
+                }
+            }), DispatcherPriority.Background);
+
+            e.Handled = true;
+        }
+        void HandleTitleTextBoxNavigation(KeyEventArgs e)
+        {
+            if (e.Key == Key.Down)
+            {
+                FocusFirstListViewItem();
+                e.Handled = true;
+            }
+        }
+        void HandleListViewNavigation(TextBox focusedTextBox, KeyEventArgs e)
+        {
+            if (focusedTextBox.DataContext is not CompositeBaseVM currentItem) return;
+            if (listComposite.ItemsSource is not IList<CompositeBaseVM> items) return;
+
+            int index = items.IndexOf(currentItem);
+            if (index == -1) return;
+            if (e.Key == Key.Up && index == 0)
+            {
+                FocusTitleTextBox();
+                e.Handled = true;
+            }
+        }
+        void FocusTitleTextBox()
+        {
+            titleTextBox.Focus();
+            titleTextBox.CaretIndex = titleTextBox.Text.Length;
+        }
+        void FocusFirstListViewItem()
+        {
+            if (listComposite.ItemsSource is IList<CompositeBaseVM> items && items.Count > 0)
+            {
+                var firstItem = items[0];
+                listComposite.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    var container = listComposite.ItemContainerGenerator.ContainerFromItem(firstItem) as ListViewItem;
+                    if (container != null)
+                    {
+                        var textBox = FindChild<TextBox>(container);
+                        if (textBox != null)
+                        {
+                            textBox.Focus();
+                            textBox.CaretIndex = textBox.Text.Length;
+                        }
+                    }
+                }), DispatcherPriority.Background);
+            }
+        }
+        bool IsTextBoxInListView(TextBox textBox)
+        {
+            DependencyObject parent = textBox;
+            while (parent != null)
+            {
+                parent = VisualTreeHelper.GetParent(parent);
+                if (parent == listComposite) return true;
+                if (parent == titleTextBox) return false;
+            }
+            return false;
+        }
+
+        void ListView_TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter && sender is TextBox textBox1)
             {
@@ -20,7 +202,7 @@ namespace Composite.Views.Notes.Notes
                 if (textBox1.DataContext is CompositeBaseVM currentComposite)
                 {
                     var listView = FindParent<ListView>(textBox1);
-                    if (listView?.DataContext is ChangeHardNoteViewModel viewModel)
+                    if (listView?.DataContext is AddHardNoteViewModel viewModel)
                     {
                         var newItem = viewModel.HardNoteVM.AddTextComposite(currentComposite, caretIndex);
                         Dispatcher.BeginInvoke(new Action(() =>
@@ -39,29 +221,64 @@ namespace Composite.Views.Notes.Notes
                     }
                     e.Handled = true;
                 }
-
             }
             if (e.Key == Key.Back)
             {
                 var textBox2 = sender as TextBox;
                 var textComposite = textBox2.DataContext as TextCompositeVM;
-
                 if (string.IsNullOrEmpty(textBox2.Text))
                 {
                     var listView = FindParent<ListView>(textBox2);
-                    if (listView?.DataContext is ChangeHardNoteViewModel viewModel)
+                    if (listView?.DataContext is AddHardNoteViewModel viewModel)
                     {
                         int currentIndex = viewModel.HardNoteVM.Composites.IndexOf(textComposite);
                         viewModel.HardNoteVM.DeleteTextComposite(textComposite);
 
-                        if (currentIndex > 0 && viewModel.HardNoteVM.Composites.Count > 0)
+                        if (currentIndex == 0) FocusTitleTextBox();
+                        else if (currentIndex > 0 && viewModel.HardNoteVM.Composites.Count > 0)
                         {
                             int previousIndex = currentIndex - 1;
                             MoveFocusToTextBox(previousIndex);
                         }
+                        else FocusTitleTextBox();
                     }
                     e.Handled = true;
                 }
+            }
+            if (e.Key == Key.Up || e.Key == Key.Down)
+            {
+                if (Keyboard.FocusedElement is not TextBox currentTextBox) return;
+                if (currentTextBox.DataContext is not CompositeBaseVM currentItem) return;
+                if (listComposite.ItemsSource is not IList<CompositeBaseVM> items) return;
+
+                int index = items.IndexOf(currentItem);
+                if (index == -1) return;
+                if (e.Key == Key.Up && index == 0)
+                {
+                    FocusTitleTextBox();
+                    e.Handled = true;
+                    return;
+                }
+
+                int targetIndex = e.Key == Key.Up ? index - 1 : index + 1;
+                if (targetIndex < 0 || targetIndex >= items.Count) return;
+
+                var targetItem = items[targetIndex];
+                listComposite.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    var container = listComposite.ItemContainerGenerator.ContainerFromItem(targetItem) as ListViewItem;
+                    if (container != null)
+                    {
+                        var targetTextBox = FindChild<TextBox>(container);
+                        if (targetTextBox != null)
+                        {
+                            targetTextBox.Focus();
+                            targetTextBox.CaretIndex = targetTextBox.Text.Length;
+                        }
+                    }
+                }), DispatcherPriority.Background);
+
+                e.Handled = true;
             }
             if (e.Key == Key.Delete)
             {
@@ -72,7 +289,7 @@ namespace Composite.Views.Notes.Notes
 
                 var listView = FindParent<ListView>(textBox3);
 
-                if (listView?.DataContext is ChangeHardNoteViewModel viewModel)
+                if (listView?.DataContext is AddHardNoteViewModel viewModel)
                 {
                     int currentIndex = viewModel.HardNoteVM.Composites.IndexOf(textComposite);
 
@@ -137,85 +354,6 @@ namespace Composite.Views.Notes.Notes
                     }
                 }
             }
-        }
-
-        //Проход по элементам ListView стрелочками и перенос каретки в конец значения
-        void ListView_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key != Key.Up && e.Key != Key.Down) return;
-            if (Keyboard.FocusedElement is not TextBox currentTextBox) return;
-            if (currentTextBox.DataContext is not CompositeBaseVM currentItem) return;
-            if (listComposite.ItemsSource is not IList<CompositeBaseVM> items) return;
-
-            int index = items.IndexOf(currentItem);
-            if (index == -1) return;
-
-            int targetIndex = e.Key == Key.Up ? index - 1 : index + 1;
-
-            if (targetIndex < 0 || targetIndex >= items.Count) return;
-
-            var targetItem = items[targetIndex];
-
-            listComposite.Dispatcher.BeginInvoke(new Action(() =>
-            {
-                var container = listComposite.ItemContainerGenerator.ContainerFromItem(targetItem) as ListViewItem;
-                if (container != null)
-                {
-                    var targetTextBox = FindChild<TextBox>(container);
-                    if (targetTextBox != null)
-                    {
-                        targetTextBox.Focus();
-                        targetTextBox.CaretIndex = targetTextBox.Text.Length;
-                    }
-                }
-            }), DispatcherPriority.Background);
-
-            e.Handled = true;
-        }
-
-
-        T? FindParent<T>(DependencyObject child) where T : DependencyObject
-        {
-            DependencyObject? parentObject = VisualTreeHelper.GetParent(child);
-            if (parentObject == null) return null;
-
-            if (parentObject is T parent) return parent;
-            else return FindParent<T>(parentObject);
-        }
-        T? FindChild<T>(DependencyObject parent) where T : DependencyObject
-        {
-            if (parent == null) return null;
-
-            int childCount = VisualTreeHelper.GetChildrenCount(parent);
-
-            for (int i = 0; i < childCount; i++)
-            {
-                var child = VisualTreeHelper.GetChild(parent, i);
-
-                if (child is T typedChild) return typedChild;
-
-                var result = FindChild<T>(child);
-                if (result != null) return result;
-            }
-            return null;
-        }
-
-        void MoveFocusToTextBox(int index)
-        {
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                var listViewItem = listComposite.ItemContainerGenerator.ContainerFromIndex(index) as ListViewItem;
-
-                if (listViewItem != null)
-                {
-                    var textBox = FindChild<TextBox>(listViewItem);
-                    if (textBox != null)
-                    {
-                        textBox.Focus();
-                        textBox.CaretIndex = textBox.Text.Length;
-                    }
-                }
-            }), DispatcherPriority.Input);
         }
     }
 }
