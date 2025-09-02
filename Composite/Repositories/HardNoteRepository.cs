@@ -18,16 +18,7 @@ namespace Composite.Repositories
 
                 if (hardNote.Composites?.Any() == true)
                 {
-                    var headerComposites = hardNote.Composites.OfType<HeaderComposite>().ToList();
                     var textComposites = hardNote.Composites.OfType<TextComposite>().ToList();
-
-                    if (headerComposites.Any())
-                    {
-                        var queryHeaders = @"Insert Into Composites(Id, Tag, Comment, Header, HardNoteId, CompositeType) 
-                                           Values (@Id, @Tag, @Comment, @Header, @HardNoteId, @CompositeType)";
-
-                        await connection.ExecuteAsync(queryHeaders, headerComposites);
-                    }
 
                     if (textComposites.Any())
                     {
@@ -59,15 +50,14 @@ namespace Composite.Repositories
 
                   if (hardNote.Composites?.Count > 0)
                   {
-                      var queryInsertComposites = @"Insert Into Composites (Id, Tag, Comment, Header, Text, HardNoteId, CompositeType) 
-                                                  Values (@Id, @Tag, @Comment, @Header, @Text, @HardNoteId, @CompositeType)";
+                      var queryInsertComposites = @"Insert Into Composites (Id, Tag, Comment, Text, HardNoteId, CompositeType) 
+                                                  Values (@Id, @Tag, @Comment, @Text, @HardNoteId, @CompositeType)";
 
                       var compositeData = hardNote.Composites.Select(c => new
                       {
                           Id = c.Id,
                           Tag = c.Tag,
                           Comment = c.Comment,
-                          Header = c.Header,
                           Text = c.Text,
                           HardNoteId = hardNote.Id,
                           CompositeType = c.CompositeType

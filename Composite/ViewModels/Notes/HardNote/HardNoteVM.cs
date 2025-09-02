@@ -17,13 +17,7 @@ namespace Composite.ViewModels.Notes.HardNote
         public TextCompositeVM AddTextComposite(CompositeBaseVM current, int caretIndex)
         {
             var newItem = new TextCompositeVM { Text = string.Empty };
-            if (current is HeaderCompositeVM headerComposite)
-            {
-                int index = Composites.IndexOf(headerComposite);
-                Composites.Insert(index + 1, newItem);
-                return newItem;
-            }
-            else if (current is TextCompositeVM textComposite)
+            if (current is TextCompositeVM textComposite)
             {
                 int index = Composites.IndexOf(textComposite);
                 if (caretIndex == 0)

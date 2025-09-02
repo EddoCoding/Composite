@@ -188,7 +188,7 @@ namespace Composite.ViewModels.Notes
         //Команды функциональной заметки
         [RelayCommand] void OpenHardNote(HardNoteVM note)
         {
-            if (_tabService.CreateTab<ChangeHardNoteViewModel>($"{note.Composites[0]}")) { _messenger.Send(new ChangeHardNoteMessage(note)); }
+            if (_tabService.CreateTab<ChangeHardNoteViewModel>($"{note.Title}")) { _messenger.Send(new ChangeHardNoteMessage(note)); }
         }
         [RelayCommand] async Task DeleteHardNote(NoteBaseVM note)
         {

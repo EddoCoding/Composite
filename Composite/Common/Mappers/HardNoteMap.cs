@@ -76,16 +76,7 @@ namespace Composite.Common.Mappers
 
         CompositeBase GetComposite(Guid id, CompositeBaseVM compositeBaseVM)
         {
-            if(compositeBaseVM is HeaderCompositeVM headerCompositeVM)
-            {
-                return new HeaderComposite()
-                {
-                    Id = headerCompositeVM.Id.ToString(),
-                    Header = headerCompositeVM.Header,
-                    HardNoteId = id.ToString()
-                };
-            }
-            else if (compositeBaseVM is TextCompositeVM textCompositeVM)
+            if (compositeBaseVM is TextCompositeVM textCompositeVM)
             {
                 return new TextComposite()
                 {
@@ -94,21 +85,11 @@ namespace Composite.Common.Mappers
                     HardNoteId = id.ToString()
                 };
             }
-
             return null;
         }
         CompositeBase GetCompositeNewId(Guid id, CompositeBaseVM compositeBaseVM)
         {
-            if (compositeBaseVM is HeaderCompositeVM headerCompositeVM)
-            {
-                return new HeaderComposite()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Header = headerCompositeVM.Header,
-                    HardNoteId = id.ToString()
-                };
-            }
-            else if (compositeBaseVM is TextCompositeVM textCompositeVM)
+            if (compositeBaseVM is TextCompositeVM textCompositeVM)
             {
                 return new TextComposite()
                 {
@@ -117,20 +98,11 @@ namespace Composite.Common.Mappers
                     HardNoteId = id.ToString()
                 };
             }
-
             return null;
         }
         CompositeBaseVM GetCompositeVM(CompositeBase compositeBase)
         {
-            if (compositeBase.CompositeType == "HeaderComposite")
-            {
-                return new HeaderCompositeVM()
-                {
-                    Id = Guid.Parse(compositeBase.Id),
-                    Header = compositeBase.Header
-                };
-            }
-            else if (compositeBase.CompositeType == "TextComposite")
+            if (compositeBase.CompositeType == "TextComposite")
             {
                 return new TextCompositeVM()
                 {
@@ -138,7 +110,6 @@ namespace Composite.Common.Mappers
                     Text = compositeBase.Text
                 };
             }
-
             return null;
         }
     }

@@ -9,16 +9,7 @@ namespace Composite.Common.Factories
             List<CompositeBaseVM> compositesVM = new();
             foreach(var compositeVM in hardNoteVM.Composites)
             {
-                if(compositeVM is HeaderCompositeVM headerCompositeVM)
-                {
-                    var newHeaderCompositeVM = new HeaderCompositeVM()
-                    {
-                        Id = headerCompositeVM.Id,
-                        Header = headerCompositeVM.Header
-                    };
-                    compositesVM.Add(newHeaderCompositeVM);
-                }
-                else if (compositeVM is TextCompositeVM textCompositeVM)
+                if (compositeVM is TextCompositeVM textCompositeVM)
                 {
                     var newTextCompositeVM = new TextCompositeVM()
                     {
