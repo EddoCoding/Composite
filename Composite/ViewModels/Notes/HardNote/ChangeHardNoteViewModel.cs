@@ -9,17 +9,14 @@ namespace Composite.ViewModels.Notes.HardNote
 {
     public partial class ChangeHardNoteViewModel : ObservableObject
     {
-        readonly Guid _id;
-        readonly IViewService _viewService;
         readonly ITabService _tabService;
         readonly IMessenger _messenger;
         readonly IHardNoteService _hardNoteService;
 
         [ObservableProperty] HardNoteVM hardNoteVM;
 
-        public ChangeHardNoteViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, IHardNoteService hardNoteService)
+        public ChangeHardNoteViewModel(ITabService tabService, IMessenger messenger, IHardNoteService hardNoteService)
         {
-            _viewService = viewService;
             _tabService = tabService;
             _messenger = messenger;
             _hardNoteService = hardNoteService;

@@ -279,7 +279,7 @@
 
                 </StackPanel>
 
-                <Button Grid.Column="3" Content="{Binding MediaPlayerService.PathImageRepeat}" Style="{StaticResource ImageButton}" Height="21" Width="21" Margin="5,0,0,0"
+                <Button Grid.Column="3" Content="{Binding MediaPlayerService.PathImageRepeat}" Style="{StaticResource ImageButton}" Height="17" Width="17" Margin="5,0,0,0"
                         RenderOptions.BitmapScalingMode="Fant" Visibility="{Binding Visibility}" Command="{Binding MediaPlayerService.RepeatCommand}"/>
 
                 <Slider Grid.Column="4" Value="{Binding MediaPlayerService.Volume}" Style="{StaticResource customSlider}" Width="80" Visibility="{Binding Visibility}"/>

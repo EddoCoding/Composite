@@ -35,19 +35,11 @@ namespace Composite.ViewModels.Notes
             _messenger = messenger;
             _noteService = noteService;
 
-            Fonts = new(System.Windows.Media.Fonts.SystemFontFamilies
-                .Select(x => x.Source)
-                .OrderBy(x => x));
-
+            Fonts = new(System.Windows.Media.Fonts.SystemFontFamilies.Select(x => x.Source).OrderBy(x => x));
             FontSizes = new() { 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25 };
-
             Categories = new(categoryNoteService.GetCategoryNotes());
-
             Colors = new();
-            Colors = typeof(Colors)
-                .GetProperties(BindingFlags.Static | BindingFlags.Public)
-                .Select(prop => prop.Name)
-                .ToList();
+            Colors = typeof(Colors).GetProperties(BindingFlags.Static | BindingFlags.Public).Select(prop => prop.Name).ToList();
 
             messenger.Register<PasswordNoteBackMessage>(this, (r, m) => 
             {

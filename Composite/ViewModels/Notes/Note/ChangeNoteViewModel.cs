@@ -29,19 +29,15 @@ namespace Composite.ViewModels.Notes
 
         public ChangeNoteViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, INoteService noteService, ICategoryNoteService categoryNoteService)
         {
+            _id = Guid.NewGuid();
             _viewService = viewService;
             _tabService = tabService;
             _messenger = messenger;
             _noteService = noteService;
 
-            Fonts = new(System.Windows.Media.Fonts.SystemFontFamilies
-               .Select(x => x.Source)
-               .OrderBy(x => x));
-
+            Fonts = new(System.Windows.Media.Fonts.SystemFontFamilies.Select(x => x.Source).OrderBy(x => x));
             FontSizes = new() { 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25 };
-
             Categories = new(categoryNoteService.GetCategoryNotes());
-
             Colors = new();
             Colors = typeof(Colors).GetProperties(BindingFlags.Static | BindingFlags.Public).Select(x => x.Name).ToList();
 
@@ -51,7 +47,7 @@ namespace Composite.ViewModels.Notes
                 CopyNoteVM(m.NoteVM);
                 if (!string.IsNullOrEmpty(m.NoteVM.Password)) NamePasswordButton = "Сбросить пароль";
 
-                messenger.Unregister<ChangeNoteMessage>(this);
+                messenger.Unregister<ChangeNoteMessage>(this); //Чтобы данные открытой заметки для изменения не появлялись в предыдущих уже открытых заметках
             });
             messenger.Register<PasswordNoteBackMessage>(this, (r, m) =>
             {
@@ -63,8 +59,11 @@ namespace Composite.ViewModels.Notes
             });
             messenger.Register<CheckChangeNoteBackMessage>(this, (r, m) =>
             {
-                if (m.TitleNote) { ChangeNote(); }
-                if (_id == m.Id) Message = m.ErrorMessage;
+                if (_id == m.Id)
+                {
+                    if (m.TitleNote) { ChangeNote(); }
+                    else Message = m.ErrorMessage;
+                }
             });
         }
 
@@ -112,7 +111,6 @@ namespace Composite.ViewModels.Notes
                     FontSizes.Clear();
                     Categories.Clear();
                     Colors.Clear();
-
                     _messenger.UnregisterAll(this);
                 }
                 _disposed = true;
