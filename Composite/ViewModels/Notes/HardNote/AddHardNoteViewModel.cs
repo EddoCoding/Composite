@@ -13,7 +13,7 @@ namespace Composite.ViewModels.Notes.Note
         readonly ITabService _tabService;
         readonly IMessenger _messenger;
         readonly IHardNoteService _hardNoteService;
-
+        
         public HardNoteVM HardNoteVM { get; set; } = new();
 
         public AddHardNoteViewModel(ITabService tabService, IMessenger messenger, IHardNoteService hardNoteService)

@@ -66,7 +66,12 @@
         </Style>
 
         <DataTemplate DataType="{x:Type viewModel:TextCompositeVM}">
-            <TextBox Style="{StaticResource Text}" property:PlaceHolder.PlaceHolder="Enter text" PreviewKeyDown="ListView_TextBox_PreviewKeyDown"/>
+            <TextBox Style="{StaticResource Text}" property:PlaceHolder.PlaceHolder="Enter text" 
+                     PreviewKeyDown="ListView_TextBox_PreviewKeyDown"/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:HeaderCompositeVM}">
+            <TextBox Style="{StaticResource Text}" FontWeight="{Binding FontWeight}" FontSize="{Binding FontSize}" property:PlaceHolder.PlaceHolder="Enter header" 
+                     PreviewKeyDown="ListView_TextBox_PreviewKeyDown"/>
         </DataTemplate>
 
     </UserControl.Resources>
@@ -102,7 +107,7 @@
         </ListView>
 
         <Button Grid.Row="2" Content="Сохранить" Style="{StaticResource AddNoteButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                Command="{Binding SaveHardNoteCommand}" />
+                Command="{Binding SaveHardNoteCommand}"/>
 
     </Grid>
 

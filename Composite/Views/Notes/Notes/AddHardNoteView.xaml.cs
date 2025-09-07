@@ -198,11 +198,35 @@ namespace Composite.Views.Notes
             if (e.Key == Key.Enter && sender is TextBox textBox1)
             {
                 int caretIndex = textBox1.CaretIndex;
+                string textValue = textBox1.Text;
+
                 if (textBox1.DataContext is CompositeBaseVM currentComposite)
                 {
                     var listView = FindParent<ListView>(textBox1);
                     if (listView?.DataContext is AddHardNoteViewModel viewModel)
                     {
+                        var createdComposite = viewModel.HardNoteVM.CreateComposite(textValue, currentComposite, caretIndex);
+
+                        if (createdComposite != null)
+                        {
+                            Dispatcher.BeginInvoke(new Action(() =>
+                            {
+                                var container = listView.ItemContainerGenerator.ContainerFromItem(createdComposite) as ListViewItem;
+                                if (container != null)
+                                {
+                                    var newTextBox = FindChild<TextBox>(container);
+                                    if (newTextBox != null)
+                                    {
+                                        newTextBox.Focus();
+                                        newTextBox.CaretIndex = 0;
+                                    }
+                                }
+                            }), DispatcherPriority.Background);
+
+                            e.Handled = true;
+                            return;
+                        }
+
                         var newItem = viewModel.HardNoteVM.AddTextComposite(currentComposite, caretIndex);
                         Dispatcher.BeginInvoke(new Action(() =>
                         {
