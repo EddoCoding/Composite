@@ -248,20 +248,23 @@ namespace Composite.Views.Notes
             if (e.Key == Key.Back)
             {
                 var textBox2 = sender as TextBox;
-                var textComposite = textBox2.DataContext as TextCompositeVM;
+                var currentComposite = textBox2.DataContext as CompositeBaseVM;
+
                 if (string.IsNullOrEmpty(textBox2.Text))
                 {
                     var listView = FindParent<ListView>(textBox2);
                     if (listView?.DataContext is AddHardNoteViewModel viewModel)
                     {
-                        int currentIndex = viewModel.HardNoteVM.Composites.IndexOf(textComposite);
-                        viewModel.HardNoteVM.DeleteTextComposite(textComposite);
+                        int currentIndex = viewModel.HardNoteVM.Composites.IndexOf(currentComposite);
+
+                        DeleteComposite(viewModel, currentComposite);
 
                         if (currentIndex == 0) FocusTitleTextBox();
                         else if (currentIndex > 0 && viewModel.HardNoteVM.Composites.Count > 0)
                         {
                             int previousIndex = currentIndex - 1;
                             MoveFocusToTextBox(previousIndex);
+                            //MoveFocusToTextBox(previousIndex, viewModel);
                         }
                         else FocusTitleTextBox();
                     }
@@ -377,6 +380,20 @@ namespace Composite.Views.Notes
                         }
                     }
                 }
+            }
+        }
+
+        void DeleteComposite(AddHardNoteViewModel viewModel, CompositeBaseVM composite)
+        {
+            switch (composite)
+            {
+                case TextCompositeVM textComposite:
+                    viewModel.HardNoteVM.DeleteTextComposite(textComposite);
+                    break;
+
+                case HeaderCompositeVM headerComposite:
+                    viewModel.HardNoteVM.DeleteCheck(headerComposite);
+                    break;
             }
         }
     }

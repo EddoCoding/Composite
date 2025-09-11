@@ -1,6 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows;
-using Composite.Models.Notes.HardNote;
 
 namespace Composite.ViewModels.Notes.HardNote
 {
@@ -60,14 +58,20 @@ namespace Composite.ViewModels.Notes.HardNote
                     }
                 }
             }
+            if (current is HeaderCompositeVM headerComposite)
+            {
+                int index = Composites.IndexOf(headerComposite);
+                Composites.Insert(index + 1, newItem);
+                return newItem;
+            }
             return null;
         }
         public CompositeBaseVM CreateComposite(string value, CompositeBaseVM compositeBaseVM, int currentIndex)
         {
-            string trimmedValue = value.Trim();
+            string trimmedValue = value.Trim().ToLower();
             switch (trimmedValue)
             {
-                case "/Header":
+                case "/header":
                     int index = Composites.IndexOf(compositeBaseVM);
                     DeleteTextComposite(compositeBaseVM as TextCompositeVM);
                     var headerComposite = new HeaderCompositeVM
@@ -77,10 +81,42 @@ namespace Composite.ViewModels.Notes.HardNote
                     };
                     Composites.Insert(index, headerComposite);
                     return headerComposite;
+                case "/header1":
+                    int index1 = Composites.IndexOf(compositeBaseVM);
+                    DeleteTextComposite(compositeBaseVM as TextCompositeVM);
+                    var headerComposite1 = new HeaderCompositeVM
+                    {
+                        FontWeight = "Bold",
+                        FontSize = 24
+                    };
+                    Composites.Insert(index1, headerComposite1);
+                    return headerComposite1;
+                case "/header2":
+                    int index2 = Composites.IndexOf(compositeBaseVM);
+                    DeleteTextComposite(compositeBaseVM as TextCompositeVM);
+                    var headerComposite2 = new HeaderCompositeVM
+                    {
+                        FontWeight = "Bold",
+                        FontSize = 22
+                    };
+                    Composites.Insert(index2, headerComposite2);
+                    return headerComposite2;
+                case "/header3":
+                    int index3 = Composites.IndexOf(compositeBaseVM);
+                    DeleteTextComposite(compositeBaseVM as TextCompositeVM);
+                    var headerComposite3 = new HeaderCompositeVM
+                    {
+                        FontWeight = "Bold",
+                        FontSize = 20
+                    };
+                    Composites.Insert(index3, headerComposite3);
+                    return headerComposite3;
 
                 default: return null;
             }
         }
         public void DeleteTextComposite(TextCompositeVM textComposite) => Composites.Remove(textComposite);
+
+        public void DeleteCheck(CompositeBaseVM proverka) => Composites.Remove(proverka);
     }
 }
