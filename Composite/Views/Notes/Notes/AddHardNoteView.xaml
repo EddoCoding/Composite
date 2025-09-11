@@ -42,6 +42,28 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="TextQuote" TargetType="TextBox">
+            <Setter Property="Text" Value="{Binding Text, UpdateSourceTrigger=PropertyChanged}"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontFamily" Value="Arial"/>
+            <Setter Property="FontStyle" Value="Italic"/>
+            <Setter Property="Foreground" Value="Gray"/>
+            <Setter Property="SelectionBrush" Value="LightGray"/>
+            <Setter Property="CaretBrush" Value="Gray"/>
+            <Setter Property="MaxWidth" Value="700"/>
+            <Setter Property="MinWidth" Value="85"/>
+            <Setter Property="Margin" Value="10,0"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="AcceptsReturn" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"
+                                      HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style x:Key="AddNoteButton" TargetType="Button">
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="Template">
@@ -72,6 +94,29 @@
         <DataTemplate DataType="{x:Type viewModel:HeaderCompositeVM}">
             <TextBox Style="{StaticResource Text}" FontWeight="{Binding FontWeight}" FontSize="{Binding FontSize}" property:PlaceHolder.PlaceHolder="Enter header" 
                      PreviewKeyDown="ListView_TextBox_PreviewKeyDown"/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:QuoteCompositeVM}">
+            <Grid MaxWidth="800">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="“" MaxWidth="800" FontSize="20"/>
+
+                <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource TextQuote}" AcceptsReturn="True"
+                         property:PlaceHolder.PlaceHolder="Enter quote"
+                         PreviewKeyDown="ListView_TextBox_PreviewKeyDown"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="2" Text="„" MaxWidth="800" FontSize="20"/>
+                
+            </Grid>
         </DataTemplate>
 
     </UserControl.Resources>

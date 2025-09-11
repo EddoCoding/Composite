@@ -392,7 +392,10 @@ namespace Composite.Views.Notes
                     break;
 
                 case HeaderCompositeVM headerComposite:
-                    viewModel.HardNoteVM.DeleteCheck(headerComposite);
+                    viewModel.HardNoteVM.DeleteHeaderComposite(headerComposite);
+                    break;
+                case QuoteCompositeVM quoteComposite:
+                    viewModel.HardNoteVM.DeleteHeaderComposite(quoteComposite);
                     break;
             }
         }

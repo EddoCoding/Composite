@@ -64,12 +64,19 @@ namespace Composite.ViewModels.Notes.HardNote
                 Composites.Insert(index + 1, newItem);
                 return newItem;
             }
+            if (current is QuoteCompositeVM quoteComposite)
+            {
+                int index = Composites.IndexOf(quoteComposite);
+                Composites.Insert(index + 1, newItem);
+                return newItem;
+            }
+
             return null;
         }
         public CompositeBaseVM CreateComposite(string value, CompositeBaseVM compositeBaseVM, int currentIndex)
         {
-            string trimmedValue = value.Trim().ToLower();
-            switch (trimmedValue)
+            string Value = value.Trim().ToLower();
+            switch (Value)
             {
                 case "/header":
                     int index = Composites.IndexOf(compositeBaseVM);
@@ -111,12 +118,22 @@ namespace Composite.ViewModels.Notes.HardNote
                     };
                     Composites.Insert(index3, headerComposite3);
                     return headerComposite3;
+                case "/quote":
+                    int indexQuote = Composites.IndexOf(compositeBaseVM);
+                    DeleteTextComposite(compositeBaseVM as TextCompositeVM);
+                    var quoteComposite = new QuoteCompositeVM();
+                    Composites.Insert(indexQuote, quoteComposite);
+                    return quoteComposite;
 
                 default: return null;
             }
         }
+
+
         public void DeleteTextComposite(TextCompositeVM textComposite) => Composites.Remove(textComposite);
 
-        public void DeleteCheck(CompositeBaseVM proverka) => Composites.Remove(proverka);
+        public void DeleteHeaderComposite(CompositeBaseVM headerComposite) => Composites.Remove(headerComposite);
+
+        public void DeleteQuoteComposite(CompositeBaseVM quoteComposite) => Composites.Remove(quoteComposite);
     }
 }
