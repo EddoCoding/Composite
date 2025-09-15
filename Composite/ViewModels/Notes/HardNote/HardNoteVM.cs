@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Composite.ViewModels.Notes.HardNote
 {
@@ -10,10 +11,10 @@ namespace Composite.ViewModels.Notes.HardNote
         {
             Id = Guid.NewGuid();
             Composites = new();
-
             Composites.Add(new TextCompositeVM());
         }
 
+        public void AddTextCompositeVM() => Composites.Add(new TextCompositeVM());
         public TextCompositeVM AddTextComposite(CompositeBaseVM current, int caretIndex)
         {
             var newItem = new TextCompositeVM { Text = string.Empty };
@@ -124,6 +125,14 @@ namespace Composite.ViewModels.Notes.HardNote
                     var quoteComposite = new QuoteCompositeVM();
                     Composites.Insert(indexQuote, quoteComposite);
                     return quoteComposite;
+                case "/line":
+                    int indexLine = Composites.IndexOf(compositeBaseVM);
+                    DeleteTextComposite(compositeBaseVM as TextCompositeVM);
+                    var lineComposite = new LineCompositeVM();
+                    Composites.Insert(indexLine, lineComposite);
+                    var textComposite = new TextCompositeVM();
+                    Composites.Insert(indexLine + 1, textComposite);
+                    return textComposite;
 
                 default: return null;
             }
@@ -135,5 +144,7 @@ namespace Composite.ViewModels.Notes.HardNote
         public void DeleteHeaderComposite(CompositeBaseVM headerComposite) => Composites.Remove(headerComposite);
 
         public void DeleteQuoteComposite(CompositeBaseVM quoteComposite) => Composites.Remove(quoteComposite);
+
+        [RelayCommand] void DeleteLineComposite(CompositeBaseVM composite) => Composites.Remove(composite);
     }
 }
