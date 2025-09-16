@@ -19,6 +19,9 @@ namespace Composite.Repositories
                 if (hardNote.Composites?.Any() == true)
                 {
                     var textComposites = hardNote.Composites.OfType<TextComposite>().ToList();
+                    var headerComposites = hardNote.Composites.OfType<HeaderComposite>().ToList();
+                    var quoteComposites = hardNote.Composites.OfType<QuoteComposite>().ToList();
+                    var lineComposites = hardNote.Composites.OfType<LineComposite>().ToList();
 
                     if (textComposites.Any())
                     {
@@ -26,6 +29,27 @@ namespace Composite.Repositories
                                          Values (@Id, @Tag, @Comment, @Text, @HardNoteId, @CompositeType)";
 
                         await connection.ExecuteAsync(queryTexts, textComposites);
+                    }
+                    if (headerComposites.Any())
+                    {
+                        var queryHeaders = @"Insert Into Composites(Id, Tag, Comment, Header, FontWeightHeader, FontSizeHeader, HardNoteId, CompositeType) 
+                                         Values (@Id, @Tag, @Comment, @Header, @FontWeightHeader, @FontSizeHeader, @HardNoteId, @CompositeType)";
+
+                        await connection.ExecuteAsync(queryHeaders, headerComposites);
+                    }
+                    if (quoteComposites.Any())
+                    {
+                        var queryQuotes = @"Insert Into Composites(Id, Tag, Comment, Quote, HardNoteId, CompositeType) 
+                                         Values (@Id, @Tag, @Comment, @Quote, @HardNoteId, @CompositeType)";
+
+                        await connection.ExecuteAsync(queryQuotes, quoteComposites);
+                    }
+                    if (lineComposites.Any())
+                    {
+                        var queryLines = @"Insert Into Composites(Id, Tag, Comment, HardNoteId, CompositeType) 
+                                         Values (@Id, @Tag, @Comment, @HardNoteId, @CompositeType)";
+
+                        await connection.ExecuteAsync(queryLines, lineComposites);
                     }
                 }
 

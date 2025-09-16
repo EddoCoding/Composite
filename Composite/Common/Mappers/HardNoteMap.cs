@@ -85,6 +85,35 @@ namespace Composite.Common.Mappers
                     HardNoteId = id.ToString()
                 };
             }
+            if (compositeBaseVM is HeaderCompositeVM headerCompositeVM)
+            {
+                return new HeaderComposite()
+                {
+                    Id = headerCompositeVM.Id.ToString(),
+                    Header = headerCompositeVM.Text,
+                    FontWeightHeader = headerCompositeVM.FontWeight,
+                    FontSizeHeader = headerCompositeVM.FontSize,
+                    HardNoteId = id.ToString()
+                };
+            }
+            if (compositeBaseVM is QuoteCompositeVM quoteCompositeVM)
+            {
+                return new QuoteComposite()
+                {
+                    Id = quoteCompositeVM.Id.ToString(),
+                    Quote = quoteCompositeVM.Text,
+                    HardNoteId = id.ToString()
+                };
+            }
+            if (compositeBaseVM is LineCompositeVM lineCompositeVM)
+            {
+                return new LineComposite()
+                {
+                    Id = lineCompositeVM.Id.ToString(),
+                    HardNoteId = id.ToString()
+                };
+            }
+
             return null;
         }
         CompositeBase GetCompositeNewId(Guid id, CompositeBaseVM compositeBaseVM)
@@ -98,6 +127,35 @@ namespace Composite.Common.Mappers
                     HardNoteId = id.ToString()
                 };
             }
+            if (compositeBaseVM is HeaderCompositeVM headerCompositeVM)
+            {
+                return new HeaderComposite()
+                {
+                    Id = headerCompositeVM.Id.ToString(),
+                    Header = headerCompositeVM.Text,
+                    FontWeightHeader = headerCompositeVM.FontWeight,
+                    FontSizeHeader = headerCompositeVM.FontSize,
+                    HardNoteId = id.ToString()
+                };
+            }
+            if (compositeBaseVM is QuoteCompositeVM quoteCompositeVM)
+            {
+                return new QuoteComposite()
+                {
+                    Id = quoteCompositeVM.Id.ToString(),
+                    Quote = quoteCompositeVM.Text,
+                    HardNoteId = id.ToString()
+                };
+            }
+            if (compositeBaseVM is LineCompositeVM lineCompositeVM)
+            {
+                return new LineComposite()
+                {
+                    Id = lineCompositeVM.Id.ToString(),
+                    HardNoteId = id.ToString()
+                };
+            }
+
             return null;
         }
         CompositeBaseVM GetCompositeVM(CompositeBase compositeBase)
@@ -108,6 +166,31 @@ namespace Composite.Common.Mappers
                 {
                     Id = Guid.Parse(compositeBase.Id),
                     Text = compositeBase.Text
+                };
+            }
+            if (compositeBase.CompositeType == "HeaderComposite")
+            {
+                return new HeaderCompositeVM()
+                {
+                    Id = Guid.Parse(compositeBase.Id),
+                    Text = compositeBase.Text,
+                    FontWeight = compositeBase.FontWeightHeader,
+                    FontSize = compositeBase.FontSizeHeader
+                };
+            }
+            if (compositeBase.CompositeType == "QuoteComposite")
+            {
+                return new QuoteCompositeVM()
+                {
+                    Id = Guid.Parse(compositeBase.Id),
+                    Text = compositeBase.Text
+                };
+            }
+            if (compositeBase.CompositeType == "LineComposite")
+            {
+                return new LineCompositeVM()
+                {
+                    Id = Guid.Parse(compositeBase.Id)
                 };
             }
             return null;

@@ -279,7 +279,7 @@ namespace Composite.Views.Notes
                         {
                             int originalCaretPosition = previousTextComposite.Text.Length;
                             previousTextComposite.Text += currentTextComposite.Text;
-                            viewModel.HardNoteVM.DeleteTextComposite(currentTextComposite);
+                            viewModel.HardNoteVM.DeleteComposite(currentTextComposite);
 
                             int previousIndex = viewModel.HardNoteVM.Composites.IndexOf(previousTextComposite);
                             textBox2.Dispatcher.BeginInvoke(new Action(() =>
@@ -308,7 +308,7 @@ namespace Composite.Views.Notes
                     int currentIndex = viewModel.HardNoteVM.Composites.IndexOf(textComposite);
                     if (string.IsNullOrEmpty(textBox3.Text))
                     {
-                        viewModel.HardNoteVM.DeleteTextComposite(textComposite);
+                        DeleteComposite(viewModel, textComposite);
 
                         int nextTextBoxIndex = FindNextTextBoxIndex(viewModel.HardNoteVM.Composites, currentIndex);
                         if (nextTextBoxIndex == -1) nextTextBoxIndex = FindPreviousTextBoxIndex(viewModel.HardNoteVM.Composites, currentIndex);
@@ -323,14 +323,14 @@ namespace Composite.Views.Notes
                         {
                             if (string.IsNullOrEmpty(nextTextComposite.Text))
                             {
-                                viewModel.HardNoteVM.DeleteTextComposite(nextTextComposite);
+                                DeleteComposite(viewModel, nextTextComposite);
                                 e.Handled = true;
                             }
                             else
                             {
                                 int originalCaretPosition = textComposite.Text.Length;
                                 textComposite.Text += nextTextComposite.Text;
-                                viewModel.HardNoteVM.DeleteTextComposite(nextTextComposite);
+                                DeleteComposite(viewModel, nextTextComposite);
                                 textBox3.Dispatcher.BeginInvoke(new Action(() =>
                                 {
                                     textBox3.CaretIndex = originalCaretPosition;
@@ -343,22 +343,7 @@ namespace Composite.Views.Notes
             }
         }
 
-        void DeleteComposite(AddHardNoteViewModel viewModel, CompositeBaseVM composite)
-        {
-            switch (composite)
-            {
-                case TextCompositeVM textComposite:
-                    viewModel.HardNoteVM.DeleteTextComposite(textComposite);
-                    break;
-
-                case HeaderCompositeVM headerComposite:
-                    viewModel.HardNoteVM.DeleteHeaderComposite(headerComposite);
-                    break;
-                case QuoteCompositeVM quoteComposite:
-                    viewModel.HardNoteVM.DeleteHeaderComposite(quoteComposite);
-                    break;
-            }
-        }
+        void DeleteComposite(AddHardNoteViewModel viewModel, CompositeBaseVM composite) => viewModel.HardNoteVM.DeleteComposite(composite);
 
         int FindNextTextBoxIndex(IList<CompositeBaseVM> items, int currentIndex, bool goingUp)
         {

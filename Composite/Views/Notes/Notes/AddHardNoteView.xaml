@@ -136,7 +136,7 @@
                 <Line Style="{DynamicResource Line}"/>
 
                 <Button Content="X" Margin="10,0,0,0" Cursor="Arrow" VerticalAlignment="Center" 
-                        Command="{Binding DataContext.HardNoteVM.DeleteLineCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
+                        Command="{Binding DataContext.HardNoteVM.DeleteCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
                         CommandParameter="{Binding}">
                     <Button.Visibility>
                         <Binding Path="IsMouseOver" RelativeSource="{RelativeSource AncestorType=StackPanel}">

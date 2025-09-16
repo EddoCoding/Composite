@@ -4,7 +4,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using Composite.ViewModels.Notes.HardNote;
-using Composite.ViewModels.Notes.Note;
 
 namespace Composite.Views.Notes.Notes
 {
@@ -232,7 +231,7 @@ namespace Composite.Views.Notes.Notes
                     if (listView?.DataContext is ChangeHardNoteViewModel viewModel)
                     {
                         int currentIndex = viewModel.HardNoteVM.Composites.IndexOf(textComposite);
-                        viewModel.HardNoteVM.DeleteTextComposite(textComposite);
+                        viewModel.HardNoteVM.DeleteComposite(textComposite);
 
                         if (currentIndex == 0) FocusTitleTextBox();
                         else if (currentIndex > 0 && viewModel.HardNoteVM.Composites.Count > 0)
@@ -295,7 +294,7 @@ namespace Composite.Views.Notes.Notes
 
                     if (string.IsNullOrEmpty(textBox3.Text))
                     {
-                        viewModel.HardNoteVM.DeleteTextComposite(textComposite);
+                        viewModel.HardNoteVM.DeleteComposite(textComposite);
 
                         TextCompositeVM nextTextComposite = null;
                         int nextTextIndex = -1;
@@ -334,14 +333,14 @@ namespace Composite.Views.Notes.Notes
                         {
                             if (string.IsNullOrEmpty(nextComposite.Text))
                             {
-                                viewModel.HardNoteVM.DeleteTextComposite(nextComposite);
+                                viewModel.HardNoteVM.DeleteComposite(nextComposite);
                                 e.Handled = true;
                             }
                             else
                             {
                                 int originalCaretPosition = textComposite.Text.Length;
                                 textComposite.Text += nextComposite.Text;
-                                viewModel.HardNoteVM.DeleteTextComposite(nextComposite);
+                                viewModel.HardNoteVM.DeleteComposite(nextComposite);
 
                                 textBox3.Dispatcher.BeginInvoke(new Action(() =>
                                 {
