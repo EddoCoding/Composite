@@ -131,7 +131,7 @@ namespace Composite.Common.Mappers
             {
                 return new HeaderComposite()
                 {
-                    Id = headerCompositeVM.Id.ToString(),
+                    Id = Guid.NewGuid().ToString(),
                     Header = headerCompositeVM.Text,
                     FontWeightHeader = headerCompositeVM.FontWeight,
                     FontSizeHeader = headerCompositeVM.FontSize,
@@ -142,7 +142,7 @@ namespace Composite.Common.Mappers
             {
                 return new QuoteComposite()
                 {
-                    Id = quoteCompositeVM.Id.ToString(),
+                    Id = Guid.NewGuid().ToString(),
                     Quote = quoteCompositeVM.Text,
                     HardNoteId = id.ToString()
                 };
@@ -151,7 +151,7 @@ namespace Composite.Common.Mappers
             {
                 return new LineComposite()
                 {
-                    Id = lineCompositeVM.Id.ToString(),
+                    Id = Guid.NewGuid().ToString(),
                     HardNoteId = id.ToString()
                 };
             }
