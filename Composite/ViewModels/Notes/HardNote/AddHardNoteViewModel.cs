@@ -8,7 +8,7 @@ using Composite.ViewModels.Notes.HardNote;
 
 namespace Composite.ViewModels.Notes.Note
 {
-    public partial class AddHardNoteViewModel : ObservableObject, IDisposable
+    public partial class AddHardNoteViewModel : ObservableObject
     {
         readonly ITabService _tabService;
         readonly IMessenger _messenger;
