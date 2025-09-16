@@ -138,5 +138,8 @@ namespace Composite.ViewModels.Notes.HardNote
             }
         }
         [RelayCommand] public void DeleteComposite(CompositeBaseVM composite) => Composites.Remove(composite);
+
+        public void InsertComposite(int index, CompositeBaseVM composite) => Composites.Insert(index, composite);
+        public int GetIndexComposite(CompositeBaseVM composite) => Composites.IndexOf(composite);
     }
 }

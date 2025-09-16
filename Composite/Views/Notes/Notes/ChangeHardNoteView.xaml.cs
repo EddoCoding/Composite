@@ -74,7 +74,7 @@ namespace Composite.Views.Notes.Notes
                 if (DataContext is ChangeHardNoteViewModel viewModel)
                 {
                     var newItem = new TextCompositeVM { Text = string.Empty };
-                    viewModel.HardNoteVM.Composites.Insert(0, newItem);
+                    viewModel.HardNoteVM.InsertComposite(0, newItem);
 
                     Dispatcher.BeginInvoke(new Action(() =>
                     {
@@ -254,7 +254,7 @@ namespace Composite.Views.Notes.Notes
                 var listView = FindParent<ListView>(textBox2);
                 if (listView?.DataContext is ChangeHardNoteViewModel viewModel)
                 {
-                    int currentIndex = viewModel.HardNoteVM.Composites.IndexOf(currentComposite);
+                    int currentIndex = viewModel.HardNoteVM.GetIndexComposite(currentComposite);
 
                     if (string.IsNullOrEmpty(textBox2.Text))
                     {
@@ -279,7 +279,7 @@ namespace Composite.Views.Notes.Notes
                             previousTextComposite.Text += currentTextComposite.Text;
                             viewModel.HardNoteVM.DeleteComposite(currentTextComposite);
 
-                            int previousIndex = viewModel.HardNoteVM.Composites.IndexOf(previousTextComposite);
+                            int previousIndex = viewModel.HardNoteVM.GetIndexComposite(previousTextComposite);
                             textBox2.Dispatcher.BeginInvoke(new Action(() =>
                             {
                                 MoveFocusToTextBox(previousIndex);
@@ -303,7 +303,7 @@ namespace Composite.Views.Notes.Notes
                 var listView = FindParent<ListView>(textBox3);
                 if (listView?.DataContext is ChangeHardNoteViewModel viewModel)
                 {
-                    int currentIndex = viewModel.HardNoteVM.Composites.IndexOf(textComposite);
+                    int currentIndex = viewModel.HardNoteVM.GetIndexComposite(textComposite);
                     if (string.IsNullOrEmpty(textBox3.Text))
                     {
                         DeleteComposite(viewModel, textComposite);
