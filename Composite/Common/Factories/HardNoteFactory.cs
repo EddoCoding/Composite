@@ -18,6 +18,34 @@ namespace Composite.Common.Factories
                     };
                     compositesVM.Add(newTextCompositeVM);
                 }
+                else if (compositeVM is HeaderCompositeVM headerCompositeVM)
+                {
+                    var newHeaderCompositeVM = new HeaderCompositeVM()
+                    {
+                        Id = headerCompositeVM.Id,
+                        Text = headerCompositeVM.Text,
+                        FontWeight = headerCompositeVM.FontWeight,
+                        FontSize = headerCompositeVM.FontSize
+                    };
+                    compositesVM.Add(newHeaderCompositeVM);
+                }
+                else if (compositeVM is QuoteCompositeVM quoteCompositeVM)
+                {
+                    var newQuoteCompositeVM = new QuoteCompositeVM()
+                    {
+                        Id = quoteCompositeVM.Id,
+                        Text = quoteCompositeVM.Text
+                    };
+                    compositesVM.Add(newQuoteCompositeVM);
+                }
+                else if (compositeVM is LineCompositeVM lineCompositeVM)
+                {
+                    var newLineCompositeVM = new LineCompositeVM()
+                    {
+                        Id = lineCompositeVM.Id
+                    };
+                    compositesVM.Add(newLineCompositeVM);
+                }
             }
 
             return new HardNoteVM()

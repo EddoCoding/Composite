@@ -173,7 +173,7 @@ namespace Composite.Common.Mappers
                 return new HeaderCompositeVM()
                 {
                     Id = Guid.Parse(compositeBase.Id),
-                    Text = compositeBase.Text,
+                    Text = compositeBase.Header,
                     FontWeight = compositeBase.FontWeightHeader,
                     FontSize = compositeBase.FontSizeHeader
                 };
@@ -183,7 +183,7 @@ namespace Composite.Common.Mappers
                 return new QuoteCompositeVM()
                 {
                     Id = Guid.Parse(compositeBase.Id),
-                    Text = compositeBase.Text
+                    Text = compositeBase.Quote
                 };
             }
             if (compositeBase.CompositeType == "LineComposite")

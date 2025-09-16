@@ -128,6 +128,13 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="TextQuote" TargetType="TextBlock">
+            <Setter Property="Text" Value="Цитата"/>
+            <Setter Property="FontFamily" Value="Arial"/>
+            <Setter Property="FontStyle" Value="Italic"/>
+            <Setter Property="Foreground" Value="Gray"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
 
         <DataTemplate DataType="{x:Type note:NoteVM}">
             <Button x:Name="button" Margin="10,5,0,0" SnapsToDevicePixels="True" Width="180" Height="210"
@@ -206,6 +213,15 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type hardNote:TextCompositeVM}">
             <TextBlock Text="{Binding Text}" Margin="5,0" TextTrimming="CharacterEllipsis"/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type hardNote:HeaderCompositeVM}">
+            <TextBlock Text="{Binding Text}" FontWeight="Bold" Margin="5,0" TextTrimming="CharacterEllipsis"/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type hardNote:QuoteCompositeVM}">
+            <TextBlock Style="{DynamicResource TextQuote}"/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type hardNote:LineCompositeVM}">
+            <Line Stroke="LightGray" Stretch="Fill" Margin="5,0" X1="0" X2="1"/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type hardNote:HardNoteVM}">
             <Button Margin="10,5,0,0" SnapsToDevicePixels="True" Width="180" Height="210"

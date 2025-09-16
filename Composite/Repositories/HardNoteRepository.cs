@@ -74,8 +74,8 @@ namespace Composite.Repositories
 
                   if (hardNote.Composites?.Count > 0)
                   {
-                      var queryInsertComposites = @"Insert Into Composites (Id, Tag, Comment, Text, HardNoteId, CompositeType) 
-                                                  Values (@Id, @Tag, @Comment, @Text, @HardNoteId, @CompositeType)";
+                      var queryInsertComposites = @"Insert Into Composites (Id, Tag, Comment, Text, Header, FontWeightHeader, FontSizeHeader, Quote, HardNoteId, CompositeType) 
+                                                  Values (@Id, @Tag, @Comment, @Text, @Header, @FontWeightHeader, @FontSizeHeader, @Quote, @HardNoteId, @CompositeType)";
 
                       var compositeData = hardNote.Composites.Select(c => new
                       {
@@ -83,6 +83,10 @@ namespace Composite.Repositories
                           Tag = c.Tag,
                           Comment = c.Comment,
                           Text = c.Text,
+                          Header = c.Header,
+                          FontWeightHeader = c.FontWeightHeader,
+                          FontSizeHeader = c.FontSizeHeader,
+                          Quote = c.Quote,
                           HardNoteId = hardNote.Id,
                           CompositeType = c.CompositeType
                       });

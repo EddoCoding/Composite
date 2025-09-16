@@ -12,7 +12,6 @@ namespace Composite.Views.Notes
     {
         public AddHardNoteView() => InitializeComponent();
 
-
         T? FindParent<T>(DependencyObject child) where T : DependencyObject
         {
             DependencyObject? parentObject = VisualTreeHelper.GetParent(child);

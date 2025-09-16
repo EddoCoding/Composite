@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Composite.Views.Notes"
              xmlns:viewModel="clr-namespace:Composite.ViewModels.Notes.HardNote"
              xmlns:property="clr-namespace:Composite.Common.Properties"
+             xmlns:converter="clr-namespace:Composite.Common.Converters"
              mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800" FontFamily="Trebuchet MS" TextOptions.TextFormattingMode="Ideal">
     <UserControl.Resources>
         <Style x:Key="TitleTextBox" TargetType="TextBox">
@@ -20,29 +21,61 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
                         <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"
-                      HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
+                       HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
         <Style x:Key="Text" TargetType="TextBox">
             <Setter Property="Text" Value="{Binding Text, UpdateSourceTrigger=PropertyChanged}"/>
-            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontSize" Value="16"/>
             <Setter Property="FontFamily" Value="Trebuchet MS"/>
             <Setter Property="SelectionBrush" Value="LightGray"/>
             <Setter Property="CaretBrush" Value="Gray"/>
             <Setter Property="MaxWidth" Value="800"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Height" Value="25"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
                         <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"
-                                      HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
+                     HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="AddNoteButton" TargetType="Button">
+        <Style x:Key="TextQuote" TargetType="TextBox">
+            <Setter Property="Text" Value="{Binding Text, UpdateSourceTrigger=PropertyChanged}"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontFamily" Value="Arial"/>
+            <Setter Property="FontStyle" Value="Italic"/>
+            <Setter Property="Foreground" Value="Gray"/>
+            <Setter Property="SelectionBrush" Value="LightGray"/>
+            <Setter Property="CaretBrush" Value="Gray"/>
+            <Setter Property="MaxWidth" Value="700"/>
+            <Setter Property="MinWidth" Value="85"/>
+            <Setter Property="Margin" Value="10,0"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="AcceptsReturn" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"
+                              HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="Line" TargetType="Line">
+            <Setter Property="Stroke" Value="LightGray"/>
+            <Setter Property="StrokeThickness" Value="1"/>
+            <Setter Property="Stretch" Value="Fill"/>
+            <Setter Property="X1" Value="0"/>
+            <Setter Property="X2" Value="1"/>
+            <Setter Property="Width" Value="780"/>
+            <Setter Property="Height" Value="20"/>
+        </Style>
+        <Style x:Key="UpdateNoteButton" TargetType="Button">
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -66,7 +99,70 @@
         </Style>
 
         <DataTemplate DataType="{x:Type viewModel:TextCompositeVM}">
-            <TextBox Style="{DynamicResource Text}" property:PlaceHolder.PlaceHolder="Enter text" PreviewKeyDown="ListView_TextBox_PreviewKeyDown"/>
+            <TextBox Style="{DynamicResource Text}" property:PlaceHolder.PlaceHolder="Enter text" 
+                     PreviewKeyDown="ListView_TextBox_PreviewKeyDown"/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:HeaderCompositeVM}">
+            <TextBox Style="{StaticResource Text}" FontWeight="{Binding FontWeight}" FontSize="{Binding FontSize}" property:PlaceHolder.PlaceHolder="Enter header" 
+                     PreviewKeyDown="ListView_TextBox_PreviewKeyDown"/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:QuoteCompositeVM}">
+            <Grid MaxWidth="800">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="“" MaxWidth="800" FontSize="20"/>
+
+                <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource TextQuote}" AcceptsReturn="True"
+                         property:PlaceHolder.PlaceHolder="Enter quote"
+                         PreviewKeyDown="ListView_TextBox_PreviewKeyDown"/>
+
+                <TextBlock Grid.Row="2" Grid.Column="2" Text="„" MaxWidth="800" FontSize="20"/>
+
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:LineCompositeVM}">
+            <StackPanel Orientation="Horizontal" Width="800" x:Name="RootPanel" Height="20" Background="White">
+
+                <Line Style="{DynamicResource Line}"/>
+
+                <Button Content="X" Margin="10,0,0,0" Cursor="Arrow" VerticalAlignment="Center" 
+                        Command="{Binding DataContext.HardNoteVM.DeleteCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
+                        CommandParameter="{Binding}">
+                    <Button.Visibility>
+                        <Binding Path="IsMouseOver" RelativeSource="{RelativeSource AncestorType=StackPanel}">
+                            <Binding.Converter>
+                                <converter:BooleanToVisibilityConverter/>
+                            </Binding.Converter>
+                        </Binding>
+                    </Button.Visibility>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <ContentPresenter/>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Foreground" Value="Red"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+            </StackPanel>
         </DataTemplate>
 
     </UserControl.Resources>
@@ -82,10 +178,11 @@
         </Grid.RowDefinitions>
 
         <TextBox x:Name="titleTextBox" Grid.Row="0" Text="{Binding HardNoteVM.Title, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TitleTextBox}" 
-         property:PlaceHolder.PlaceHolder="Headline" PreviewKeyDown="TitleTextBox_PreviewKeyDown"/>
+                 property:PlaceHolder.PlaceHolder="Headline" 
+                 PreviewKeyDown="TitleTextBox_PreviewKeyDown"/>
 
         <ListView Grid.Row="1" x:Name="listComposite" ItemsSource="{Binding HardNoteVM.Composites}" BorderThickness="0" HorizontalContentAlignment="Stretch"
-              Focusable="False" PreviewKeyDown="ListView_PreviewKeyDown">
+                  Focusable="False" PreviewKeyDown="ListView_PreviewKeyDown">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Style.Setters>
@@ -101,8 +198,8 @@
             </ListView.ItemContainerStyle>
         </ListView>
 
-        <Button Grid.Row="2" Content="Сохранить" Style="{StaticResource AddNoteButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right"
-            Command="{Binding UpdateHardNoteCommand}" />
+        <Button Grid.Row="2" Content="Сохранить" Style="{StaticResource UpdateNoteButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                Command="{Binding UpdateHardNoteCommand}" />
 
     </Grid>
 
