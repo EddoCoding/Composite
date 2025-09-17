@@ -66,12 +66,6 @@ namespace Composite.ViewModels.Notes
                 NamePasswordButton = "Установить пароль";
             }
         }
-        [RelayCommand] void SetPreview()
-        {
-            if (NoteVM.Preview == true) NoteVM.Preview = false;
-            else NoteVM.Preview = true;
-        }
-
         async void AddNote() 
         {
             NoteVM.Color = SelectedColor;

@@ -7,7 +7,6 @@ namespace Composite.ViewModels.Notes
         [ObservableProperty] string content;
         [ObservableProperty] DateTime dateCreate;
         [ObservableProperty] string password = string.Empty;
-        [ObservableProperty] bool preview;
         [ObservableProperty] string fontFamily = "Times New Roman";
         [ObservableProperty] double fontSize = 18;
         [ObservableProperty] string color = string.Empty;

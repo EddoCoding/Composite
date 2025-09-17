@@ -111,32 +111,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="PreviewButton" TargetType="Button">
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Foreground" Value="Green"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="border" BorderThickness="0" HorizontalAlignment="Right" Background="White" Margin="0,8,8,8">
-                            <Border.Effect>
-                                <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
-                            </Border.Effect>
-
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="6"/>
-
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="WhiteSmoke"/>
-                            </Trigger>
-                            <DataTrigger Binding="{Binding NoteVM.Preview}" Value="False">
-                                <Setter Property="Foreground" Value="Red"/>
-                            </DataTrigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
 
         <Style x:Key="ScrollBarThumbVertical" TargetType="Thumb">
             <Setter Property="OverridesDefaultStyle" Value="true"/>
@@ -323,7 +297,6 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.Effect>
@@ -348,9 +321,7 @@
 
             <Button Grid.Column="5" Content="{Binding NamePasswordButton}" Style="{StaticResource PasswordButton}" Margin="10,0,0,0" Command="{Binding CheckPasswordCommand}"/>
 
-            <Button Grid.Column="6" Content="Предварительный просмотр" Style="{StaticResource PreviewButton}" Command="{Binding SetPreviewCommand}"/>
-
-            <Button Grid.Column="7" Content="Сохранить" Style="{StaticResource AddNoteButton}" Command="{Binding CheckNoteCommand}"/>
+            <Button Grid.Column="6" Content="Сохранить" Style="{StaticResource AddNoteButton}" Command="{Binding CheckNoteCommand}"/>
             
         </Grid>
 

@@ -158,23 +158,17 @@
 
                                         <TextBlock Grid.Row="0" Text="{Binding Title}" Margin="5" FontSize="13" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
 
-                                        <ScrollViewer x:Name="scroll" Grid.Row="1" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled"
-                                                      Focusable="False">
-                                            <TextBlock x:Name="content" Text="{Binding Content}" Margin="5,0" FontSize="13" Visibility="Collapsed" TextTrimming="CharacterEllipsis"/>
-                                        </ScrollViewer>
+                                        <TextBlock x:Name="content" Grid.Row="1" Text="{Binding Content}" Margin="5,0" FontSize="13" Visibility="Collapsed" TextTrimming="CharacterEllipsis"/>
 
                                         <Grid Grid.Row="2" Margin="5,0,5,3">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
 
                                             <TextBlock Grid.Column="0" Text="{Binding DateCreate, Converter={StaticResource DateToStringConverter}}" FontSize="13" VerticalAlignment="Center"/>
 
                                             <Image Grid.Column="1" x:Name="imageLock" Source="/Common/Images/lock.png" Height="18" Width="18" Visibility="Visible" HorizontalAlignment="Right" RenderOptions.BitmapScalingMode="Fant"/>
-
-                                            <Image Grid.Column="2" x:Name="imageEye" Source="/Common/Images/eye.png" Margin="5,0,0,0" Height="18" Width="18" Visibility="Collapsed" HorizontalAlignment="Right" RenderOptions.BitmapScalingMode="Fant"/>
 
                                         </Grid>
 
@@ -187,19 +181,6 @@
                                             <Setter TargetName="imageLock" Property="Visibility" Value="Hidden"/>
                                             <Setter TargetName="content" Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding Preview}" Value="True">
-                                            <Setter TargetName="imageEye" Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding Preview}" Value="True"/>
-                                                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <MultiDataTrigger.Setters>
-                                                <Setter TargetName="scroll" Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
-                                                <Setter TargetName="scroll" Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
-                                            </MultiDataTrigger.Setters>
-                                        </MultiDataTrigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
                             </Setter.Value>

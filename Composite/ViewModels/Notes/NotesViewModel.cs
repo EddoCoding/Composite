@@ -2,10 +2,8 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Composite.Common.Message.Notes;
 using Composite.Common.Message.Notes.HardNote;
 using Composite.Common.Message.Notes.Note;
-using Composite.Models.Notes.Note;
 using Composite.Services;
 using Composite.Services.TabService;
 using Composite.ViewModels.Notes.HardNote;
@@ -85,7 +83,6 @@ namespace Composite.ViewModels.Notes
                     notevm.Content = m.NoteVM.Content;
                     notevm.DateCreate = m.NoteVM.DateCreate;
                     notevm.Password = m.NoteVM.Password;
-                    notevm.Preview = m.NoteVM.Preview;
                     notevm.FontFamily = m.NoteVM.FontFamily;
                     notevm.FontSize = m.NoteVM.FontSize;
                     notevm.Category = m.NoteVM.Category;
