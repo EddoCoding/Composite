@@ -20,13 +20,13 @@
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <local:CompositeMenuView Grid.Column="0" DataContext="{Binding Menu}"/>
+            <local:CompositeMainView Grid.Column="0" DataContext="{Binding Main}"/>
 
-            <local:CompositeMainView Grid.Column="1" DataContext="{Binding Main}"/>
+            <local:CompositeMenuView Grid.Column="1" DataContext="{Binding Menu}"/>
             
         </Grid>
         

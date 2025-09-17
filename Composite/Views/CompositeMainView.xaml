@@ -58,7 +58,7 @@
         </Style>
     </UserControl.Resources>
 
-    <TabControl Grid.Row="0" Background="White" Margin="0,0,10,10" BorderThickness="0" ItemContainerStyle="{StaticResource CustomTabItem}"
+    <TabControl Grid.Row="0" Background="White" Margin="10,0,0,10" BorderThickness="0" ItemContainerStyle="{StaticResource CustomTabItem}"
             ItemsSource="{Binding TabService.Tabs}" SelectedItem="{Binding TabService.SelectedTab}">
         <TabControl.Effect>
             <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
