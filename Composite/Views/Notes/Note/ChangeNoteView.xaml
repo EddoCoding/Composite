@@ -271,7 +271,6 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.Effect>
@@ -284,17 +283,14 @@
             <ComboBox Grid.Column="1" ItemsSource="{Binding FontSizes}" SelectedItem="{Binding NoteVM.FontSize}" Style="{StaticResource ComboBoxCustom}" ItemContainerStyle="{StaticResource ComboBoxItemCustom}"
                 Margin="5,0,0,0" FontSize="12"/>
 
-            <ComboBox Grid.Column="2" ItemsSource="{Binding Categories}" SelectedItem="{Binding NoteVM.Category}" Style="{StaticResource ComboBoxCustom}" ItemContainerStyle="{StaticResource ComboBoxItemCustom}"
-                Margin="5,0,0,0" FontSize="12"/>
-
-            <Border Grid.Column="3" BorderThickness="0.8" BorderBrush="Black" Height="20" Width="20" Margin="5,0,0,0">
+            <Border Grid.Column="2" BorderThickness="0.8" BorderBrush="Black" Height="20" Width="20" Margin="5,0,0,0">
                 <Rectangle Fill="{Binding SelectedColor}"/>
             </Border>
 
-            <ComboBox Grid.Column="4" ItemsSource="{Binding Colors}" SelectedItem="{Binding SelectedColor}" Style="{StaticResource ComboBoxCustom}" ItemContainerStyle="{StaticResource ComboBoxItemCustom}"
+            <ComboBox Grid.Column="3" ItemsSource="{Binding Colors}" SelectedItem="{Binding SelectedColor}" Style="{StaticResource ComboBoxCustom}" ItemContainerStyle="{StaticResource ComboBoxItemCustom}"
                 FontSize="12"/>
 
-            <Button Grid.Column="5" Content="Сохранить" Style="{StaticResource ChangeNoteButton}" Command="{Binding CheckNoteCommand}"/>
+            <Button Grid.Column="4" Content="Сохранить" Style="{StaticResource ChangeNoteButton}" Command="{Binding CheckNoteCommand}"/>
 
         </Grid>
 

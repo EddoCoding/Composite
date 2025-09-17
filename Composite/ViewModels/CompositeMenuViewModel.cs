@@ -76,7 +76,6 @@ namespace Composite.ViewModels
                     note.DateCreate = noteMessage.DateCreate;
                     note.FontFamily = noteMessage.FontFamily;
                     note.FontSize = noteMessage.FontSize;
-                    note.Category = noteMessage.Category;
                     note.Color = noteMessage.Color;
                 }
                 else if (noteVM is HardNoteVM hardNote)
@@ -85,7 +84,6 @@ namespace Composite.ViewModels
 
                     hardNote.Title = noteMessage.Title;
                     hardNote.Composites = noteMessage.Composites;
-                    hardNote.Category = noteMessage.Category;
                 }
             });    //Для обновления данных уже загруженно заметки
 
@@ -93,8 +91,12 @@ namespace Composite.ViewModels
             GetHardNotes();
         }
         [RelayCommand] void SelectTypeNote() => _viewService.ShowView<SelectTypeNoteViewModel>();
-
-        [RelayCommand] void OpenNotes() => _tabService.CreateTab<NotesViewModel>("Заметки"); //УБРАТЬ
+        [RelayCommand] void SearchNote()
+        {
+            Notes.Clear();
+            var notesVM = _allNotes.Where(x => x.Title.Contains(TextSearch));
+            foreach (var noteVM in notesVM) Notes.Add(noteVM);
+        }
         [RelayCommand] void OpenNote(NoteBaseVM note)
         {
             if(note is NoteVM)
@@ -154,46 +156,6 @@ namespace Composite.ViewModels
 
         }
 
-        //СДЕЛАТЬ
-        //СДЕЛАТЬ
-        #region Сделать
-        //[RelayCommand] async void DeleteCategory(string nameCategory)
-        //{
-        //    if (await _categoryNoteService.DeleteCategory(nameCategory))
-        //    {
-        //        NotesManagementViewModel.DeleteCategory(nameCategory);
-        //        var notesVM = Notes
-        //            .OfType<NoteVM>()
-        //            .Where(x => x.Category == nameCategory);
-
-        //        foreach (var noteVM in notesVM) noteVM.Category = "Без категории";
-        //    }
-        //}
-        //[RelayCommand] void SelectedCategory(string nameCategory)
-        //{
-        //    Notes.Clear();
-
-        //    if (nameCategory == "Все")
-        //    {
-        //        foreach (var noteVM in _allNotes) Notes.Add(noteVM);
-        //        Notes.Add(_noteButton);
-        //        return;
-        //    }
-
-        //    var notesVM = _allNotes.Where(x => x.Category == nameCategory);
-        //    foreach (var noteVM in notesVM) Notes.Add(noteVM);
-        //    Notes.Add(_noteButton);
-        //}
-        [RelayCommand] void SearchNote()
-        {
-            Notes.Clear();
-            var notesVM = _allNotes.Where(x => x.Title.Contains(TextSearch));
-            foreach (var noteVM in notesVM) Notes.Add(noteVM);
-        }
-        #endregion
-        //СДЕЛАТЬ
-        //СДЕЛАТЬ
-
         [RelayCommand] void Collapse() => _viewService.CollapseView<CompositeViewModel>();
         [RelayCommand] void Close() => _viewService.CloseView<CompositeViewModel>();
 
@@ -224,7 +186,6 @@ namespace Composite.ViewModels
         {
             if (!_disposed)
             {
-                //NotesManagementViewModel.Dispose();
                 _messenger.UnregisterAll(this);
                 _allNotes?.Clear();
                 Notes?.Clear();

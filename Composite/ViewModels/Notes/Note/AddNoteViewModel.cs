@@ -20,11 +20,10 @@ namespace Composite.ViewModels.Notes
         [ObservableProperty] string message;
         public List<string> Fonts { get; }
         public List<double> FontSizes { get; }
-        public List<string> Categories { get; set; }
         public List<string> Colors { get; set; }
         [ObservableProperty] string selectedColor = "White";
 
-        public AddNoteViewModel(ITabService tabService, IMessenger messenger, INoteService noteService, ICategoryNoteService categoryNoteService)
+        public AddNoteViewModel(ITabService tabService, IMessenger messenger, INoteService noteService)
         {
             _id = Guid.NewGuid();
             _tabService = tabService;
@@ -33,7 +32,6 @@ namespace Composite.ViewModels.Notes
 
             Fonts = new(System.Windows.Media.Fonts.SystemFontFamilies.Select(x => x.Source).OrderBy(x => x));
             FontSizes = new() { 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25 };
-            Categories = new(categoryNoteService.GetCategoryNotes());
             Colors = new();
             Colors = typeof(Colors).GetProperties(BindingFlags.Static | BindingFlags.Public).Select(prop => prop.Name).ToList();
 
@@ -70,7 +68,6 @@ namespace Composite.ViewModels.Notes
                 {
                     Fonts.Clear();
                     FontSizes.Clear();
-                    Categories.Clear();
                     Colors.Clear();
 
                     _messenger.UnregisterAll(this);

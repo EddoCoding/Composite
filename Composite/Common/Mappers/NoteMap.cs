@@ -13,7 +13,6 @@ namespace Composite.Common.Mappers
             DateCreate = noteVM.DateCreate,
             FontFamily = noteVM.FontFamily,
             FontSize = noteVM.FontSize,
-            Category = noteVM.Category,
             Color = noteVM.Color
         };
         public NoteVM MapToViewModel(Note note) => new NoteVM()
@@ -24,7 +23,6 @@ namespace Composite.Common.Mappers
             DateCreate = note.DateCreate,
             FontFamily = note.FontFamily,
             FontSize = note.FontSize,
-            Category = note.Category,
             Color = note.Color
         };
     }

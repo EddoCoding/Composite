@@ -12,7 +12,6 @@ namespace Composite.Common.Factories
             DateCreate = noteVM.DateCreate,
             FontFamily = noteVM.FontFamily,
             FontSize = noteVM.FontSize,
-            Category = noteVM.Category,
             Color = noteVM.Color
         };
     }
