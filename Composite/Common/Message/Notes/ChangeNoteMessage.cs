@@ -1,8 +1,8 @@
 ﻿using Composite.ViewModels.Notes;
 
-namespace Composite.Common.Message.Notes.Note
+namespace Composite.Common.Message.Notes
 {
-    public class NoteMessage(NoteBaseVM note)
+    public class ChangeNoteMessage(NoteBaseVM note)
     {
         public NoteBaseVM Note { get; set; } = note;
     }

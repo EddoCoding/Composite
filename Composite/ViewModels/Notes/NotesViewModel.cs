@@ -36,72 +36,74 @@ namespace Composite.ViewModels.Notes
 
             NotesManagementViewModel = new(viewService, messenger, categoryNoteService);
 
+            // Удалить Потом
+            #region MyRegion
             //Сообщения простых заметок
-            messenger.Register<CheckNoteMessage>(this, (r, m) =>
-            {
-                if (string.IsNullOrEmpty(m.TitleNote))
-                {
-                    messenger.Send(new CheckNoteBackMessage(m.Id, false, "Пустой заголовок."));
-                    return;
-                }
+            //messenger.Register<CheckNoteMessage>(this, (r, m) =>
+            //{
+            //    if (string.IsNullOrEmpty(m.TitleNote))
+            //    {
+            //        messenger.Send(new CheckNoteBackMessage(m.Id, false, "Пустой заголовок."));
+            //        return;
+            //    }
 
-                var checkTitleNote = Notes.FirstOrDefault(x => x.Title == m.TitleNote);
-                if (checkTitleNote != null) messenger.Send(new CheckNoteBackMessage(m.Id, false, "Заметка с таким заголовком уже существует."));
-                else messenger.Send(new CheckNoteBackMessage(m.Id, true));
-            });
-            messenger.Register<CheckChangeNoteMessage>(this, (r, m) =>
-            {
-                if (string.IsNullOrEmpty(m.TitleNote))
-                {
-                    messenger.Send(new CheckChangeNoteBackMessage(m.Id, false, "Пустой заголовок."));
-                    return;
-                }
+            //    var checkTitleNote = Notes.FirstOrDefault(x => x.Title == m.TitleNote);
+            //    if (checkTitleNote != null) messenger.Send(new CheckNoteBackMessage(m.Id, false, "Заметка с таким заголовком уже существует."));
+            //    else messenger.Send(new CheckNoteBackMessage(m.Id, true));
+            //});
+            //messenger.Register<CheckChangeNoteMessage>(this, (r, m) =>
+            //{
+            //    if (string.IsNullOrEmpty(m.TitleNote))
+            //    {
+            //        messenger.Send(new CheckChangeNoteBackMessage(m.Id, false, "Пустой заголовок."));
+            //        return;
+            //    }
 
-                var note = Notes.FirstOrDefault(x => x.Id == m.IdNote && x.Title == m.TitleNote);
-                if (note != null) messenger.Send(new CheckChangeNoteBackMessage(m.Id, true));
+            //    var note = Notes.FirstOrDefault(x => x.Id == m.IdNote && x.Title == m.TitleNote);
+            //    if (note != null) messenger.Send(new CheckChangeNoteBackMessage(m.Id, true));
 
-                var checkTitleNote = Notes.FirstOrDefault(x => x.Title == m.TitleNote);
-                if (checkTitleNote != null) messenger.Send(new CheckChangeNoteBackMessage(m.Id, false, "Заметка с таким заголовком уже существует."));
-                else messenger.Send(new CheckChangeNoteBackMessage(m.Id, true));
-            });
-            messenger.Register<NoteMessage>(this, (r, m) => 
-            {
-                _allNotes.Add(m.NoteVM);
-                Notes.Insert(Notes.Count - 1, m.NoteVM);
-            });
-            messenger.Register<ChangeNoteBackMessage>(this, (r, m) => 
-            {
-                NoteBaseVM? noteVM = Notes.FirstOrDefault(x => x.Id == m.NoteVM.Id);
-                if (noteVM is NoteVM notevm)
-                {
-                    notevm.Title = m.NoteVM.Title;
-                    notevm.Content = m.NoteVM.Content;
-                    notevm.DateCreate = m.NoteVM.DateCreate;
-                    notevm.FontFamily = m.NoteVM.FontFamily;
-                    notevm.FontSize = m.NoteVM.FontSize;
-                    notevm.Category = m.NoteVM.Category;
-                    notevm.Color = m.NoteVM.Color;
-                }
-            });
-
+            //    var checkTitleNote = Notes.FirstOrDefault(x => x.Title == m.TitleNote);
+            //    if (checkTitleNote != null) messenger.Send(new CheckChangeNoteBackMessage(m.Id, false, "Заметка с таким заголовком уже существует."));
+            //    else messenger.Send(new CheckChangeNoteBackMessage(m.Id, true));
+            //});
+            //messenger.Register<NoteMessage>(this, (r, m) => 
+            //{
+            //    _allNotes.Add(m.NoteVM);
+            //    Notes.Insert(Notes.Count - 1, m.NoteVM);
+            //});
+            //messenger.Register<ChangeNoteBackMessage>(this, (r, m) => 
+            //{
+            //    NoteBaseVM? noteVM = Notes.FirstOrDefault(x => x.Id == m.NoteVM.Id);
+            //    if (noteVM is NoteVM notevm)
+            //    {
+            //        notevm.Title = m.NoteVM.Title;
+            //        notevm.Content = m.NoteVM.Content;
+            //        notevm.DateCreate = m.NoteVM.DateCreate;
+            //        notevm.FontFamily = m.NoteVM.FontFamily;
+            //        notevm.FontSize = m.NoteVM.FontSize;
+            //        notevm.Category = m.NoteVM.Category;
+            //        notevm.Color = m.NoteVM.Color;
+            //    }
+            //});
             //Сообщения функциональных заметок
-            messenger.Register<AddHardNoteMessage>(this, (r, m) =>
-            {
-                _allNotes.Add(m.HardNoteVM);
-                Notes.Insert(Notes.Count - 1, m.HardNoteVM);
-            });
-            messenger.Register<ChangeHardNoteBackMessage>(this, (r, m) =>
-            {
-                NoteBaseVM? hardNoteVM = Notes.FirstOrDefault(x => x.Id == m.HardNoteVM.Id);
-                if (hardNoteVM is HardNoteVM hardnotevm)
-                {
-                    hardnotevm.Title = m.HardNoteVM.Title;
-                    hardnotevm.Category = m.HardNoteVM.Category;
-                    hardnotevm.Composites.Clear();
+            //messenger.Register<AddHardNoteMessage>(this, (r, m) =>
+            //{
+            //    _allNotes.Add(m.HardNoteVM);
+            //    Notes.Insert(Notes.Count - 1, m.HardNoteVM);
+            //});
+            //messenger.Register<ChangeHardNoteBackMessage>(this, (r, m) =>
+            //{
+            //    NoteBaseVM? hardNoteVM = Notes.FirstOrDefault(x => x.Id == m.HardNoteVM.Id);
+            //    if (hardNoteVM is HardNoteVM hardnotevm)
+            //    {
+            //        hardnotevm.Title = m.HardNoteVM.Title;
+            //        hardnotevm.Category = m.HardNoteVM.Category;
+            //        hardnotevm.Composites.Clear();
 
-                    foreach (var compositeVM in m.HardNoteVM.Composites) hardnotevm.Composites.Add(compositeVM);
-                }
-            });
+            //        foreach (var compositeVM in m.HardNoteVM.Composites) hardnotevm.Composites.Add(compositeVM);
+            //    }
+            //});
+            #endregion
 
             GetNotes();
             GetHardNotes();
@@ -118,7 +120,6 @@ namespace Composite.ViewModels.Notes
                 Notes.Remove(noteVM);
             }
         }
-
         [RelayCommand] async void DuplicateNote(NoteVM noteVM)
         {
             var noteVMDuplicate = await _noteService.DuplicateNoteVM(noteVM);
@@ -187,10 +188,10 @@ namespace Composite.ViewModels.Notes
             }
         }
 
-        [RelayCommand] void OpenNote(NoteVM noteVM)
-        {
-            if(_tabService.CreateTab<ChangeNoteViewModel>($"{noteVM.Title}")) _messenger.Send(new ChangeNoteMessage(noteVM));
-        }
+        //[RelayCommand] void OpenNote(NoteVM noteVM)
+        //{
+        //    if(_tabService.CreateTab<ChangeNoteViewModel>($"{noteVM.Title}")) _messenger.Send(new ChangeNoteMessage(noteVM));
+        //}
         void GetNotes()
         {
             foreach (var noteVM in _noteService.GetNotes())

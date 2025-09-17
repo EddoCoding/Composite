@@ -1,5 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using Composite.Common.Message.Notes;
+using Composite.Common.Message.Notes.Note;
 using Composite.Services;
 using Composite.Services.TabService;
 using Composite.ViewModels.Notes;
@@ -7,24 +10,226 @@ using Composite.ViewModels.Notes.HardNote;
 
 namespace Composite.ViewModels
 {
-    public partial class CompositeMenuViewModel(IViewService viewService, ITabService tabService)
+    public partial class CompositeMenuViewModel : IDisposable
     {
+        readonly IViewService _viewService;
+        readonly ITabService _tabService;
+        readonly IMessenger _messenger;
+        readonly INoteService _noteService;
+        readonly IHardNoteService _hardNoteService;
 
-        public ObservableCollection<NoteBaseVM> Collections { get; set; } = new()
+        ObservableCollection<NoteBaseVM> _allNotes = new();
+        public ObservableCollection<NoteBaseVM> Notes { get; set; } = new();
+
+        public string TextSearch { get; set; } = string.Empty;
+
+        public CompositeMenuViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, 
+            INoteService noteService, IHardNoteService hardNoteService)
         {
-            new NoteVM() { Title = "Простая заметка 1" },
-            new NoteVM() { Title = "Простая заметка 2" },
-            new NoteVM() { Title = "Простая заметка 3" },
-            new NoteVM() { Title = "Простая заметка 4" },
-            new NoteVM() { Title = "Простая заметка 5" },
+            _viewService = viewService;
+            _tabService = tabService;
+            _messenger = messenger;
+            _noteService = noteService;
+            _hardNoteService = hardNoteService;
 
-            new HardNoteVM() { Title = "Функциональная заметка 1"},
-            new HardNoteVM() { Title = "Функциональная заметка 2"}
-        };
+            messenger.Register<CheckNoteMessage>(this, (r, m) =>
+            {
+                if (string.IsNullOrEmpty(m.TitleNote))
+                {
+                    messenger.Send(new CheckNoteBackMessage(m.Id, false, "Пустой заголовок."));
+                    return;
+                }
+            
+                var checkTitleNote = Notes.FirstOrDefault(x => x.Title == m.TitleNote);
+                if (checkTitleNote != null) messenger.Send(new CheckNoteBackMessage(m.Id, false, "Заметка с таким заголовком уже существует."));
+                else messenger.Send(new CheckNoteBackMessage(m.Id, true));
+            });         //Для проверки при создания noteVM
+            messenger.Register<CheckChangeNoteMessage>(this, (r, m) =>
+            {
+                if (string.IsNullOrEmpty(m.TitleNote))
+                {
+                    messenger.Send(new CheckChangeNoteBackMessage(m.Id, false, "Пустой заголовок."));
+                    return;
+                }
 
-        [RelayCommand] void OpenNotes() => tabService.CreateTab<NotesViewModel>("Заметки");
+                var note = Notes.FirstOrDefault(x => x.Id == m.IdNote && x.Title == m.TitleNote);
+                if (note != null) messenger.Send(new CheckChangeNoteBackMessage(m.Id, true));
 
-        [RelayCommand] void Collapse() => viewService.CollapseView<CompositeViewModel>();
-        [RelayCommand] void Close() => viewService.CloseView<CompositeViewModel>();
+                var checkTitleNote = Notes.FirstOrDefault(x => x.Title == m.TitleNote);
+                if (checkTitleNote != null) messenger.Send(new CheckChangeNoteBackMessage(m.Id, false, "Заметка с таким заголовком уже существует."));
+                else messenger.Send(new CheckChangeNoteBackMessage(m.Id, true));
+            });   //Для проверки при изменении hardNoteVM
+            messenger.Register<NoteMessage>(this, (r, m) =>
+            {
+                _allNotes.Add(m.Note);
+                Notes.Insert(Notes.Count, m.Note);
+            });              //Для добавления заметки в меню заметок
+            messenger.Register<ChangeNoteBackMessage>(this, (r, m) =>
+            {
+                NoteBaseVM? noteVM = Notes.FirstOrDefault(x => x.Id == m.Note.Id);
+                if (noteVM is NoteVM note)
+                {
+                    var noteMessage = (NoteVM)m.Note;
+
+                    note.Title = noteMessage.Title;
+                    note.Content = noteMessage.Content;
+                    note.DateCreate = noteMessage.DateCreate;
+                    note.FontFamily = noteMessage.FontFamily;
+                    note.FontSize = noteMessage.FontSize;
+                    note.Category = noteMessage.Category;
+                    note.Color = noteMessage.Color;
+                }
+                else if (noteVM is HardNoteVM hardNote)
+                {
+                    var noteMessage = (HardNoteVM)m.Note;
+
+                    hardNote.Title = noteMessage.Title;
+                    hardNote.Composites = noteMessage.Composites;
+                    hardNote.Category = noteMessage.Category;
+                }
+            });    //Для обновления данных уже загруженно заметки
+
+            GetNotes();
+            GetHardNotes();
+        }
+        [RelayCommand] void SelectTypeNote() => _viewService.ShowView<SelectTypeNoteViewModel>();
+
+        [RelayCommand] void OpenNotes() => _tabService.CreateTab<NotesViewModel>("Заметки"); //УБРАТЬ
+        [RelayCommand] void OpenNote(NoteBaseVM note)
+        {
+            if(note is NoteVM)
+            {
+                if (_tabService.CreateTab<ChangeNoteViewModel>($"{note.Title}")) _messenger.Send(new ChangeNoteMessage(note));
+            }
+            else if(note is HardNoteVM)
+            {
+                if (_tabService.CreateTab<ChangeHardNoteViewModel>($"{note.Title}")) _messenger.Send(new ChangeNoteMessage(note));
+            }
+
+        }
+
+        //Команды меню
+        [RelayCommand] async Task DeleteNote(NoteBaseVM noteVM)
+        {
+            if(noteVM is NoteVM)
+            {
+                if (await _noteService.DeleteNoteAsync(noteVM.Id))
+                {
+                    _allNotes.Remove(noteVM);
+                    Notes.Remove(noteVM);
+                }
+            }
+            if (noteVM is HardNoteVM)
+            {
+                if (await _hardNoteService.DeleteHardNoteAsync(noteVM.Id))
+                {
+                    _allNotes.Remove(noteVM);
+                    Notes.Remove(noteVM);
+                }
+            }
+
+
+        }
+        [RelayCommand] async void DuplicateNote(NoteBaseVM noteVM)
+        {
+            if(noteVM is NoteVM note)
+            {
+                var noteDuplicate = await _noteService.DuplicateNoteVM(note);
+                if (noteDuplicate != null)
+                {
+                    _allNotes.Add(noteDuplicate);
+                    Notes.Insert(Notes.Count, noteDuplicate);
+                }
+            }
+            if (noteVM is HardNoteVM hardNote)
+            {
+                var noteDuplicate = await _hardNoteService.DuplicateHardNoteVM(hardNote);
+                if (noteDuplicate != null)
+                {
+                    _allNotes.Add(noteDuplicate);
+                    Notes.Insert(Notes.Count, noteDuplicate);
+                }
+            }
+
+
+        }
+
+        //СДЕЛАТЬ
+        //СДЕЛАТЬ
+        #region Сделать
+        //[RelayCommand] async void DeleteCategory(string nameCategory)
+        //{
+        //    if (await _categoryNoteService.DeleteCategory(nameCategory))
+        //    {
+        //        NotesManagementViewModel.DeleteCategory(nameCategory);
+        //        var notesVM = Notes
+        //            .OfType<NoteVM>()
+        //            .Where(x => x.Category == nameCategory);
+
+        //        foreach (var noteVM in notesVM) noteVM.Category = "Без категории";
+        //    }
+        //}
+        //[RelayCommand] void SelectedCategory(string nameCategory)
+        //{
+        //    Notes.Clear();
+
+        //    if (nameCategory == "Все")
+        //    {
+        //        foreach (var noteVM in _allNotes) Notes.Add(noteVM);
+        //        Notes.Add(_noteButton);
+        //        return;
+        //    }
+
+        //    var notesVM = _allNotes.Where(x => x.Category == nameCategory);
+        //    foreach (var noteVM in notesVM) Notes.Add(noteVM);
+        //    Notes.Add(_noteButton);
+        //}
+        [RelayCommand] void SearchNote()
+        {
+            Notes.Clear();
+            var notesVM = _allNotes.Where(x => x.Title.Contains(TextSearch));
+            foreach (var noteVM in notesVM) Notes.Add(noteVM);
+        }
+        #endregion
+        //СДЕЛАТЬ
+        //СДЕЛАТЬ
+
+        [RelayCommand] void Collapse() => _viewService.CollapseView<CompositeViewModel>();
+        [RelayCommand] void Close() => _viewService.CloseView<CompositeViewModel>();
+
+        void GetNotes()
+        {
+            foreach (var noteVM in _noteService.GetNotes())
+            {
+                _allNotes.Add(noteVM);
+                Notes.Add(noteVM);
+            }
+        }
+        void GetHardNotes()
+        {
+            foreach (var hardNoteVM in _hardNoteService.GetNotes())
+            {
+                _allNotes.Add(hardNoteVM);
+                Notes.Add(hardNoteVM);
+            }
+        }
+
+        bool _disposed = false;
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                //NotesManagementViewModel.Dispose();
+                _messenger.UnregisterAll(this);
+                _allNotes?.Clear();
+                Notes?.Clear();
+                _disposed = true;
+            }
+        }
     }
 }

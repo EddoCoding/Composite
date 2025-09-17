@@ -2,8 +2,8 @@
 
 namespace Composite.Common.Message.Notes.Note
 {
-    public class ChangeNoteBackMessage(NoteVM noteVM)
+    public class ChangeNoteBackMessage(NoteBaseVM note)
     {
-        public NoteVM NoteVM { get; set; } = noteVM;
+        public NoteBaseVM Note { get; set; } = note;
     }
 }

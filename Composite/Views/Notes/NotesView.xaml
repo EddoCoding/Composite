@@ -45,9 +45,9 @@
                                 <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
                             </Grid.Effect>
                             
-                            <Button Grid.Row="0" Content="Удалить" Click="ContextMenuButton_Click"
+                            <Button Grid.Row="0" Content="Delete" Click="ContextMenuButton_Click"
                                     Command="{Binding DataContext.DeleteNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
-                            <Button Grid.Row="1" Content="Дублировать" Click="ContextMenuButton_Click"
+                            <Button Grid.Row="1" Content="Duplicate" Click="ContextMenuButton_Click"
                                     Command="{Binding DataContext.DuplicateNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
 
                         </Grid>

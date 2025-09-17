@@ -63,7 +63,30 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        
+        <Style x:Key="NoteMenu" TargetType="ContextMenu">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContextMenu">
+                        <Grid Margin="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.Effect>
+                                <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
+                            </Grid.Effect>
+                            
+                            <Button Grid.Row="0" Content="Delete" Click="ContextMenuButton_Click"
+                                    Command="{Binding DataContext.DeleteNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+                            <Button Grid.Row="1" Content="Duplicate" Click="ContextMenuButton_Click"
+                                    Command="{Binding DataContext.DuplicateNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
 
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style x:Key="ModuleContentControl" TargetType="ContentControl">
             <Setter Property="Template">
                 <Setter.Value>
@@ -80,7 +103,7 @@
                                 <Image Grid.Column="0" Source="{Binding Content, RelativeSource={RelativeSource AncestorType=ContentControl}}"/>
                                 <TextBlock Grid.Column="1" Text="{Binding Tag, RelativeSource={RelativeSource AncestorType=ContentControl}}" Margin="10,0,0,0" FontSize="14" VerticalAlignment="Center"/>
                                 <Button Grid.Column="2" Margin="5,0,0,0" Content="Откр." Command="{Binding OpenNotesCommand}"/>
-                                <Button Grid.Column="3" Margin="5,0,0,0" Content="+"/>
+                                <Button Grid.Column="3" Margin="5,0,0,0" Content="+" Command="{Binding SelectTypeNoteCommand}"/>
 
                             </Grid>
                         </Border>
@@ -88,11 +111,17 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="NoteListView" TargetType="ListViewItem">
+        <Style x:Key="NoteListViewItem" TargetType="ListViewItem">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListViewItem">
-                        <ContentPresenter Content="{Binding Title}"/>
+                        <Button Content="{Binding Title}" Background="{Binding Color}"
+                                Command="{Binding DataContext.OpenNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                                CommandParameter="{Binding}">
+                            <Button.ContextMenu>
+                                <ContextMenu Style="{StaticResource NoteMenu}"/>
+                            </Button.ContextMenu>
+                        </Button>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -102,22 +131,35 @@
     <Grid Background="White" Margin="10,0,10,10" Width="200">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.Effect>
             <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
         </Grid.Effect>
 
-        <ContentControl Grid.Row="0" Style="{DynamicResource ModuleContentControl}" Content="/Common/Images/notes.png" Tag="Notes" Height="28" Margin="3"/>
+        <Grid Margin="5" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-        <ListView Grid.Row="1" Margin="5,0" ItemsSource="{Binding Collections}" ItemContainerStyle="{StaticResource NoteListView}"/>
+            <TextBox Grid.Column="0" Text="{Binding TextSearch}"/>
+            <Button Grid.Column="1" Content="Search" Margin="5,0" Command="{Binding SearchNoteCommand}"/>
+            
+        </Grid>
 
-        <Button Grid.Row="2" Content="/Common/Images/collapse.png" Height="33" Width="33" Margin="3" VerticalAlignment="Bottom" RenderOptions.BitmapScalingMode="Fant"
+        <ContentControl Grid.Row="2" Style="{DynamicResource ModuleContentControl}" Content="/Common/Images/notes.png" Tag="Notes" Height="28" Margin="3"/>
+
+        <ListView Grid.Row="3" Margin="5,0" ItemsSource="{Binding Notes}" ItemContainerStyle="{StaticResource NoteListViewItem}"/>
+
+        <Button Grid.Row="4" Content="/Common/Images/collapse.png" Height="33" Width="33" Margin="3" VerticalAlignment="Bottom" RenderOptions.BitmapScalingMode="Fant"
                 Style="{StaticResource ImageModuleCollapseButton}" ToolTip="Свернуть" Command="{Binding CollapseCommand}"/>
         
-        <Button Grid.Row="3" Content="/Common/Images/close.png" Height="33" Width="33" Margin="3" VerticalAlignment="Bottom" RenderOptions.BitmapScalingMode="Fant"
+        <Button Grid.Row="5" Content="/Common/Images/close.png" Height="33" Width="33" Margin="3" VerticalAlignment="Bottom" RenderOptions.BitmapScalingMode="Fant"
                 Style="{StaticResource ImageModuleCloseButton}" ToolTip="Выход" Command="{Binding CloseCommand}"/>
 
     </Grid>

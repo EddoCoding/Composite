@@ -102,7 +102,7 @@ namespace Composite
                 
                 //Простые заметки
                 var queryCreateNotes = "Create Table If Not Exists Notes(Id Text Primary Key, Title Text Not Null, Content Text, DateCreate DateTime Not Null, " +
-                                       "Password Varchar(24), Preview Integer Default 0, FontFamily Text, FontSize Real, Category Text, Color Text)";
+                                       "FontFamily Text, FontSize Real, Category Text, Color Text)";
                 var queryCreateCategory = "Create Table If Not Exists Categories(NameCategory Text Primary Key Not Null)";
                 var queryInsertCategory = "Insert Or Ignore Into Categories(NameCategory) VALUES(@NameCategory)";
 

@@ -173,8 +173,8 @@
     <Grid PreviewKeyDown="Grid_PreviewKeyDown">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <TextBox x:Name="titleTextBox" Grid.Row="0" Text="{Binding HardNoteVM.Title, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TitleTextBox}" 
@@ -182,7 +182,7 @@
                  PreviewKeyDown="TitleTextBox_PreviewKeyDown"/>
 
         <ListView Grid.Row="1" x:Name="listComposite" ItemsSource="{Binding HardNoteVM.Composites}" BorderThickness="0" HorizontalContentAlignment="Stretch"
-                  Focusable="False" PreviewKeyDown="ListView_PreviewKeyDown">
+                  Focusable="False" PreviewKeyDown="ListView_PreviewKeyDown" MouseDown="listComposite_MouseDown">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Style.Setters>
@@ -199,7 +199,7 @@
         </ListView>
 
         <Button Grid.Row="2" Content="Сохранить" Style="{StaticResource UpdateNoteButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                Command="{Binding UpdateHardNoteCommand}" />
+                Command="{Binding UpdateHardNoteCommand}"/>
 
     </Grid>
 

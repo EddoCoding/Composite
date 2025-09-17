@@ -3,6 +3,7 @@ using System.Windows.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Composite.Common.Message.Notes;
 using Composite.Common.Message.Notes.Note;
 using Composite.Services;
 using Composite.Services.TabService;
@@ -39,10 +40,12 @@ namespace Composite.ViewModels.Notes
 
             messenger.Register<ChangeNoteMessage>(this, (r, m) =>
             {
-                SelectedColor = m.NoteVM.Color;
-                CopyNoteVM(m.NoteVM);
-
-                messenger.Unregister<ChangeNoteMessage>(this);
+                if (m.Note is NoteVM noteVM)
+                {
+                    SelectedColor = noteVM.Color;
+                    CopyNoteVM(noteVM);
+                    messenger.Unregister<ChangeNoteMessage>(this);
+                }
             });
             messenger.Register<CheckChangeNoteBackMessage>(this, (r, m) =>
             {

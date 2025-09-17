@@ -1,7 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Composite.Common.Message.Notes.HardNote;
+using Composite.Common.Message.Notes;
+using Composite.Common.Message.Notes.Note;
 using Composite.Services;
 using Composite.Services.TabService;
 
@@ -21,10 +22,13 @@ namespace Composite.ViewModels.Notes.HardNote
             _messenger = messenger;
             _hardNoteService = hardNoteService;
 
-            messenger.Register<ChangeHardNoteMessage>(this, (r, m) =>
+            messenger.Register<ChangeNoteMessage>(this, (r, m) =>
             {
-                CopyHardNoteVM(m.HardNoteVM);
-                messenger.Unregister<ChangeHardNoteMessage>(this);
+                if (m.Note is HardNoteVM hardNoteVM)
+                {
+                    CopyHardNoteVM(hardNoteVM);
+                    messenger.Unregister<ChangeNoteMessage>(this);
+                }
             });
         }
 
@@ -32,7 +36,7 @@ namespace Composite.ViewModels.Notes.HardNote
         {
             if (await _hardNoteService.UpdateHardNoteAsync(HardNoteVM))
             {
-                _messenger.Send(new ChangeHardNoteBackMessage(HardNoteVM));
+                _messenger.Send(new ChangeNoteBackMessage(HardNoteVM));
                 _tabService.RemoveTab(this);
             }
         }
