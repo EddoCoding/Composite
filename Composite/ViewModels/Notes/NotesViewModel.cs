@@ -37,11 +37,6 @@ namespace Composite.ViewModels.Notes
             NotesManagementViewModel = new(viewService, messenger, categoryNoteService);
 
             //Сообщения простых заметок
-            messenger.Register<InputPasswordBackMessage>(this, (r, m) =>
-            {
-                NoteBaseVM? noteVM = Notes.FirstOrDefault(x => x.Id == m.Id);
-                if (noteVM is NoteVM notevm) OpenNote(notevm);
-            });
             messenger.Register<CheckNoteMessage>(this, (r, m) =>
             {
                 if (string.IsNullOrEmpty(m.TitleNote))
@@ -82,17 +77,11 @@ namespace Composite.ViewModels.Notes
                     notevm.Title = m.NoteVM.Title;
                     notevm.Content = m.NoteVM.Content;
                     notevm.DateCreate = m.NoteVM.DateCreate;
-                    notevm.Password = m.NoteVM.Password;
                     notevm.FontFamily = m.NoteVM.FontFamily;
                     notevm.FontSize = m.NoteVM.FontSize;
                     notevm.Category = m.NoteVM.Category;
                     notevm.Color = m.NoteVM.Color;
                 }
-            });
-            messenger.Register<InputPasswordDeleteBackMessage>(this, async (r, m) => 
-            {
-                NoteBaseVM? noteVM = Notes.FirstOrDefault(x => x.Id == m.Id);
-                if (await _noteService.DeleteNoteAsync(noteVM.Id)) Notes.Remove(noteVM);
             });
 
             //Сообщения функциональных заметок
@@ -120,19 +109,16 @@ namespace Composite.ViewModels.Notes
         }
 
         [RelayCommand] void SelectTypeNote() => _viewService.ShowView<SelectTypeNoteViewModel>();
+
         [RelayCommand] async void DeleteNote(NoteBaseVM noteVM)
         {
-            if (!string.IsNullOrEmpty(((NoteVM)noteVM).Password))
-            {
-                CheckPassword(noteVM);
-                return;
-            }
-            if(await _noteService.DeleteNoteAsync(noteVM.Id))
+            if (await _noteService.DeleteNoteAsync(noteVM.Id))
             {
                 _allNotes.Remove(noteVM as NoteVM);
                 Notes.Remove(noteVM);
             }
         }
+
         [RelayCommand] async void DuplicateNote(NoteVM noteVM)
         {
             var noteVMDuplicate = await _noteService.DuplicateNoteVM(noteVM);
@@ -142,11 +128,7 @@ namespace Composite.ViewModels.Notes
                 Notes.Insert(Notes.Count - 1, noteVMDuplicate);
             }
         }
-        [RelayCommand] void CheckPasswordNote(NoteVM noteVM)
-        {
-            if (string.IsNullOrEmpty(noteVM.Password)) OpenNote(noteVM);
-            else if(_viewService.ShowView<InputPasswordViewModel>()) _messenger.Send(new InputPasswordMessage(noteVM.Id, noteVM.Password));
-        }
+
         [RelayCommand] async void DeleteCategory(string nameCategory)
         {
             if (await _categoryNoteService.DeleteCategory(nameCategory))
@@ -205,7 +187,7 @@ namespace Composite.ViewModels.Notes
             }
         }
 
-        void OpenNote(NoteVM noteVM)
+        [RelayCommand] void OpenNote(NoteVM noteVM)
         {
             if(_tabService.CreateTab<ChangeNoteViewModel>($"{noteVM.Title}")) _messenger.Send(new ChangeNoteMessage(noteVM));
         }
@@ -226,11 +208,6 @@ namespace Composite.ViewModels.Notes
             }
         }
         void GetButtonAddNote() => Notes.Add(_noteButton);
-        void CheckPassword(NoteBaseVM noteVM)
-        {
-            var notevm = noteVM as NoteVM;
-            if(_viewService.ShowView<InputPasswordDeleteViewModel>()) _messenger.Send(new InputPasswordDeleteMessage(notevm.Id, notevm.Password));
-        }
 
         bool _disposed = false;
         public virtual void Dispose()

@@ -10,7 +10,6 @@ namespace Composite.Common.Factories
             Title = noteVM.Title,
             Content = noteVM.Content,
             DateCreate = noteVM.DateCreate,
-            Password = noteVM.Password,
             FontFamily = noteVM.FontFamily,
             FontSize = noteVM.FontSize,
             Category = noteVM.Category,

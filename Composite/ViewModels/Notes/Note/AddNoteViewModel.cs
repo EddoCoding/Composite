@@ -1,19 +1,17 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Reflection;
+using System.Windows.Media;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Composite.Common.Message;
 using Composite.Common.Message.Notes.Note;
 using Composite.Services;
 using Composite.Services.TabService;
-using System.Reflection;
-using System.Windows.Media;
 
 namespace Composite.ViewModels.Notes
 {
     public partial class AddNoteViewModel : ObservableObject, IDisposable
     {
         readonly Guid _id;
-        readonly IViewService _viewService;
         readonly ITabService _tabService;
         readonly IMessenger _messenger;
         readonly INoteService _noteService;
@@ -25,12 +23,10 @@ namespace Composite.ViewModels.Notes
         public List<string> Categories { get; set; }
         public List<string> Colors { get; set; }
         [ObservableProperty] string selectedColor = "White";
-        [ObservableProperty] string namePasswordButton = "Установить пароль";
 
-        public AddNoteViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, INoteService noteService, ICategoryNoteService categoryNoteService)
+        public AddNoteViewModel(ITabService tabService, IMessenger messenger, INoteService noteService, ICategoryNoteService categoryNoteService)
         {
             _id = Guid.NewGuid();
-            _viewService = viewService;
             _tabService = tabService;
             _messenger = messenger;
             _noteService = noteService;
@@ -41,14 +37,6 @@ namespace Composite.ViewModels.Notes
             Colors = new();
             Colors = typeof(Colors).GetProperties(BindingFlags.Static | BindingFlags.Public).Select(prop => prop.Name).ToList();
 
-            messenger.Register<PasswordNoteBackMessage>(this, (r, m) => 
-            {
-                if(_id == m.Id)
-                {
-                    NoteVM.Password = m.Password;
-                    NamePasswordButton = "Сбросить пароль";
-                }
-            });
             messenger.Register<CheckNoteBackMessage>(this, (r, m) => 
             { 
                 if (m.TitleNote) { AddNote(); }
@@ -57,15 +45,7 @@ namespace Composite.ViewModels.Notes
         }
 
         [RelayCommand] void CheckNote() => _messenger.Send(new CheckNoteMessage(_id, NoteVM.Title));
-        [RelayCommand] void CheckPassword() 
-        {
-            if (string.IsNullOrEmpty(NoteVM.Password) && OpenViewSetPassword()) _messenger.Send(new PasswordNoteMessage(_id));
-            else
-            {
-                NoteVM.Password = string.Empty;
-                NamePasswordButton = "Установить пароль";
-            }
-        }
+
         async void AddNote() 
         {
             NoteVM.Color = SelectedColor;
@@ -75,7 +55,6 @@ namespace Composite.ViewModels.Notes
                 _tabService.RemoveTab(this);
             }
         }
-        bool OpenViewSetPassword() => _viewService.ShowView<SetPasswordViewModel>();
 
         bool _disposed = false;
         public virtual void Dispose()

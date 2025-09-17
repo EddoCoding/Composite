@@ -46,9 +46,9 @@
                             </Grid.Effect>
                             
                             <Button Grid.Row="0" Content="Удалить" Click="ContextMenuButton_Click"
-                                Command="{Binding DataContext.DeleteNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+                                    Command="{Binding DataContext.DeleteNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
                             <Button Grid.Row="1" Content="Дублировать" Click="ContextMenuButton_Click"
-                                Command="{Binding DataContext.DuplicateNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+                                    Command="{Binding DataContext.DuplicateNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
 
                         </Grid>
                     </ControlTemplate>
@@ -138,7 +138,7 @@
 
         <DataTemplate DataType="{x:Type note:NoteVM}">
             <Button x:Name="button" Margin="10,5,0,0" SnapsToDevicePixels="True" Width="180" Height="210"
-                    Command="{Binding DataContext.CheckPasswordNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
+                    Command="{Binding DataContext.OpenNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Background" Value="{Binding Color}"/>
@@ -158,29 +158,15 @@
 
                                         <TextBlock Grid.Row="0" Text="{Binding Title}" Margin="5" FontSize="13" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
 
-                                        <TextBlock x:Name="content" Grid.Row="1" Text="{Binding Content}" Margin="5,0" FontSize="13" Visibility="Collapsed" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock x:Name="content" Grid.Row="1" Text="{Binding Content}" Margin="5,0" FontSize="13" TextTrimming="CharacterEllipsis"/>
 
-                                        <Grid Grid.Row="2" Margin="5,0,5,3">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-
-                                            <TextBlock Grid.Column="0" Text="{Binding DateCreate, Converter={StaticResource DateToStringConverter}}" FontSize="13" VerticalAlignment="Center"/>
-
-                                            <Image Grid.Column="1" x:Name="imageLock" Source="/Common/Images/lock.png" Height="18" Width="18" Visibility="Visible" HorizontalAlignment="Right" RenderOptions.BitmapScalingMode="Fant"/>
-
-                                        </Grid>
+                                        <TextBlock Grid.Row="2" Margin="5,0,5,3" Text="{Binding DateCreate, Converter={StaticResource DateToStringConverter}}" FontSize="13" VerticalAlignment="Center"/>
 
                                     </Grid>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
                                             <Setter Property="Background" Value="{Binding Color, Converter={StaticResource ColorLightenConverter}}"/>
                                         </Trigger>
-                                        <DataTrigger Binding="{Binding Password.Length}" Value="0">
-                                            <Setter TargetName="imageLock" Property="Visibility" Value="Hidden"/>
-                                            <Setter TargetName="content" Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
                             </Setter.Value>

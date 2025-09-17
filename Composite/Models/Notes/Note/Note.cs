@@ -4,7 +4,6 @@
     {
         public string Content { get; set; }
         public DateTime DateCreate { get; set; }
-        public string Password { get; set; } = string.Empty;
         public string FontFamily { get; set; } = string.Empty;
         public double FontSize { get; set; }
         public string Category { get; set; } = string.Empty;
