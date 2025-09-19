@@ -97,8 +97,9 @@ namespace Composite.ViewModels
         [RelayCommand] void SelectTypeNote() => _viewService.ShowView<SelectTypeNoteViewModel>();
         [RelayCommand] void SearchNote()
         {
-            Notes.Clear();
             var notesVM = _allNotes.Where(x => x.Title.Contains(TextSearch));
+            Notes.Clear();
+            GetAddButtonNote();
             foreach (var noteVM in notesVM) Notes.Add(noteVM);
         }
         [RelayCommand] void OpenNote(NoteBaseVM note)
