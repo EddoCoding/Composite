@@ -38,6 +38,7 @@
         <Style x:Key="ContentTextBox" TargetType="TextBox">
             <Setter Property="FontFamily" Value="{Binding NoteVM.FontFamily}"/>
             <Setter Property="FontSize" Value="{Binding NoteVM.FontSize}"/>
+            <Setter Property="Margin" Value="10,0"/>
             <Setter Property="SelectionBrush" Value="LightGray"/>
             <Setter Property="CaretBrush" Value="Gray"/>
             <Setter Property="TextWrapping" Value="Wrap"/>

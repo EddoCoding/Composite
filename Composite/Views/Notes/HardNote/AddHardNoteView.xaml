@@ -168,13 +168,14 @@
 
     </UserControl.Resources>
     <UserControl.InputBindings>
-        <KeyBinding Gesture="CTRL+S" Command="{Binding SaveHardNoteCommand}"/>
+        <KeyBinding Gesture="CTRL+S" Command="{Binding CheckNoteCommand}"/>
     </UserControl.InputBindings>
 
     <Grid PreviewKeyDown="Grid_PreviewKeyDown">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
@@ -199,7 +200,26 @@
         </ListView>
 
         <Button Grid.Row="2" Content="Сохранить" Style="{StaticResource AddNoteButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                Command="{Binding SaveHardNoteCommand}"/>
+                Command="{Binding CheckNoteCommand}"/>
+
+        <Grid Grid.Row="3" Background="White" Margin="0,2,0,0">
+            <Grid.Effect>
+                <DropShadowEffect Opacity="0" ShadowDepth="0"/>
+            </Grid.Effect>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Message}" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <TextBlock Text="{Binding Message}" Foreground="OrangeRed" Margin="10,3,0,3"/>
+
+        </Grid>
 
     </Grid>
 

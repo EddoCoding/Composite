@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Windows.Forms;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Composite.Common.Message.Notes;
@@ -10,14 +11,16 @@ namespace Composite.ViewModels.Notes.HardNote
 {
     public partial class ChangeHardNoteViewModel : ObservableObject
     {
+        readonly Guid _id;
         readonly ITabService _tabService;
         readonly IMessenger _messenger;
         readonly IHardNoteService _hardNoteService;
-
-        [ObservableProperty] HardNoteVM hardNoteVM;
+        [ObservableProperty] string _message;
+        [ObservableProperty] HardNoteVM _hardNoteVM;
 
         public ChangeHardNoteViewModel(ITabService tabService, IMessenger messenger, IHardNoteService hardNoteService)
         {
+            _id = Guid.NewGuid();
             _tabService = tabService;
             _messenger = messenger;
             _hardNoteService = hardNoteService;
@@ -30,9 +33,19 @@ namespace Composite.ViewModels.Notes.HardNote
                     messenger.Unregister<ChangeNoteMessage>(this);
                 }
             });
+            messenger.Register<CheckChangeNoteBackMessage>(this, (r, m) =>
+            {
+                if (_id == m.Id)
+                {
+                    if (m.TitleNote) { UpdateHardNote(); }
+                    else Message = m.ErrorMessage;
+                }
+            });
         }
 
-        [RelayCommand] async Task UpdateHardNote()
+        [RelayCommand] void CheckNote() => _messenger.Send(new CheckChangeNoteMessage(_id, HardNoteVM.Id, HardNoteVM.Title));
+
+        async Task UpdateHardNote()
         {
             if (await _hardNoteService.UpdateHardNoteAsync(HardNoteVM))
             {
@@ -40,7 +53,6 @@ namespace Composite.ViewModels.Notes.HardNote
                 _tabService.RemoveTab(this);
             }
         }
-
         void CopyHardNoteVM(HardNoteVM originalHardNoteVM) => HardNoteVM = _hardNoteService.CreateHardNoteVM(originalHardNoteVM);
 
         bool _disposed = false;

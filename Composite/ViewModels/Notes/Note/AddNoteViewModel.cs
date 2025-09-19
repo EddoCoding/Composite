@@ -13,9 +13,9 @@ namespace Composite.ViewModels.Notes
         readonly ITabService _tabService;
         readonly IMessenger _messenger;
         readonly INoteService _noteService;
+        [ObservableProperty] string _message;
 
         public NoteVM NoteVM { get; set; } = new NoteVM();
-        [ObservableProperty] string message;
         public List<string> Fonts { get; }
         public List<double> FontSizes { get; }
 

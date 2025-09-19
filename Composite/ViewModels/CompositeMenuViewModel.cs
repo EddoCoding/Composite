@@ -24,7 +24,7 @@ namespace Composite.ViewModels
 
         //Для надстроек
         public string TextSearch { get; set; } = string.Empty;
-        [ObservableProperty] bool isPopupOpen;
+        [ObservableProperty] bool _isPopupOpen;
 
         public CompositeMenuViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, 
             INoteService noteService, IHardNoteService hardNoteService)
