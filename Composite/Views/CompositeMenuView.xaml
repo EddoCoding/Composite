@@ -201,7 +201,7 @@
                                                 <Border Background="White" BorderBrush="DarkGray" BorderThickness="1" CornerRadius="5" Width="180">
 
                                                     <StackPanel>
-                                                        <Button Content="by Title" Command="{Binding SortCommand}">
+                                                        <Button Content="by Title" Command="{Binding SortByTitleCommand}">
                                                             <Button.Style>
                                                                 <Style TargetType="Button">
                                                                     <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -245,6 +245,31 @@
             </Setter>
         </Style>
 
+        <Style x:Key="addNoteButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6" Margin="0,2">
+                            <Grid Width="185" HorizontalAlignment="Left">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="{Binding Title}" FontSize="14" Margin="5" TextOptions.TextFormattingMode="Ideal"/>
+
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#E6E6E6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style x:Key="NoteButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Template">
@@ -336,9 +361,15 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListViewItem">
-                        <Button Style="{DynamicResource NoteButton}"
+                        <Button x:Name="ItemButton" Style="{DynamicResource NoteButton}"
                                 Command="{Binding DataContext.OpenNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
                         </Button>
+                        <ControlTemplate.Triggers>
+                            <DataTrigger Binding="{Binding ItemType}" Value="AddNoteButton">
+                                <Setter TargetName="ItemButton" Property="Style" Value="{DynamicResource addNoteButton}"/>
+                                <Setter TargetName="ItemButton" Property="Command" Value="{Binding DataContext.SelectTypeNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}"/>
+                            </DataTrigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>

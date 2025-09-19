@@ -26,7 +26,6 @@ namespace Composite.ViewModels
         //Для надстроек
         public string TextSearch { get; set; } = string.Empty;
         [ObservableProperty] bool isPopupOpen;
-        [ObservableProperty] bool isPopupOpenNote;
 
         public CompositeMenuViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, 
             INoteService noteService, IHardNoteService hardNoteService)
@@ -91,15 +90,12 @@ namespace Composite.ViewModels
                 }
             });    //Для обновления данных уже загруженно заметки
 
+            GetAddButtonNote();
             GetNotes();
             GetHardNotes();
         }
 
-        [RelayCommand] void SelectTypeNote()
-        {
-            _viewService.ShowView<SelectTypeNoteViewModel>();
-            OpenClosePopup();
-        }
+        [RelayCommand] void SelectTypeNote() => _viewService.ShowView<SelectTypeNoteViewModel>();
         [RelayCommand] void SearchNote()
         {
             Notes.Clear();
@@ -125,16 +121,14 @@ namespace Composite.ViewModels
             if (IsPopupOpen == false) IsPopupOpen = true;
             else IsPopupOpen = false;
         }
-        [RelayCommand] void SortTitle()
+        [RelayCommand] void SortByTitle()
         {
             var notes = _allNotes.OrderBy(x => x.Title);
             Notes.Clear();
+            GetAddButtonNote();
             foreach (var note in notes) Notes.Add(note);
-        }
-        [RelayCommand] void OpenClosePopupNote()
-        {
-            if (IsPopupOpenNote == false) IsPopupOpenNote = true;
-            else IsPopupOpenNote = false;
+
+            OpenClosePopup();
         }
 
 
@@ -180,7 +174,6 @@ namespace Composite.ViewModels
                     Notes.Insert(Notes.Count, noteDuplicate);
                 }
             }
-            OpenClosePopupNote();
         }
 
         [RelayCommand] void Collapse() => _viewService.CollapseView<CompositeViewModel>();
@@ -202,6 +195,7 @@ namespace Composite.ViewModels
                 Notes.Add(hardNoteVM);
             }
         }
+        void GetAddButtonNote() => Notes.Add(new NoteButton());
 
         bool _disposed = false;
         public virtual void Dispose()

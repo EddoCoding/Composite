@@ -2,6 +2,7 @@
 {
     public partial class NoteButton : NoteBaseVM
     {
-        public NoteButton() => Title = "Добавить заметку";
+        public override string ItemType => "AddNoteButton";
+        public NoteButton() => Title = "+ Add Note";
     }
 }
