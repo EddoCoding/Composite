@@ -2,9 +2,6 @@
 {
     public class TextComposite : CompositeBase
     {
-        public TextComposite()
-        {
-            CompositeType = nameof(TextComposite);
-        }
+        public TextComposite() => CompositeType = nameof(TextComposite);
     }
 }

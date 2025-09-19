@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -47,7 +46,7 @@ namespace Composite.ViewModels
                 var checkTitleNote = Notes.FirstOrDefault(x => x.Title == m.TitleNote);
                 if (checkTitleNote != null) messenger.Send(new CheckNoteBackMessage(m.Id, false, "Заметка с таким заголовком уже существует."));
                 else messenger.Send(new CheckNoteBackMessage(m.Id, true));
-            });         //Для проверки при создания noteVM
+            });         //Для валидации создания простой заметки
             messenger.Register<CheckChangeNoteMessage>(this, (r, m) =>
             {
                 if (string.IsNullOrEmpty(m.TitleNote))
@@ -62,7 +61,7 @@ namespace Composite.ViewModels
                 var checkTitleNote = Notes.FirstOrDefault(x => x.Title == m.TitleNote);
                 if (checkTitleNote != null) messenger.Send(new CheckChangeNoteBackMessage(m.Id, false, "Заметка с таким заголовком уже существует."));
                 else messenger.Send(new CheckChangeNoteBackMessage(m.Id, true));
-            });   //Для проверки при изменении hardNoteVM
+            });   //Для валидации изменения простой заметки
             messenger.Register<NoteMessage>(this, (r, m) =>
             {
                 _allNotes.Add(m.Note);

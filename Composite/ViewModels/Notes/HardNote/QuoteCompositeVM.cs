@@ -6,9 +6,6 @@ namespace Composite.ViewModels.Notes.HardNote
     {
         [ObservableProperty] string _text = string.Empty;
 
-        public QuoteCompositeVM()
-        {
-            Id = Guid.NewGuid();
-        }
+        public QuoteCompositeVM() => Id = Guid.NewGuid();
     }
 }

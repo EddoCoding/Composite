@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Composite.Views"
         MouseDown="MoveWindow" Background="WhiteSmoke" WindowStyle="None" 
         WindowStartupLocation="CenterScreen" RenderOptions.BitmapScalingMode="NearestNeighbor"
-        Title="{Binding Title}" MinHeight="360" MinWidth="650" MaxHeight="360" MaxWidth="650" ResizeMode="CanResizeWithGrip" 
+        Title="{Binding Title}" MinHeight="250" MinWidth="550" MaxHeight="250" MaxWidth="550" ResizeMode="CanResizeWithGrip" 
         AllowsTransparency="True" BorderBrush="LightGray" BorderThickness="1" FontFamily="Trebuchet MS">
     <Window.Resources>
         <Style x:Key="defaultNoteButton" TargetType="Button">
@@ -17,7 +17,7 @@
                         <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" Padding="10,10,5,0" VerticalAlignment="Top">
                             <StackPanel>
 
-                                <TextBlock Text="Простая заметка" FontSize="17" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Simple note" FontSize="17" HorizontalAlignment="Center"/>
 
                                 <TextBlock Text="{Binding DescriptionDefaultNote}" FontSize="13" LineHeight="18" Margin="0,10,0,0" TextOptions.TextFormattingMode="Display"/>
 
@@ -46,7 +46,7 @@
                         <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" Padding="10,10,5,0" VerticalAlignment="Top">
                             <StackPanel>
 
-                                <TextBlock Text="Функциональная заметка" FontSize="17" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Hard note" FontSize="17" HorizontalAlignment="Center"/>
 
                                 <TextBlock Text="{Binding DescriptionHardNote}" FontSize="13" LineHeight="18" Margin="0,10,0,0" TextOptions.TextFormattingMode="Display"/>
 
@@ -75,13 +75,13 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Button Grid.Column="0" Style="{StaticResource defaultNoteButton}" Margin="20,50,10,0" HorizontalAlignment="Center"
-                Command="{Binding OpenDefaultNoteCommand}"/>
+        <Button Grid.Column="0" Style="{StaticResource defaultNoteButton}" Margin="20,50,0,0" HorizontalAlignment="Center"
+                Command="{Binding OpenNoteCommand}"/>
 
-        <Button Grid.Column="1" Style="{StaticResource hardNoteButton}" Margin="10,50,20,0" HorizontalAlignment="Center"
+        <Button Grid.Column="1" Style="{StaticResource hardNoteButton}" Margin="0,50,20,0" HorizontalAlignment="Center"
                 Command="{Binding OpenHardNoteCommand}"/>
 
-        <Button Grid.ColumnSpan="2" Content="Отмена" Style="{StaticResource DefaultButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right"
+        <Button Grid.ColumnSpan="2" Content="Cancel" Style="{StaticResource DefaultButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right"
                 FontSize="16" Margin="0,0,10,10" Command="{Binding CloseCommand}"/>
 
     </Grid>

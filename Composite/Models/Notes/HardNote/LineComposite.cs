@@ -2,9 +2,6 @@
 {
     public class LineComposite : CompositeBase
     {
-        public LineComposite()
-        {
-            CompositeType = nameof(LineComposite);
-        }
+        public LineComposite() => CompositeType = nameof(LineComposite);
     }
 }

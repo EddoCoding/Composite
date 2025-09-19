@@ -2,7 +2,6 @@
 using Composite.Common.Mappers;
 using Composite.Repositories;
 using Composite.ViewModels.Notes;
-using Composite.ViewModels.Notes.HardNote;
 
 namespace Composite.Services
 {

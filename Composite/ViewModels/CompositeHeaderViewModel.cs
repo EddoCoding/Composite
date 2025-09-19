@@ -10,7 +10,7 @@ namespace Composite.ViewModels
     {
         public string Title { get; set; } = "Composite";
 
-        [ObservableProperty] string nameButtonStartStopMediaPlayer = "Вкл. плеер";
+        [ObservableProperty] string nameButtonStartStopMediaPlayer = "Turn on player";
         [ObservableProperty] IMediaPlayerService mediaPlayerService;
         [ObservableProperty] Visibility visibility = Visibility.Collapsed;
 
@@ -20,14 +20,14 @@ namespace Composite.ViewModels
             {
                 MediaPlayerService = mediaPlayerFactory.Create();
                 Visibility = Visibility.Visible;
-                NameButtonStartStopMediaPlayer = "Откл. плеер";
+                NameButtonStartStopMediaPlayer = "Turn off player";
             }
             else
             {
                 MediaPlayerService.Dispose();
                 MediaPlayerService = null;
                 Visibility = Visibility.Collapsed;
-                NameButtonStartStopMediaPlayer = "Вкл. плеер";
+                NameButtonStartStopMediaPlayer = "Turn on player";
             }
         }
     }

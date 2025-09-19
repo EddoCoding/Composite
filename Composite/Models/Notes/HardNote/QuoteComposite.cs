@@ -2,9 +2,6 @@
 {
     public class QuoteComposite : CompositeBase
     {
-        public QuoteComposite()
-        {
-            CompositeType = nameof(QuoteComposite);
-        }
+        public QuoteComposite() => CompositeType = nameof(QuoteComposite);
     }
 }

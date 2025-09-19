@@ -2,9 +2,6 @@
 {
     public class HeaderComposite : CompositeBase
     {
-        public HeaderComposite()
-        {
-            CompositeType = nameof(HeaderComposite);
-        }
+        public HeaderComposite() => CompositeType = nameof(HeaderComposite);
     }
 }
