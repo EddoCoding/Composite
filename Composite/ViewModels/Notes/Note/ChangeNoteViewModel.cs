@@ -21,8 +21,6 @@ namespace Composite.ViewModels.Notes
         [ObservableProperty] string message;
         public List<string> Fonts { get; }
         public List<double> FontSizes { get; }
-        public List<string> Colors { get; set; }
-        [ObservableProperty] string selectedColor = "White";
 
         public ChangeNoteViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, INoteService noteService)
         {
@@ -33,14 +31,11 @@ namespace Composite.ViewModels.Notes
 
             Fonts = new(System.Windows.Media.Fonts.SystemFontFamilies.Select(x => x.Source).OrderBy(x => x));
             FontSizes = new() { 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25 };
-            Colors = new();
-            Colors = typeof(Colors).GetProperties(BindingFlags.Static | BindingFlags.Public).Select(x => x.Name).ToList();
 
             messenger.Register<ChangeNoteMessage>(this, (r, m) =>
             {
                 if (m.Note is NoteVM noteVM)
                 {
-                    SelectedColor = noteVM.Color;
                     CopyNoteVM(noteVM);
                     messenger.Unregister<ChangeNoteMessage>(this);
                 }
@@ -59,7 +54,6 @@ namespace Composite.ViewModels.Notes
 
         async void ChangeNote()
         {
-            NoteVM.Color = SelectedColor;
             if (await _noteService.UpdateNoteAsync(NoteVM))
             {
                 _messenger.Send(new ChangeNoteBackMessage(NoteVM));
@@ -83,7 +77,6 @@ namespace Composite.ViewModels.Notes
                 {
                     Fonts.Clear();
                     FontSizes.Clear();
-                    Colors.Clear();
                     _messenger.UnregisterAll(this);
                 }
                 _disposed = true;

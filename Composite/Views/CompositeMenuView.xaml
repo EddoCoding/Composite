@@ -3,17 +3,236 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Composite.Views" mc:Ignorable="d" 
+             xmlns:local="clr-namespace:Composite.Views" mc:Ignorable="d"
+             xmlns:hardNote="clr-namespace:Composite.ViewModels.Notes.HardNote"
+             xmlns:note="clr-namespace:Composite.ViewModels.Notes"
+             xmlns:converter="clr-namespace:Composite.Common.Converters"
              d:DesignHeight="450" d:DesignWidth="800" FontFamily="Trebuchet MS">
     <UserControl.Resources>
-        <Style x:Key="ImageModuleButton" TargetType="Button">
+
+        <Style x:Key="ImageModule" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="7" Padding="3,5">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="7" Padding="3,5">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{Binding Content, RelativeSource={RelativeSource AncestorType=Button}}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       RenderOptions.BitmapScalingMode="Fant"/>
+                                <TextBlock Text="{Binding ToolTip, RelativeSource={RelativeSource AncestorType=Button}}" FontSize="14" Margin="10,0,0,0" VerticalAlignment="Center"
+                                           TextOptions.TextFormattingMode="Ideal"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{Binding Tag, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="TextBoxSearch" TargetType="TextBox">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="SelectionBrush" Value="LightGray"/>
+            <Setter Property="CaretBrush" Value="Gray"/>
+            <Setter Property="FontFamily" Value="Trebuchet MS"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Grid>
+
+                            <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="Black" SnapsToDevicePixels="True" BorderThickness="0.5" CornerRadius="10">
+                                <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Padding="0" Margin="3,0"/>
+                            </Border>
+
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderThickness" Value="0.7"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ImageButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="5">
+                            <ContentPresenter>
+                                <ContentPresenter.Content>
+                                    <Image Height="{Binding Height, RelativeSource={RelativeSource AncestorType=Button}}" 
+                                               Width="{Binding Width, RelativeSource={RelativeSource AncestorType=Button}}"
+                                               Source="{Binding Content, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                </ContentPresenter.Content>
+                            </ContentPresenter>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{Binding Tag, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ContentControlNotes" TargetType="ContentControl">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContentControl">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="7" Padding="3">
                             <Grid>
-                                <Image Source="{Binding Content, RelativeSource={RelativeSource AncestorType=Button}}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Image Grid.Column="0" Source="{Binding Content, RelativeSource={RelativeSource AncestorType=ContentControl}}"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Tag, RelativeSource={RelativeSource AncestorType=ContentControl}}" Margin="10,0,0,0" FontSize="14" VerticalAlignment="Center"/>
+                                <Button Grid.Column="2" Margin="0,0,3,0" Content="/Common/Images/threeDots.png" Style="{StaticResource ImageButton}" Height="20" Width="20" 
+                                        RenderOptions.BitmapScalingMode="Fant" Tag="LightGray" Command="{Binding OpenClosePopupCommand}"/>
+
+                                <Popup IsOpen="{Binding IsPopupOpen}" PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=Grid}}" Placement="Bottom" StaysOpen="False" AllowsTransparency="True">
+                                    <Border Background="White" BorderBrush="DarkGray" BorderThickness="1" CornerRadius="5" Width="180">
+                                        <StackPanel>
+
+                                            <Button Content="+ Add note" Command="{Binding SelectTypeNoteCommand}">
+                                                <Button.Style>
+                                                    <Style TargetType="Button">
+                                                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                                        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                                                        <Setter Property="FontSize" Value="14"/>
+                                                        <Setter Property="Background" Value="Transparent"/>
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="Button">
+                                                                    <Border Background="{TemplateBinding Background}" Margin="5,5,5,2" CornerRadius="5">
+                                                                        <ContentPresenter Margin="5,5,0,5"/>
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter Property="Background" Value="#E6E6E6"/>
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </Button.Style>
+                                            </Button>
+                                            <ContentControl Name="SortContentControl">
+                                                <ContentControl.Style>
+                                                    <Style TargetType="ContentControl">
+                                                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                                        <Setter Property="FontSize" Value="14"/>
+                                                        <Setter Property="Background" Value="Transparent"/>
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="ContentControl">
+                                                                    <Border Background="{TemplateBinding Background}" Margin="5,2,5,5" CornerRadius="5">
+                                                                        <Grid>
+                                                                            <TextBlock Text="Sort" FontSize="14" Margin="5,5,0,5"/>
+                                                                            <TextBlock Text=">" FontSize="14" Margin="0,5,5,5" HorizontalAlignment="Right"/>
+                                                                        </Grid>
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter Property="Background" Value="#E6E6E6"/>
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </ContentControl.Style>
+                                                <ContentControl.Triggers>
+                                                    <EventTrigger RoutedEvent="MouseEnter">
+                                                        <BeginStoryboard Name="ShowPopup">
+                                                            <Storyboard>
+                                                                <BooleanAnimationUsingKeyFrames Storyboard.TargetName="SortPopup" Storyboard.TargetProperty="IsOpen">
+                                                                    <DiscreteBooleanKeyFrame KeyTime="0:0:0" Value="True"/>
+                                                                </BooleanAnimationUsingKeyFrames>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </EventTrigger>
+                                                    <EventTrigger RoutedEvent="MouseLeave">
+                                                        <BeginStoryboard Name="HidePopupDelayed">
+                                                            <Storyboard>
+                                                                <BooleanAnimationUsingKeyFrames Storyboard.TargetName="SortPopup" Storyboard.TargetProperty="IsOpen">
+                                                                    <DiscreteBooleanKeyFrame KeyTime="0:0:0.2" Value="False"/>
+                                                                </BooleanAnimationUsingKeyFrames>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </EventTrigger>
+                                                </ContentControl.Triggers>
+                                            </ContentControl>
+
+                                            <Popup Name="SortPopup" PlacementTarget="{Binding ElementName=SortContentControl}" Placement="Right" AllowsTransparency="True">
+                                                <Popup.Triggers>
+                                                    <EventTrigger RoutedEvent="MouseEnter">
+                                                        <StopStoryboard BeginStoryboardName="HidePopupDelayed"/>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <BooleanAnimationUsingKeyFrames Storyboard.TargetProperty="IsOpen">
+                                                                    <DiscreteBooleanKeyFrame KeyTime="0:0:0" Value="True"/>
+                                                                </BooleanAnimationUsingKeyFrames>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </EventTrigger>
+                                                    <EventTrigger RoutedEvent="MouseLeave">
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <BooleanAnimationUsingKeyFrames Storyboard.TargetProperty="IsOpen">
+                                                                    <DiscreteBooleanKeyFrame KeyTime="0:0:0.2" Value="False"/>
+                                                                </BooleanAnimationUsingKeyFrames>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </EventTrigger>
+                                                </Popup.Triggers>
+                                                <Border Background="White" BorderBrush="DarkGray" BorderThickness="1" CornerRadius="5" Width="180">
+
+                                                    <StackPanel>
+                                                        <Button Content="by Title" Command="{Binding SortCommand}">
+                                                            <Button.Style>
+                                                                <Style TargetType="Button">
+                                                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                                                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                                                                    <Setter Property="FontSize" Value="14"/>
+                                                                    <Setter Property="Background" Value="Transparent"/>
+                                                                    <Setter Property="Template">
+                                                                        <Setter.Value>
+                                                                            <ControlTemplate TargetType="Button">
+                                                                                <Border Background="{TemplateBinding Background}" CornerRadius="5" Margin="5">
+                                                                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="5"/>
+                                                                                </Border>
+                                                                                <ControlTemplate.Triggers>
+                                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                                        <Setter Property="Background" Value="#E6E6E6"/>
+                                                                                    </Trigger>
+                                                                                </ControlTemplate.Triggers>
+                                                                            </ControlTemplate>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </Style>
+                                                            </Button.Style>
+                                                        </Button>
+                                                    </StackPanel>
+                                                </Border>
+                                            </Popup>
+
+                                        </StackPanel>
+                                    </Border>
+                                </Popup>
+
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -25,86 +244,90 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="ImageModuleCollapseButton" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="7" Padding="3,5">
-                            <Grid>
-                                <Image Source="{Binding Content, RelativeSource={RelativeSource AncestorType=Button}}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            </Grid>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="Yellow"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="ImageModuleCloseButton" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="7" Padding="3,5">
-                            <Grid>
-                                <Image Source="{Binding Content, RelativeSource={RelativeSource AncestorType=Button}}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            </Grid>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="OrangeRed"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        
-        <Style x:Key="NoteMenu" TargetType="ContextMenu">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ContextMenu">
-                        <Grid Margin="10">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid.Effect>
-                                <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
-                            </Grid.Effect>
-                            
-                            <Button Grid.Row="0" Content="Delete" Click="ContextMenuButton_Click"
-                                    Command="{Binding DataContext.DeleteNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
-                            <Button Grid.Row="1" Content="Duplicate" Click="ContextMenuButton_Click"
-                                    Command="{Binding DataContext.DuplicateNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
 
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="ModuleContentControl" TargetType="ContentControl">
+        <Style x:Key="NoteButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="ContentControl">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="7" Padding="3,3">
-                            <Grid>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6" Margin="0,2">
+                            <Grid Width="185" HorizontalAlignment="Left">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
-                                <Image Grid.Column="0" Source="{Binding Content, RelativeSource={RelativeSource AncestorType=ContentControl}}"/>
-                                <TextBlock Grid.Column="1" Text="{Binding Tag, RelativeSource={RelativeSource AncestorType=ContentControl}}" Margin="10,0,0,0" FontSize="14" VerticalAlignment="Center"/>
-                                <Button Grid.Column="3" Margin="5,0,0,0" Content="+" Command="{Binding SelectTypeNoteCommand}"/>
+                                <TextBlock Grid.Column="0" Text="{Binding Title}" FontSize="14" Margin="5" TextTrimming="CharacterEllipsis" TextOptions.TextFormattingMode="Ideal"/>
+                                <Button x:Name="button" Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/threeDots.png" Tag="LightGray"
+                                        Height="20" Width="20" RenderOptions.BitmapScalingMode="Fant" Visibility="Collapsed" Click="button_Click"/>
+
+                                <Popup x:Name="NotePopup"
+                                       PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=Button}}" 
+                                       Placement="Right" StaysOpen="False" AllowsTransparency="True">
+                                    <Border Background="White" BorderBrush="DarkGray" BorderThickness="1" CornerRadius="5" Width="140">
+                                        <StackPanel>
+                                            <Button Command="{Binding DataContext.DeleteNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
+                                                    CommandParameter="{Binding}">
+                                                <Button.Style>
+                                                    <Style TargetType="Button">
+                                                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                                        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                                                        <Setter Property="FontSize" Value="14"/>
+                                                        <Setter Property="Background" Value="Transparent"/>
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="Button">
+                                                                    <Border Background="{TemplateBinding Background}" Margin="5,5,5,2" CornerRadius="5">
+                                                                        <TextBlock Text="- Delete note" Margin="5,2" TextOptions.TextFormattingMode="Ideal"/>
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter Property="Background" Value="#E6E6E6"/>
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </Button.Style>
+                                            </Button>
+                                            <Button Command="{Binding DataContext.DuplicateNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
+                                                    CommandParameter="{Binding}" Click="button_Click">
+                                                <Button.Style>
+                                                    <Style TargetType="Button">
+                                                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                                        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                                                        <Setter Property="FontSize" Value="14"/>
+                                                        <Setter Property="Background" Value="Transparent"/>
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="Button">
+                                                                    <Border Background="{TemplateBinding Background}" Margin="5,2,5,5" CornerRadius="5">
+                                                                        <TextBlock Text="Duplicate" Margin="5,2" TextOptions.TextFormattingMode="Ideal"/>
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter Property="Background" Value="#E6E6E6"/>
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </Button.Style>
+                                            </Button>
+                                        </StackPanel>
+                                    </Border>
+                                </Popup>
 
                             </Grid>
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#E6E6E6"/>
+                                <Setter TargetName="button" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -113,12 +336,8 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListViewItem">
-                        <Button Content="{Binding Title}" Background="{Binding Color}"
-                                Command="{Binding DataContext.OpenNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
-                                CommandParameter="{Binding}">
-                            <Button.ContextMenu>
-                                <ContextMenu Style="{StaticResource NoteMenu}"/>
-                            </Button.ContextMenu>
+                        <Button Style="{DynamicResource NoteButton}"
+                                Command="{Binding DataContext.OpenNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
                         </Button>
                     </ControlTemplate>
                 </Setter.Value>
@@ -145,20 +364,21 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <TextBox Grid.Column="0" Text="{Binding TextSearch}"/>
-            <Button Grid.Column="1" Content="Search" Margin="5,0" Command="{Binding SearchNoteCommand}"/>
+            <TextBox Grid.Column="0" Text="{Binding TextSearch}" Style="{StaticResource TextBoxSearch}"/>
+            <Button Grid.Column="1" Content="/Common/Images/search.png" Style="{StaticResource ImageButton}" Height="24" Width="24" Margin="3,0,0,0" 
+                    Tag="#E6E6E6" RenderOptions.BitmapScalingMode="Fant" Command="{Binding SearchNoteCommand}"/>
             
         </Grid>
 
-        <ContentControl Grid.Row="2" Style="{DynamicResource ModuleContentControl}" Content="/Common/Images/notes.png" Tag="Notes" Height="28" Margin="3"/>
+        <ContentControl Grid.Row="2" Style="{StaticResource ContentControlNotes}" Content="/Common/Images/notes.png" Tag="Notes" Height="28" Margin="3"/>
 
-        <ListView Grid.Row="3" Margin="5,0" ItemsSource="{Binding Notes}" ItemContainerStyle="{StaticResource NoteListViewItem}"/>
+        <ListView Grid.Row="3" Margin="5,0" ItemsSource="{Binding Notes}" ItemContainerStyle="{StaticResource NoteListViewItem}" BorderThickness="0"/>
 
-        <Button Grid.Row="4" Content="/Common/Images/collapse.png" Height="33" Width="33" Margin="3" VerticalAlignment="Bottom" RenderOptions.BitmapScalingMode="Fant"
-                Style="{StaticResource ImageModuleCollapseButton}" ToolTip="Свернуть" Command="{Binding CollapseCommand}"/>
-        
-        <Button Grid.Row="5" Content="/Common/Images/close.png" Height="33" Width="33" Margin="3" VerticalAlignment="Bottom" RenderOptions.BitmapScalingMode="Fant"
-                Style="{StaticResource ImageModuleCloseButton}" ToolTip="Выход" Command="{Binding CloseCommand}"/>
+        <Button Grid.Row="4" Content="/Common/Images/collapse.png" Height="33" Margin="5,0,5,5" VerticalAlignment="Bottom" 
+                Style="{StaticResource ImageModule}" ToolTip="Collapse" Command="{Binding CollapseCommand}" Tag="Yellow"/>
+
+        <Button Grid.Row="5" Content="/Common/Images/close.png" Height="32" Margin="5,0,5,5" VerticalAlignment="Bottom"
+                Style="{StaticResource ImageModule}" ToolTip="Exit" Command="{Binding CloseCommand}" Tag="Red"/>
 
     </Grid>
 

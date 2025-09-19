@@ -6,6 +6,5 @@
         public DateTime DateCreate { get; set; }
         public string FontFamily { get; set; } = string.Empty;
         public double FontSize { get; set; }
-        public string Color { get; set; } = string.Empty;
     }
 }

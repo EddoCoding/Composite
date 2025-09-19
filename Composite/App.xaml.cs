@@ -97,8 +97,8 @@ namespace Composite
                 
                 //Простые заметки
                 var queryCreateNotes = "Create Table If Not Exists Notes(Id Text Primary Key, Title Text Not Null, Content Text, DateCreate DateTime Not Null, " +
-                                       "FontFamily Text, FontSize Real, Category Text, Color Text)";
-                var queryCreateHardNotes = "Create Table If Not Exists HardNotes(Id Text Primary Key, Title Text Default '', Category Text Default '')";
+                                       "FontFamily Text, FontSize Real)";
+                var queryCreateHardNotes = "Create Table If Not Exists HardNotes(Id Text Primary Key, Title Text Default '')";
                 var queryCreateComposites = "Create Table If Not Exists Composites(Id Text Primary Key, Tag Text, Comment Text, Text Text, Header Text, FontWeightHeader Text, FontSizeHeader Integer, Quote Text, " +
                                             "HardNoteId TEXT NOT NULL, CompositeType TEXT NOT NULL, Foreign Key (HardNoteId) References HardNotes(Id) On Delete Cascade)";
 

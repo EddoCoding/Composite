@@ -1,4 +1,6 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Composite.Common.Message.Notes;
@@ -10,7 +12,7 @@ using Composite.ViewModels.Notes.HardNote;
 
 namespace Composite.ViewModels
 {
-    public partial class CompositeMenuViewModel : IDisposable
+    public partial class CompositeMenuViewModel : ObservableObject, IDisposable
     {
         readonly IViewService _viewService;
         readonly ITabService _tabService;
@@ -21,7 +23,10 @@ namespace Composite.ViewModels
         ObservableCollection<NoteBaseVM> _allNotes = new();
         public ObservableCollection<NoteBaseVM> Notes { get; set; } = new();
 
+        //Для надстроек
         public string TextSearch { get; set; } = string.Empty;
+        [ObservableProperty] bool isPopupOpen;
+        [ObservableProperty] bool isPopupOpenNote;
 
         public CompositeMenuViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, 
             INoteService noteService, IHardNoteService hardNoteService)
@@ -76,7 +81,6 @@ namespace Composite.ViewModels
                     note.DateCreate = noteMessage.DateCreate;
                     note.FontFamily = noteMessage.FontFamily;
                     note.FontSize = noteMessage.FontSize;
-                    note.Color = noteMessage.Color;
                 }
                 else if (noteVM is HardNoteVM hardNote)
                 {
@@ -90,7 +94,12 @@ namespace Composite.ViewModels
             GetNotes();
             GetHardNotes();
         }
-        [RelayCommand] void SelectTypeNote() => _viewService.ShowView<SelectTypeNoteViewModel>();
+
+        [RelayCommand] void SelectTypeNote()
+        {
+            _viewService.ShowView<SelectTypeNoteViewModel>();
+            OpenClosePopup();
+        }
         [RelayCommand] void SearchNote()
         {
             Notes.Clear();
@@ -109,6 +118,25 @@ namespace Composite.ViewModels
             }
 
         }
+
+        //Фичи менюшки
+        [RelayCommand] void OpenClosePopup()
+        {
+            if (IsPopupOpen == false) IsPopupOpen = true;
+            else IsPopupOpen = false;
+        }
+        [RelayCommand] void SortTitle()
+        {
+            var notes = _allNotes.OrderBy(x => x.Title);
+            Notes.Clear();
+            foreach (var note in notes) Notes.Add(note);
+        }
+        [RelayCommand] void OpenClosePopupNote()
+        {
+            if (IsPopupOpenNote == false) IsPopupOpenNote = true;
+            else IsPopupOpenNote = false;
+        }
+
 
         //Команды меню
         [RelayCommand] async Task DeleteNote(NoteBaseVM noteVM)
@@ -132,7 +160,7 @@ namespace Composite.ViewModels
 
 
         }
-        [RelayCommand] async void DuplicateNote(NoteBaseVM noteVM)
+        [RelayCommand] async Task DuplicateNote(NoteBaseVM noteVM)
         {
             if(noteVM is NoteVM note)
             {
@@ -152,8 +180,7 @@ namespace Composite.ViewModels
                     Notes.Insert(Notes.Count, noteDuplicate);
                 }
             }
-
-
+            OpenClosePopupNote();
         }
 
         [RelayCommand] void Collapse() => _viewService.CollapseView<CompositeViewModel>();

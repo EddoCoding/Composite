@@ -20,6 +20,8 @@
     <None Remove="Common\Images\notRepeat.png" />
     <None Remove="Common\Images\playStop.png" />
     <None Remove="Common\Images\repeat.png" />
+    <None Remove="Common\Images\sort.png" />
+    <None Remove="Common\Images\threeDots.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,6 +54,9 @@
     <Resource Include="Common\Images\notRepeat.png" />
     <Resource Include="Common\Images\playStop.png" />
     <Resource Include="Common\Images\repeat.png" />
+    <Resource Include="Common\Images\search.png" />
+    <Resource Include="Common\Images\sort.png" />
+    <Resource Include="Common\Images\threeDots.png" />
   </ItemGroup>
 
 </Project>
