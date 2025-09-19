@@ -2,6 +2,7 @@
 using Composite.Common.Mappers;
 using Composite.Repositories;
 using Composite.ViewModels.Notes;
+using Composite.ViewModels.Notes.HardNote;
 
 namespace Composite.Services
 {
@@ -43,22 +44,19 @@ namespace Composite.Services
 
         public async Task<NoteVM> DuplicateNoteVM(NoteVM noteVM)
         {
-            var note = noteMap.MapToModel(noteVM);
-
             var id = Guid.NewGuid();
-            var dateCreate = DateTime.Now;
 
+            var note = noteMap.MapToModel(noteVM);
             note.Id = id.ToString();
-            note.DateCreate = dateCreate;
+            note.Title = note.Title + " (duplicate)";
+            note.DateCreate = DateTime.Now;
 
             if (await noteRepository.Create(note))
             {
                 var duplicateNoteVM = noteMap.MapToViewModel(note);
-                duplicateNoteVM.Id = id;
 
                 return duplicateNoteVM;
             }
-
             return null;
         }
         public NoteVM CreateNoteVM(NoteVM noteVM) => noteFactory.CreateNoteVM(noteVM); 

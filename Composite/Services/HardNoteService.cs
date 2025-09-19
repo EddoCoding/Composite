@@ -45,14 +45,17 @@ namespace Composite.Services
 
         public async Task<HardNoteVM> DuplicateHardNoteVM(NoteBaseVM hardNoteVM)
         {
+            var currentId = hardNoteVM.Id;
+
             var id = Guid.NewGuid();
             hardNoteVM.Id = id;
             var note = hardNoteMap.MapToModelWithNewIdComposite((HardNoteVM)hardNoteVM);
+            note.Title = note.Title + " (duplicate)";
 
             if (await hardNoteRepository.Create(note))
             {
+                hardNoteVM.Id = currentId;
                 var duplicateHardNoteVM = hardNoteMap.MapToViewModel(note);
-                duplicateHardNoteVM.Id = id;
 
                 return duplicateHardNoteVM;
             }
