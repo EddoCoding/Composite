@@ -29,12 +29,13 @@ namespace Composite.ViewModels.Notes.Note
 
             messenger.Register<CheckNoteBackMessage>(this, (r, m) =>
             {
-                if (m.TitleNote) { SaveHardNote(); }
+                if (m.TitleNote && _id == m.Id) SaveHardNote();
                 if (_id == m.Id) Message = m.ErrorMessage;
             });
         }
 
         [RelayCommand] void CheckNote() => _messenger.Send(new CheckNoteMessage(_id, HardNoteVM.Title));
+
         async Task SaveHardNote()
         {
             if(await _hardNoteService.AddHardNoteAsync(HardNoteVM))

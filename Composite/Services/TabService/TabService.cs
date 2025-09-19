@@ -50,6 +50,11 @@ namespace Composite.Services.TabService
                 }
             }
         }
+        public void RemoveTab(string tabTitle)
+        {
+            var tab = Tabs.FirstOrDefault(x => x.TitleTab == tabTitle);
+            RemoveTab(tab);
+        }
 
         void OnTabsChanged(object sender, NotifyCollectionChangedEventArgs e)
         {

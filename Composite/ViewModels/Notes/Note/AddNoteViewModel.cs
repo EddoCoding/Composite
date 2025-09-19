@@ -31,8 +31,8 @@ namespace Composite.ViewModels.Notes
 
             messenger.Register<CheckNoteBackMessage>(this, (r, m) => 
             { 
-                if (m.TitleNote) { AddNote(); }
-                if(_id == m.Id) Message = m.ErrorMessage;
+                if (m.TitleNote && _id == m.Id) AddNote();
+                if (_id == m.Id) Message = m.ErrorMessage;
             });
         }
 

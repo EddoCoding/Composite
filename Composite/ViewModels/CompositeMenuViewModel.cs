@@ -151,7 +151,7 @@ namespace Composite.ViewModels
                 }
             }
 
-
+            _tabService.RemoveTab(noteVM.Title);
         }
         [RelayCommand] async Task DuplicateNote(NoteBaseVM noteVM)
         {

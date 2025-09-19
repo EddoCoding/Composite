@@ -10,5 +10,6 @@ namespace Composite.Services.TabService
         bool CreateTab<ViewModel>(string titleTab);
         void RemoveTab(TabViewModel tab);
         void RemoveTab(object viewModel);
+        void RemoveTab(string tabTitle);
     }
 }
