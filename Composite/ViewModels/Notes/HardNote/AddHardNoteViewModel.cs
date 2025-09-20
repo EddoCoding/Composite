@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-using System.Windows.Media;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Composite.Common.Message.Notes.Note;
@@ -57,7 +55,6 @@ namespace Composite.ViewModels.Notes.Note
             {
                 if (disposing)
                 {
-                    HardNoteVM.Composites.Clear();
                     _messenger.UnregisterAll(this);
                 }
                 _disposed = true;

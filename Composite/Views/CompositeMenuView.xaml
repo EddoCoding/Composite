@@ -361,7 +361,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListViewItem">
-                        <Button x:Name="ItemButton" Style="{DynamicResource NoteButton}"
+                        <Button x:Name="ItemButton" Style="{StaticResource NoteButton}"
                                 Command="{Binding DataContext.OpenNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
                         </Button>
                         <ControlTemplate.Triggers>
