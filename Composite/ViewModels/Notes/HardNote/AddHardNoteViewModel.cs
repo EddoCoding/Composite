@@ -18,16 +18,26 @@ namespace Composite.ViewModels.Notes.Note
         
         public HardNoteVM HardNoteVM { get; set; } = new();
 
-        public AddHardNoteViewModel(ITabService tabService, IMessenger messenger, IHardNoteService hardNoteService)
+        public List<CategoryNoteVM> Categories { get; }
+        public CategoryNoteVM SelectedCategory { get; set; } = new();
+
+        public AddHardNoteViewModel(ITabService tabService, IMessenger messenger, IHardNoteService hardNoteService, ICategoryNoteService categoryNoteService)
         {
             _id = Guid.NewGuid();
             _tabService = tabService;
             _messenger = messenger;
             _hardNoteService = hardNoteService;
 
+            Categories = new(categoryNoteService.GetCategories());
+            SelectedCategory = Categories.FirstOrDefault();
+
             messenger.Register<CheckNoteBackMessage>(this, (r, m) =>
             {
-                if (m.TitleNote && _id == m.Id) SaveHardNote();
+                if (m.TitleNote && _id == m.Id)
+                {
+                    HardNoteVM.Category = SelectedCategory.NameCategory;
+                    SaveHardNote();
+                }
                 if (_id == m.Id) Message = m.ErrorMessage;
             });
         }

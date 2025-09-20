@@ -18,8 +18,10 @@ namespace Composite.ViewModels.Notes
         public NoteVM NoteVM { get; set; } = new NoteVM();
         public List<string> Fonts { get; }
         public List<double> FontSizes { get; }
+        public List<CategoryNoteVM> Categories { get; }
+        public CategoryNoteVM SelectedCategory { get; set; } = new();
 
-        public AddNoteViewModel(ITabService tabService, IMessenger messenger, INoteService noteService)
+        public AddNoteViewModel(ITabService tabService, IMessenger messenger, INoteService noteService, ICategoryNoteService categoryNoteService)
         {
             _id = Guid.NewGuid();
             _tabService = tabService;
@@ -28,10 +30,16 @@ namespace Composite.ViewModels.Notes
 
             Fonts = new(System.Windows.Media.Fonts.SystemFontFamilies.Select(x => x.Source).OrderBy(x => x));
             FontSizes = new() { 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25 };
+            Categories = new(categoryNoteService.GetCategories());
+            SelectedCategory = Categories?.FirstOrDefault();
 
             messenger.Register<CheckNoteBackMessage>(this, (r, m) => 
             { 
-                if (m.TitleNote && _id == m.Id) AddNote();
+                if (m.TitleNote && _id == m.Id)
+                {
+                    NoteVM.Category = SelectedCategory.NameCategory;
+                    AddNote();
+                }
                 if (_id == m.Id) Message = m.ErrorMessage;
             });
         }

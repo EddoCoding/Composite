@@ -10,6 +10,7 @@ namespace Composite.Common.Mappers
             Id = noteVM.Id.ToString(),
             Title = noteVM.Title,
             Content = noteVM.Content,
+            Category = noteVM.Category,
             DateCreate = noteVM.DateCreate,
             FontFamily = noteVM.FontFamily,
             FontSize = noteVM.FontSize
@@ -19,6 +20,7 @@ namespace Composite.Common.Mappers
             Id = Guid.Parse(note.Id),
             Title = note.Title,
             Content = note.Content,
+            Category = note.Category,
             DateCreate = note.DateCreate,
             FontFamily = note.FontFamily,
             FontSize = note.FontSize

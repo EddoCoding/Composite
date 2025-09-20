@@ -76,6 +76,7 @@ namespace Composite.ViewModels
 
                     note.Title = noteMessage.Title;
                     note.Content = noteMessage.Content;
+                    note.Category = noteMessage.Category;
                     note.DateCreate = noteMessage.DateCreate;
                     note.FontFamily = noteMessage.FontFamily;
                     note.FontSize = noteMessage.FontSize;
@@ -85,6 +86,8 @@ namespace Composite.ViewModels
                     var noteMessage = (HardNoteVM)m.Note;
 
                     hardNote.Title = noteMessage.Title;
+                    hardNote.Category = noteMessage.Category;
+                    hardNote.DateCreate = noteMessage.DateCreate;
                     hardNote.Composites = noteMessage.Composites;
                 }
             });    //Для обновления данных уже загруженно заметки

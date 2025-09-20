@@ -1,7 +1,7 @@
-﻿using System.Windows;
-using CommunityToolkit.Mvvm.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Composite.Common.Factories;
 using Composite.Common.Mappers;
+using Composite.Models.Notes;
 using Composite.Repositories;
 using Composite.Services;
 using Composite.Services.TabService;
@@ -14,6 +14,8 @@ using Composite.Views.Notes;
 using Composite.Views.Notes.Notes;
 using Dapper;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net.Mail;
+using System.Windows;
 
 namespace Composite
 {
@@ -55,7 +57,6 @@ namespace Composite
             services.AddTransient<IMediaPlayerService, MediaPlayerService>();
             services.AddTransient<IMediaPlayerFactory, MediaPlayerFactory>();
 
-
             services.AddTransient<ISettingMediaPlayerService, SettingMediaPlayerService>();
             services.AddTransient<ISettingMediaPlayerRepository, SettingMediaPlayerRepository>();
             services.AddTransient<ISongMap, SongMap>();
@@ -70,6 +71,10 @@ namespace Composite
             services.AddTransient<IHardNoteRepository, HardNoteRepository>();
             services.AddTransient<IHardNoteMap, HardNoteMap>();
             services.AddTransient<IHardNoteFactory, HardNoteFactory>();
+
+            services.AddTransient<ICategoryNoteService, CategoryNoteService>();
+            services.AddTransient<ICategoryNoteRepository, CategoryNoteRepository>();
+            services.AddTransient<ICategoryNoteMap, CategoryNoteMap>();
         }
 
         void RegisterView()
@@ -96,21 +101,26 @@ namespace Composite
                 connection.Open();
                 
                 //Простые заметки
-                var queryCreateNotes = "Create Table If Not Exists Notes(Id Text Primary Key, Title Text Not Null, Content Text, DateCreate DateTime Not Null, " +
+                var queryCreateNotes = "Create Table If Not Exists Notes(Id Text Primary Key, Title Text Not Null, Content Text, DateCreate DateTime Not Null, Category Text,  " +
                                        "FontFamily Text, FontSize Real)";
-
+                
                 //Функциональный заметки
-                var queryCreateHardNotes = "Create Table If Not Exists HardNotes(Id Text Primary Key, Title Text Default '', DateCreate DateTime Not Null)";
+                var queryCreateHardNotes = "Create Table If Not Exists HardNotes(Id Text Primary Key, Title Text Default '', DateCreate DateTime Not Null, Category Text)";
                 var queryCreateComposites = "Create Table If Not Exists Composites(Id Text Primary Key, Tag Text, Comment Text, Text Text, Header Text, FontWeightHeader Text, FontSizeHeader Integer, Quote Text, " +
                                             "HardNoteId TEXT NOT NULL, CompositeType TEXT NOT NULL, Foreign Key (HardNoteId) References HardNotes(Id) On Delete Cascade)";
 
-                //Песни
+                //Допы
                 var queryCreateSongs = "Create Table If Not Exists Songs(Id Text Primary Key, Title Text, Data Blob)";
-                
+                var queryCreateCategories = "Create Table if Not Exists Categories(NameCategory Text Primary Key)";
+                var queryInsertCategory = "Insert Or Ignore Into Categories (NameCategory) Values (@NameCategory)";
+
                 connection.Execute(queryCreateNotes);
                 connection.Execute(queryCreateHardNotes);
                 connection.Execute(queryCreateComposites);
+
                 connection.Execute(queryCreateSongs);
+                connection.Execute(queryCreateCategories);
+                connection.Execute(queryInsertCategory, new { NameCategory = "Без категории" });
             }
         }
     }

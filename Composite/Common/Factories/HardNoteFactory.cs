@@ -52,6 +52,7 @@ namespace Composite.Common.Factories
             {
                 Id = hardNoteVM.Id,
                 Title = hardNoteVM.Title,
+                Category = hardNoteVM.Category,
                 Composites = new(compositesVM)
             };
         }

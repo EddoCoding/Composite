@@ -199,8 +199,22 @@
             </ListView.ItemContainerStyle>
         </ListView>
 
-        <Button Grid.Row="2" Content="Сохранить" Style="{StaticResource AddNoteButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right"
+        <Grid Grid.Row="2" Background="White" Margin="-2,-1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.Effect>
+                <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
+            </Grid.Effect>
+
+            <ComboBox Grid.Column="0" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" Style="{StaticResource ComboBoxCustom}" ItemContainerStyle="{StaticResource ComboBoxItemCustom}"
+                FontSize="12" DisplayMemberPath="NameCategory"/>
+
+            <Button Grid.Column="1" Content="Сохранить" Style="{StaticResource AddNoteButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right"
                 Command="{Binding CheckNoteCommand}"/>
+
+        </Grid>
 
         <Grid Grid.Row="3" Background="White" Margin="0,2,0,0">
             <Grid.Effect>

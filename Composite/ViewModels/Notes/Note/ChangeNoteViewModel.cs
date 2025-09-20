@@ -14,13 +14,15 @@ namespace Composite.ViewModels.Notes
         readonly ITabService _tabService;
         readonly IMessenger _messenger;
         readonly INoteService _noteService;
-
         [ObservableProperty] NoteVM noteVM;
         [ObservableProperty] string message;
+
         public List<string> Fonts { get; }
         public List<double> FontSizes { get; }
+        public List<CategoryNoteVM> Categories { get; }
+        public CategoryNoteVM SelectedCategory { get; set; } = new();
 
-        public ChangeNoteViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, INoteService noteService)
+        public ChangeNoteViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, INoteService noteService, ICategoryNoteService categoryNoteService)
         {
             _id = Guid.NewGuid();
             _tabService = tabService;
@@ -29,6 +31,7 @@ namespace Composite.ViewModels.Notes
 
             Fonts = new(System.Windows.Media.Fonts.SystemFontFamilies.Select(x => x.Source).OrderBy(x => x));
             FontSizes = new() { 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25 };
+            Categories = new(categoryNoteService.GetCategories());
 
             messenger.Register<ChangeNoteMessage>(this, (r, m) =>
             {
@@ -36,13 +39,18 @@ namespace Composite.ViewModels.Notes
                 {
                     CopyNoteVM(noteVM);
                     messenger.Unregister<ChangeNoteMessage>(this);
+                    SelectedCategory = Categories?.FirstOrDefault(x => x.NameCategory == NoteVM.Category);
                 }
             });
             messenger.Register<CheckChangeNoteBackMessage>(this, (r, m) =>
             {
                 if (_id == m.Id)
                 {
-                    if (m.TitleNote) { ChangeNote(); }
+                    if (m.TitleNote)
+                    {
+                        NoteVM.Category = SelectedCategory.NameCategory;
+                        ChangeNote();
+                    }
                     else Message = m.ErrorMessage;
                 }
             });

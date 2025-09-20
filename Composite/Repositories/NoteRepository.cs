@@ -12,8 +12,8 @@ namespace Composite.Repositories
             {
                 connection.Open();
 
-                var queryAddNote = "Insert Into Notes(Id, Title, Content, DateCreate, FontFamily, FontSize) " +
-                                   "Values (@Id, @Title, @Content, @DateCreate, @FontFamily, @FontSize)";
+                var queryAddNote = "Insert Into Notes(Id, Title, Content, Category, DateCreate, FontFamily, FontSize) " +
+                                   "Values (@Id, @Title, @Content, @Category, @DateCreate, @FontFamily, @FontSize)";
                 var resultAddNote = await connection.ExecuteAsync(queryAddNote, note);
 
                 if(resultAddNote > 0) return true;
@@ -39,7 +39,7 @@ namespace Composite.Repositories
             {
                 connection.Open();
 
-                var queryUpdateNote = "Update Notes Set Title = @Title, Content = @Content, DateCreate = @DateCreate, " +
+                var queryUpdateNote = "Update Notes Set Title = @Title, Content = @Content, Category = @Category, DateCreate = @DateCreate, " +
                                       "FontFamily = @FontFamily, FontSize = @FontSize Where Id = @Id";
                 var resultUpdateNote = await connection.ExecuteAsync(queryUpdateNote, note);
 

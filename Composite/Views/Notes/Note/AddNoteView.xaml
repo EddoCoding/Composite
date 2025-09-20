@@ -272,6 +272,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.Effect>
@@ -284,7 +285,10 @@
             <ComboBox Grid.Column="1" ItemsSource="{Binding FontSizes}" SelectedItem="{Binding NoteVM.FontSize}" Style="{StaticResource ComboBoxCustom}" ItemContainerStyle="{StaticResource ComboBoxItemCustom}"
                       FontSize="12"/>
 
-            <Button Grid.Column="2" Content="Сохранить" Style="{StaticResource AddNoteButton}" Command="{Binding CheckNoteCommand}"/>
+            <ComboBox Grid.Column="2" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" Style="{StaticResource ComboBoxCustom}" ItemContainerStyle="{StaticResource ComboBoxItemCustom}"
+                      FontSize="12" DisplayMemberPath="NameCategory"/>
+
+            <Button Grid.Column="3" Content="Сохранить" Style="{StaticResource AddNoteButton}" Command="{Binding CheckNoteCommand}"/>
             
         </Grid>
 

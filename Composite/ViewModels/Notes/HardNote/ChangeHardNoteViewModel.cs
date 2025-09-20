@@ -18,12 +18,17 @@ namespace Composite.ViewModels.Notes.HardNote
         [ObservableProperty] string _message;
         [ObservableProperty] HardNoteVM _hardNoteVM;
 
-        public ChangeHardNoteViewModel(ITabService tabService, IMessenger messenger, IHardNoteService hardNoteService)
+        public List<CategoryNoteVM> Categories { get; }
+        public CategoryNoteVM SelectedCategory { get; set; } = new();
+
+        public ChangeHardNoteViewModel(ITabService tabService, IMessenger messenger, IHardNoteService hardNoteService, ICategoryNoteService categoryNoteService)
         {
             _id = Guid.NewGuid();
             _tabService = tabService;
             _messenger = messenger;
             _hardNoteService = hardNoteService;
+
+            Categories = new(categoryNoteService.GetCategories());
 
             messenger.Register<ChangeNoteMessage>(this, (r, m) =>
             {
@@ -31,13 +36,18 @@ namespace Composite.ViewModels.Notes.HardNote
                 {
                     CopyHardNoteVM(hardNoteVM);
                     messenger.Unregister<ChangeNoteMessage>(this);
+                    SelectedCategory = Categories?.FirstOrDefault(x => x.NameCategory == HardNoteVM.Category);
                 }
             });
             messenger.Register<CheckChangeNoteBackMessage>(this, (r, m) =>
             {
                 if (_id == m.Id)
                 {
-                    if (m.TitleNote) { UpdateHardNote(); }
+                    if (m.TitleNote) 
+                    {
+                        HardNoteVM.Category = SelectedCategory.NameCategory;
+                        UpdateHardNote(); 
+                    }
                     else Message = m.ErrorMessage;
                 }
             });

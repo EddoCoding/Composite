@@ -9,6 +9,7 @@ namespace Composite.Common.Factories
             Id = noteVM.Id,
             Title = noteVM.Title,
             Content = noteVM.Content,
+            Category = noteVM.Category,
             DateCreate = noteVM.DateCreate,
             FontFamily = noteVM.FontFamily,
             FontSize = noteVM.FontSize
