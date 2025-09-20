@@ -7,5 +7,6 @@ namespace Composite.ViewModels.Notes
         public Guid Id { get; set; }
         public virtual string ItemType => string.Empty;
         [ObservableProperty] string title = string.Empty;
+        [ObservableProperty] DateTime dateCreate;
     }
 }

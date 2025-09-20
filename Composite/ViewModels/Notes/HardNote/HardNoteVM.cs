@@ -12,6 +12,7 @@ namespace Composite.ViewModels.Notes.HardNote
             Id = Guid.NewGuid();
             Composites = new();
             Composites.Add(new TextCompositeVM());
+            DateCreate = DateTime.Now;
         }
 
         public void AddTextCompositeVM() => Composites.Add(new TextCompositeVM());

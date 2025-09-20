@@ -25,6 +25,7 @@ namespace Composite.Common.Mappers
             {
                 Id = hardNoteVM.Id.ToString(),
                 Title = hardNoteVM.Title,
+                DateCreate = hardNoteVM.DateCreate,
                 Composites = composites
             };
         }
@@ -46,6 +47,7 @@ namespace Composite.Common.Mappers
             {
                 Id = hardNoteVM.Id.ToString(),
                 Title = hardNoteVM.Title,
+                DateCreate = hardNoteVM.DateCreate,
                 Composites = composites
             };
         }
@@ -67,6 +69,7 @@ namespace Composite.Common.Mappers
             {
                 Id = Guid.Parse(hardNote.Id),
                 Title = hardNote.Title,
+                DateCreate = hardNote.DateCreate,
                 Composites = new ObservableCollection<CompositeBaseVM>(compositesVM)
             };
         }
@@ -190,6 +193,7 @@ namespace Composite.Common.Mappers
                     Id = Guid.Parse(compositeBase.Id)
                 };
             }
+
             return null;
         }
     }

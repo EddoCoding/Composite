@@ -13,7 +13,7 @@ namespace Composite.Repositories
             {
                 connection.Open();
 
-                var queryAddHardNote = "Insert Into HardNotes(Id, Title) Values (@Id, @Title)";
+                var queryAddHardNote = "Insert Into HardNotes(Id, Title, DateCreate) Values (@Id, @Title, @DateCreate)";
                 var resultAddHardNote = await connection.ExecuteAsync(queryAddHardNote, hardNote);
 
                 if (hardNote.Composites?.Any() == true)
