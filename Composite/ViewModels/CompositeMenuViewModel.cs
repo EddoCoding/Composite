@@ -121,9 +121,18 @@ namespace Composite.ViewModels
             if (IsPopupOpen == false) IsPopupOpen = true;
             else IsPopupOpen = false;
         }
-        [RelayCommand] void SortByTitle()
+        [RelayCommand] void SortByDateCreate()
         {
             var notes = _allNotes.OrderBy(x => x.Title);
+            Notes.Clear();
+            GetAddButtonNote();
+            foreach (var note in notes) Notes.Add(note);
+
+            OpenClosePopup();
+        }
+        [RelayCommand] void SortByTitle()
+        {
+            var notes = _allNotes.OrderBy(x => x.DateCreate);
             Notes.Clear();
             GetAddButtonNote();
             foreach (var note in notes) Notes.Add(note);

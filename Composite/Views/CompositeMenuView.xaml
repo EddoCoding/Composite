@@ -83,6 +83,26 @@
             </Setter>
         </Style>
 
+        <Style x:Key="ButtonSorts" TargetType="Button">
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="5"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#E6E6E6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style x:Key="ContentControlNotes" TargetType="ContentControl">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Template">
@@ -201,30 +221,8 @@
                                                 <Border Background="White" BorderBrush="DarkGray" BorderThickness="1" CornerRadius="5" Width="180">
 
                                                     <StackPanel>
-                                                        <Button Content="by Title" Command="{Binding SortByTitleCommand}">
-                                                            <Button.Style>
-                                                                <Style TargetType="Button">
-                                                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                                                                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
-                                                                    <Setter Property="FontSize" Value="14"/>
-                                                                    <Setter Property="Background" Value="Transparent"/>
-                                                                    <Setter Property="Template">
-                                                                        <Setter.Value>
-                                                                            <ControlTemplate TargetType="Button">
-                                                                                <Border Background="{TemplateBinding Background}" CornerRadius="5" Margin="5">
-                                                                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="5"/>
-                                                                                </Border>
-                                                                                <ControlTemplate.Triggers>
-                                                                                    <Trigger Property="IsMouseOver" Value="True">
-                                                                                        <Setter Property="Background" Value="#E6E6E6"/>
-                                                                                    </Trigger>
-                                                                                </ControlTemplate.Triggers>
-                                                                            </ControlTemplate>
-                                                                        </Setter.Value>
-                                                                    </Setter>
-                                                                </Style>
-                                                            </Button.Style>
-                                                        </Button>
+                                                        <Button Content="by Title" Style="{StaticResource ButtonSorts}" Margin="5,5,5,2" Command="{Binding SortByTitleCommand}"/>
+                                                        <Button Content="by DateCreate" Style="{StaticResource ButtonSorts}" Margin="5,2,5,5" Command="{Binding SortByDateCreateCommand}"/>
                                                     </StackPanel>
                                                 </Border>
                                             </Popup>
