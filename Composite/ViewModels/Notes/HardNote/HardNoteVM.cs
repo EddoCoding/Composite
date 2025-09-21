@@ -5,6 +5,7 @@ namespace Composite.ViewModels.Notes.HardNote
 {
     public partial class HardNoteVM : NoteBaseVM
     {
+        public override string ItemType => "HardNote";
         public ObservableCollection<CompositeBaseVM> Composites { get; set; }
 
         public HardNoteVM()
