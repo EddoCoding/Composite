@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using Composite.Common.Factories;
 using Composite.Common.Mappers;
-using Composite.Models.Notes;
 using Composite.Repositories;
 using Composite.Services;
 using Composite.Services.TabService;
@@ -14,7 +13,6 @@ using Composite.Views.Notes;
 using Composite.Views.Notes.Notes;
 using Dapper;
 using Microsoft.Extensions.DependencyInjection;
-using System.Net.Mail;
 using System.Windows;
 
 namespace Composite
