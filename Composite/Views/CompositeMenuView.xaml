@@ -404,7 +404,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}" CornerRadius="6" Margin="0,2">
-                            <Grid Width="185" HorizontalAlignment="Left">
+                            <Grid Width="234" HorizontalAlignment="Left">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
@@ -504,7 +504,7 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid Background="White" Margin="10,0,10,10" Width="200">
+    <Grid Background="White" Margin="10,0,10,10" Width="250">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
