@@ -12,54 +12,85 @@ namespace Composite.Services
         {
             var hardNote = hardNoteMap.MapToModel(hardNoteVM);
 
-            if (await hardNoteRepository.Create(hardNote)) return true;
-
-            return false;
+            try
+            {
+                if (await hardNoteRepository.Create(hardNote)) return true;
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
         public async Task<bool> DeleteHardNoteAsync(Guid id)
         {
-            if(await hardNoteRepository.Delete(id.ToString())) return true;
-
-            return false;
+            try
+            {
+                if (await hardNoteRepository.Delete(id.ToString())) return true;
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
         public async Task<bool> UpdateHardNoteAsync(HardNoteVM hardNoteVM)
         {
             var hardNote = hardNoteMap.MapToModel(hardNoteVM);
 
-            if (await hardNoteRepository.Update(hardNote)) return true;
-
-            return false;
+            try
+            {
+                if (await hardNoteRepository.Update(hardNote)) return true;
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
         public IEnumerable<HardNoteVM> GetNotes()
         {
-            var hardNotes = hardNoteRepository.Read();
-
             List<HardNoteVM> hardNotesVM = new();
-            foreach (var hardNote in hardNotes)
+
+            try
             {
-                var hardNoteVM = hardNoteMap.MapToViewModel(hardNote);
-                hardNotesVM.Add(hardNoteVM);
+                var hardNotes = hardNoteRepository.Read();
+                foreach (var hardNote in hardNotes)
+                {
+                    var hardNoteVM = hardNoteMap.MapToViewModel(hardNote);
+                    hardNotesVM.Add(hardNoteVM);
+                }
+                return hardNotesVM;
             }
-            return hardNotesVM;
+            catch (Exception)
+            {
+                return hardNotesVM;
+            }
         }
 
         public async Task<HardNoteVM> DuplicateHardNoteVM(NoteBaseVM hardNoteVM)
         {
             var currentId = hardNoteVM.Id;
-
             var id = Guid.NewGuid();
             hardNoteVM.Id = id;
             var note = hardNoteMap.MapToModelWithNewIdComposite((HardNoteVM)hardNoteVM);
             note.Title = note.Title + " (duplicate)";
 
-            if (await hardNoteRepository.Create(note))
+            try
             {
-                hardNoteVM.Id = currentId;
-                var duplicateHardNoteVM = hardNoteMap.MapToViewModel(note);
+                if (await hardNoteRepository.Create(note))
+                {
+                    hardNoteVM.Id = currentId;
+                    var duplicateHardNoteVM = hardNoteMap.MapToViewModel(note);
 
-                return duplicateHardNoteVM;
+                    return duplicateHardNoteVM;
+                }
+                return null;
             }
-            return null;
+            catch (Exception)
+            {
+                return null;
+            }
         }
         public HardNoteVM CreateHardNoteVM(HardNoteVM hardNoteVM) => hardNoteFactory.CreateHardNoteVM(hardNoteVM);
     }

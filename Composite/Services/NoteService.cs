@@ -11,52 +11,85 @@ namespace Composite.Services
         {
             noteVM.DateCreate = DateTime.Now;
             var note = noteMap.MapToModel(noteVM);
-
-            if(await noteRepository.Create(note)) return true;
-
-            return false;
+            try
+            {
+                if (await noteRepository.Create(note)) return true;
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
         public IEnumerable<NoteVM> GetNotes()
         {
             var notes = noteRepository.Read();
-
             List<NoteVM> notesVM = new();
-            foreach (var note in notes)
+
+            try
             {
-                var noteVM = noteMap.MapToViewModel(note);
-                notesVM.Add(noteVM);
+                foreach (var note in notes)
+                {
+                    var noteVM = noteMap.MapToViewModel(note);
+                    notesVM.Add(noteVM);
+                }
+                return notesVM;
             }
-            return notesVM;
+            catch (Exception)
+            {
+                return notesVM;
+            }
         }
         public async Task<bool> DeleteNoteAsync(Guid id)
         {
-            if(await noteRepository.Delete(id.ToString())) return true;
-            return false;
+            try
+            {
+                if (await noteRepository.Delete(id.ToString())) return true;
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
         public async Task<bool> UpdateNoteAsync(NoteVM noteVM)
         {
             var note = noteMap.MapToModel(noteVM);
 
-            if (await noteRepository.Update(note)) return true;
-            return false;
+            try
+            {
+                if (await noteRepository.Update(note)) return true;
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public async Task<NoteVM> DuplicateNoteVM(NoteVM noteVM)
         {
             var id = Guid.NewGuid();
-
             var note = noteMap.MapToModel(noteVM);
             note.Id = id.ToString();
             note.Title = note.Title + " (duplicate)";
             note.DateCreate = DateTime.Now;
 
-            if (await noteRepository.Create(note))
+            try
             {
-                var duplicateNoteVM = noteMap.MapToViewModel(note);
+                if (await noteRepository.Create(note))
+                {
+                    var duplicateNoteVM = noteMap.MapToViewModel(note);
 
-                return duplicateNoteVM;
+                    return duplicateNoteVM;
+                }
+                return null;
             }
-            return null;
+            catch (Exception)
+            {
+                return null;
+            }
+            
         }
         public NoteVM CreateNoteVM(NoteVM noteVM) => noteFactory.CreateNoteVM(noteVM); 
     }
