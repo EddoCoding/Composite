@@ -92,6 +92,8 @@ namespace Composite
 
             _serviceView.Register<AddHardNoteView, AddHardNoteViewModel>();
             _serviceView.Register<ChangeHardNoteView, ChangeHardNoteViewModel>();
+
+            _serviceView.Register<AddCategoryNoteView, AddCategoryNoteViewModel>();
         }
 
         void InitializeDataBase()

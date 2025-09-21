@@ -1,9 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Composite.Common.Message.Notes;
 using Composite.Common.Message.Notes.Note;
 using Composite.Services;
 using Composite.Services.TabService;
+using System.Collections.ObjectModel;
 
 namespace Composite.ViewModels.Notes
 {
@@ -14,12 +16,12 @@ namespace Composite.ViewModels.Notes
         readonly IMessenger _messenger;
         readonly INoteService _noteService;
         [ObservableProperty] string _message;
+        [ObservableProperty] CategoryNoteVM selectedCategory;
 
         public NoteVM NoteVM { get; set; } = new NoteVM();
         public List<string> Fonts { get; }
         public List<double> FontSizes { get; }
-        public List<CategoryNoteVM> Categories { get; }
-        public CategoryNoteVM SelectedCategory { get; set; } = new();
+        public ObservableCollection<CategoryNoteVM> Categories { get; }
 
         public AddNoteViewModel(ITabService tabService, IMessenger messenger, INoteService noteService, ICategoryNoteService categoryNoteService)
         {
@@ -41,6 +43,15 @@ namespace Composite.ViewModels.Notes
                     AddNote();
                 }
                 if (_id == m.Id) Message = m.ErrorMessage;
+            });
+            messenger.Register<CategoryNoteMessage>(this, (r, m) =>
+            {
+                Categories.Add(m.CategoryNote);
+            });
+            messenger.Register<DeleteCategoryNoteMessage>(this, (r, m) =>
+            {
+                if(SelectedCategory.NameCategory == m.Category.NameCategory) SelectedCategory = Categories?.FirstOrDefault();
+                Categories.Remove(m.Category);
             });
         }
 

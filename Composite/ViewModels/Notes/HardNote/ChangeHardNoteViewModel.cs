@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Forms;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -17,9 +18,9 @@ namespace Composite.ViewModels.Notes.HardNote
         readonly IHardNoteService _hardNoteService;
         [ObservableProperty] string _message;
         [ObservableProperty] HardNoteVM _hardNoteVM;
+        [ObservableProperty] CategoryNoteVM selectedCategory;
 
-        public List<CategoryNoteVM> Categories { get; }
-        public CategoryNoteVM SelectedCategory { get; set; } = new();
+        public ObservableCollection<CategoryNoteVM> Categories { get; }
 
         public ChangeHardNoteViewModel(ITabService tabService, IMessenger messenger, IHardNoteService hardNoteService, ICategoryNoteService categoryNoteService)
         {
@@ -50,6 +51,15 @@ namespace Composite.ViewModels.Notes.HardNote
                     }
                     else Message = m.ErrorMessage;
                 }
+            });
+            messenger.Register<CategoryNoteMessage>(this, (r, m) =>
+            {
+                Categories.Add(m.CategoryNote);
+            });
+            messenger.Register<DeleteCategoryNoteMessage>(this, (r, m) =>
+            {
+                if (SelectedCategory.NameCategory == m.Category.NameCategory) SelectedCategory = Categories?.FirstOrDefault();
+                Categories.Remove(m.Category);
             });
         }
 

@@ -24,5 +24,24 @@ namespace Composite.Services
 
             return Enumerable.Empty<CategoryNoteVM>();
         }
+        public async Task<bool> AddCategory(CategoryNoteVM categoryNoteVM)
+        {
+            var categoryNote = categoryNoteMap.MapToModel(categoryNoteVM);
+
+            if (await categoryNoteRepository.Create(categoryNote)) return true;
+
+            return false;
+        }
+        public async Task<bool> DeleteCategory(string nameCategory)
+        {
+            if (nameCategory == "Без категории") return false;
+            if(await categoryNoteRepository.Delete(nameCategory)) return true;
+            return false;
+        }
+        public async Task<bool> SetCategory(string nameCategory)
+        {
+            if (await categoryNoteRepository.SetCategory(nameCategory)) return true;
+            return false;
+        }
     }
 }

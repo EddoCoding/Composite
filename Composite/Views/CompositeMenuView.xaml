@@ -83,7 +83,58 @@
             </Setter>
         </Style>
 
-        <Style x:Key="ButtonSorts" TargetType="Button">
+        <Style x:Key="CategoryListViewItem" TargetType="ListViewItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <Button Command="{Binding DataContext.SortByCategoryCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                                    <Setter Property="FontSize" Value="14"/>
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}" CornerRadius="5">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <TextBlock Grid.Column="0" Text="{Binding NameCategory}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                            Margin="5" Width="140" TextTrimming="CharacterEllipsis"/>
+
+                                                        <Button Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/deleteCategory.png" Height="22" Width="22" 
+                                                                Margin="0,0,5,0" Tag="LightGray" 
+                                                                Command="{Binding DataContext.DeleteCategoryCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                                                                CommandParameter="{Binding}"/>
+
+                                                    </Grid>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#E6E6E6"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#E6E6E6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="Buttons" TargetType="Button">
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
             <Setter Property="FontSize" Value="14"/>
@@ -122,7 +173,7 @@
                                         RenderOptions.BitmapScalingMode="Fant" Tag="LightGray" Command="{Binding OpenClosePopupCommand}"/>
 
                                 <Popup IsOpen="{Binding IsPopupOpen}" PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=Grid}}" Placement="Bottom" StaysOpen="False" AllowsTransparency="True">
-                                    <Border Background="White" BorderBrush="DarkGray" BorderThickness="1" CornerRadius="5" Width="180">
+                                    <Border Background="White" BorderBrush="DarkGray" BorderThickness="1" CornerRadius="5" Width="200">
                                         <StackPanel>
 
                                             <Button Content="+ Add note" Command="{Binding SelectTypeNoteCommand}">
@@ -195,6 +246,52 @@
                                                     </EventTrigger>
                                                 </ContentControl.Triggers>
                                             </ContentControl>
+                                            <ContentControl Name="CategoriesContentControl">
+                                                <ContentControl.Style>
+                                                    <Style TargetType="ContentControl">
+                                                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                                        <Setter Property="FontSize" Value="14"/>
+                                                        <Setter Property="Background" Value="Transparent"/>
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="ContentControl">
+                                                                    <Border Background="{TemplateBinding Background}" Margin="5,2,5,5" CornerRadius="5">
+                                                                        <Grid>
+                                                                            <TextBlock Text="Categories" FontSize="14" Margin="5,5,0,5"/>
+                                                                            <TextBlock Text=">" FontSize="14" Margin="0,5,5,5" HorizontalAlignment="Right"/>
+                                                                        </Grid>
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter Property="Background" Value="#E6E6E6"/>
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </ContentControl.Style>
+                                                <ContentControl.Triggers>
+                                                    <EventTrigger RoutedEvent="MouseEnter">
+                                                        <BeginStoryboard Name="ShowPopupCategories">
+                                                            <Storyboard>
+                                                                <BooleanAnimationUsingKeyFrames Storyboard.TargetName="CategoriesPopup" Storyboard.TargetProperty="IsOpen">
+                                                                    <DiscreteBooleanKeyFrame KeyTime="0:0:0" Value="True"/>
+                                                                </BooleanAnimationUsingKeyFrames>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </EventTrigger>
+                                                    <EventTrigger RoutedEvent="MouseLeave">
+                                                        <BeginStoryboard Name="CategoriesHidePopupDelayed">
+                                                            <Storyboard>
+                                                                <BooleanAnimationUsingKeyFrames Storyboard.TargetName="CategoriesPopup" Storyboard.TargetProperty="IsOpen">
+                                                                    <DiscreteBooleanKeyFrame KeyTime="0:0:0.2" Value="False"/>
+                                                                </BooleanAnimationUsingKeyFrames>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </EventTrigger>
+                                                </ContentControl.Triggers>
+                                            </ContentControl>
 
                                             <Popup Name="SortPopup" PlacementTarget="{Binding ElementName=SortContentControl}" Placement="Right" AllowsTransparency="True">
                                                 <Popup.Triggers>
@@ -221,9 +318,42 @@
                                                 <Border Background="White" BorderBrush="DarkGray" BorderThickness="1" CornerRadius="5" Width="180">
 
                                                     <StackPanel>
-                                                        <Button Content="by Title" Style="{StaticResource ButtonSorts}" Margin="5,5,5,2" Command="{Binding SortByTitleCommand}"/>
-                                                        <Button Content="by DateCreate" Style="{StaticResource ButtonSorts}" Margin="5,2,5,5" Command="{Binding SortByDateCreateCommand}"/>
+                                                        <Button Content="by Title" Style="{StaticResource Buttons}" Margin="5,5,5,2" Command="{Binding SortByTitleCommand}"/>
+                                                        <Button Content="by DateCreate" Style="{StaticResource Buttons}" Margin="5,2,5,5" Command="{Binding SortByDateCreateCommand}"/>
                                                     </StackPanel>
+                                                </Border>
+                                            </Popup>
+                                            <Popup Name="CategoriesPopup" PlacementTarget="{Binding ElementName=CategoriesContentControl}" Placement="Right" AllowsTransparency="True">
+                                                <Popup.Triggers>
+                                                    <EventTrigger RoutedEvent="MouseEnter">
+                                                        <StopStoryboard BeginStoryboardName="HidePopupDelayed"/>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <BooleanAnimationUsingKeyFrames Storyboard.TargetProperty="IsOpen">
+                                                                    <DiscreteBooleanKeyFrame KeyTime="0:0:0" Value="True"/>
+                                                                </BooleanAnimationUsingKeyFrames>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </EventTrigger>
+                                                    <EventTrigger RoutedEvent="MouseLeave">
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <BooleanAnimationUsingKeyFrames Storyboard.TargetProperty="IsOpen">
+                                                                    <DiscreteBooleanKeyFrame KeyTime="0:0:0.2" Value="False"/>
+                                                                </BooleanAnimationUsingKeyFrames>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </EventTrigger>
+                                                </Popup.Triggers>
+                                                <Border Background="White" BorderBrush="DarkGray" BorderThickness="1" CornerRadius="5" Width="200">
+
+                                                    <StackPanel>
+                                                        <Button Content="+ Add category" Style="{StaticResource Buttons}" Margin="5,5,5,2" Command="{Binding OpenAddCategoryNoteViewCommand}"/>
+                                                        <Button Content="Show all" Style="{StaticResource Buttons}" Margin="5,2" Command="{Binding ShowAllCategoriesCommand}"/>
+                                                        <ListView Grid.Row="1" ItemsSource="{Binding Categories}" ItemContainerStyle="{DynamicResource CategoryListViewItem}" 
+                                                                  BorderThickness="0" Margin="5,2,5,5"/>
+                                                    </StackPanel>
+                                                    
                                                 </Border>
                                             </Popup>
 

@@ -1,10 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Composite.Common.Message.Notes;
 using Composite.Common.Message.Notes.Note;
 using Composite.Services;
 using Composite.Services.TabService;
 using Composite.ViewModels.Notes.HardNote;
+using System.Collections.ObjectModel;
 
 namespace Composite.ViewModels.Notes.Note
 {
@@ -15,11 +17,11 @@ namespace Composite.ViewModels.Notes.Note
         readonly IMessenger _messenger;
         readonly IHardNoteService _hardNoteService;
         [ObservableProperty] string _message;
+        [ObservableProperty] CategoryNoteVM selectedCategory;
         
         public HardNoteVM HardNoteVM { get; set; } = new();
 
-        public List<CategoryNoteVM> Categories { get; }
-        public CategoryNoteVM SelectedCategory { get; set; } = new();
+        public ObservableCollection<CategoryNoteVM> Categories { get; }
 
         public AddHardNoteViewModel(ITabService tabService, IMessenger messenger, IHardNoteService hardNoteService, ICategoryNoteService categoryNoteService)
         {
@@ -39,6 +41,15 @@ namespace Composite.ViewModels.Notes.Note
                     SaveHardNote();
                 }
                 if (_id == m.Id) Message = m.ErrorMessage;
+            });
+            messenger.Register<CategoryNoteMessage>(this, (r, m) =>
+            {
+                Categories.Add(m.CategoryNote);
+            });
+            messenger.Register<DeleteCategoryNoteMessage>(this, (r, m) =>
+            {
+                if (SelectedCategory.NameCategory == m.Category.NameCategory) SelectedCategory = Categories?.FirstOrDefault();
+                Categories.Remove(m.Category);
             });
         }
 

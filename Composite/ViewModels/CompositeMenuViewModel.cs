@@ -18,22 +18,27 @@ namespace Composite.ViewModels
         readonly IMessenger _messenger;
         readonly INoteService _noteService;
         readonly IHardNoteService _hardNoteService;
+        readonly ICategoryNoteService _categoryNoteService;
 
         ObservableCollection<NoteBaseVM> _allNotes = new();
         public ObservableCollection<NoteBaseVM> Notes { get; set; } = new();
+        public ObservableCollection<CategoryNoteVM> Categories { get; set; }
 
         //Для надстроек
         public string TextSearch { get; set; } = string.Empty;
         [ObservableProperty] bool _isPopupOpen;
 
         public CompositeMenuViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, 
-            INoteService noteService, IHardNoteService hardNoteService)
+            INoteService noteService, IHardNoteService hardNoteService, ICategoryNoteService categoryNoteService)
         {
             _viewService = viewService;
             _tabService = tabService;
             _messenger = messenger;
             _noteService = noteService;
             _hardNoteService = hardNoteService;
+            _categoryNoteService = categoryNoteService;
+
+            Categories = new(categoryNoteService.GetCategories());
 
             messenger.Register<CheckNoteMessage>(this, (r, m) =>
             {
@@ -91,6 +96,10 @@ namespace Composite.ViewModels
                     hardNote.Composites = noteMessage.Composites;
                 }
             });    //Для обновления данных уже загруженно заметки
+            messenger.Register<CategoryNoteMessage>(this, (r, m) =>
+            {
+                Categories.Add(m.CategoryNote);
+            });      //Для добавления заметки после ее добавления
 
             GetAddButtonNote();
             GetNotes();
@@ -118,13 +127,21 @@ namespace Composite.ViewModels
 
         }
 
-        //Фичи менюшки
+        //Фичи заметок
         [RelayCommand] void OpenClosePopup()
         {
             if (IsPopupOpen == false) IsPopupOpen = true;
             else IsPopupOpen = false;
         }
-        [RelayCommand] void SortByDateCreate()
+        [RelayCommand] void ShowAllCategories()
+        {
+            Notes.Clear();
+            GetAddButtonNote();
+            foreach (var note in _allNotes) Notes.Add(note);
+
+            OpenClosePopup();
+        }
+        [RelayCommand] void SortByTitle()
         {
             var notes = _allNotes.OrderBy(x => x.Title);
             Notes.Clear();
@@ -133,7 +150,7 @@ namespace Composite.ViewModels
 
             OpenClosePopup();
         }
-        [RelayCommand] void SortByTitle()
+        [RelayCommand] void SortByDateCreate()
         {
             var notes = _allNotes.OrderBy(x => x.DateCreate);
             Notes.Clear();
@@ -142,9 +159,39 @@ namespace Composite.ViewModels
 
             OpenClosePopup();
         }
+        [RelayCommand] void SortByCategory(CategoryNoteVM categoryVM)
+        {
+            var notes = _allNotes.Where(x => x.Category == categoryVM.NameCategory);
+            Notes.Clear();
+            GetAddButtonNote();
+            foreach (var note in notes) Notes.Add(note);
 
+            OpenClosePopup();
+        }
+        [RelayCommand] void OpenAddCategoryNoteView() => _viewService.ShowView<AddCategoryNoteViewModel>();
+        [RelayCommand] async Task DeleteCategory(CategoryNoteVM categoryVM)
+        {
+            if(await _categoryNoteService.DeleteCategory(categoryVM.NameCategory))
+            {
+                var category = Categories.FirstOrDefault(x => x.NameCategory == categoryVM.NameCategory);
+                if(category != null)
+                {
+                    Categories.Remove(category);
+                    _messenger.Send(new DeleteCategoryNoteMessage(categoryVM));
 
-        //Команды меню
+                    if (await _categoryNoteService.SetCategory(categoryVM.NameCategory))
+                    {
+                        _allNotes
+                            .Where(x => x.Category == categoryVM.NameCategory)
+                            .ToList()
+                            .ForEach(note => note.Category = "Без категории");
+                    }
+
+                }
+            }
+        }
+
+        //Команды меню заметок
         [RelayCommand] async Task DeleteNote(NoteBaseVM noteVM)
         {
             if(noteVM is NoteVM)
