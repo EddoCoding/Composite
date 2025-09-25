@@ -46,6 +46,16 @@ namespace Composite.Common.Factories
                     };
                     compositesVM.Add(newLineCompositeVM);
                 }
+                else if (compositeVM is TaskCompositeVM taskCompositeVM)
+                {
+                    var newTaskCompositeVM = new TaskCompositeVM()
+                    {
+                        Id = taskCompositeVM.Id,
+                        Text = taskCompositeVM.Text,
+                        IsCompleted = taskCompositeVM.IsCompleted
+                    };
+                    compositesVM.Add(newTaskCompositeVM);
+                }
             }
 
             return new HardNoteVM()

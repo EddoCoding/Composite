@@ -14,6 +14,9 @@
 
         public string Quote { get; set; } = string.Empty;
 
+        public string TaskText { get; set; } = string.Empty;
+        public int Completed { get; set; }
+
         public string HardNoteId { get; set; } = string.Empty;
         public string CompositeType { get; set; } = string.Empty;
     }

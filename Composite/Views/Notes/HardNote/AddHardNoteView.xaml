@@ -12,7 +12,7 @@
 
         <Style x:Key="TitleTextBox" TargetType="TextBox">
             <Setter Property="FontSize" Value="26"/>
-            <Setter Property="Margin" Value="0,30,0,0"/>
+            <Setter Property="Margin" Value="0,30,0,5"/>
             <Setter Property="FontFamily" Value="Trebuchet MS"/>
             <Setter Property="SelectionBrush" Value="LightGray"/>
             <Setter Property="CaretBrush" Value="Gray"/>
@@ -35,7 +35,7 @@
             <Setter Property="CaretBrush" Value="Gray"/>
             <Setter Property="MaxWidth" Value="800"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
-            <Setter Property="Height" Value="25"/>
+            <Setter Property="Padding" Value="0,2"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
@@ -92,6 +92,63 @@
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="border" Property="Background" Value="WhiteSmoke"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="CheckBoxTask" TargetType="CheckBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Width" Value="800"/>
+            <Setter Property="Margin" Value="0,5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" x:Name="CheckBoxBorder" Width="20" Height="20" Background="White" BorderBrush="DarkGray" 
+                                    BorderThickness="2" CornerRadius="3" Margin="0,0,5,0" Cursor="Hand" VerticalAlignment="Top">
+                                <Path x:Name="CheckMark" Data="M 0 4 L 4 8 L 12 0" Stroke="DarkGray" StrokeThickness="2" Visibility="Collapsed" 
+                                      Stretch="Uniform" Margin="2"/>
+                            </Border>
+
+                            <TextBox x:Name="textBoxTask" Grid.Column="1" Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"
+                                     property:PlaceHolder.PlaceHolder="Enter task"
+                                     PreviewKeyDown="ListView_TextBox_PreviewKeyDown">
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox">
+                                        <Setter Property="FontSize" Value="16"/>
+                                        <Setter Property="FontFamily" Value="Trebuchet MS"/>
+                                        <Setter Property="SelectionBrush" Value="LightGray"/>
+                                        <Setter Property="CaretBrush" Value="Gray"/>
+                                        <Setter Property="MaxWidth" Value="770"/>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="TextBox">
+                                                    <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"
+                                                                  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="textBoxTask" Property="TextDecorations" Value="Strikethrough"/>
+                                <Setter TargetName="textBoxTask" Property="Foreground" Value="Gray"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="CheckBoxBorder" Property="BorderBrush" Value="Gray"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -164,6 +221,9 @@
                 </Button>
                 
             </StackPanel>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:TaskCompositeVM}">
+            <CheckBox Style="{StaticResource CheckBoxTask}" IsChecked="{Binding IsCompleted}"/>
         </DataTemplate>
 
     </UserControl.Resources>

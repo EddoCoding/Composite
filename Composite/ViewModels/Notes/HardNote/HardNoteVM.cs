@@ -17,31 +17,31 @@ namespace Composite.ViewModels.Notes.HardNote
         }
 
         public void AddTextCompositeVM() => Composites.Add(new TextCompositeVM());
-        public TextCompositeVM AddTextComposite(CompositeBaseVM current, int caretIndex)
+        public CompositeBaseVM AddComposite(CompositeBaseVM current, int caretIndex)
         {
-            var newItem = new TextCompositeVM { Text = string.Empty };
             if (current is TextCompositeVM textComposite)
             {
+                var newTextComposite = new TextCompositeVM { Text = string.Empty };
                 int index = Composites.IndexOf(textComposite);
                 //Если каретка в начале
                 if (caretIndex == 0)
                 {
                     if (string.IsNullOrEmpty(textComposite.Text))
                     {
-                        Composites.Insert(index + 1, newItem);
-                        return newItem;
+                        Composites.Insert(index + 1, newTextComposite);
+                        return newTextComposite;
                     }
                     else
                     {
-                        Composites.Insert(index, newItem);
-                        return newItem;
+                        Composites.Insert(index, newTextComposite);
+                        return newTextComposite;
                     }
                 }
                 //Если каретка в конце
                 else if (caretIndex == textComposite.Text.Length)
                 {
-                    Composites.Insert(index + 1, newItem);
-                    return newItem;
+                    Composites.Insert(index + 1, newTextComposite);
+                    return newTextComposite;
                 }
                 //Если каретка между началом и концом
                 else
@@ -49,29 +49,38 @@ namespace Composite.ViewModels.Notes.HardNote
                     if (caretIndex >= 0 && caretIndex < textComposite.Text.Length)
                     {
                         var textAfter = textComposite.Text.Substring(caretIndex);
-                        newItem.Text = textAfter;
+                        newTextComposite.Text = textAfter;
                         textComposite.Text = textComposite.Text.Substring(0, caretIndex);
-                        Composites.Insert(index + 1, newItem);
-                        return newItem;
+                        Composites.Insert(index + 1, newTextComposite);
+                        return newTextComposite;
                     }
                     else
                     {
-                        Composites.Insert(index + 1, newItem);
-                        return newItem;
+                        Composites.Insert(index + 1, newTextComposite);
+                        return newTextComposite;
                     }
                 }
             }
             if (current is HeaderCompositeVM headerComposite)
             {
+                var newTextComposite = new TextCompositeVM { Text = string.Empty };
                 int index = Composites.IndexOf(headerComposite);
-                Composites.Insert(index + 1, newItem);
-                return newItem;
+                Composites.Insert(index + 1, newTextComposite);
+                return newTextComposite;
             }
             if (current is QuoteCompositeVM quoteComposite)
             {
+                var newTextComposite = new TextCompositeVM { Text = string.Empty };
                 int index = Composites.IndexOf(quoteComposite);
-                Composites.Insert(index + 1, newItem);
-                return newItem;
+                Composites.Insert(index + 1, newTextComposite);
+                return newTextComposite;
+            }
+            if (current is TaskCompositeVM taskComposite)
+            {
+                var taskCompositeVM = new TaskCompositeVM();
+                int index = Composites.IndexOf(taskComposite);
+                Composites.Insert(index + 1, taskCompositeVM);
+                return taskCompositeVM;
             }
 
             return null;
@@ -135,6 +144,14 @@ namespace Composite.ViewModels.Notes.HardNote
                     var textComposite = new TextCompositeVM();
                     Composites.Insert(indexLine + 1, textComposite);
                     return textComposite;
+                case "/task":
+                {
+                    int indexTask = Composites.IndexOf(compositeBaseVM);
+                    DeleteComposite(compositeBaseVM);
+                    var taskComposite = new TaskCompositeVM();
+                    Composites.Insert(indexTask, taskComposite);
+                    return taskComposite;
+                }
 
                 default: return null;
             }

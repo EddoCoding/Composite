@@ -116,6 +116,16 @@ namespace Composite.Common.Mappers
                     HardNoteId = id.ToString()
                 };
             }
+            if (compositeBaseVM is TaskCompositeVM taskCompositeVM)
+            {
+                return new TaskComposite()
+                {
+                    Id = taskCompositeVM.Id.ToString(),
+                    Completed = taskCompositeVM.IsCompleted? 1 : 0,
+                    TaskText = taskCompositeVM.Text,
+                    HardNoteId = id.ToString()
+                };
+            }
 
             return null;
         }
@@ -158,6 +168,16 @@ namespace Composite.Common.Mappers
                     HardNoteId = id.ToString()
                 };
             }
+            if (compositeBaseVM is TaskCompositeVM taskCompositeVM)
+            {
+                return new TaskComposite()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Completed = taskCompositeVM.IsCompleted ? 1 : 0,
+                    TaskText = taskCompositeVM.Text,
+                    HardNoteId = id.ToString()
+                };
+            }
 
             return null;
         }
@@ -194,6 +214,15 @@ namespace Composite.Common.Mappers
                 return new LineCompositeVM()
                 {
                     Id = Guid.Parse(compositeBase.Id)
+                };
+            }
+            if (compositeBase.CompositeType == "TaskComposite")
+            {
+                return new TaskCompositeVM()
+                {
+                    Id = Guid.Parse(compositeBase.Id),
+                    IsCompleted = (compositeBase.Completed == 1) ? true : false,
+                    Text = compositeBase.TaskText
                 };
             }
 

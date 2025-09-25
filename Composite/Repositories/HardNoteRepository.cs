@@ -22,6 +22,7 @@ namespace Composite.Repositories
                     var headerComposites = hardNote.Composites.OfType<HeaderComposite>().ToList();
                     var quoteComposites = hardNote.Composites.OfType<QuoteComposite>().ToList();
                     var lineComposites = hardNote.Composites.OfType<LineComposite>().ToList();
+                    var taskComposites = hardNote.Composites.OfType<TaskComposite>().ToList();
 
                     if (textComposites.Any())
                     {
@@ -51,6 +52,13 @@ namespace Composite.Repositories
 
                         await connection.ExecuteAsync(queryLines, lineComposites);
                     }
+                    if (taskComposites.Any())
+                    {
+                        var queryTasks = @"Insert Into Composites(Id, Tag, Comment, TaskText, Completed, HardNoteId, CompositeType) 
+                                         Values (@Id, @Tag, @Comment, @TaskText, @Completed, @HardNoteId, @CompositeType)";
+
+                        await connection.ExecuteAsync(queryTasks, taskComposites);
+                    }
                 }
 
                 if (resultAddHardNote > 0) return true;
@@ -74,8 +82,8 @@ namespace Composite.Repositories
 
                   if (hardNote.Composites?.Count > 0)
                   {
-                      var queryInsertComposites = @"Insert Into Composites (Id, Tag, Comment, Text, Header, FontWeightHeader, FontSizeHeader, Quote, HardNoteId, CompositeType) 
-                                                  Values (@Id, @Tag, @Comment, @Text, @Header, @FontWeightHeader, @FontSizeHeader, @Quote, @HardNoteId, @CompositeType)";
+                      var queryInsertComposites = @"Insert Into Composites (Id, Tag, Comment, Text, Header, FontWeightHeader, FontSizeHeader, Quote, TaskText, Completed, HardNoteId, CompositeType) 
+                                                  Values (@Id, @Tag, @Comment, @Text, @Header, @FontWeightHeader, @FontSizeHeader, @Quote, @TaskText, @Completed, @HardNoteId, @CompositeType)";
 
                       var compositeData = hardNote.Composites.Select(c => new
                       {
@@ -87,6 +95,8 @@ namespace Composite.Repositories
                           FontWeightHeader = c.FontWeightHeader,
                           FontSizeHeader = c.FontSizeHeader,
                           Quote = c.Quote,
+                          TaskText = c.TaskText,
+                          Completed = c.Completed,
                           HardNoteId = hardNote.Id,
                           CompositeType = c.CompositeType
                       });

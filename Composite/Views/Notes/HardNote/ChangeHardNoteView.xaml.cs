@@ -228,7 +228,7 @@ namespace Composite.Views.Notes.Notes
                             return;
                         }
 
-                        var newItem = viewModel.HardNoteVM.AddTextComposite(currentComposite, caretIndex);
+                        var newItem = viewModel.HardNoteVM.AddComposite(currentComposite, caretIndex);
                         Dispatcher.BeginInvoke(new Action(() =>
                         {
                             var container = listView.ItemContainerGenerator.ContainerFromItem(newItem) as ListViewItem;
@@ -362,7 +362,7 @@ namespace Composite.Views.Notes.Notes
             for (int i = startIndex; i < items.Count; i++)
             {
                 var item = items[i];
-                if (item is TextCompositeVM || item is HeaderCompositeVM || item is QuoteCompositeVM) return i;
+                if (item is TextCompositeVM || item is HeaderCompositeVM || item is QuoteCompositeVM || item is TaskCompositeVM) return i;
             }
             return -1;
         }
@@ -371,7 +371,7 @@ namespace Composite.Views.Notes.Notes
             for (int i = startIndex - 1; i >= 0; i--)
             {
                 var item = items[i];
-                if (item is TextCompositeVM || item is HeaderCompositeVM || item is QuoteCompositeVM) return i;
+                if (item is TextCompositeVM || item is HeaderCompositeVM || item is QuoteCompositeVM || item is TaskCompositeVM) return i;
             }
             return -1;
         }
