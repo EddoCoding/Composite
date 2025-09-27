@@ -1,10 +1,10 @@
-﻿using System.Windows;
+﻿using Composite.ViewModels.Notes.HardNote;
+using Composite.ViewModels.Notes.Note;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
-using Composite.ViewModels.Notes.HardNote;
-using Composite.ViewModels.Notes.Note;
 
 namespace Composite.Views.Notes
 {
@@ -196,7 +196,7 @@ namespace Composite.Views.Notes
 
         void ListView_TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter && sender is TextBox textBox1)
+             if (e.Key == Key.Enter && sender is TextBox textBox1)
             {
                 int caretIndex = textBox1.CaretIndex;
                 string textValue = textBox1.Text;

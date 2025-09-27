@@ -1,5 +1,5 @@
-﻿using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
 
 namespace Composite.ViewModels.Notes.HardNote
 {
@@ -77,10 +77,21 @@ namespace Composite.ViewModels.Notes.HardNote
             }
             if (current is TaskCompositeVM taskComposite)
             {
-                var taskCompositeVM = new TaskCompositeVM();
-                int index = Composites.IndexOf(taskComposite);
-                Composites.Insert(index + 1, taskCompositeVM);
-                return taskCompositeVM;
+                if(taskComposite.Text != string.Empty)
+                {
+                    var taskCompositeVM = new TaskCompositeVM();
+                    int index = Composites.IndexOf(taskComposite);
+                    Composites.Insert(index + 1, taskCompositeVM);
+                    return taskCompositeVM;
+                }
+                else
+                {
+                    var textCompositeVM = new TextCompositeVM();
+                    int index = Composites.IndexOf(taskComposite);
+                    DeleteComposite(current);
+                    Composites.Insert(index, textCompositeVM);
+                    return textCompositeVM;
+                }
             }
 
             return null;
