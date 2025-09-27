@@ -12,101 +12,195 @@ namespace Composite.Repositories
             using (var connection = dbConnectionFactory.CreateConnection())
             {
                 connection.Open();
+                using var transaction = connection.BeginTransaction();
 
-                var queryAddHardNote = "Insert Into HardNotes(Id, Title, Category, DateCreate) Values (@Id, @Title, @Category, @DateCreate)";
-                var resultAddHardNote = await connection.ExecuteAsync(queryAddHardNote, hardNote);
-
-                if (hardNote.Composites?.Any() == true)
+                try
                 {
-                    var textComposites = hardNote.Composites.OfType<TextComposite>().ToList();
-                    var headerComposites = hardNote.Composites.OfType<HeaderComposite>().ToList();
-                    var quoteComposites = hardNote.Composites.OfType<QuoteComposite>().ToList();
-                    var lineComposites = hardNote.Composites.OfType<LineComposite>().ToList();
-                    var taskComposites = hardNote.Composites.OfType<TaskComposite>().ToList();
+                    var queryAddHardNote = "Insert Into HardNotes(Id, Title, Category, DateCreate) Values (@Id, @Title, @Category, @DateCreate)";
+                    var resultAddHardNote = await connection.ExecuteAsync(queryAddHardNote, hardNote, transaction);
 
-                    if (textComposites.Any())
+                    if (hardNote.Composites?.Any() == true)
                     {
-                        var queryTexts = @"Insert Into Composites(Id, Tag, Comment, Text, HardNoteId, CompositeType) 
-                                         Values (@Id, @Tag, @Comment, @Text, @HardNoteId, @CompositeType)";
+                        // Создаем список с порядковыми номерами
+                        var compositesWithOrder = hardNote.Composites
+                            .Select((composite, index) => new { Composite = composite, OrderIndex = index })
+                            .ToList();
 
-                        await connection.ExecuteAsync(queryTexts, textComposites);
-                    }
-                    if (headerComposites.Any())
-                    {
-                        var queryHeaders = @"Insert Into Composites(Id, Tag, Comment, Header, FontWeightHeader, FontSizeHeader, HardNoteId, CompositeType) 
-                                         Values (@Id, @Tag, @Comment, @Header, @FontWeightHeader, @FontSizeHeader, @HardNoteId, @CompositeType)";
+                        // TextComposite
+                        var textComposites = compositesWithOrder
+                            .Where(x => x.Composite is TextComposite)
+                            .Select(x => new
+                            {
+                                ((TextComposite)x.Composite).Id,
+                                ((TextComposite)x.Composite).Tag,
+                                ((TextComposite)x.Composite).Comment,
+                                ((TextComposite)x.Composite).Text,
+                                ((TextComposite)x.Composite).HardNoteId,
+                                ((TextComposite)x.Composite).CompositeType,
+                                x.OrderIndex
+                            })
+                            .ToList();
+                        if (textComposites.Any())
+                        {
+                            var queryTexts = @"Insert Into Composites(Id, Tag, Comment, Text, HardNoteId, CompositeType, OrderIndex) 
+                                 Values (@Id, @Tag, @Comment, @Text, @HardNoteId, @CompositeType, @OrderIndex)";
+                            await connection.ExecuteAsync(queryTexts, textComposites, transaction);
+                        }
 
-                        await connection.ExecuteAsync(queryHeaders, headerComposites);
-                    }
-                    if (quoteComposites.Any())
-                    {
-                        var queryQuotes = @"Insert Into Composites(Id, Tag, Comment, Quote, HardNoteId, CompositeType) 
-                                         Values (@Id, @Tag, @Comment, @Quote, @HardNoteId, @CompositeType)";
 
-                        await connection.ExecuteAsync(queryQuotes, quoteComposites);
-                    }
-                    if (lineComposites.Any())
-                    {
-                        var queryLines = @"Insert Into Composites(Id, Tag, Comment, HardNoteId, CompositeType) 
-                                         Values (@Id, @Tag, @Comment, @HardNoteId, @CompositeType)";
+                        var headerComposites = compositesWithOrder
+                            .Where(x => x.Composite is HeaderComposite)
+                            .Select(x => new
+                            {
+                                ((HeaderComposite)x.Composite).Id,
+                                ((HeaderComposite)x.Composite).Tag,
+                                ((HeaderComposite)x.Composite).Comment,
+                                ((HeaderComposite)x.Composite).Header,
+                                ((HeaderComposite)x.Composite).FontWeightHeader,
+                                ((HeaderComposite)x.Composite).FontSizeHeader,
+                                ((HeaderComposite)x.Composite).HardNoteId,
+                                ((HeaderComposite)x.Composite).CompositeType,
+                                x.OrderIndex
+                            })
+                            .ToList();
+                        if (headerComposites.Any())
+                        {
+                            var queryHeaders = @"Insert Into Composites(Id, Tag, Comment, Header, FontWeightHeader, FontSizeHeader, HardNoteId, CompositeType, OrderIndex) 
+                                   Values (@Id, @Tag, @Comment, @Header, @FontWeightHeader, @FontSizeHeader, @HardNoteId, @CompositeType, @OrderIndex)";
+                            await connection.ExecuteAsync(queryHeaders, headerComposites, transaction);
+                        }
 
-                        await connection.ExecuteAsync(queryLines, lineComposites);
-                    }
-                    if (taskComposites.Any())
-                    {
-                        var queryTasks = @"Insert Into Composites(Id, Tag, Comment, TaskText, Completed, HardNoteId, CompositeType) 
-                                         Values (@Id, @Tag, @Comment, @TaskText, @Completed, @HardNoteId, @CompositeType)";
+                        var quoteComposites = compositesWithOrder
+                           .Where(x => x.Composite is QuoteComposite)
+                           .Select(x => new
+                           {
+                               ((QuoteComposite)x.Composite).Id,
+                               ((QuoteComposite)x.Composite).Tag,
+                               ((QuoteComposite)x.Composite).Comment,
+                               ((QuoteComposite)x.Composite).Quote,
+                               ((QuoteComposite)x.Composite).HardNoteId,
+                               ((QuoteComposite)x.Composite).CompositeType,
+                               x.OrderIndex
+                           })
+                           .ToList();
+                        if (quoteComposites.Any())
+                        {
+                            var queryQuotes = @"Insert Into Composites(Id, Tag, Comment, Quote, HardNoteId, CompositeType, OrderIndex) 
+                                   Values (@Id, @Tag, @Comment, @Quote, @HardNoteId, @CompositeType, @OrderIndex)";
+                            await connection.ExecuteAsync(queryQuotes, quoteComposites, transaction);
+                        }
 
-                        await connection.ExecuteAsync(queryTasks, taskComposites);
+                        var taskComposites = compositesWithOrder
+                           .Where(x => x.Composite is TaskComposite)
+                           .Select(x => new
+                           {
+                               ((TaskComposite)x.Composite).Id,
+                               ((TaskComposite)x.Composite).Tag,
+                               ((TaskComposite)x.Composite).Comment,
+                               ((TaskComposite)x.Composite).TaskText,
+                               ((TaskComposite)x.Composite).Completed,
+                               ((TaskComposite)x.Composite).HardNoteId,
+                               ((TaskComposite)x.Composite).CompositeType,
+                               x.OrderIndex
+                           })
+                           .ToList();
+                        if (taskComposites.Any())
+                        {
+                            var queryTasks = @"Insert Into Composites(Id, Tag, Comment, TaskText, Completed, HardNoteId, CompositeType, OrderIndex) 
+                                   Values (@Id, @Tag, @Comment, @TaskText, @Completed, @HardNoteId, @CompositeType, @OrderIndex)";
+                            await connection.ExecuteAsync(queryTasks, taskComposites, transaction);
+                        }
+
+                        var lineComposites = compositesWithOrder
+                           .Where(x => x.Composite is LineComposite)
+                           .Select(x => new
+                           {
+                               ((LineComposite)x.Composite).Id,
+                               ((LineComposite)x.Composite).Tag,
+                               ((LineComposite)x.Composite).Comment,
+                               ((LineComposite)x.Composite).HardNoteId,
+                               ((LineComposite)x.Composite).CompositeType,
+                               x.OrderIndex
+                           })
+                           .ToList();
+                        if (lineComposites.Any())
+                        {
+                            var queryLines = @"Insert Into Composites(Id, Tag, Comment, HardNoteId, CompositeType, OrderIndex) 
+                                   Values (@Id, @Tag, @Comment, @HardNoteId, @CompositeType, @OrderIndex)";
+                            await connection.ExecuteAsync(queryLines, lineComposites, transaction);
+                        }
                     }
+
+                    transaction.Commit();
+                    return resultAddHardNote > 0;
                 }
-
-                if (resultAddHardNote > 0) return true;
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
             }
-
-            return false;
         }
         public async Task<bool> Update(HardNote hardNote)
         {
             using (var connection = dbConnectionFactory.CreateConnection())
             {
                 connection.Open();
-                
-                 var queryUpdateHardNote = "Update HardNotes Set Title = @Title, Category = @Category Where Id = @Id";
-                 var resultUpdateHardNote = await connection.ExecuteAsync(queryUpdateHardNote, hardNote);
+                using var transaction = connection.BeginTransaction();
 
-                 if (resultUpdateHardNote == 0) return false;
+                try
+                {
+                    var queryUpdateHardNote = "Update HardNotes Set Title = @Title, Category = @Category Where Id = @Id";
+                    var resultUpdateHardNote = await connection.ExecuteAsync(queryUpdateHardNote, hardNote, transaction);
 
-                 var queryDeleteComposites = "Delete From Composites Where HardNoteId = @Id";
-                 await connection.ExecuteAsync(queryDeleteComposites, new { Id = hardNote.Id });
+                    if (resultUpdateHardNote == 0)
+                    {
+                        transaction.Rollback();
+                        return false;
+                    }
 
-                  if (hardNote.Composites?.Count > 0)
-                  {
-                      var queryInsertComposites = @"Insert Into Composites (Id, Tag, Comment, Text, Header, FontWeightHeader, FontSizeHeader, Quote, TaskText, Completed, HardNoteId, CompositeType) 
-                                                  Values (@Id, @Tag, @Comment, @Text, @Header, @FontWeightHeader, @FontSizeHeader, @Quote, @TaskText, @Completed, @HardNoteId, @CompositeType)";
+                    var queryDeleteComposites = "Delete From Composites Where HardNoteId = @Id";
+                    await connection.ExecuteAsync(queryDeleteComposites, new { Id = hardNote.Id }, transaction);
 
-                      var compositeData = hardNote.Composites.Select(c => new
-                      {
-                          Id = c.Id,
-                          Tag = c.Tag,
-                          Comment = c.Comment,
-                          Text = c.Text,
-                          Header = c.Header,
-                          FontWeightHeader = c.FontWeightHeader,
-                          FontSizeHeader = c.FontSizeHeader,
-                          Quote = c.Quote,
-                          TaskText = c.TaskText,
-                          Completed = c.Completed,
-                          HardNoteId = hardNote.Id,
-                          CompositeType = c.CompositeType
-                      });
+                    if (hardNote.Composites?.Count > 0)
+                    {
+                        var queryInsertComposites = @"Insert Into Composites (Id, Tag, Comment, Text, Header, FontWeightHeader, FontSizeHeader, Quote, TaskText, Completed, HardNoteId, CompositeType, OrderIndex)
+                                                      Values (@Id, @Tag, @Comment, @Text, @Header, @FontWeightHeader, @FontSizeHeader, @Quote, @TaskText, @Completed, @HardNoteId, @CompositeType, @OrderIndex)";
 
-                      var resultInsertComposites = await connection.ExecuteAsync(queryInsertComposites, compositeData);
+                        var compositeData = hardNote.Composites.Select((c, index) => new
+                        {
+                            Id = c.Id,
+                            Tag = c.Tag,
+                            Comment = c.Comment,
+                            Text = c.Text,
+                            Header = c.Header,
+                            FontWeightHeader = c.FontWeightHeader,
+                            FontSizeHeader = c.FontSizeHeader,
+                            Quote = c.Quote,
+                            TaskText = c.TaskText,
+                            Completed = c.Completed,
+                            HardNoteId = hardNote.Id,
+                            CompositeType = c.CompositeType,
+                            OrderIndex = index  // Добавляем порядковый номер
+                        });
 
-                      if (resultInsertComposites != hardNote.Composites.Count) return false;
-                  }
+                        var resultInsertComposites = await connection.ExecuteAsync(queryInsertComposites, compositeData, transaction);
 
-                  return true;
+                        if (resultInsertComposites != hardNote.Composites.Count)
+                        {
+                            transaction.Rollback();
+                            return false;
+                        }
+                    }
+
+                    transaction.Commit();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
             }
         }
         public async Task<bool> Delete(string id)
@@ -134,7 +228,7 @@ namespace Composite.Repositories
 
                 foreach (var hardNote in resultGetHardNotes)
                 {
-                    var queryGetComposites = "Select * From Composites Where HardNoteId = @HardNoteId";
+                    var queryGetComposites = "Select * From Composites Where HardNoteId = @HardNoteId Order By OrderIndex";
                     var composites = connection.Query<CompositeBase>(queryGetComposites, new { HardNoteId = hardNote.Id });
                     hardNote.Composites = composites.ToList();
                 }

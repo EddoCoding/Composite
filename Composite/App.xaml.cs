@@ -13,6 +13,8 @@ using Composite.Views.Notes;
 using Composite.Views.Notes.Notes;
 using Dapper;
 using Microsoft.Extensions.DependencyInjection;
+using System.Data.Common;
+using System.Diagnostics.Metrics;
 using System.Windows;
 
 namespace Composite
@@ -108,7 +110,7 @@ namespace Composite
                 var queryCreateHardNotes = "Create Table If Not Exists HardNotes(Id Text Primary Key, Title Text Default '', DateCreate DateTime Not Null, Category Text)";
                 var queryCreateComposites = "Create Table If Not Exists Composites(Id Text Primary Key, Tag Text, Comment Text, Text Text, Header Text, FontWeightHeader Text, FontSizeHeader Integer, Quote Text, " +
                                             "TaskText Text, Completed Integer Default 0, " +
-                                            "HardNoteId TEXT NOT NULL, CompositeType TEXT NOT NULL, Foreign Key (HardNoteId) References HardNotes(Id) On Delete Cascade)";
+                                            "HardNoteId TEXT NOT NULL, CompositeType TEXT NOT NULL, OrderIndex Integer, Foreign Key (HardNoteId) References HardNotes(Id) On Delete Cascade)";
 
                 //Допы
                 var queryCreateSongs = "Create Table If Not Exists Songs(Id Text Primary Key, Title Text, Data Blob)";
