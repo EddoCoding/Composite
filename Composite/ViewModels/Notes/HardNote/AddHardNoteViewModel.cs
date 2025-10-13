@@ -7,6 +7,8 @@ using Composite.Services;
 using Composite.Services.TabService;
 using Composite.ViewModels.Notes.HardNote;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace Composite.ViewModels.Notes.Note
 {
@@ -51,6 +53,19 @@ namespace Composite.ViewModels.Notes.Note
                 if (SelectedCategory.NameCategory == m.Category.NameCategory) SelectedCategory = Categories?.FirstOrDefault();
                 Categories.Remove(m.Category);
             });
+
+            //var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            //var testImagePath = Path.Combine(desktopPath, "image13.jpg");
+            //
+            //var bitmap = new BitmapImage();
+            //bitmap.BeginInit();
+            //bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            //bitmap.UriSource = new Uri(testImagePath, UriKind.Absolute);
+            //bitmap.EndInit();
+            //bitmap.Freeze();
+            //
+            //ImageCompositeVM.ImageSource = bitmap;
+            //HardNoteVM.Composites.Add(ImageCompositeVM);
         }
 
         [RelayCommand] void CheckNote() => _messenger.Send(new CheckNoteMessage(_id, HardNoteVM.Title));

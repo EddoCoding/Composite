@@ -1,5 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Windows;
+using System.Windows.Forms;
+using System.Windows.Media.Imaging;
 
 namespace Composite.ViewModels.Notes.HardNote
 {
@@ -163,6 +167,27 @@ namespace Composite.ViewModels.Notes.HardNote
                     Composites.Insert(indexTask, taskComposite);
                     return taskComposite;
                 }
+                case "/image":
+                    {
+                        OpenFileDialog openFileDialog = new OpenFileDialog()
+                        {
+                            Filter = "Image Files (*.png;*.jpg;*.jpeg;*.webp)|*.png;*.jpg;*.jpeg;*.webp|All files (*.*)|*.*",
+                            Title = "Select Image"
+                        };
+
+                        if (openFileDialog.ShowDialog() == DialogResult.OK)
+                        {
+                            var bitmap = LoadBitmapImage(openFileDialog.FileName);
+
+                            int indexImage = Composites.IndexOf(compositeBaseVM);
+                            DeleteComposite(compositeBaseVM);
+                            var imageComposite = new ImageCompositeVM() { ImageSource = bitmap};
+                            Composites.Insert(indexImage, imageComposite);
+                            return imageComposite;
+                        }
+
+                        return null;
+                    }
 
                 default: return null;
             }
@@ -171,5 +196,36 @@ namespace Composite.ViewModels.Notes.HardNote
 
         public void InsertComposite(int index, CompositeBaseVM composite) => Composites.Insert(index, composite);
         public int GetIndexComposite(CompositeBaseVM composite) => Composites.IndexOf(composite);
+
+        BitmapImage LoadBitmapImage(string filePath)
+        {
+            var bitmap = new BitmapImage();
+            using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            {
+                bitmap.BeginInit();
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.StreamSource = stream;
+                bitmap.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+                bitmap.EndInit();
+            }
+            bitmap.Freeze();
+
+            if (bitmap.DpiX != 96 || bitmap.DpiY != 96)
+            {
+                var dpiFixedBitmap = new BitmapImage();
+                using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                {
+                    dpiFixedBitmap.BeginInit();
+                    dpiFixedBitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    dpiFixedBitmap.StreamSource = stream;
+                    dpiFixedBitmap.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+                    dpiFixedBitmap.EndInit();
+                }
+                dpiFixedBitmap.Freeze();
+                return dpiFixedBitmap;
+            }
+
+            return bitmap;
+        }
     }
 }

@@ -225,6 +225,21 @@
         <DataTemplate DataType="{x:Type viewModel:TaskCompositeVM}">
             <CheckBox Style="{StaticResource CheckBoxTask}" IsChecked="{Binding IsCompleted}"/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:ImageCompositeVM}">
+            <Border MaxWidth="800" BorderThickness="1" BorderBrush="Transparent">
+                <Image Grid.Column="0" Source="{Binding ImageSource}" Height="{Binding DisplayHeight}" Width="{Binding DisplayWidth}" HorizontalAlignment="{Binding HorizontalImage}"
+                       Cursor="Hand" RenderOptions.BitmapScalingMode="Fant" UseLayoutRounding="True" SnapsToDevicePixels="True"/>
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="WhiteSmoke"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+            </Border>
+        </DataTemplate>
 
     </UserControl.Resources>
     <UserControl.InputBindings>
@@ -243,7 +258,8 @@
                  property:PlaceHolder.PlaceHolder="Headline" PreviewKeyDown="TitleTextBox_PreviewKeyDown"/>
 
         <ListView Grid.Row="1" x:Name="listComposite" ItemsSource="{Binding HardNoteVM.Composites}" BorderThickness="0" HorizontalContentAlignment="Stretch"
-                  Focusable="False" Cursor="IBeam" PreviewKeyDown="ListView_PreviewKeyDown" MouseDown="listComposite_MouseDown">
+                  Focusable="False" Cursor="IBeam" ScrollViewer.CanContentScroll="False"
+                  PreviewKeyDown="ListView_PreviewKeyDown" MouseDown="listComposite_MouseDown" PreviewMouseWheel="listComposite_PreviewMouseWheel">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Style.Setters>

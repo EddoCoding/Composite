@@ -44,7 +44,7 @@ namespace Composite.Services
             {
                 Multiselect = true,
                 Filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*",
-                Title = "Выбор песен"
+                Title = "Select songs"
             };
 
             if (openFileDialog.ShowDialog() != true) return Enumerable.Empty<SongVM>();
