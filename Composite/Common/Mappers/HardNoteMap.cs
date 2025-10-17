@@ -1,4 +1,6 @@
 ﻿using System.Collections.ObjectModel;
+using System.IO;
+using System.Windows.Media.Imaging;
 using Composite.Models;
 using Composite.Models.Notes.HardNote;
 using Composite.ViewModels.Notes.HardNote;
@@ -126,6 +128,16 @@ namespace Composite.Common.Mappers
                     HardNoteId = id.ToString()
                 };
             }
+            if (compositeBaseVM is ImageCompositeVM imageCompositeVM)
+            {
+                return new ImageComposite()
+                {
+                    Id = imageCompositeVM.Id.ToString(),
+                    DataImage = BitmapImageToByteArray(imageCompositeVM.ImageSource),
+                    HorizontalImage = imageCompositeVM.HorizontalImage,
+                    HardNoteId = id.ToString()
+                };
+            }
 
             return null;
         }
@@ -178,6 +190,16 @@ namespace Composite.Common.Mappers
                     HardNoteId = id.ToString()
                 };
             }
+            if (compositeBaseVM is ImageCompositeVM imageCompositeVM)
+            {
+                return new ImageComposite()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    DataImage = BitmapImageToByteArray(imageCompositeVM.ImageSource),
+                    HorizontalImage = imageCompositeVM.HorizontalImage,
+                    HardNoteId = id.ToString()
+                };
+            }
 
             return null;
         }
@@ -225,8 +247,55 @@ namespace Composite.Common.Mappers
                     Text = compositeBase.TaskText
                 };
             }
+            if (compositeBase.CompositeType == "ImageComposite")
+            {
+                BitmapImage bitmapImage = ByteArrayToBitmapImage(compositeBase.DataImage);
+
+                return new ImageCompositeVM()
+                {
+                    Id = Guid.Parse(compositeBase.Id),
+                    ImageSource = bitmapImage,
+                    HorizontalImage = compositeBase.HorizontalImage,
+                    OriginalWidth = bitmapImage.PixelWidth,
+                    OriginalHeight = bitmapImage.PixelHeight
+                };
+            }
 
             return null;
+        }
+
+        byte[] BitmapImageToByteArray(BitmapImage bitmapImage)
+        {
+            if (bitmapImage == null) return null;
+
+            byte[] data;
+
+            PngBitmapEncoder encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                encoder.Save(ms);
+                data = ms.ToArray();
+            }
+
+            return data;
+        }
+        BitmapImage ByteArrayToBitmapImage(byte[] byteArray)
+        {
+            if (byteArray == null || byteArray.Length == 0) return null;
+
+            BitmapImage image = new BitmapImage();
+            using (MemoryStream ms = new MemoryStream(byteArray))
+            {
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.StreamSource = ms;
+                image.EndInit();
+                image.Freeze();
+            }
+
+            return image;
         }
     }
 }

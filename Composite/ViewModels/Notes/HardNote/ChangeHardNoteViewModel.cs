@@ -1,12 +1,11 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows.Forms;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Composite.Common.Message.Notes;
 using Composite.Common.Message.Notes.Note;
 using Composite.Services;
 using Composite.Services.TabService;
+using System.Collections.ObjectModel;
 
 namespace Composite.ViewModels.Notes.HardNote
 {

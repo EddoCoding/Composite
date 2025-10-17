@@ -264,7 +264,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBox Grid.Row="0" Text="{Binding NoteVM.Title, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TitleTextBox}" Margin="5,5,5,0"/>
+        <TextBox x:Name="titleTextBox" Grid.Row="0" Text="{Binding NoteVM.Title, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TitleTextBox}" Margin="5,5,5,0"/>
 
         <TextBox Grid.Row="1" Text="{Binding NoteVM.Content, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ContentTextBox}"/>
 

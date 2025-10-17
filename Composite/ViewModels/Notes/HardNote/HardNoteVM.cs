@@ -1,7 +1,7 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 
@@ -181,7 +181,7 @@ namespace Composite.ViewModels.Notes.HardNote
 
                             int indexImage = Composites.IndexOf(compositeBaseVM);
                             DeleteComposite(compositeBaseVM);
-                            var imageComposite = new ImageCompositeVM() { ImageSource = bitmap};
+                            var imageComposite = new ImageCompositeVM() { ImageSource = bitmap };
                             Composites.Insert(indexImage, imageComposite);
                             return imageComposite;
                         }
@@ -227,5 +227,12 @@ namespace Composite.ViewModels.Notes.HardNote
 
             return bitmap;
         }
+        [RelayCommand] void OpenFullImage(ImageCompositeVM image)
+        {
+            Image = image.ImageSource;
+            IsImagePopupOpen = true;
+        }
+        [ObservableProperty] bool _isImagePopupOpen;
+        [ObservableProperty] BitmapImage _image;
     }
 }

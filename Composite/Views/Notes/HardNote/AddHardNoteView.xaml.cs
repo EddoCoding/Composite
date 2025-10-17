@@ -10,7 +10,11 @@ namespace Composite.Views.Notes
 {
     public partial class AddHardNoteView : UserControl
     {
-        public AddHardNoteView() => InitializeComponent();
+        public AddHardNoteView()
+        {
+            InitializeComponent();
+            Loaded += (s, e) => titleTextBox.Focus();
+        }
 
         T? FindParent<T>(DependencyObject child) where T : DependencyObject
         {
@@ -196,7 +200,7 @@ namespace Composite.Views.Notes
 
         void ListView_TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-             if (e.Key == Key.Enter && sender is TextBox textBox1)
+            if (e.Key == Key.Enter && sender is TextBox textBox1)
             {
                 int caretIndex = textBox1.CaretIndex;
                 string textValue = textBox1.Text;
@@ -350,7 +354,7 @@ namespace Composite.Views.Notes
             while (targetIndex >= 0 && targetIndex < items.Count)
             {
                 var item = items[targetIndex];
-                if (item is not LineCompositeVM) return targetIndex;
+                if (item is not LineCompositeVM && item is not ImageCompositeVM) return targetIndex;
                 targetIndex += direction;
             }
 
@@ -426,7 +430,7 @@ namespace Composite.Views.Notes
             var scrollViewer = GetScrollViewer(listComposite);
             if (scrollViewer != null)
             {
-                double offset = e.Delta / 10.0;
+                double offset = e.Delta / 3.0;
                 scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - offset);
             }
         }

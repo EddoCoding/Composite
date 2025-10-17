@@ -17,6 +17,9 @@
         public string TaskText { get; set; } = string.Empty;
         public int Completed { get; set; }
 
+        public byte[] DataImage { get; set; }
+        public string HorizontalImage { get; set; } = string.Empty;
+
         public string HardNoteId { get; set; } = string.Empty;
         public string CompositeType { get; set; } = string.Empty;
         public int OrderIndex { get; set; }

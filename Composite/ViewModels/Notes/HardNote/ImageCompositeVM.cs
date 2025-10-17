@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System.Windows.Media.Imaging;
 
 namespace Composite.ViewModels.Notes.HardNote
@@ -10,7 +11,7 @@ namespace Composite.ViewModels.Notes.HardNote
         [ObservableProperty] double _aspectRatio;
         [ObservableProperty] double _originalWidth;
         [ObservableProperty] double _originalHeight;
-        [ObservableProperty] string _horizontalImage;
+        [ObservableProperty] string _horizontalImage = "Center";
 
         public double DisplayWidth
         {
@@ -51,6 +52,22 @@ namespace Composite.ViewModels.Notes.HardNote
         }
 
         public ImageCompositeVM() => Id = Guid.NewGuid();
+
+        [RelayCommand] void ChangeHorizontal(string horizontal)
+        {
+            switch (horizontal)
+            {
+                case "Left":
+                    HorizontalImage = horizontal;
+                    break;
+                case "Center":
+                    HorizontalImage = horizontal;
+                    break;
+                case "Right":
+                    HorizontalImage = horizontal;
+                    break;
+            }
+        }
 
         void CalculateAspectRatio()
         {

@@ -26,7 +26,6 @@ namespace Composite.Repositories
                             .Select((composite, index) => new { Composite = composite, OrderIndex = index })
                             .ToList();
 
-                        // TextComposite
                         var textComposites = compositesWithOrder
                             .Where(x => x.Composite is TextComposite)
                             .Select(x => new
@@ -129,6 +128,27 @@ namespace Composite.Repositories
                                    Values (@Id, @Tag, @Comment, @HardNoteId, @CompositeType, @OrderIndex)";
                             await connection.ExecuteAsync(queryLines, lineComposites, transaction);
                         }
+
+                        var imageComposites = compositesWithOrder
+                           .Where(x => x.Composite is ImageComposite)
+                           .Select(x => new
+                           {
+                               ((ImageComposite)x.Composite).Id,
+                               ((ImageComposite)x.Composite).Tag,
+                               ((ImageComposite)x.Composite).Comment,
+                               ((ImageComposite)x.Composite).DataImage,
+                               ((ImageComposite)x.Composite).HorizontalImage,
+                               ((ImageComposite)x.Composite).HardNoteId,
+                               ((ImageComposite)x.Composite).CompositeType,
+                               x.OrderIndex
+                           })
+                           .ToList();
+                        if (imageComposites.Any())
+                        {
+                            var queryImages = @"Insert Into Composites(Id, Tag, Comment, DataImage, HorizontalImage, HardNoteId, CompositeType, OrderIndex) 
+                                   Values (@Id, @Tag, @Comment, @DataImage, @HorizontalImage, @HardNoteId, @CompositeType, @OrderIndex)";
+                            await connection.ExecuteAsync(queryImages, imageComposites, transaction);
+                        }
                     }
 
                     transaction.Commit();
@@ -164,8 +184,8 @@ namespace Composite.Repositories
 
                     if (hardNote.Composites?.Count > 0)
                     {
-                        var queryInsertComposites = @"Insert Into Composites (Id, Tag, Comment, Text, Header, FontWeightHeader, FontSizeHeader, Quote, TaskText, Completed, HardNoteId, CompositeType, OrderIndex)
-                                                      Values (@Id, @Tag, @Comment, @Text, @Header, @FontWeightHeader, @FontSizeHeader, @Quote, @TaskText, @Completed, @HardNoteId, @CompositeType, @OrderIndex)";
+                        var queryInsertComposites = @"Insert Into Composites (Id, Tag, Comment, Text, Header, FontWeightHeader, FontSizeHeader, Quote, TaskText, Completed, DataImage, HorizontalImage, HardNoteId, CompositeType, OrderIndex)
+                                                      Values (@Id, @Tag, @Comment, @Text, @Header, @FontWeightHeader, @FontSizeHeader, @Quote, @TaskText, @Completed, @DataImage, @HorizontalImage, @HardNoteId, @CompositeType, @OrderIndex)";
 
                         var compositeData = hardNote.Composites.Select((c, index) => new
                         {
@@ -179,9 +199,11 @@ namespace Composite.Repositories
                             Quote = c.Quote,
                             TaskText = c.TaskText,
                             Completed = c.Completed,
+                            DataImage = c.DataImage,
+                            HorizontalImage = c.HorizontalImage,
                             HardNoteId = hardNote.Id,
                             CompositeType = c.CompositeType,
-                            OrderIndex = index  // Добавляем порядковый номер
+                            OrderIndex = index
                         });
 
                         var resultInsertComposites = await connection.ExecuteAsync(queryInsertComposites, compositeData, transaction);

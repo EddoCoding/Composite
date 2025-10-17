@@ -10,6 +10,9 @@
 
   <ItemGroup>
     <None Remove="Common\Images\addCategory.png" />
+    <None Remove="Common\Images\AlignmentCenter.png" />
+    <None Remove="Common\Images\AlignmentLeft.png" />
+    <None Remove="Common\Images\AlignmentRight.png" />
     <None Remove="Common\Images\back.png" />
     <None Remove="Common\Images\close.png" />
     <None Remove="Common\Images\collapse.png" />
@@ -21,6 +24,7 @@
     <None Remove="Common\Images\noteImage.png" />
     <None Remove="Common\Images\notes.png" />
     <None Remove="Common\Images\notRepeat.png" />
+    <None Remove="Common\Images\openImage.png" />
     <None Remove="Common\Images\playStop.png" />
     <None Remove="Common\Images\repeat.png" />
     <None Remove="Common\Images\sort.png" />
@@ -29,6 +33,9 @@
 
   <ItemGroup>
     <Resource Include="Common\Images\addCategory.png" />
+    <Resource Include="Common\Images\AlignmentCenter.png" />
+    <Resource Include="Common\Images\AlignmentLeft.png" />
+    <Resource Include="Common\Images\AlignmentRight.png" />
     <Resource Include="Common\Images\back.png" />
     <Resource Include="Common\Images\collapse.png" />
     <Resource Include="Common\Images\composite.png" />
@@ -58,6 +65,7 @@
 
   <ItemGroup>
     <Resource Include="Common\Images\notRepeat.png" />
+    <Resource Include="Common\Images\openImage.png" />
     <Resource Include="Common\Images\playStop.png" />
     <Resource Include="Common\Images\repeat.png" />
     <Resource Include="Common\Images\search.png" />

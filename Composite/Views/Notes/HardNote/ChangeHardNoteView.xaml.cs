@@ -351,7 +351,7 @@ namespace Composite.Views.Notes.Notes
             while (targetIndex >= 0 && targetIndex < items.Count)
             {
                 var item = items[targetIndex];
-                if (item is not LineCompositeVM) return targetIndex;
+                if (item is not LineCompositeVM && item is not ImageCompositeVM) return targetIndex;
                 targetIndex += direction;
             }
 
@@ -417,6 +417,31 @@ namespace Composite.Views.Notes.Notes
             {
                 MoveFocusToTextBox(viewModel.HardNoteVM.Composites.Count - 1);
             }), DispatcherPriority.Input);
+        }
+
+        //Для медленной прокрутки listView
+        void listComposite_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            e.Handled = true;
+
+            var scrollViewer = GetScrollViewer(listComposite);
+            if (scrollViewer != null)
+            {
+                double offset = e.Delta / 3.0;
+                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - offset);
+            }
+        }
+        ScrollViewer GetScrollViewer(DependencyObject o)
+        {
+            if (o is ScrollViewer sv) return sv;
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(o); i++)
+            {
+                var child = VisualTreeHelper.GetChild(o, i);
+                var result = GetScrollViewer(child);
+                if (result != null) return result;
+            }
+            return null;
         }
     }
 }

@@ -56,6 +56,18 @@ namespace Composite.Common.Factories
                     };
                     compositesVM.Add(newTaskCompositeVM);
                 }
+                else if (compositeVM is ImageCompositeVM imageCompositeVM)
+                {
+                    var newImageCompositeVM = new ImageCompositeVM()
+                    {
+                        Id = imageCompositeVM.Id,
+                        ImageSource = imageCompositeVM.ImageSource,
+                        OriginalWidth = imageCompositeVM.OriginalWidth,
+                        OriginalHeight = imageCompositeVM.OriginalHeight,
+                        HorizontalImage = imageCompositeVM.HorizontalImage
+                    };
+                    compositesVM.Add(newImageCompositeVM);
+                }
             }
 
             return new HardNoteVM()
