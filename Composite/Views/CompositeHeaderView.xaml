@@ -5,7 +5,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:Composite.Common.Properties"
-             mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800" FontFamily="Trebuchet MS">
+             mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800" FontFamily="Trebuchet MS"
+             KeyboardNavigation.TabNavigation="None">
     <UserControl.Resources>
         <Style x:Key="ImageButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
@@ -255,7 +256,6 @@
                             </Style.Triggers>
                         </Style>
                     </Grid.Style>
-
                 </Grid>
 
                 <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="{Binding Visibility}">
@@ -285,7 +285,7 @@
                 <Slider Grid.Column="4" Value="{Binding MediaPlayerService.Volume}" Style="{StaticResource customSlider}" Width="80" Visibility="{Binding Visibility}"/>
 
                 <Button Grid.Column="5" Content="{Binding NameButtonStartStopMediaPlayer}" Style="{StaticResource DefaultButton}" Margin="0,0,5,0"
-                        RenderOptions.BitmapScalingMode="Fant" Command="{Binding StarStopMediaPlayerCommand}"/>
+                        RenderOptions.BitmapScalingMode="Fant" Command="{Binding StarStopMediaPlayerCommand}" Focusable="False"/>
 
             </Grid>
         </Border>

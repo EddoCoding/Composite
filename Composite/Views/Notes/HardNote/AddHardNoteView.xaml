@@ -7,7 +7,8 @@
              xmlns:viewModel="clr-namespace:Composite.ViewModels.Notes.HardNote"
              xmlns:property="clr-namespace:Composite.Common.Properties"
              xmlns:converter="clr-namespace:Composite.Common.Converters"
-             mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800" FontFamily="Trebuchet MS" TextOptions.TextFormattingMode="Ideal">
+             mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800" FontFamily="Trebuchet MS" 
+             TextOptions.TextFormattingMode="Ideal" KeyboardNavigation.TabNavigation="None">
     <UserControl.Resources>
         <converter:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 

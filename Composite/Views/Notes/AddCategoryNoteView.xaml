@@ -8,7 +8,7 @@
         WindowStartupLocation="CenterScreen" RenderOptions.BitmapScalingMode="NearestNeighbor"
         Title="{Binding Title}" Height="130" Width="300" ResizeMode="CanResizeWithGrip" 
         AllowsTransparency="True" BorderBrush="LightGray" BorderThickness="1" FontFamily="Trebuchet MS"
-        TextOptions.TextFormattingMode="Display">
+        TextOptions.TextFormattingMode="Display" KeyboardNavigation.TabNavigation="None">
     <Window.Resources>
         <Style x:Key="Button" TargetType="Button">
             <Setter Property="FontSize" Value="12"/>
