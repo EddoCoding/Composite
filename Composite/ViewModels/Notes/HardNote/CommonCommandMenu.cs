@@ -2,13 +2,13 @@
 
 namespace Composite.ViewModels.Notes.HardNote
 {
-    public class CommandContextMenu
+    public class CommonCommandMenu
     {
         public string NameCommand { get; set; } = string.Empty;
         public string PathImage { get; set; } = string.Empty;
         public ICommand ActionCommand { get; set; }
 
-        public CommandContextMenu(string name, string pathImage, ICommand command)
+        public CommonCommandMenu(string name, string pathImage, ICommand command)
         {
             NameCommand = name;
             PathImage = pathImage;

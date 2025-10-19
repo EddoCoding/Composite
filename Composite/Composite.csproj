@@ -15,11 +15,17 @@
     <None Remove="Common\Images\AlignmentLeft.png" />
     <None Remove="Common\Images\AlignmentRight.png" />
     <None Remove="Common\Images\back.png" />
+    <None Remove="Common\Images\changeType.png" />
     <None Remove="Common\Images\close.png" />
     <None Remove="Common\Images\collapse.png" />
+    <None Remove="Common\Images\comment.png" />
     <None Remove="Common\Images\composite.png" />
     <None Remove="Common\Images\deleteCategory.png" />
+    <None Remove="Common\Images\duplicate.png" />
     <None Remove="Common\Images\hardNoteImage.png" />
+    <None Remove="Common\Images\header1.png" />
+    <None Remove="Common\Images\header2.png" />
+    <None Remove="Common\Images\header3.png" />
     <None Remove="Common\Images\lock.png" />
     <None Remove="Common\Images\next.png" />
     <None Remove="Common\Images\noteImage.png" />
@@ -27,9 +33,13 @@
     <None Remove="Common\Images\notRepeat.png" />
     <None Remove="Common\Images\openImage.png" />
     <None Remove="Common\Images\playStop.png" />
+    <None Remove="Common\Images\quote.png" />
     <None Remove="Common\Images\repeat.png" />
     <None Remove="Common\Images\scale.png" />
     <None Remove="Common\Images\sort.png" />
+    <None Remove="Common\Images\tag.png" />
+    <None Remove="Common\Images\task.png" />
+    <None Remove="Common\Images\text.png" />
     <None Remove="Common\Images\threeDots.png" />
   </ItemGroup>
 
@@ -40,10 +50,16 @@
     <Resource Include="Common\Images\AlignmentLeft.png" />
     <Resource Include="Common\Images\AlignmentRight.png" />
     <Resource Include="Common\Images\back.png" />
+    <Resource Include="Common\Images\changeType.png" />
     <Resource Include="Common\Images\collapse.png" />
+    <Resource Include="Common\Images\comment.png" />
     <Resource Include="Common\Images\composite.png" />
     <Resource Include="Common\Images\deleteCategory.png" />
+    <Resource Include="Common\Images\duplicate.png" />
     <Resource Include="Common\Images\hardNoteImage.png" />
+    <Resource Include="Common\Images\header1.png" />
+    <Resource Include="Common\Images\header2.png" />
+    <Resource Include="Common\Images\header3.png" />
     <Resource Include="Common\Images\lock.png" />
   </ItemGroup>
 
@@ -70,10 +86,14 @@
     <Resource Include="Common\Images\notRepeat.png" />
     <Resource Include="Common\Images\openImage.png" />
     <Resource Include="Common\Images\playStop.png" />
+    <Resource Include="Common\Images\quote.png" />
     <Resource Include="Common\Images\repeat.png" />
     <Resource Include="Common\Images\scale.png" />
     <Resource Include="Common\Images\search.png" />
     <Resource Include="Common\Images\sort.png" />
+    <Resource Include="Common\Images\tag.png" />
+    <Resource Include="Common\Images\task.png" />
+    <Resource Include="Common\Images\text.png" />
     <Resource Include="Common\Images\threeDots.png" />
   </ItemGroup>
 

@@ -35,24 +35,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="ButtonCommand" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" BorderThickness="1" CornerRadius="5" Margin="3,3,3,0">
-                            <ContentPresenter Margin="3"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="WhiteSmoke"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
 
         <Style x:Key="TitleTextBox" TargetType="TextBox">
             <Setter Property="FontSize" Value="26"/>
@@ -481,6 +463,17 @@
             </Border>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewModel:CommonCommandMenu}">
+            <Button Style="{StaticResource ImageTextButton}" Content="{Binding NameCommand}" FontSize="15" Tag="{Binding PathImage}" Height="22" 
+                    Margin="3" RenderOptions.BitmapScalingMode="Fant" TextOptions.TextFormattingMode="Display"
+                    Command="{Binding ActionCommand}"/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:CommandContextMenu}">
+            <Button Style="{StaticResource ImageTextButton}" Content="{Binding NameCommand}" FontSize="15" Tag="{Binding PathImage}" Height="22" 
+                    Margin="3" RenderOptions.BitmapScalingMode="Fant" TextOptions.TextFormattingMode="Display"
+                    Command="{Binding ActionCommand}" Click="PositionPopup"/>
+        </DataTemplate>
+
     </UserControl.Resources>
     <UserControl.InputBindings>
         <KeyBinding Gesture="CTRL+S" Command="{Binding CheckNoteCommand}"/>
@@ -559,25 +552,37 @@
 
         <Popup IsOpen="{Binding HardNoteVM.IsOpenPopup, Mode=TwoWay}" Placement="Mouse" AllowsTransparency="True" StaysOpen="False">
             <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="5">
-                <ListView ItemsSource="{Binding HardNoteVM.ContextMenu}" Padding="0,0,0,3" BorderThickness="1" BorderBrush="Transparent">
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="ListViewItem">
-                                        <ContentPresenter/>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Button x:Name="PopupButton" Content="{Binding NameCommand}" Style="{StaticResource ButtonCommand}" Command="{Binding ActionCommand}"
-                                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}}" Click="PositionPopup"/>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                <StackPanel>
+                    <ListView ItemsSource="{Binding HardNoteVM.CommonContextMenu}" Padding="0,0,0,3" BorderThickness="1" BorderBrush="Transparent">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListViewItem">
+                                            <ContentPresenter/>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
+
+                    <Line X1="0" X2="1" Stretch="Fill" Stroke="Gray" Margin="10,0"/>
+
+                    <ListView ItemsSource="{Binding HardNoteVM.ContextMenu}" Padding="0,0,0,3" BorderThickness="1" BorderBrush="Transparent">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListViewItem">
+                                            <ContentPresenter/>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
+                </StackPanel>
             </Border>
         </Popup>
 
