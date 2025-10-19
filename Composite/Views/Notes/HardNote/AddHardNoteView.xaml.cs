@@ -16,6 +16,11 @@ namespace Composite.Views.Notes
             Loaded += (s, e) => titleTextBox.Focus();
         }
 
+        void PositionPopup(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button) SecondPopup.PlacementTarget = button;
+        }
+
         T? FindParent<T>(DependencyObject child) where T : DependencyObject
         {
             DependencyObject? parentObject = VisualTreeHelper.GetParent(child);

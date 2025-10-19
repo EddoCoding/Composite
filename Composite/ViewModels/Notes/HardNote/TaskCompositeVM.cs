@@ -8,5 +8,7 @@ namespace Composite.ViewModels.Notes.HardNote
         [ObservableProperty] bool _isCompleted;
 
         public TaskCompositeVM() => Id = Guid.NewGuid();
+
+        public override object Clone() => new TaskCompositeVM() { Id = Guid.NewGuid(), Text = Text, IsCompleted = IsCompleted };
     }
 }

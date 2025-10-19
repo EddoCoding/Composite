@@ -7,5 +7,7 @@ namespace Composite.ViewModels.Notes.HardNote
         [ObservableProperty] string text = string.Empty;
 
         public TextCompositeVM() => Id = Guid.NewGuid();
+
+        public override object Clone() => new TextCompositeVM() { Id = Guid.NewGuid(), Text = Text };
     }
 }

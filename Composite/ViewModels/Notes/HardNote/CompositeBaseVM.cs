@@ -2,10 +2,12 @@
 
 namespace Composite.ViewModels.Notes.HardNote
 {
-    public abstract class CompositeBaseVM : ObservableObject
+    public abstract class CompositeBaseVM : ObservableObject, ICloneable
     {
         public Guid Id { get; set; }
         public string Tag { get; set; } = string.Empty;
         public string Comment { get; set; } = string.Empty;
+
+        public abstract object Clone();
     }
 }

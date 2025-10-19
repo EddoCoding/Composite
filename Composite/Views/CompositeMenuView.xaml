@@ -292,7 +292,7 @@
                                                 </ContentControl.Triggers>
                                             </ContentControl>
 
-                                            <Popup Name="SortPopup" PlacementTarget="{Binding ElementName=SortContentControl}" Placement="Right" AllowsTransparency="True">
+                                            <Popup Name="SortPopup" PlacementTarget="{Binding ElementName=SortContentControl}" Placement="Right" AllowsTransparency="True" HorizontalOffset="10">
                                                 <Popup.Triggers>
                                                     <EventTrigger RoutedEvent="MouseEnter">
                                                         <StopStoryboard BeginStoryboardName="HidePopupDelayed"/>
@@ -322,7 +322,7 @@
                                                     </StackPanel>
                                                 </Border>
                                             </Popup>
-                                            <Popup Name="CategoriesPopup" PlacementTarget="{Binding ElementName=CategoriesContentControl}" Placement="Right" AllowsTransparency="True">
+                                            <Popup Name="CategoriesPopup" PlacementTarget="{Binding ElementName=CategoriesContentControl}" Placement="Right" AllowsTransparency="True" HorizontalOffset="10">
                                                 <Popup.Triggers>
                                                     <EventTrigger RoutedEvent="MouseEnter">
                                                         <StopStoryboard BeginStoryboardName="HidePopupDelayed"/>
@@ -490,12 +490,12 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListViewItem">
-                        <Button x:Name="ItemButton" Style="{DynamicResource NoteButton}"
+                        <Button x:Name="ItemButton" Style="{StaticResource NoteButton}"
                                 Command="{Binding DataContext.OpenNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
                         </Button>
                         <ControlTemplate.Triggers>
                             <DataTrigger Binding="{Binding ItemType}" Value="AddNoteButton">
-                                <Setter TargetName="ItemButton" Property="Style" Value="{DynamicResource addNoteButton}"/>
+                                <Setter TargetName="ItemButton" Property="Style" Value="{StaticResource addNoteButton}"/>
                                 <Setter TargetName="ItemButton" Property="Command" Value="{Binding DataContext.SelectTypeNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}"/>
                             </DataTrigger>
                         </ControlTemplate.Triggers>
@@ -532,7 +532,7 @@
 
         <ContentControl Grid.Row="2" Style="{StaticResource ContentControlNotes}" Content="/Common/Images/notes.png" Tag="Notes" Height="28" Margin="3"/>
 
-        <ListView Grid.Row="3" Margin="5,0" ItemsSource="{Binding Notes}" ItemContainerStyle="{DynamicResource NoteListViewItem}" BorderThickness="0"/>
+        <ListView Grid.Row="3" Margin="5,0" ItemsSource="{Binding Notes}" ItemContainerStyle="{StaticResource NoteListViewItem}" BorderThickness="0"/>
 
         <Button Grid.Row="4" Content="/Common/Images/collapse.png" Height="33" Margin="5,0,5,5" VerticalAlignment="Bottom" 
                 Style="{StaticResource ImageModule}" ToolTip="Collapse" Command="{Binding CollapseCommand}" Tag="Yellow"/>

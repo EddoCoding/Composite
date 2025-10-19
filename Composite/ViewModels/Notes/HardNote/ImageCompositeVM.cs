@@ -75,5 +75,8 @@ namespace Composite.ViewModels.Notes.HardNote
             OriginalHeight = ImageSource.PixelHeight;
             AspectRatio = OriginalWidth / OriginalHeight;
         }
+
+        public override object Clone() => new ImageCompositeVM() { Id = Guid.NewGuid(), ImageSource = ImageSource, OriginalHeight = OriginalHeight,
+            OriginalWidth = OriginalWidth, HorizontalImage = HorizontalImage };
     }
 }

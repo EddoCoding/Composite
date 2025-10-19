@@ -37,6 +37,11 @@ namespace Composite.Views.Notes.Notes
             return null;
         }
 
+        void PositionPopup(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button) SecondPopup.PlacementTarget = button;
+        }
+
         void MoveFocusToTextBox(int index)
         {
             if (listComposite.ItemsSource is IList<CompositeBaseVM> items && index >= 0 && index < items.Count)

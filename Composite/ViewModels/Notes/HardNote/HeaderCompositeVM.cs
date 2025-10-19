@@ -9,5 +9,7 @@ namespace Composite.ViewModels.Notes.HardNote
         [ObservableProperty] double _fontSize;
 
         public HeaderCompositeVM() => Id = Guid.NewGuid();
+
+        public override object Clone() => new HeaderCompositeVM() { Id = Guid.NewGuid(), Text = Text, FontWeight = FontWeight, FontSize = FontSize };
     }
 }

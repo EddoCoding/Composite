@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Common\Images\actions.png" />
     <None Remove="Common\Images\addCategory.png" />
     <None Remove="Common\Images\AlignmentCenter.png" />
     <None Remove="Common\Images\AlignmentLeft.png" />
@@ -32,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Common\Images\actions.png" />
     <Resource Include="Common\Images\addCategory.png" />
     <Resource Include="Common\Images\AlignmentCenter.png" />
     <Resource Include="Common\Images\AlignmentLeft.png" />
