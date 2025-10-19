@@ -7,6 +7,8 @@ namespace Composite.Services
         void Register<View, ViewModel>() where ViewModel : class;
         bool ShowView<ViewModel>();
         UserControl GetUserControl<ViewModel>();
+
+        void ScaleView<ViewModel>();
         void CloseView<ViewModel>();
         void CollapseView<ViewModel>();
     }

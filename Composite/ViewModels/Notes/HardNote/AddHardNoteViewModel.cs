@@ -79,8 +79,6 @@ namespace Composite.ViewModels.Notes.Note
                     _messenger.UnregisterAll(this);
                     SelectedCategory = null;
                     Categories.Clear();
-                    HardNoteVM.Dispose();
-                    HardNoteVM = null;
                 }
                 _disposed = true;
             }

@@ -212,7 +212,7 @@
                 <TextBox Grid.Column="1" Style="{StaticResource Text}" Margin="10,0,0,0"
                          property:PlaceHolder.PlaceHolder="Enter text" PreviewKeyDown="ListView_TextBox_PreviewKeyDown"/>
 
-                <Button Grid.Column="2" Content="X" Cursor="Hand" VerticalAlignment="Top" VerticalContentAlignment="Top" Margin="10,3,0,0"
+                <Button Grid.Column="2" Content="X" Cursor="Hand" VerticalAlignment="Top" VerticalContentAlignment="Top" Margin="10,3,0,0" FontSize="14"
                         Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Command="{Binding DataContext.HardNoteVM.DeleteCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
                         CommandParameter="{Binding}">
@@ -253,7 +253,7 @@
                 <TextBox Grid.Column="1" Style="{StaticResource Text}" FontWeight="{Binding FontWeight}" FontSize="{Binding FontSize}" Margin="10,0,0,0"
                          property:PlaceHolder.PlaceHolder="Enter header" PreviewKeyDown="ListView_TextBox_PreviewKeyDown"/>
 
-                <Button Grid.Column="2" Content="X" Margin="10,5,0,0" Cursor="Arrow" VerticalAlignment="Top" VerticalContentAlignment="Top"
+                <Button Grid.Column="2" Content="X" Margin="10,5,0,0" Cursor="Arrow" VerticalAlignment="Top" VerticalContentAlignment="Top" FontSize="14"
                         Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Command="{Binding DataContext.HardNoteVM.DeleteCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
                         CommandParameter="{Binding}">
@@ -311,7 +311,7 @@
 
                 </Grid>
 
-                <Button Grid.Column="2" Content="X" Margin="10,5,0,0" Cursor="Arrow" VerticalAlignment="Top" VerticalContentAlignment="Top"
+                <Button Grid.Column="2" Content="X" Margin="10,5,0,0" Cursor="Arrow" VerticalAlignment="Top" VerticalContentAlignment="Top" FontSize="14"
                         Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Command="{Binding DataContext.HardNoteVM.DeleteCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
                         CommandParameter="{Binding}">
@@ -353,7 +353,7 @@
 
                 <Line Grid.Column="1" Style="{StaticResource Line}"/>
 
-                <Button Grid.Column="2" Content="X" Cursor="Arrow" VerticalAlignment="Center" Margin="10,0,0,0"
+                <Button Grid.Column="2" Content="X" Cursor="Arrow" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="14"
                         Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Command="{Binding DataContext.HardNoteVM.DeleteCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
                         CommandParameter="{Binding}">
@@ -393,7 +393,7 @@
 
                 <CheckBox Grid.Column="1" Style="{StaticResource CheckBoxTask}" IsChecked="{Binding IsCompleted}"/>
 
-                <Button Grid.Column="2" Content="X" Cursor="Arrow" VerticalAlignment="Center" Margin="10,0,0,0"
+                <Button Grid.Column="2" Content="X" Cursor="Arrow" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="14"
                         Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Command="{Binding DataContext.HardNoteVM.DeleteCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
                         CommandParameter="{Binding}">
@@ -454,7 +454,7 @@
 
                     </Grid>
 
-                    <Button Grid.Column="2" Content="X" Margin="10,0,0,0" Cursor="Arrow" VerticalAlignment="Top"
+                    <Button Grid.Column="2" Content="X" Margin="10,0,0,0" Cursor="Arrow" VerticalAlignment="Top" FontSize="14"
                             Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
                             Command="{Binding DataContext.HardNoteVM.DeleteCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
                             CommandParameter="{Binding}">

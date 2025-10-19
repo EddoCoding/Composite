@@ -24,7 +24,6 @@ namespace Composite.ViewModels
         public ObservableCollection<NoteBaseVM> Notes { get; set; } = new();
         public ObservableCollection<CategoryNoteVM> Categories { get; set; }
 
-        //Для надстроек
         public string TextSearch { get; set; } = string.Empty;
         [ObservableProperty] bool _isPopupOpen;
 
@@ -239,6 +238,7 @@ namespace Composite.ViewModels
             }
         }
 
+        [RelayCommand] void Scale() => _viewService.ScaleView<CompositeViewModel>();
         [RelayCommand] void Collapse() => _viewService.CollapseView<CompositeViewModel>();
         [RelayCommand] void Close() => _viewService.CloseView<CompositeViewModel>();
 

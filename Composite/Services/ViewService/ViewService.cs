@@ -55,6 +55,13 @@ namespace Composite.Services
                 openViews.Remove(view);
             }
         }
+
+        public void ScaleView<ViewModel>()
+        {
+            var viewToScale = openViews.FirstOrDefault(x => x.Value.GetType() == typeof(ViewModel));
+            if (viewToScale.Key.WindowState == WindowState.Maximized) viewToScale.Key.WindowState = WindowState.Normal;
+            else viewToScale.Key.WindowState = WindowState.Maximized;
+        }
         public void CloseView<ViewModel>()
         {
             var viewToClose = openViews.FirstOrDefault(x => x.Value.GetType() == typeof(ViewModel));

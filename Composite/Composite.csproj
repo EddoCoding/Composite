@@ -28,6 +28,7 @@
     <None Remove="Common\Images\openImage.png" />
     <None Remove="Common\Images\playStop.png" />
     <None Remove="Common\Images\repeat.png" />
+    <None Remove="Common\Images\scale.png" />
     <None Remove="Common\Images\sort.png" />
     <None Remove="Common\Images\threeDots.png" />
   </ItemGroup>
@@ -70,6 +71,7 @@
     <Resource Include="Common\Images\openImage.png" />
     <Resource Include="Common\Images\playStop.png" />
     <Resource Include="Common\Images\repeat.png" />
+    <Resource Include="Common\Images\scale.png" />
     <Resource Include="Common\Images\search.png" />
     <Resource Include="Common\Images\sort.png" />
     <Resource Include="Common\Images\threeDots.png" />

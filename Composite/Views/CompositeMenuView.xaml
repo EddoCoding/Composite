@@ -513,6 +513,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.Effect>
             <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
@@ -534,10 +535,13 @@
 
         <ListView Grid.Row="3" Margin="5,0" ItemsSource="{Binding Notes}" ItemContainerStyle="{StaticResource NoteListViewItem}" BorderThickness="0"/>
 
-        <Button Grid.Row="4" Content="/Common/Images/collapse.png" Height="33" Margin="5,0,5,5" VerticalAlignment="Bottom" 
+        <Button Grid.Row="4" Content="/Common/Images/scale.png" Height="33" Margin="5,0,5,5" VerticalAlignment="Bottom" 
+                Style="{StaticResource ImageModule}" ToolTip="Scale" Command="{Binding ScaleCommand}" Tag="Orange"/>
+        
+        <Button Grid.Row="5" Content="/Common/Images/collapse.png" Height="33" Margin="5,0,5,5" VerticalAlignment="Bottom" 
                 Style="{StaticResource ImageModule}" ToolTip="Collapse" Command="{Binding CollapseCommand}" Tag="Yellow"/>
 
-        <Button Grid.Row="5" Content="/Common/Images/close.png" Height="32" Margin="5,0,5,5" VerticalAlignment="Bottom"
+        <Button Grid.Row="6" Content="/Common/Images/close.png" Height="32" Margin="5,0,5,5" VerticalAlignment="Bottom"
                 Style="{StaticResource ImageModule}" ToolTip="Exit" Command="{Binding CloseCommand}" Tag="Red"/>
 
     </Grid>
