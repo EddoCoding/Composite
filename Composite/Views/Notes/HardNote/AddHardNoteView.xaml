@@ -7,10 +7,14 @@
              xmlns:viewModel="clr-namespace:Composite.ViewModels.Notes.HardNote"
              xmlns:property="clr-namespace:Composite.Common.Properties"
              xmlns:converter="clr-namespace:Composite.Common.Converters"
+             xmlns:helper="clr-namespace:Composite.Common.Helpers"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800" FontFamily="Trebuchet MS" 
              TextOptions.TextFormattingMode="Ideal" KeyboardNavigation.TabNavigation="None">
     <UserControl.Resources>
         <converter:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVis"/>
+        <converter:BoolToVisibilityConverter x:Key="InverseBoolToVis" Inverse="True"/>
 
         <Style x:Key="ImageButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
@@ -179,12 +183,13 @@
         </Style>
 
         <DataTemplate DataType="{x:Type viewModel:TextCompositeVM}">
-            <Grid Width="1100" Background="Transparent">
+            <Grid Width="1150" Background="Transparent">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="18"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <TextBox Grid.Column="0" Style="{StaticResource Text}" Text="{Binding Tag}" Margin="5,0" Width="100" TextWrapping="NoWrap" Foreground="Gray"
@@ -221,15 +226,37 @@
                     </Button.Style>
                 </Button>
 
+                <Grid Grid.Column="4" Margin="5,1,5,0" VerticalAlignment="Top">
+
+                    <TextBox Style="{StaticResource Text}" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" Foreground="Gray" FontSize="12"
+                             Width="150" VerticalAlignment="Center" Visibility="{Binding IsEditing, Converter={StaticResource BoolToVis}}"
+                             property:PlaceHolder.PlaceHolder="Enter comment" property:PlaceHolder.ShowAlways="True">
+                        <i:Interaction.Behaviors>
+                            <helper:FocusTextBoxBehavior/>
+                        </i:Interaction.Behaviors>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="LostFocus">
+                                <i:InvokeCommandAction Command="{Binding DataContext.HardNoteVM.StopEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </TextBox>
+
+                    <Button Style="{StaticResource ImageButton}" Content="/Common/Images/comment.png" Height="18" Width="18" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top"
+                        Visibility="{Binding IsEditing, Converter={StaticResource InverseBoolToVis}}" Cursor="Hand"
+                        Command="{Binding DataContext.HardNoteVM.StartEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+                    
+                </Grid>
+
             </Grid>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:HeaderCompositeVM}">
-            <Grid Width="1100" Background="Transparent">
+            <Grid Width="1150" Background="Transparent">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="18"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <TextBox Grid.Column="0" Style="{StaticResource Text}" Text="{Binding Tag}" Margin="5,0" Width="100" TextWrapping="NoWrap" Foreground="Gray"
@@ -266,15 +293,37 @@
                     </Button.Style>
                 </Button>
 
+                <Grid Grid.Column="4" Margin="5,4,5,0" VerticalAlignment="Top">
+
+                    <TextBox Style="{StaticResource Text}" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" Foreground="Gray" FontSize="12"
+                              Width="150" VerticalAlignment="Center" Visibility="{Binding IsEditing, Converter={StaticResource BoolToVis}}"
+                              property:PlaceHolder.PlaceHolder="Enter comment" property:PlaceHolder.ShowAlways="True">
+                        <i:Interaction.Behaviors>
+                            <helper:FocusTextBoxBehavior/>
+                        </i:Interaction.Behaviors>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="LostFocus">
+                                <i:InvokeCommandAction Command="{Binding DataContext.HardNoteVM.StopEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </TextBox>
+
+                    <Button Style="{StaticResource ImageButton}" Content="/Common/Images/comment.png" Height="18" Width="18" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top"
+                            Visibility="{Binding IsEditing, Converter={StaticResource InverseBoolToVis}}" Cursor="Hand"
+                            Command="{Binding DataContext.HardNoteVM.StartEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+
+                </Grid>
+
             </Grid>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:QuoteCompositeVM}">
-            <Grid Width="1100" Background="Transparent">
+            <Grid Width="1150" Background="Transparent">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="18"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <TextBox Grid.Column="0" Style="{StaticResource Text}" Text="{Binding Tag}" Margin="5,0" Width="100" TextWrapping="NoWrap" Foreground="Gray"
@@ -328,17 +377,39 @@
                     </Button.Style>
                 </Button>
 
+                <Grid Grid.Column="4" Margin="5,4,5,0" VerticalAlignment="Top">
+
+                    <TextBox Style="{StaticResource Text}" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" Foreground="Gray" FontSize="12"
+                             Width="150" VerticalAlignment="Center" Visibility="{Binding IsEditing, Converter={StaticResource BoolToVis}}"
+                             property:PlaceHolder.PlaceHolder="Enter comment" property:PlaceHolder.ShowAlways="True">
+                        <i:Interaction.Behaviors>
+                            <helper:FocusTextBoxBehavior/>
+                        </i:Interaction.Behaviors>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="LostFocus">
+                                <i:InvokeCommandAction Command="{Binding DataContext.HardNoteVM.StopEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </TextBox>
+
+                    <Button Style="{StaticResource ImageButton}" Content="/Common/Images/comment.png" Height="18" Width="18" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top"
+                            Visibility="{Binding IsEditing, Converter={StaticResource InverseBoolToVis}}" Cursor="Hand"
+                            Command="{Binding DataContext.HardNoteVM.StartEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+
+                </Grid>
+
             </Grid>
 
             
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:LineCompositeVM}">
-            <Grid Width="1100" Background="Transparent">
+            <Grid Width="1150" Background="Transparent">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="18"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <TextBox Grid.Column="0" Style="{StaticResource Text}" Text="{Binding Tag}" Margin="5,0" Width="100" TextWrapping="NoWrap" Foreground="Gray"
@@ -374,15 +445,37 @@
                     </Button.Style>
                 </Button>
 
+                <Grid Grid.Column="4" Margin="5,0" VerticalAlignment="Center">
+
+                    <TextBox Style="{StaticResource Text}" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" Foreground="Gray" FontSize="12"
+                             Width="150" VerticalAlignment="Center" Visibility="{Binding IsEditing, Converter={StaticResource BoolToVis}}"
+                             property:PlaceHolder.PlaceHolder="Enter comment" property:PlaceHolder.ShowAlways="True">
+                        <i:Interaction.Behaviors>
+                            <helper:FocusTextBoxBehavior/>
+                        </i:Interaction.Behaviors>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="LostFocus">
+                                <i:InvokeCommandAction Command="{Binding DataContext.HardNoteVM.StopEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </TextBox>
+
+                    <Button Style="{StaticResource ImageButton}" Content="/Common/Images/comment.png" Height="18" Width="18" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top"
+                            Visibility="{Binding IsEditing, Converter={StaticResource InverseBoolToVis}}" Cursor="Hand"
+                            Command="{Binding DataContext.HardNoteVM.StartEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+
+                </Grid>
+
             </Grid>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:TaskCompositeVM}">
-            <Grid x:Name="rootPanel" Width="1100" Background="Transparent">
+            <Grid x:Name="rootPanel" Width="1150" Background="Transparent">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="18"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <TextBox Grid.Column="0" Style="{StaticResource Text}" Text="{Binding Tag}" Margin="5,0" Width="100" TextWrapping="NoWrap" Foreground="Gray"
@@ -394,7 +487,7 @@
                         Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                         CommandParameter="{Binding}"/>
 
-                <CheckBox Grid.Column="2" Style="{StaticResource CheckBoxTask}" IsChecked="{Binding IsCompleted}"/>
+                <CheckBox Grid.Column="2" Style="{StaticResource CheckBoxTask}" IsChecked="{Binding IsCompleted}" VerticalAlignment="Top"/>
 
                 <Button Grid.Column="3" Content="X" Cursor="Arrow" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="14"
                         Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
@@ -418,16 +511,38 @@
                     </Button.Style>
                 </Button>
 
+                <Grid Grid.Column="4" Margin="5,6,5,0" VerticalAlignment="Top">
+
+                    <TextBox Style="{StaticResource Text}" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" Foreground="Gray" FontSize="12"
+                             Width="150" VerticalAlignment="Center" Visibility="{Binding IsEditing, Converter={StaticResource BoolToVis}}"
+                             property:PlaceHolder.PlaceHolder="Enter comment" property:PlaceHolder.ShowAlways="True">
+                        <i:Interaction.Behaviors>
+                            <helper:FocusTextBoxBehavior/>
+                        </i:Interaction.Behaviors>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="LostFocus">
+                                <i:InvokeCommandAction Command="{Binding DataContext.HardNoteVM.StopEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </TextBox>
+
+                    <Button Style="{StaticResource ImageButton}" Content="/Common/Images/comment.png" Height="18" Width="18" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top"
+                            Visibility="{Binding IsEditing, Converter={StaticResource InverseBoolToVis}}" Cursor="Hand"
+                            Command="{Binding DataContext.HardNoteVM.StartEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+
+                </Grid>
+
             </Grid>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:ImageCompositeVM}">
-            <Border MaxWidth="1100" BorderThickness="1" BorderBrush="Transparent" Margin="0,5">
+            <Border MaxWidth="1150" BorderThickness="1" BorderBrush="Transparent" Margin="0,5">
                 <Grid Background="Transparent">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="18"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
                     <TextBox Grid.Column="0" Style="{StaticResource Text}" Text="{Binding Tag}" Margin="5,0" Width="100" TextWrapping="NoWrap" Foreground="Gray"
@@ -482,6 +597,27 @@
                             </Style>
                         </Button.Style>
                     </Button>
+
+                    <Grid Grid.Column="4" Margin="5,0" VerticalAlignment="Top">
+
+                        <TextBox Style="{StaticResource Text}" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" Foreground="Gray" FontSize="12"
+                                 Width="150" VerticalAlignment="Center" Visibility="{Binding IsEditing, Converter={StaticResource BoolToVis}}"
+                                 property:PlaceHolder.PlaceHolder="Enter comment" property:PlaceHolder.ShowAlways="True">
+                            <i:Interaction.Behaviors>
+                                <helper:FocusTextBoxBehavior/>
+                            </i:Interaction.Behaviors>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="LostFocus">
+                                    <i:InvokeCommandAction Command="{Binding DataContext.HardNoteVM.StopEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
+
+                        <Button Style="{StaticResource ImageButton}" Content="/Common/Images/comment.png" Height="18" Width="18" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top"
+                                Visibility="{Binding IsEditing, Converter={StaticResource InverseBoolToVis}}" Cursor="Hand"
+                                Command="{Binding DataContext.HardNoteVM.StartEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+
+                    </Grid>
 
                 </Grid>
             </Border>
@@ -574,7 +710,7 @@
             </Border>
         </Popup>
 
-        <Popup IsOpen="{Binding HardNoteVM.IsOpenPopup, Mode=TwoWay}" Placement="Mouse" AllowsTransparency="True" StaysOpen="True">
+        <Popup IsOpen="{Binding HardNoteVM.IsOpenPopup, Mode=TwoWay}" Placement="Mouse" AllowsTransparency="True" StaysOpen="False">
             <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="5">
                 <StackPanel>
                     <ListView ItemsSource="{Binding HardNoteVM.CommonContextMenu}" Padding="0,0,0,3" BorderThickness="1" BorderBrush="Transparent">

@@ -1,8 +1,7 @@
-﻿using System.Windows;
+﻿using Composite.Common.Helpers;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using Composite.Common.Helpers;
-using Composite.ViewModels.Notes.HardNote;
 
 namespace Composite.Common.Properties
 {
@@ -11,6 +10,16 @@ namespace Composite.Common.Properties
         public static readonly DependencyProperty PlaceHolderProperty = DependencyProperty.RegisterAttached("PlaceHolder", typeof(string), typeof(PlaceHolder), new PropertyMetadata(string.Empty, OnPlaceHolderChanged));
         public static void SetPlaceHolder(UIElement element, string value) => element.SetValue(PlaceHolderProperty, value);
         public static string GetPlaceHolder(UIElement element) => (string)element.GetValue(PlaceHolderProperty);
+
+        public static readonly DependencyProperty ShowAlwaysProperty = DependencyProperty.RegisterAttached("ShowAlways", typeof(bool), typeof(PlaceHolder), 
+            new PropertyMetadata(false, (d, e) =>
+            {
+                if (d is TextBox tb) ShowOrHidePlaceholder(tb);
+            }));
+
+        public static void SetShowAlways(UIElement element, bool value) => element.SetValue(ShowAlwaysProperty, value);
+        public static bool GetShowAlways(UIElement element) => (bool)element.GetValue(ShowAlwaysProperty);
+
         static void OnPlaceHolderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is not TextBox textBox) return;
@@ -28,28 +37,24 @@ namespace Composite.Common.Properties
 
             var existing = layer.GetAdorners(textBox);
             bool isEmpty = string.IsNullOrEmpty(textBox.Text);
-            bool isTextComposite = textBox.DataContext is TextCompositeVM;
-            bool isHeaderComposite = textBox.DataContext is HeaderCompositeVM;
-            bool isQuoteComposite = textBox.DataContext is QuoteCompositeVM;
-            bool isLineComposite = textBox.DataContext is LineCompositeVM;
-            bool isTaskComposite = textBox.DataContext is TaskCompositeVM;
-            bool isImageComposite = textBox.DataContext is ImageCompositeVM;
-
-            bool shouldShow = isEmpty && (isTextComposite ? textBox.IsMouseOver : true || isHeaderComposite ? textBox.IsMouseOver : true || isQuoteComposite ? textBox.IsMouseOver : true
-                || isLineComposite ? textBox.IsMouseOver : true || isTaskComposite ? textBox.IsMouseOver : true || isImageComposite ? textBox.IsMouseOver : true);
+            bool showAlways = GetShowAlways(textBox);
+            bool shouldShow = isEmpty && (showAlways || textBox.IsMouseOver);
 
             if (!shouldShow)
             {
                 if (existing != null)
                 {
                     foreach (var adorner in existing)
-                        if (adorner is PlaceHolderAdorner) layer.Remove(adorner);
+                        if (adorner is PlaceHolderAdorner)
+                            layer.Remove(adorner);
                 }
             }
             else
             {
                 if (existing == null || !Array.Exists(existing, a => a is PlaceHolderAdorner))
+                {
                     layer.Add(new PlaceHolderAdorner(textBox, GetPlaceHolder(textBox)));
+                }
             }
         }
     }

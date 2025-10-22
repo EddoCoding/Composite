@@ -357,6 +357,9 @@ namespace Composite.ViewModels.Notes.HardNote
             })));
         }
 
+        [RelayCommand] void StartEditing(CompositeBaseVM composite) => composite.IsEditing = true;
+        [RelayCommand] void StopEditing(CompositeBaseVM composite) => composite.IsEditing = false;
+
         bool _disposed = false;
         public virtual void Dispose()
         {
