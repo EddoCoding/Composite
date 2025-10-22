@@ -19,19 +19,57 @@ namespace Composite.Views.Notes.Notes
             if (parentObject is T parent) return parent;
             else return FindParent<T>(parentObject);
         }
-        T? FindChild<T>(DependencyObject parent) where T : DependencyObject
+        //T? FindChild<T>(DependencyObject parent) where T : DependencyObject
+        //{
+        //    if (parent == null) return null;
+
+        //    int childCount = VisualTreeHelper.GetChildrenCount(parent);
+
+        //    for (int i = 0; i < childCount; i++)
+        //    {
+        //        var child = VisualTreeHelper.GetChild(parent, i);
+
+        //        if (child is T typedChild) return typedChild;
+
+        //        var result = FindChild<T>(child);
+        //        if (result != null) return result;
+        //    }
+        //    return null;
+        //}
+        T? FindChildInColumn<T>(DependencyObject parent, int column) where T : UIElement
         {
             if (parent == null) return null;
 
             int childCount = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < childCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
 
+                if (child is UIElement uiElement && Grid.GetColumn(uiElement) == column)
+                {
+                    if (child is T typedChild) return typedChild;
+
+                    var innerResult = FindChildRecursive<T>(child);
+                    if (innerResult != null) return innerResult;
+                }
+
+                var result = FindChildInColumn<T>(child, column);
+                if (result != null) return result;
+            }
+            return null;
+        }
+        T? FindChildRecursive<T>(DependencyObject parent) where T : DependencyObject
+        {
+            if (parent == null) return null;
+
+            int childCount = VisualTreeHelper.GetChildrenCount(parent);
             for (int i = 0; i < childCount; i++)
             {
                 var child = VisualTreeHelper.GetChild(parent, i);
 
                 if (child is T typedChild) return typedChild;
 
-                var result = FindChild<T>(child);
+                var result = FindChildRecursive<T>(child);
                 if (result != null) return result;
             }
             return null;
@@ -52,7 +90,7 @@ namespace Composite.Views.Notes.Notes
                     var container = listComposite.ItemContainerGenerator.ContainerFromItem(targetItem) as ListViewItem;
                     if (container != null)
                     {
-                        var targetTextBox = FindChild<TextBox>(container);
+                        var targetTextBox = FindChildInColumn<TextBox>(container, 2);
                         if (targetTextBox != null)
                         {
                             targetTextBox.Focus();
@@ -86,7 +124,7 @@ namespace Composite.Views.Notes.Notes
                         var container = listComposite.ItemContainerGenerator.ContainerFromItem(newItem) as ListViewItem;
                         if (container != null)
                         {
-                            var newTextBox = FindChild<TextBox>(container);
+                            var newTextBox = FindChildInColumn<TextBox>(container, 2);
                             if (newTextBox != null)
                             {
                                 newTextBox.Focus();
@@ -131,7 +169,7 @@ namespace Composite.Views.Notes.Notes
                 var container = listComposite.ItemContainerGenerator.ContainerFromItem(targetItem) as ListViewItem;
                 if (container != null)
                 {
-                    var targetTextBox = FindChild<TextBox>(container);
+                    var targetTextBox = FindChildInColumn<TextBox>(container, 2);
                     if (targetTextBox != null)
                     {
                         targetTextBox.Focus();
@@ -177,7 +215,7 @@ namespace Composite.Views.Notes.Notes
                     var container = listComposite.ItemContainerGenerator.ContainerFromItem(firstItem) as ListViewItem;
                     if (container != null)
                     {
-                        var textBox = FindChild<TextBox>(container);
+                        var textBox = FindChildInColumn<TextBox>(container, 2);
                         if (textBox != null)
                         {
                             textBox.Focus();
@@ -220,7 +258,7 @@ namespace Composite.Views.Notes.Notes
                                 var container = listView.ItemContainerGenerator.ContainerFromItem(createdComposite) as ListViewItem;
                                 if (container != null)
                                 {
-                                    var newTextBox = FindChild<TextBox>(container);
+                                    var newTextBox = FindChildInColumn<TextBox>(container, 2);
                                     if (newTextBox != null)
                                     {
                                         newTextBox.Focus();
@@ -239,7 +277,7 @@ namespace Composite.Views.Notes.Notes
                             var container = listView.ItemContainerGenerator.ContainerFromItem(newItem) as ListViewItem;
                             if (container != null)
                             {
-                                var newTextBox = FindChild<TextBox>(container);
+                                var newTextBox = FindChildInColumn<TextBox>(container, 2);
                                 if (newTextBox != null)
                                 {
                                     newTextBox.Focus();
@@ -291,7 +329,7 @@ namespace Composite.Views.Notes.Notes
                                 var container = listComposite.ItemContainerGenerator.ContainerFromItem(previousTextComposite) as ListViewItem;
                                 if (container != null)
                                 {
-                                    var targetTextBox = FindChild<TextBox>(container);
+                                    var targetTextBox = FindChildInColumn<TextBox>(container, 2);
                                     if (targetTextBox != null) targetTextBox.CaretIndex = originalCaretPosition;
                                 }
                             }), DispatcherPriority.Input);
