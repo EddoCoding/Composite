@@ -291,12 +291,10 @@ namespace Composite.ViewModels.Notes.HardNote
 
         [ObservableProperty] bool _isOpenPopup;
         [ObservableProperty] bool _isOpenPopupType;
-        public ObservableCollection<CommonCommandMenu> CommonContextMenu { get; set; } = new();
         public ObservableCollection<CommandContextMenu> ContextMenu { get; set; } = new();
         public ObservableCollection<CommandContextMenu> ContextMenuTypes { get; set; } = new();
         [RelayCommand] void OpenPopup(CompositeBaseVM composite)
         {
-            CommonContextMenu.Clear();
             ContextMenu.Clear();
 
             AddMethodAddComposite(Composites.IndexOf(composite));

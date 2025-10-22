@@ -76,7 +76,7 @@ namespace Composite.ViewModels.Notes.HardNote
             AspectRatio = OriginalWidth / OriginalHeight;
         }
 
-        public override object Clone() => new ImageCompositeVM() { Id = Guid.NewGuid(), ImageSource = ImageSource, OriginalHeight = OriginalHeight,
+        public override object Clone() => new ImageCompositeVM() { Id = Guid.NewGuid(), Tag = Tag, Comment = Comment, ImageSource = ImageSource, OriginalHeight = OriginalHeight,
             OriginalWidth = OriginalWidth, HorizontalImage = HorizontalImage };
     }
 }

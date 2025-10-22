@@ -37,7 +37,6 @@
     <None Remove="Common\Images\repeat.png" />
     <None Remove="Common\Images\scale.png" />
     <None Remove="Common\Images\sort.png" />
-    <None Remove="Common\Images\tag.png" />
     <None Remove="Common\Images\task.png" />
     <None Remove="Common\Images\text.png" />
     <None Remove="Common\Images\threeDots.png" />
@@ -91,7 +90,6 @@
     <Resource Include="Common\Images\scale.png" />
     <Resource Include="Common\Images\search.png" />
     <Resource Include="Common\Images\sort.png" />
-    <Resource Include="Common\Images\tag.png" />
     <Resource Include="Common\Images\task.png" />
     <Resource Include="Common\Images\text.png" />
     <Resource Include="Common\Images\threeDots.png" />

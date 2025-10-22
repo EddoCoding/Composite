@@ -14,7 +14,7 @@
     <UserControl.Resources>
         <converter:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converter:BoolToVisibilityConverter x:Key="BoolToVis"/>
-        <converter:BoolToVisibilityConverter x:Key="InverseBoolToVis" Inverse="True"/>
+        <converter:EditingAndHoverToVisibilityConverter x:Key="EditingAndHoverToVisibilityConverter"/>
 
         <Style x:Key="ImageButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
@@ -96,13 +96,14 @@
             </Setter>
         </Style>
         <Style x:Key="Line" TargetType="Line">
+            <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="Stroke" Value="LightGray"/>
             <Setter Property="StrokeThickness" Value="1"/>
             <Setter Property="Stretch" Value="Fill"/>
             <Setter Property="X1" Value="0"/>
             <Setter Property="X2" Value="1"/>
             <Setter Property="Height" Value="20"/>
-            <Setter Property="Margin" Value="10,0,0,0"/>
+            <Setter Property="Margin" Value="10,10,0,0"/>
         </Style>
         <Style x:Key="AddNoteButton" TargetType="Button">
             <Setter Property="FontSize" Value="12"/>
@@ -192,8 +193,8 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBox Grid.Column="0" Style="{StaticResource Text}" Text="{Binding Tag}" Margin="5,0" Width="100" TextWrapping="NoWrap" Foreground="Gray"
-                         property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Center"/>
+                <TextBox Grid.Column="0" Style="{StaticResource Text}" Text="{Binding Tag}" Margin="5,1,5,0" Width="100" TextWrapping="NoWrap" Foreground="Gray"
+                         property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Top"/>
 
                 <Button Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/actions.png" Height="18" Width="18" VerticalAlignment="Top"
                         RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="WhiteSmoke" Margin="0,2,0,0"
@@ -241,9 +242,15 @@
                         </i:Interaction.Triggers>
                     </TextBox>
 
-                    <Button Style="{StaticResource ImageButton}" Content="/Common/Images/comment.png" Height="18" Width="18" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top"
-                        Visibility="{Binding IsEditing, Converter={StaticResource InverseBoolToVis}}" Cursor="Hand"
-                        Command="{Binding DataContext.HardNoteVM.StartEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+                    <Button Style="{DynamicResource ImageButton}" Content="/Common/Images/comment.png" Height="18" Width="18" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top"
+                            Cursor="Hand" Command="{Binding DataContext.HardNoteVM.StartEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
+                        <Button.Visibility>
+                            <MultiBinding Converter="{StaticResource EditingAndHoverToVisibilityConverter}">
+                                <Binding Path="IsEditing"/>
+                                <Binding Path="IsMouseOver" RelativeSource="{RelativeSource AncestorType=ListViewItem}"/>
+                            </MultiBinding>
+                        </Button.Visibility>
+                    </Button>
                     
                 </Grid>
 
@@ -259,8 +266,8 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBox Grid.Column="0" Style="{StaticResource Text}" Text="{Binding Tag}" Margin="5,0" Width="100" TextWrapping="NoWrap" Foreground="Gray"
-                         property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Center"/>
+                <TextBox Grid.Column="0" Style="{StaticResource Text}" Text="{Binding Tag}" Margin="5,2,5,0" Width="100" TextWrapping="NoWrap" Foreground="Gray"
+                         property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Top"/>
 
                 <Button Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/actions.png" Height="18" Width="18" VerticalAlignment="Top"
                         RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="WhiteSmoke" Margin="0,4,0,0"
@@ -293,7 +300,7 @@
                     </Button.Style>
                 </Button>
 
-                <Grid Grid.Column="4" Margin="5,4,5,0" VerticalAlignment="Top">
+                <Grid Grid.Column="4" Margin="5,5,5,0" VerticalAlignment="Top">
 
                     <TextBox Style="{StaticResource Text}" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" Foreground="Gray" FontSize="12"
                               Width="150" VerticalAlignment="Center" Visibility="{Binding IsEditing, Converter={StaticResource BoolToVis}}"
@@ -308,9 +315,15 @@
                         </i:Interaction.Triggers>
                     </TextBox>
 
-                    <Button Style="{StaticResource ImageButton}" Content="/Common/Images/comment.png" Height="18" Width="18" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top"
-                            Visibility="{Binding IsEditing, Converter={StaticResource InverseBoolToVis}}" Cursor="Hand"
-                            Command="{Binding DataContext.HardNoteVM.StartEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+                    <Button Style="{DynamicResource ImageButton}" Content="/Common/Images/comment.png" Height="18" Width="18" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top"
+                            Cursor="Hand" Command="{Binding DataContext.HardNoteVM.StartEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
+                        <Button.Visibility>
+                            <MultiBinding Converter="{StaticResource EditingAndHoverToVisibilityConverter}">
+                                <Binding Path="IsEditing"/>
+                                <Binding Path="IsMouseOver" RelativeSource="{RelativeSource AncestorType=ListViewItem}"/>
+                            </MultiBinding>
+                        </Button.Visibility>
+                    </Button>
 
                 </Grid>
 
@@ -327,7 +340,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBox Grid.Column="0" Style="{StaticResource Text}" Text="{Binding Tag}" Margin="5,0" Width="100" TextWrapping="NoWrap" Foreground="Gray"
-                         property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Center"/>
+                         property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Top"/>
 
                 <Button Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/actions.png" Height="18" Width="18" VerticalAlignment="Top"
                         RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="WhiteSmoke"
@@ -392,9 +405,15 @@
                         </i:Interaction.Triggers>
                     </TextBox>
 
-                    <Button Style="{StaticResource ImageButton}" Content="/Common/Images/comment.png" Height="18" Width="18" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top"
-                            Visibility="{Binding IsEditing, Converter={StaticResource InverseBoolToVis}}" Cursor="Hand"
-                            Command="{Binding DataContext.HardNoteVM.StartEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+                    <Button Style="{DynamicResource ImageButton}" Content="/Common/Images/comment.png" Height="18" Width="18" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top"
+                            Cursor="Hand" Command="{Binding DataContext.HardNoteVM.StartEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
+                        <Button.Visibility>
+                            <MultiBinding Converter="{StaticResource EditingAndHoverToVisibilityConverter}">
+                                <Binding Path="IsEditing"/>
+                                <Binding Path="IsMouseOver" RelativeSource="{RelativeSource AncestorType=ListViewItem}"/>
+                            </MultiBinding>
+                        </Button.Visibility>
+                    </Button>
 
                 </Grid>
 
@@ -413,7 +432,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBox Grid.Column="0" Style="{StaticResource Text}" Text="{Binding Tag}" Margin="5,0" Width="100" TextWrapping="NoWrap" Foreground="Gray"
-                         property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Center"/>
+                         property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Top"/>
 
                 <Button Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/actions.png" Height="18" Width="18" VerticalAlignment="Top"
                         RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="WhiteSmoke"
@@ -423,7 +442,7 @@
 
                 <Line Grid.Column="2" Style="{StaticResource Line}"/>
 
-                <Button Grid.Column="3" Content="X" Cursor="Arrow" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="14"
+                <Button Grid.Column="3" Content="X" Cursor="Arrow" VerticalAlignment="Top" Margin="10,2,0,0" FontSize="14"
                         Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Command="{Binding DataContext.HardNoteVM.DeleteCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
                         CommandParameter="{Binding}">
@@ -445,7 +464,7 @@
                     </Button.Style>
                 </Button>
 
-                <Grid Grid.Column="4" Margin="5,0" VerticalAlignment="Center">
+                <Grid Grid.Column="4" Margin="5,0" VerticalAlignment="Top">
 
                     <TextBox Style="{StaticResource Text}" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" Foreground="Gray" FontSize="12"
                              Width="150" VerticalAlignment="Center" Visibility="{Binding IsEditing, Converter={StaticResource BoolToVis}}"
@@ -460,9 +479,15 @@
                         </i:Interaction.Triggers>
                     </TextBox>
 
-                    <Button Style="{StaticResource ImageButton}" Content="/Common/Images/comment.png" Height="18" Width="18" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top"
-                            Visibility="{Binding IsEditing, Converter={StaticResource InverseBoolToVis}}" Cursor="Hand"
-                            Command="{Binding DataContext.HardNoteVM.StartEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+                    <Button Style="{DynamicResource ImageButton}" Content="/Common/Images/comment.png" Height="18" Width="18" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top"
+                            Cursor="Hand" Command="{Binding DataContext.HardNoteVM.StartEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
+                        <Button.Visibility>
+                            <MultiBinding Converter="{StaticResource EditingAndHoverToVisibilityConverter}">
+                                <Binding Path="IsEditing"/>
+                                <Binding Path="IsMouseOver" RelativeSource="{RelativeSource AncestorType=ListViewItem}"/>
+                            </MultiBinding>
+                        </Button.Visibility>
+                    </Button>
 
                 </Grid>
 
@@ -478,8 +503,8 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBox Grid.Column="0" Style="{StaticResource Text}" Text="{Binding Tag}" Margin="5,0" Width="100" TextWrapping="NoWrap" Foreground="Gray"
-                         property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Center"/>
+                <TextBox Grid.Column="0" Style="{StaticResource Text}" Text="{Binding Tag}" Margin="5,5,5,0" Width="100" TextWrapping="NoWrap" Foreground="Gray"
+                         property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Top"/>
 
                 <Button Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/actions.png" Height="18" Width="18" VerticalAlignment="Top"
                         RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="WhiteSmoke" Margin="0,6,0,0"
@@ -489,7 +514,7 @@
 
                 <CheckBox Grid.Column="2" Style="{StaticResource CheckBoxTask}" IsChecked="{Binding IsCompleted}" VerticalAlignment="Top"/>
 
-                <Button Grid.Column="3" Content="X" Cursor="Arrow" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="14"
+                <Button Grid.Column="3" Content="X" Cursor="Arrow" VerticalAlignment="Top" Margin="10,5,0,0" FontSize="14"
                         Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Command="{Binding DataContext.HardNoteVM.DeleteCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
                         CommandParameter="{Binding}">
@@ -511,7 +536,7 @@
                     </Button.Style>
                 </Button>
 
-                <Grid Grid.Column="4" Margin="5,6,5,0" VerticalAlignment="Top">
+                <Grid Grid.Column="4" Margin="5,4,5,0" VerticalAlignment="Top">
 
                     <TextBox Style="{StaticResource Text}" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" Foreground="Gray" FontSize="12"
                              Width="150" VerticalAlignment="Center" Visibility="{Binding IsEditing, Converter={StaticResource BoolToVis}}"
@@ -526,9 +551,15 @@
                         </i:Interaction.Triggers>
                     </TextBox>
 
-                    <Button Style="{StaticResource ImageButton}" Content="/Common/Images/comment.png" Height="18" Width="18" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top"
-                            Visibility="{Binding IsEditing, Converter={StaticResource InverseBoolToVis}}" Cursor="Hand"
-                            Command="{Binding DataContext.HardNoteVM.StartEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+                    <Button Style="{DynamicResource ImageButton}" Content="/Common/Images/comment.png" Height="18" Width="18" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top"
+                            Cursor="Hand" Command="{Binding DataContext.HardNoteVM.StartEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
+                        <Button.Visibility>
+                            <MultiBinding Converter="{StaticResource EditingAndHoverToVisibilityConverter}">
+                                <Binding Path="IsEditing"/>
+                                <Binding Path="IsMouseOver" RelativeSource="{RelativeSource AncestorType=ListViewItem}"/>
+                            </MultiBinding>
+                        </Button.Visibility>
+                    </Button>
 
                 </Grid>
 
@@ -546,7 +577,7 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBox Grid.Column="0" Style="{StaticResource Text}" Text="{Binding Tag}" Margin="5,0" Width="100" TextWrapping="NoWrap" Foreground="Gray"
-                             property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Center"/>
+                             property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Top"/>
 
                     <Button Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/actions.png" Height="18" Width="18" VerticalAlignment="Top"
                             RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="WhiteSmoke"
@@ -554,7 +585,7 @@
                             Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                             CommandParameter="{Binding}"/>
 
-                    <Grid Grid.Column="2" HorizontalAlignment="{Binding HorizontalImage}" Margin="10,0,0,0">
+                    <Grid Grid.Column="2" HorizontalAlignment="{Binding HorizontalImage}" Margin="10,0,0,0" VerticalAlignment="Top">
 
                         <Image Source="{Binding ImageSource}" Height="{Binding DisplayHeight}" Width="{Binding DisplayWidth}"
                                Cursor="Hand" RenderOptions.BitmapScalingMode="Fant" UseLayoutRounding="True" SnapsToDevicePixels="True"/>
@@ -613,9 +644,15 @@
                             </i:Interaction.Triggers>
                         </TextBox>
 
-                        <Button Style="{StaticResource ImageButton}" Content="/Common/Images/comment.png" Height="18" Width="18" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top"
-                                Visibility="{Binding IsEditing, Converter={StaticResource InverseBoolToVis}}" Cursor="Hand"
-                                Command="{Binding DataContext.HardNoteVM.StartEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+                        <Button Style="{DynamicResource ImageButton}" Content="/Common/Images/comment.png" Height="18" Width="18" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top"
+                                Cursor="Hand" Command="{Binding DataContext.HardNoteVM.StartEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
+                            <Button.Visibility>
+                                <MultiBinding Converter="{StaticResource EditingAndHoverToVisibilityConverter}">
+                                    <Binding Path="IsEditing"/>
+                                    <Binding Path="IsMouseOver" RelativeSource="{RelativeSource AncestorType=ListViewItem}"/>
+                                </MultiBinding>
+                            </Button.Visibility>
+                        </Button>
 
                     </Grid>
 
@@ -623,11 +660,6 @@
             </Border>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModel:CommonCommandMenu}">
-            <Button Style="{StaticResource ImageTextButton}" Content="{Binding NameCommand}" FontSize="15" Tag="{Binding PathImage}" Height="22" 
-                    Margin="3" RenderOptions.BitmapScalingMode="Fant" TextOptions.TextFormattingMode="Display"
-                    Command="{Binding ActionCommand}"/>
-        </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:CommandContextMenu}">
             <Button Style="{StaticResource ImageTextButton}" Content="{Binding NameCommand}" FontSize="15" Tag="{Binding PathImage}" Height="22" 
                     Margin="3" RenderOptions.BitmapScalingMode="Fant" TextOptions.TextFormattingMode="Display"
@@ -713,22 +745,6 @@
         <Popup IsOpen="{Binding HardNoteVM.IsOpenPopup, Mode=TwoWay}" Placement="Mouse" AllowsTransparency="True" StaysOpen="False">
             <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="5">
                 <StackPanel>
-                    <ListView ItemsSource="{Binding HardNoteVM.CommonContextMenu}" Padding="0,0,0,3" BorderThickness="1" BorderBrush="Transparent">
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="ListViewItem">
-                                            <ContentPresenter/>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ListView.ItemContainerStyle>
-                    </ListView>
-
-                    <Line X1="0" X2="1" Stretch="Fill" Stroke="Gray" Margin="10,0"/>
-
                     <ListView ItemsSource="{Binding HardNoteVM.ContextMenu}" Padding="0,0,0,3" BorderThickness="1" BorderBrush="Transparent">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">

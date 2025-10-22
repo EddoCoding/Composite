@@ -8,6 +8,6 @@ namespace Composite.ViewModels.Notes.HardNote
 
         public QuoteCompositeVM() => Id = Guid.NewGuid();
 
-        public override object Clone() => new QuoteCompositeVM() { Id = Guid.NewGuid(), Text = Text };
+        public override object Clone() => new QuoteCompositeVM() { Id = Guid.NewGuid(), Tag = Tag, Comment = Comment, Text = Text };
     }
 }

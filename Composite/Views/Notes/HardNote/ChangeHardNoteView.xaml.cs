@@ -19,23 +19,6 @@ namespace Composite.Views.Notes.Notes
             if (parentObject is T parent) return parent;
             else return FindParent<T>(parentObject);
         }
-        //T? FindChild<T>(DependencyObject parent) where T : DependencyObject
-        //{
-        //    if (parent == null) return null;
-
-        //    int childCount = VisualTreeHelper.GetChildrenCount(parent);
-
-        //    for (int i = 0; i < childCount; i++)
-        //    {
-        //        var child = VisualTreeHelper.GetChild(parent, i);
-
-        //        if (child is T typedChild) return typedChild;
-
-        //        var result = FindChild<T>(child);
-        //        if (result != null) return result;
-        //    }
-        //    return null;
-        //}
         T? FindChildInColumn<T>(DependencyObject parent, int column) where T : UIElement
         {
             if (parent == null) return null;
