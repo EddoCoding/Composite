@@ -600,11 +600,6 @@
                             </Setter>
                         </Style>
                     </ListView.ItemContainerStyle>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Button Content="{Binding NameCommand}" Style="{StaticResource ButtonCommand}" Command="{Binding ActionCommand}"/>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
                 </ListView>
             </Border>
         </Popup>

@@ -86,6 +86,8 @@ namespace Composite.Common.Mappers
                 return new TextComposite()
                 {
                     Id = textCompositeVM.Id.ToString(),
+                    Tag = textCompositeVM.Tag,
+                    Comment = textCompositeVM.Comment,
                     Text = textCompositeVM.Text,
                     HardNoteId = id.ToString()
                 };
@@ -95,6 +97,8 @@ namespace Composite.Common.Mappers
                 return new HeaderComposite()
                 {
                     Id = headerCompositeVM.Id.ToString(),
+                    Tag = headerCompositeVM.Tag,
+                    Comment = headerCompositeVM.Comment,
                     Header = headerCompositeVM.Text,
                     FontWeightHeader = headerCompositeVM.FontWeight,
                     FontSizeHeader = headerCompositeVM.FontSize,
@@ -106,6 +110,8 @@ namespace Composite.Common.Mappers
                 return new QuoteComposite()
                 {
                     Id = quoteCompositeVM.Id.ToString(),
+                    Tag = quoteCompositeVM.Tag,
+                    Comment = quoteCompositeVM.Comment,
                     Quote = quoteCompositeVM.Text,
                     HardNoteId = id.ToString()
                 };
@@ -115,6 +121,8 @@ namespace Composite.Common.Mappers
                 return new LineComposite()
                 {
                     Id = lineCompositeVM.Id.ToString(),
+                    Tag = lineCompositeVM.Tag,
+                    Comment = lineCompositeVM.Comment,
                     HardNoteId = id.ToString()
                 };
             }
@@ -123,6 +131,8 @@ namespace Composite.Common.Mappers
                 return new TaskComposite()
                 {
                     Id = taskCompositeVM.Id.ToString(),
+                    Tag = taskCompositeVM.Tag,
+                    Comment= taskCompositeVM.Comment,
                     Completed = taskCompositeVM.IsCompleted? 1 : 0,
                     TaskText = taskCompositeVM.Text,
                     HardNoteId = id.ToString()
@@ -133,6 +143,8 @@ namespace Composite.Common.Mappers
                 return new ImageComposite()
                 {
                     Id = imageCompositeVM.Id.ToString(),
+                    Tag = imageCompositeVM.Tag,
+                    Comment = imageCompositeVM.Comment,
                     DataImage = BitmapImageToByteArray(imageCompositeVM.ImageSource),
                     HorizontalImage = imageCompositeVM.HorizontalImage,
                     HardNoteId = id.ToString()
@@ -148,6 +160,8 @@ namespace Composite.Common.Mappers
                 return new TextComposite()
                 {
                     Id = Guid.NewGuid().ToString(),
+                    Tag = textCompositeVM.Tag,
+                    Comment = textCompositeVM.Comment,
                     Text = textCompositeVM.Text,
                     HardNoteId = id.ToString()
                 };
@@ -157,6 +171,8 @@ namespace Composite.Common.Mappers
                 return new HeaderComposite()
                 {
                     Id = Guid.NewGuid().ToString(),
+                    Tag = headerCompositeVM.Tag,
+                    Comment = headerCompositeVM.Comment,
                     Header = headerCompositeVM.Text,
                     FontWeightHeader = headerCompositeVM.FontWeight,
                     FontSizeHeader = headerCompositeVM.FontSize,
@@ -168,6 +184,8 @@ namespace Composite.Common.Mappers
                 return new QuoteComposite()
                 {
                     Id = Guid.NewGuid().ToString(),
+                    Tag = quoteCompositeVM.Tag,
+                    Comment = quoteCompositeVM.Comment,
                     Quote = quoteCompositeVM.Text,
                     HardNoteId = id.ToString()
                 };
@@ -177,6 +195,8 @@ namespace Composite.Common.Mappers
                 return new LineComposite()
                 {
                     Id = Guid.NewGuid().ToString(),
+                    Tag = lineCompositeVM.Tag,
+                    Comment = lineCompositeVM.Comment,
                     HardNoteId = id.ToString()
                 };
             }
@@ -185,6 +205,8 @@ namespace Composite.Common.Mappers
                 return new TaskComposite()
                 {
                     Id = Guid.NewGuid().ToString(),
+                    Tag = taskCompositeVM.Tag,
+                    Comment = taskCompositeVM.Comment,
                     Completed = taskCompositeVM.IsCompleted ? 1 : 0,
                     TaskText = taskCompositeVM.Text,
                     HardNoteId = id.ToString()
@@ -195,6 +217,8 @@ namespace Composite.Common.Mappers
                 return new ImageComposite()
                 {
                     Id = Guid.NewGuid().ToString(),
+                    Tag = imageCompositeVM.Tag,
+                    Comment = imageCompositeVM.Comment,
                     DataImage = BitmapImageToByteArray(imageCompositeVM.ImageSource),
                     HorizontalImage = imageCompositeVM.HorizontalImage,
                     HardNoteId = id.ToString()
@@ -210,6 +234,8 @@ namespace Composite.Common.Mappers
                 return new TextCompositeVM()
                 {
                     Id = Guid.Parse(compositeBase.Id),
+                    Tag = compositeBase.Tag,
+                    Comment = compositeBase.Comment,
                     Text = compositeBase.Text
                 };
             }
@@ -218,6 +244,8 @@ namespace Composite.Common.Mappers
                 return new HeaderCompositeVM()
                 {
                     Id = Guid.Parse(compositeBase.Id),
+                    Tag = compositeBase.Tag,
+                    Comment = compositeBase.Comment,
                     Text = compositeBase.Header,
                     FontWeight = compositeBase.FontWeightHeader,
                     FontSize = compositeBase.FontSizeHeader
@@ -228,6 +256,8 @@ namespace Composite.Common.Mappers
                 return new QuoteCompositeVM()
                 {
                     Id = Guid.Parse(compositeBase.Id),
+                    Tag = compositeBase.Tag,
+                    Comment = compositeBase.Comment,
                     Text = compositeBase.Quote
                 };
             }
@@ -235,7 +265,9 @@ namespace Composite.Common.Mappers
             {
                 return new LineCompositeVM()
                 {
-                    Id = Guid.Parse(compositeBase.Id)
+                    Id = Guid.Parse(compositeBase.Id),
+                    Tag = compositeBase.Tag,
+                    Comment = compositeBase.Comment
                 };
             }
             if (compositeBase.CompositeType == "TaskComposite")
@@ -243,6 +275,8 @@ namespace Composite.Common.Mappers
                 return new TaskCompositeVM()
                 {
                     Id = Guid.Parse(compositeBase.Id),
+                    Tag = compositeBase.Tag,
+                    Comment = compositeBase.Comment,
                     IsCompleted = (compositeBase.Completed == 1) ? true : false,
                     Text = compositeBase.TaskText
                 };
@@ -254,6 +288,8 @@ namespace Composite.Common.Mappers
                 return new ImageCompositeVM()
                 {
                     Id = Guid.Parse(compositeBase.Id),
+                    Tag = compositeBase.Tag,
+                    Comment = compositeBase.Comment,
                     ImageSource = bitmapImage,
                     HorizontalImage = compositeBase.HorizontalImage,
                     OriginalWidth = bitmapImage.PixelWidth,

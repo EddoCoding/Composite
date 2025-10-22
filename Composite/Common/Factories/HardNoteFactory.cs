@@ -14,6 +14,8 @@ namespace Composite.Common.Factories
                     var newTextCompositeVM = new TextCompositeVM()
                     {
                         Id = textCompositeVM.Id,
+                        Tag = textCompositeVM.Tag,
+                        Comment = textCompositeVM.Comment,
                         Text = textCompositeVM.Text
                     };
                     compositesVM.Add(newTextCompositeVM);
@@ -23,6 +25,8 @@ namespace Composite.Common.Factories
                     var newHeaderCompositeVM = new HeaderCompositeVM()
                     {
                         Id = headerCompositeVM.Id,
+                        Tag = headerCompositeVM.Tag,
+                        Comment = headerCompositeVM.Comment,
                         Text = headerCompositeVM.Text,
                         FontWeight = headerCompositeVM.FontWeight,
                         FontSize = headerCompositeVM.FontSize
@@ -34,6 +38,8 @@ namespace Composite.Common.Factories
                     var newQuoteCompositeVM = new QuoteCompositeVM()
                     {
                         Id = quoteCompositeVM.Id,
+                        Tag = quoteCompositeVM.Tag,
+                        Comment = quoteCompositeVM.Comment,
                         Text = quoteCompositeVM.Text
                     };
                     compositesVM.Add(newQuoteCompositeVM);
@@ -42,7 +48,9 @@ namespace Composite.Common.Factories
                 {
                     var newLineCompositeVM = new LineCompositeVM()
                     {
-                        Id = lineCompositeVM.Id
+                        Id = lineCompositeVM.Id,
+                        Tag = lineCompositeVM.Tag,
+                        Comment = lineCompositeVM.Comment
                     };
                     compositesVM.Add(newLineCompositeVM);
                 }
@@ -51,6 +59,8 @@ namespace Composite.Common.Factories
                     var newTaskCompositeVM = new TaskCompositeVM()
                     {
                         Id = taskCompositeVM.Id,
+                        Tag = taskCompositeVM.Tag,
+                        Comment = taskCompositeVM.Comment,
                         Text = taskCompositeVM.Text,
                         IsCompleted = taskCompositeVM.IsCompleted
                     };
@@ -61,6 +71,8 @@ namespace Composite.Common.Factories
                     var newImageCompositeVM = new ImageCompositeVM()
                     {
                         Id = imageCompositeVM.Id,
+                        Tag = imageCompositeVM.Tag,
+                        Comment = imageCompositeVM.Comment,
                         ImageSource = imageCompositeVM.ImageSource,
                         OriginalWidth = imageCompositeVM.OriginalWidth,
                         OriginalHeight = imageCompositeVM.OriginalHeight,

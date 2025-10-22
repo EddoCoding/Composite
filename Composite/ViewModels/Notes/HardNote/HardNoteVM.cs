@@ -18,12 +18,6 @@ namespace Composite.ViewModels.Notes.HardNote
             Composites = new();
             Composites.Add(new TextCompositeVM());
             DateCreate = DateTime.Now;
-
-            CommonContextMenu = new()
-            {
-                new CommonCommandMenu("Tag", "/Common/Images/tag.png", null),
-                new CommonCommandMenu("Comment", "/Common/Images/comment.png", null)
-            };
         }
 
         public void AddTextCompositeVM() => Composites.Add(new TextCompositeVM());
@@ -302,91 +296,66 @@ namespace Composite.ViewModels.Notes.HardNote
         public ObservableCollection<CommandContextMenu> ContextMenuTypes { get; set; } = new();
         [RelayCommand] void OpenPopup(CompositeBaseVM composite)
         {
+            CommonContextMenu.Clear();
             ContextMenu.Clear();
 
-            if (composite is TextCompositeVM)
-            {
-                AddMethodAddComposite(Composites.IndexOf(composite)); 
-                AddMethodDeleteComposite(composite);                  
-                AddMethodDuplicateComposite(composite);               
-                AddMethodOpenPopupType(composite);
-                IsOpenPopup = true;
-                return;
-            }
-            if (composite is HeaderCompositeVM)
-            {
-                AddMethodAddComposite(Composites.IndexOf(composite)); 
-                AddMethodDeleteComposite(composite);                  
-                AddMethodDuplicateComposite(composite);               
-                AddMethodOpenPopupType(composite);                    
-                IsOpenPopup = true;
-                return;
-            }
-            if (composite is QuoteCompositeVM)
-            {
-                AddMethodAddComposite(Composites.IndexOf(composite)); 
-                AddMethodDeleteComposite(composite);                  
-                AddMethodDuplicateComposite(composite);               
-                AddMethodOpenPopupType(composite);   
-                IsOpenPopup = true;
-                return;
-            }
-            if (composite is LineCompositeVM)
-            {
-                AddMethodAddComposite(Composites.IndexOf(composite));
-                AddMethodDeleteComposite(composite);                 
-                AddMethodDuplicateComposite(composite);              
-                IsOpenPopup = true;
-                return;
-            }
-            if (composite is TaskCompositeVM)
-            {
-                AddMethodAddComposite(Composites.IndexOf(composite));
-                AddMethodDeleteComposite(composite);                 
-                AddMethodDuplicateComposite(composite);              
-                AddMethodOpenPopupType(composite);  
-                IsOpenPopup = true;
-                return;
-            }
-            if (composite is ImageCompositeVM)
-            {
-                AddMethodAddComposite(Composites.IndexOf(composite));
-                AddMethodDeleteComposite(composite);                 
-                AddMethodDuplicateComposite(composite);              
-                IsOpenPopup = true;
-                return;
-            }
+            AddMethodAddComposite(Composites.IndexOf(composite));
+            AddMethodDeleteComposite(composite);
+            AddMethodDuplicateComposite(composite);
+
+            if (composite is TextCompositeVM || 
+                composite is HeaderCompositeVM || 
+                composite is QuoteCompositeVM || 
+                composite is TaskCompositeVM) AddMethodOpenPopupType(composite);
+
+            IsOpenPopup = true;
+            return;
         }
 
         void CloseContextMenus()
         {
             IsOpenPopupType = false;
             IsOpenPopup = false;
-            ContextMenuTypes.Clear();
-            ContextMenu.Clear();
         }
+
         void AddMethodAddComposite(int index)
         {
             ContextMenu.Add(new CommandContextMenu("Add composite", "/Common/Images/addCategory.png", new RelayCommand(() =>
             {
                 Composites.Insert(index + 1, new TextCompositeVM());
-                IsOpenPopup = false;
-                ContextMenu.Clear();
+                CloseContextMenus();
             })));
         }
-        void AddMethodDeleteComposite(CompositeBaseVM composite) => ContextMenu.Add(new CommandContextMenu("Delete composite", "/Common/Images/deleteCategory.png", new RelayCommand(() => DeleteComposite(composite))));
-        void AddMethodDuplicateComposite(CompositeBaseVM composite) => ContextMenu.Add(new CommandContextMenu("Duplicate composite", "/Common/Images/duplicate.png", new RelayCommand(() => DuplicateComposite(composite))));
-        void AddMethodOpenPopupType(CompositeBaseVM composite) => ContextMenu.Add(new CommandContextMenu("Change type composite > ", "/Common/Images/changeType.png", new RelayCommand(() =>
+        void AddMethodDeleteComposite(CompositeBaseVM composite)
         {
-            ContextMenuTypes.Clear();
-            ContextMenuTypes.Add(new CommandContextMenu("Text", "/Common/Images/text.png", new RelayCommand(() => { ChangeTypeComposite(composite, "Text"); })));
-            ContextMenuTypes.Add(new CommandContextMenu("Header1", "/Common/Images/header1.png", new RelayCommand(() => { ChangeTypeComposite(composite, "Header1"); })));
-            ContextMenuTypes.Add(new CommandContextMenu("Header2", "/Common/Images/header2.png", new RelayCommand(() => { ChangeTypeComposite(composite, "Header2"); })));
-            ContextMenuTypes.Add(new CommandContextMenu("Header3", "/Common/Images/header3.png", new RelayCommand(() => { ChangeTypeComposite(composite, "Header3"); })));
-            ContextMenuTypes.Add(new CommandContextMenu("Quote", "/Common/Images/quote.png", new RelayCommand(() => { ChangeTypeComposite(composite, "Quote"); })));
-            ContextMenuTypes.Add(new CommandContextMenu("Task", "/Common/Images/task.png", new RelayCommand(() => { ChangeTypeComposite(composite, "Task"); })));
-            IsOpenPopupType = true;
-        })));
+            ContextMenu.Add(new CommandContextMenu("Delete composite", "/Common/Images/deleteCategory.png", new RelayCommand(() => 
+            {
+                DeleteComposite(composite);
+                CloseContextMenus();
+            })));
+        }
+        void AddMethodDuplicateComposite(CompositeBaseVM composite)
+        {
+            ContextMenu.Add(new CommandContextMenu("Duplicate composite", "/Common/Images/duplicate.png", new RelayCommand(() =>
+            {
+                DuplicateComposite(composite);
+                CloseContextMenus();
+            })));
+        }
+        void AddMethodOpenPopupType(CompositeBaseVM composite)
+        {
+            ContextMenu.Add(new CommandContextMenu("Change type composite > ", "/Common/Images/changeType.png", new RelayCommand(() =>
+            {
+                ContextMenuTypes.Clear();
+                ContextMenuTypes.Add(new CommandContextMenu("Text", "/Common/Images/text.png", new RelayCommand(() => { ChangeTypeComposite(composite, "Text"); })));
+                ContextMenuTypes.Add(new CommandContextMenu("Header1", "/Common/Images/header1.png", new RelayCommand(() => { ChangeTypeComposite(composite, "Header1"); })));
+                ContextMenuTypes.Add(new CommandContextMenu("Header2", "/Common/Images/header2.png", new RelayCommand(() => { ChangeTypeComposite(composite, "Header2"); })));
+                ContextMenuTypes.Add(new CommandContextMenu("Header3", "/Common/Images/header3.png", new RelayCommand(() => { ChangeTypeComposite(composite, "Header3"); })));
+                ContextMenuTypes.Add(new CommandContextMenu("Quote", "/Common/Images/quote.png", new RelayCommand(() => { ChangeTypeComposite(composite, "Quote"); })));
+                ContextMenuTypes.Add(new CommandContextMenu("Task", "/Common/Images/task.png", new RelayCommand(() => { ChangeTypeComposite(composite, "Task"); })));
+                IsOpenPopupType = true;
+            })));
+        }
 
         bool _disposed = false;
         public virtual void Dispose()

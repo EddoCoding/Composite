@@ -29,8 +29,14 @@ namespace Composite.Common.Properties
             var existing = layer.GetAdorners(textBox);
             bool isEmpty = string.IsNullOrEmpty(textBox.Text);
             bool isTextComposite = textBox.DataContext is TextCompositeVM;
+            bool isHeaderComposite = textBox.DataContext is HeaderCompositeVM;
+            bool isQuoteComposite = textBox.DataContext is QuoteCompositeVM;
+            bool isLineComposite = textBox.DataContext is LineCompositeVM;
+            bool isTaskComposite = textBox.DataContext is TaskCompositeVM;
+            bool isImageComposite = textBox.DataContext is ImageCompositeVM;
 
-            bool shouldShow = isEmpty && (isTextComposite ? textBox.IsMouseOver : true);
+            bool shouldShow = isEmpty && (isTextComposite ? textBox.IsMouseOver : true || isHeaderComposite ? textBox.IsMouseOver : true || isQuoteComposite ? textBox.IsMouseOver : true
+                || isLineComposite ? textBox.IsMouseOver : true || isTaskComposite ? textBox.IsMouseOver : true || isImageComposite ? textBox.IsMouseOver : true);
 
             if (!shouldShow)
             {
