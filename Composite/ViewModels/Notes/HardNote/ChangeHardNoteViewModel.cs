@@ -18,6 +18,8 @@ namespace Composite.ViewModels.Notes.HardNote
         [ObservableProperty] string _message;
         [ObservableProperty] HardNoteVM _hardNoteVM;
         [ObservableProperty] CategoryNoteVM selectedCategory;
+        [ObservableProperty] string _passwordVisible = "Collapsed";
+        CancellationTokenSource _messageCts;
 
         public ObservableCollection<CategoryNoteVM> Categories { get; }
 
@@ -39,7 +41,7 @@ namespace Composite.ViewModels.Notes.HardNote
                     SelectedCategory = Categories?.FirstOrDefault(x => x.NameCategory == HardNoteVM.Category);
                 }
             });
-            messenger.Register<CheckChangeNoteBackMessage>(this, (r, m) =>
+            messenger.Register<CheckChangeNoteBackMessage>(this, async (r, m) =>
             {
                 if (_id == m.Id)
                 {
@@ -48,7 +50,20 @@ namespace Composite.ViewModels.Notes.HardNote
                         HardNoteVM.Category = SelectedCategory.NameCategory;
                         UpdateHardNote(); 
                     }
-                    else Message = m.ErrorMessage;
+                    else
+                    {
+                        _messageCts?.Cancel();
+                        _messageCts = new CancellationTokenSource();
+
+                        Message = m.ErrorMessage;
+
+                        try
+                        {
+                            await Task.Delay(3000, _messageCts.Token);
+                            Message = null;
+                        }
+                        catch (TaskCanceledException) { }
+                    }
                 }
             });
             messenger.Register<CategoryNoteMessage>(this, (r, m) =>
@@ -72,6 +87,11 @@ namespace Composite.ViewModels.Notes.HardNote
                 _tabService.RemoveTab(this);
             }
         }
+        [RelayCommand] void ShowPassword()
+        {
+            if (PasswordVisible == "Collapsed") PasswordVisible = "Visible";
+            else PasswordVisible = "Collapsed";
+        }
         void CopyHardNoteVM(HardNoteVM originalHardNoteVM) => HardNoteVM = _hardNoteService.CreateHardNoteVM(originalHardNoteVM);
 
         bool _disposed = false;
@@ -86,6 +106,8 @@ namespace Composite.ViewModels.Notes.HardNote
             {
                 if (disposing)
                 {
+                    _messageCts?.Cancel();
+                    _messageCts?.Dispose();
                     _messenger.UnregisterAll(this);
                     SelectedCategory = null;
                     Categories.Clear();

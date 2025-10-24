@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Composite.Views.Notes"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:property="clr-namespace:Composite.Common.Properties"
              mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800" FontFamily="Trebuchet MS"
              KeyboardNavigation.TabNavigation="None">
     <UserControl.Resources>
@@ -273,6 +274,8 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid.Effect>
                 <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
@@ -286,8 +289,15 @@
 
             <ComboBox Grid.Column="2" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" Style="{StaticResource ComboBoxCustom}" ItemContainerStyle="{StaticResource ComboBoxItemCustom}"
                 FontSize="12" DisplayMemberPath="NameCategory"/>
+
+            <Button Grid.Column="3" Style="{StaticResource ImageButton}" Content="/Common/Images/lock.png" HorizontalAlignment="Right" Margin="0,5,10,0" Height="18" Width="18"
+                    RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Center" Command="{Binding ShowPasswordCommand}"/>
             
-            <Button Grid.Column="3" Content="Сохранить" Style="{StaticResource ChangeNoteButton}" Command="{Binding CheckNoteCommand}"/>
+            <TextBox Grid.Column="4" Width="120" Style="{StaticResource TitleTextBox}" VerticalAlignment="Bottom" FontSize="14" Margin="10,0,20,4" MaxLength="13"
+                     Text="{Binding NoteVM.Password}" HorizontalAlignment="Right" Visibility="{Binding PasswordVisible}"
+                     property:PlaceHolder.PlaceHolder="Enter password" property:PlaceHolder.ShowAlways="True"/>
+
+            <Button Grid.Column="5" Content="Сохранить" Style="{StaticResource ChangeNoteButton}" Command="{Binding CheckNoteCommand}"/>
 
         </Grid>
 

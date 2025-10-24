@@ -18,7 +18,9 @@ namespace Composite.ViewModels.Notes.Note
         readonly IHardNoteService _hardNoteService;
         [ObservableProperty] string _message;
         [ObservableProperty] CategoryNoteVM selectedCategory;
-        
+        [ObservableProperty] string _passwordVisible = "Collapsed";
+        CancellationTokenSource _messageCts;
+
         public HardNoteVM HardNoteVM { get; set; } = new();
 
         public ObservableCollection<CategoryNoteVM> Categories { get; }
@@ -33,14 +35,27 @@ namespace Composite.ViewModels.Notes.Note
             Categories = new(categoryNoteService.GetCategories());
             SelectedCategory = Categories.FirstOrDefault();
 
-            messenger.Register<CheckNoteBackMessage>(this, (r, m) =>
+            messenger.Register<CheckNoteBackMessage>(this, async (r, m) =>
             {
                 if (m.TitleNote && _id == m.Id)
                 {
                     HardNoteVM.Category = SelectedCategory.NameCategory;
                     SaveHardNote();
                 }
-                if (_id == m.Id) Message = m.ErrorMessage;
+                if (_id == m.Id)
+                {
+                    _messageCts?.Cancel();
+                    _messageCts = new CancellationTokenSource();
+
+                    Message = m.ErrorMessage;
+
+                    try
+                    {
+                        await Task.Delay(3000, _messageCts.Token);
+                        Message = null;
+                    }
+                    catch (TaskCanceledException) { }
+                }
             });
             messenger.Register<CategoryNoteMessage>(this, (r, m) =>
             {
@@ -63,6 +78,11 @@ namespace Composite.ViewModels.Notes.Note
                 _tabService.RemoveTab(this);
             }
         }
+        [RelayCommand] void ShowPassword()
+        {
+            if (PasswordVisible == "Collapsed") PasswordVisible = "Visible";
+            else PasswordVisible = "Collapsed";
+        }
 
         bool _disposed = false;
         public virtual void Dispose()
@@ -76,6 +96,8 @@ namespace Composite.ViewModels.Notes.Note
             {
                 if (disposing)
                 {
+                    _messageCts?.Cancel();
+                    _messageCts?.Dispose();
                     _messenger.UnregisterAll(this);
                     SelectedCategory = null;
                     Categories.Clear();

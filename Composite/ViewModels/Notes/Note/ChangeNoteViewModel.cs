@@ -18,6 +18,8 @@ namespace Composite.ViewModels.Notes
         [ObservableProperty] NoteVM noteVM;
         [ObservableProperty] string message;
         [ObservableProperty] CategoryNoteVM selectedCategory;
+        [ObservableProperty] string _passwordVisible = "Collapsed";
+        CancellationTokenSource _messageCts;
 
         public List<string> Fonts { get; }
         public List<double> FontSizes { get; }
@@ -43,7 +45,7 @@ namespace Composite.ViewModels.Notes
                     SelectedCategory = Categories?.FirstOrDefault(x => x.NameCategory == NoteVM.Category);
                 }
             });
-            messenger.Register<CheckChangeNoteBackMessage>(this, (r, m) =>
+            messenger.Register<CheckChangeNoteBackMessage>(this, async (r, m) =>
             {
                 if (_id == m.Id)
                 {
@@ -52,7 +54,20 @@ namespace Composite.ViewModels.Notes
                         NoteVM.Category = SelectedCategory.NameCategory;
                         ChangeNote();
                     }
-                    else Message = m.ErrorMessage;
+                    else
+                    {
+                        _messageCts?.Cancel();
+                        _messageCts = new CancellationTokenSource();
+
+                        Message = m.ErrorMessage;
+
+                        try
+                        {
+                            await Task.Delay(3000, _messageCts.Token);
+                            Message = null;
+                        }
+                        catch (TaskCanceledException) { }
+                    }
                 }
             });
             messenger.Register<CategoryNoteMessage>(this, (r, m) =>
@@ -76,6 +91,11 @@ namespace Composite.ViewModels.Notes
                 _tabService.RemoveTab(this);
             }
         }
+        [RelayCommand] void ShowPassword()
+        {
+            if (PasswordVisible == "Collapsed") PasswordVisible = "Visible";
+            else PasswordVisible = "Collapsed";
+        }
 
         void CopyNoteVM(NoteVM originalNoteVM) => NoteVM = _noteService.CreateNoteVM(originalNoteVM);
 
@@ -93,6 +113,8 @@ namespace Composite.ViewModels.Notes
                 {
                     Fonts.Clear();
                     FontSizes.Clear();
+                    _messageCts?.Cancel();
+                    _messageCts?.Dispose();
                     _messenger.UnregisterAll(this);
                 }
                 _disposed = true;

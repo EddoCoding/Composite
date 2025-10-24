@@ -26,6 +26,7 @@
     <None Remove="Common\Images\header1.png" />
     <None Remove="Common\Images\header2.png" />
     <None Remove="Common\Images\header3.png" />
+    <None Remove="Common\Images\input.png" />
     <None Remove="Common\Images\lock.png" />
     <None Remove="Common\Images\next.png" />
     <None Remove="Common\Images\noteImage.png" />
@@ -59,6 +60,7 @@
     <Resource Include="Common\Images\header1.png" />
     <Resource Include="Common\Images\header2.png" />
     <Resource Include="Common\Images\header3.png" />
+    <Resource Include="Common\Images\input.png" />
     <Resource Include="Common\Images\lock.png" />
   </ItemGroup>
 

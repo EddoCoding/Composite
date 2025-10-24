@@ -1,9 +1,9 @@
-﻿using System.Collections.ObjectModel;
-using System.IO;
-using System.Windows.Media.Imaging;
-using Composite.Models;
+﻿using Composite.Models;
 using Composite.Models.Notes.HardNote;
 using Composite.ViewModels.Notes.HardNote;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace Composite.Common.Mappers
 {
@@ -29,6 +29,7 @@ namespace Composite.Common.Mappers
                 Title = hardNoteVM.Title,
                 Category = hardNoteVM.Category,
                 DateCreate = hardNoteVM.DateCreate,
+                Password = hardNoteVM.Password,
                 Composites = composites
             };
         }
@@ -52,6 +53,7 @@ namespace Composite.Common.Mappers
                 Title = hardNoteVM.Title,
                 Category = hardNoteVM.Category,
                 DateCreate = hardNoteVM.DateCreate,
+                Password = hardNoteVM.Password,
                 Composites = composites
             };
         }
@@ -75,6 +77,7 @@ namespace Composite.Common.Mappers
                 Title = hardNote.Title,
                 Category= hardNote.Category,
                 DateCreate = hardNote.DateCreate,
+                Password = hardNote.Password,
                 Composites = new ObservableCollection<CompositeBaseVM>(compositesVM)
             };
         }

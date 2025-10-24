@@ -6,6 +6,7 @@
         public string Title { get; set; } = string.Empty;
         public DateTime DateCreate { get; set; }
         public string Category { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
         public List<CompositeBase> Composites { get; set; }
     }
 }

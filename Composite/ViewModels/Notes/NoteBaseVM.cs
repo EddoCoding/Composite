@@ -8,6 +8,7 @@ namespace Composite.ViewModels.Notes
         public virtual string ItemType => string.Empty;
         [ObservableProperty] string title = string.Empty;
         [ObservableProperty] string category = string.Empty;
+        [ObservableProperty] string password = string.Empty;
         public DateTime DateCreate { get; set; }
     }
 }

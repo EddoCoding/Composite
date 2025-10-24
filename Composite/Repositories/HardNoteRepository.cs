@@ -16,7 +16,7 @@ namespace Composite.Repositories
 
                 try
                 {
-                    var queryAddHardNote = "Insert Into HardNotes(Id, Title, Category, DateCreate) Values (@Id, @Title, @Category, @DateCreate)";
+                    var queryAddHardNote = "Insert Into HardNotes(Id, Title, Category, DateCreate, Password) Values (@Id, @Title, @Category, @DateCreate, @Password)";
                     var resultAddHardNote = await connection.ExecuteAsync(queryAddHardNote, hardNote, transaction);
 
                     if (hardNote.Composites?.Any() == true)
@@ -170,7 +170,7 @@ namespace Composite.Repositories
 
                 try
                 {
-                    var queryUpdateHardNote = "Update HardNotes Set Title = @Title, Category = @Category Where Id = @Id";
+                    var queryUpdateHardNote = "Update HardNotes Set Title = @Title, Category = @Category, Password = @Password Where Id = @Id";
                     var resultUpdateHardNote = await connection.ExecuteAsync(queryUpdateHardNote, hardNote, transaction);
 
                     if (resultUpdateHardNote == 0)

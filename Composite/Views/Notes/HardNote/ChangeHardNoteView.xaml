@@ -16,6 +16,34 @@
         <converter:BoolToVisibilityConverter x:Key="BoolToVis"/>
         <converter:EditingAndHoverToVisibilityConverter x:Key="EditingAndHoverToVisibilityConverter"/>
 
+        <Style x:Key="PasswordTextBox" TargetType="TextBox">
+            <Setter Property="FontSize" Value="17"/>
+            <Setter Property="SelectionBrush" Value="LightGray"/>
+            <Setter Property="CaretBrush" Value="Gray"/>
+            <Setter Property="FontStyle" Value="Italic"/>
+            <Setter Property="FontFamily" Value="Trebuchet MS"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Grid.Row="1" x:Name="border" Margin="0,0,0,5" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0,0,0,1" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Padding="0"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="PART_ContentHost" Property="Background" Value="White"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="Gray"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style x:Key="ImageButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Template">
@@ -704,16 +732,25 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid.Effect>
                 <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
             </Grid.Effect>
 
             <ComboBox Grid.Column="0" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" Style="{StaticResource ComboBoxCustom}" ItemContainerStyle="{StaticResource ComboBoxItemCustom}"
-                FontSize="12" DisplayMemberPath="NameCategory"/>
+                      FontSize="12" DisplayMemberPath="NameCategory"/>
+
+            <Button Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/lock.png" HorizontalAlignment="Right" Margin="0,5,10,0" Height="18" Width="18"
+                    RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Center" Command="{Binding ShowPasswordCommand}"/>
             
-            <Button Grid.Column="1" Content="Сохранить" Style="{StaticResource UpdateNoteButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                Command="{Binding CheckNoteCommand}"/>
+            <TextBox Grid.Column="2" Width="120" Style="{StaticResource PasswordTextBox}" VerticalAlignment="Bottom" FontSize="14" Margin="0,0,20,4" MaxLength="13"
+                     Text="{Binding HardNoteVM.Password}" HorizontalAlignment="Right"  Visibility="{Binding PasswordVisible}"
+                     property:PlaceHolder.PlaceHolder="Enter password" property:PlaceHolder.ShowAlways="True"/>
+
+            <Button Grid.Column="3" Content="Сохранить" Style="{StaticResource UpdateNoteButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                    Command="{Binding CheckNoteCommand}"/>
 
         </Grid>
 

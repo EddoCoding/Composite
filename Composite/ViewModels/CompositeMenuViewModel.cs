@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Composite.Common.Message.Notes;
 using Composite.Common.Message.Notes.Note;
+using Composite.Models.Notes.Note;
 using Composite.Services;
 using Composite.Services.TabService;
 using Composite.ViewModels.Notes;
@@ -26,6 +27,10 @@ namespace Composite.ViewModels
 
         public string TextSearch { get; set; } = string.Empty;
         [ObservableProperty] bool _isPopupOpen;
+        [ObservableProperty] bool _isPasswordPopupOpen;
+        [ObservableProperty] string _password;
+        [ObservableProperty] NoteBaseVM _note;
+        [ObservableProperty] string _identifier;
 
         public CompositeMenuViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, 
             INoteService noteService, IHardNoteService hardNoteService, ICategoryNoteService categoryNoteService)
@@ -88,6 +93,7 @@ namespace Composite.ViewModels
                     note.DateCreate = noteMessage.DateCreate;
                     note.FontFamily = noteMessage.FontFamily;
                     note.FontSize = noteMessage.FontSize;
+                    note.Password = noteMessage.Password;
                 }
                 else if (noteVM is HardNoteVM hardNote)
                 {
@@ -96,6 +102,7 @@ namespace Composite.ViewModels
                     hardNote.Title = noteMessage.Title;
                     hardNote.Category = noteMessage.Category;
                     hardNote.DateCreate = noteMessage.DateCreate;
+                    hardNote.Password = noteMessage.Password;
                     hardNote.Composites = noteMessage.Composites;
                 }
             });    //Для обновления данных уже загруженно заметки
@@ -117,7 +124,7 @@ namespace Composite.ViewModels
             GetAddButtonNote();
             foreach (var noteVM in notesVM) Notes.Add(noteVM);
         }
-        [RelayCommand] void OpenNote(NoteBaseVM note)
+        void OpenNote(NoteBaseVM note)
         {
             if(note is NoteVM)
             {
@@ -128,6 +135,53 @@ namespace Composite.ViewModels
                 if (_tabService.CreateTab<ChangeHardNoteViewModel>($"{note.Title}")) _messenger.Send(new ChangeNoteMessage(note));
             }
 
+        }
+        [RelayCommand] void OpenPopupPassword((NoteBaseVM note, string identifier) parameters)
+        {
+            if (parameters.note.Password != string.Empty)
+            {
+                Note = parameters.note;
+                Identifier = parameters.identifier;
+                IsPasswordPopupOpen = true;
+            }
+            else if(parameters.identifier == "Open")
+            {
+                ClearPopupPassword();
+                OpenNote(parameters.note);
+                Note = null;
+            }
+            else if(parameters.identifier == "Delete")
+            {
+                ClearPopupPassword();
+                DeleteNote(parameters.note);
+                Note = null;
+            }
+        }
+        [RelayCommand] void CheckPassword()
+        {
+            if(_note.Password != Password)
+            {
+                Password = string.Empty;
+                return;
+            }
+            if (_note.Password == Password && Identifier == "Open")
+            {
+                ClearPopupPassword();
+                OpenNote(_note);
+                Note = null;
+            }
+            else if(_note.Password == Password && Identifier == "Delete")
+            {
+                ClearPopupPassword();
+                DeleteNote(_note);
+                Note = null;
+            }
+        }
+        void ClearPopupPassword()
+        {
+            IsPasswordPopupOpen = false;
+            Password = string.Empty;
+            Identifier = string.Empty;
         }
 
         //Фичи заметок
@@ -195,27 +249,6 @@ namespace Composite.ViewModels
         }
 
         //Команды меню заметок
-        [RelayCommand] async Task DeleteNote(NoteBaseVM noteVM)
-        {
-            if(noteVM is NoteVM)
-            {
-                if (await _noteService.DeleteNoteAsync(noteVM.Id))
-                {
-                    _allNotes.Remove(noteVM);
-                    Notes.Remove(noteVM);
-                }
-            }
-            if (noteVM is HardNoteVM)
-            {
-                if (await _hardNoteService.DeleteHardNoteAsync(noteVM.Id))
-                {
-                    _allNotes.Remove(noteVM);
-                    Notes.Remove(noteVM);
-                }
-            }
-
-            _tabService.RemoveTab(noteVM.Title);
-        }
         [RelayCommand] async Task DuplicateNote(NoteBaseVM noteVM)
         {
             if(noteVM is NoteVM note)
@@ -236,6 +269,27 @@ namespace Composite.ViewModels
                     Notes.Insert(Notes.Count, noteDuplicate);
                 }
             }
+        }
+        [RelayCommand] async Task DeleteNote(NoteBaseVM noteVM)
+        {
+            if(noteVM is NoteVM)
+            {
+                if (await _noteService.DeleteNoteAsync(noteVM.Id))
+                {
+                    _allNotes.Remove(noteVM);
+                    Notes.Remove(noteVM);
+                }
+            }
+            if (noteVM is HardNoteVM)
+            {
+                if (await _hardNoteService.DeleteHardNoteAsync(noteVM.Id))
+                {
+                    _allNotes.Remove(noteVM);
+                    Notes.Remove(noteVM);
+                }
+            }
+
+            _tabService.RemoveTab(noteVM.Title);
         }
 
         [RelayCommand] void Scale() => _viewService.ScaleView<CompositeViewModel>();

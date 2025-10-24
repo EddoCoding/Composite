@@ -9,15 +9,29 @@ namespace Composite.Views
     {
         public CompositeMenuView() => InitializeComponent();
 
-        void ContextMenuButton_Click(object sender, RoutedEventArgs e)
+        void PopupButton_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button button)
             {
                 DependencyObject parent = button;
-                while (parent != null && !(parent is ContextMenu)) parent = VisualTreeHelper.GetParent(parent);
+                while (parent != null && !(parent is Popup)) parent = VisualTreeHelper.GetParent(parent);
 
-                if (parent is ContextMenu contextMenu) contextMenu.IsOpen = false;
+                if (parent is Popup popup) popup.IsOpen = false;
+                else
+                {
+                    var popupFromLogical = FindLogicalParent<Popup>(button);
+                    if (popupFromLogical != null) popupFromLogical.IsOpen = false;
+                }
             }
+        }
+        T FindLogicalParent<T>(DependencyObject child) where T : DependencyObject
+        {
+            DependencyObject parent = LogicalTreeHelper.GetParent(child);
+
+            if (parent == null) return null;
+            if (parent is T typedParent) return typedParent;
+
+            return FindLogicalParent<T>(parent);
         }
         void button_Click(object sender, RoutedEventArgs e)
         {
