@@ -149,6 +149,27 @@ namespace Composite.Repositories
                                    Values (@Id, @Tag, @Comment, @DataImage, @HorizontalImage, @HardNoteId, @CompositeType, @OrderIndex)";
                             await connection.ExecuteAsync(queryImages, imageComposites, transaction);
                         }
+
+                        var refComposites = compositesWithOrder
+                           .Where(x => x.Composite is RefComposite)
+                           .Select(x => new
+                           {
+                               ((RefComposite)x.Composite).Id,
+                               ((RefComposite)x.Composite).Tag,
+                               ((RefComposite)x.Composite).Comment,
+                               ((RefComposite)x.Composite).ValueRef,
+                               ((RefComposite)x.Composite).Text,
+                               ((RefComposite)x.Composite).HardNoteId,
+                               ((RefComposite)x.Composite).CompositeType,
+                               x.OrderIndex
+                           })
+                           .ToList();
+                        if (refComposites.Any())
+                        {
+                            var queryRefs = @"Insert Into Composites(Id, Tag, Comment, ValueRef, Text, HardNoteId, CompositeType, OrderIndex) 
+                                   Values (@Id, @Tag, @Comment, @ValueRef, @Text, @HardNoteId, @CompositeType, @OrderIndex)";
+                            await connection.ExecuteAsync(queryRefs, refComposites, transaction);
+                        }
                     }
 
                     transaction.Commit();
@@ -184,8 +205,8 @@ namespace Composite.Repositories
 
                     if (hardNote.Composites?.Count > 0)
                     {
-                        var queryInsertComposites = @"Insert Into Composites (Id, Tag, Comment, Text, Header, FontWeightHeader, FontSizeHeader, Quote, TaskText, Completed, DataImage, HorizontalImage, HardNoteId, CompositeType, OrderIndex)
-                                                      Values (@Id, @Tag, @Comment, @Text, @Header, @FontWeightHeader, @FontSizeHeader, @Quote, @TaskText, @Completed, @DataImage, @HorizontalImage, @HardNoteId, @CompositeType, @OrderIndex)";
+                        var queryInsertComposites = @"Insert Into Composites (Id, Tag, Comment, Text, Header, FontWeightHeader, FontSizeHeader, Quote, TaskText, Completed, DataImage, HorizontalImage, ValueRef, HardNoteId, CompositeType, OrderIndex)
+                                                      Values (@Id, @Tag, @Comment, @Text, @Header, @FontWeightHeader, @FontSizeHeader, @Quote, @TaskText, @Completed, @DataImage, @HorizontalImage, @ValueRef, @HardNoteId, @CompositeType, @OrderIndex)";
 
                         var compositeData = hardNote.Composites.Select((c, index) => new
                         {
@@ -201,6 +222,7 @@ namespace Composite.Repositories
                             Completed = c.Completed,
                             DataImage = c.DataImage,
                             HorizontalImage = c.HorizontalImage,
+                            ValueRef = c.ValueRef,
                             HardNoteId = hardNote.Id,
                             CompositeType = c.CompositeType,
                             OrderIndex = index
@@ -256,6 +278,34 @@ namespace Composite.Repositories
                 }
 
                 return resultGetHardNotes;
+            }
+        }
+        public IEnumerable<HardNote> GetIdTitleNotes()
+        {
+            using (var connection = dbConnectionFactory.CreateConnection())
+            {
+                connection.Open();
+
+                var queryGetIdTitleHardNotes = "Select Id, Title From HardNotes";
+                var resultGetIdTitleHardNotes = connection.Query<HardNote>(queryGetIdTitleHardNotes);
+
+                return resultGetIdTitleHardNotes;
+            }
+        }
+        public async Task<HardNote> GetNoteById(string id)
+        {
+            using (var connection = dbConnectionFactory.CreateConnection())
+            {
+                connection.Open();
+
+                var queryGetHardNoteById = "Select * From HardNotes Where Id = @Id";
+                var hardNote = await connection.QueryFirstOrDefaultAsync<HardNote>(queryGetHardNoteById, new { Id = id });
+
+                var queryGetComposites = "Select * From Composites Where HardNoteId = @HardNoteId Order By OrderIndex";
+                var composites = await connection.QueryAsync<CompositeBase>(queryGetComposites, new { HardNoteId = hardNote.Id });
+                hardNote.Composites = composites.ToList();
+
+                return hardNote;
             }
         }
     }

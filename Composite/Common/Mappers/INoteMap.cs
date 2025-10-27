@@ -7,5 +7,6 @@ namespace Composite.Common.Mappers
     {
         Note MapToModel(NoteVM noteVM);
         NoteVM MapToViewModel(Note note);
+        NoteIdTitle MapToNoteIdTitle(Note note);
     }
 }

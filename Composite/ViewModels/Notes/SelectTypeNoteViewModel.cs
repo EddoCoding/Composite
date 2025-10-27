@@ -12,11 +12,13 @@ namespace Composite.ViewModels.Notes
 
         public string DescriptionDefaultNote { get; } = "1. Only text, only hardcore. \n" +
                                                         "2. Font Configuration (Type and Size). \n" +
-                                                        "3. Select category. \n";
+                                                        "3. Select category. \n" +
+                                                        "4. Set password. \n";                  
 
         public string DescriptionHardNote { get; } = "1. Text, headers, quote, line, task, \n" +
-                                                     "image. \n" +
-                                                      "2.Select category. \n"; 
+                                                     "    image. \n" +
+                                                     "2. Select category. \n" +
+                                                     "3. Set password. \n";
 
         [RelayCommand] void OpenNote()
         {

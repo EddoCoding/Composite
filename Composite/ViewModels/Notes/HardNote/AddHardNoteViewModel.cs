@@ -21,17 +21,17 @@ namespace Composite.ViewModels.Notes.Note
         [ObservableProperty] string _passwordVisible = "Collapsed";
         CancellationTokenSource _messageCts;
 
-        public HardNoteVM HardNoteVM { get; set; } = new();
-
+        public HardNoteVM HardNoteVM { get; set; }
         public ObservableCollection<CategoryNoteVM> Categories { get; }
 
-        public AddHardNoteViewModel(ITabService tabService, IMessenger messenger, IHardNoteService hardNoteService, ICategoryNoteService categoryNoteService)
+        public AddHardNoteViewModel(ITabService tabService, IMessenger messenger, INoteService noteService, IHardNoteService hardNoteService, ICategoryNoteService categoryNoteService)
         {
             _id = Guid.NewGuid();
             _tabService = tabService;
             _messenger = messenger;
             _hardNoteService = hardNoteService;
 
+            HardNoteVM = new(tabService, noteService, hardNoteService, messenger);
             Categories = new(categoryNoteService.GetCategories());
             SelectedCategory = Categories.FirstOrDefault();
 

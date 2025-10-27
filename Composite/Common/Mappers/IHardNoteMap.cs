@@ -1,4 +1,5 @@
 ﻿using Composite.Models.Notes.HardNote;
+using Composite.ViewModels.Notes;
 using Composite.ViewModels.Notes.HardNote;
 
 namespace Composite.Common.Mappers
@@ -8,5 +9,6 @@ namespace Composite.Common.Mappers
         HardNote MapToModel(HardNoteVM hardNoteVM);
         HardNote MapToModelWithNewIdComposite(HardNoteVM hardNoteVM);
         HardNoteVM MapToViewModel(HardNote hardNote);
+        NoteIdTitle MapToHardNoteIdTitle(HardNote hardNote);
     }
 }

@@ -68,7 +68,6 @@ namespace Composite.Views.Notes
             return null;
         }
 
-
         void MoveFocusToTextBox(int index)
         {
             if (listComposite.ItemsSource is IList<CompositeBaseVM> items && index >= 0 && index < items.Count)
@@ -381,7 +380,7 @@ namespace Composite.Views.Notes
             while (targetIndex >= 0 && targetIndex < items.Count)
             {
                 var item = items[targetIndex];
-                if (item is not LineCompositeVM && item is not ImageCompositeVM) return targetIndex;
+                if (item is not LineCompositeVM && item is not ImageCompositeVM && item is not RefCompositeVM) return targetIndex;
                 targetIndex += direction;
             }
 

@@ -12,7 +12,6 @@
         <converter:NoteTypeToIconConverter x:Key="NoteTypeToIconConverter"/>
         <converter:TupleForCheckPasswordConverter x:Key="TupleForCheckPasswordConverter"/>
 
-
         <Style x:Key="ImageModule" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Template">
@@ -22,7 +21,7 @@
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="{Binding Content, RelativeSource={RelativeSource AncestorType=Button}}" HorizontalAlignment="Center" VerticalAlignment="Center"
                                        RenderOptions.BitmapScalingMode="Fant"/>
-                                <TextBlock Text="{Binding ToolTip, RelativeSource={RelativeSource AncestorType=Button}}" FontSize="14" Margin="10,0,0,0" VerticalAlignment="Center"
+                                <TextBlock Text="{Binding ToolTip, RelativeSource={RelativeSource AncestorType=Button}}" FontSize="13" Margin="10,0,0,0" VerticalAlignment="Center"
                                            TextOptions.TextFormattingMode="Ideal"/>
                             </StackPanel>
                         </Border>
@@ -422,7 +421,7 @@
                                 <Popup x:Name="NotePopup"
                                        PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=Button}}" 
                                        Placement="Right" StaysOpen="False" AllowsTransparency="True">
-                                    <Border Background="White" BorderBrush="DarkGray" BorderThickness="1" CornerRadius="5" Width="140">
+                                    <Border Background="White" BorderBrush="DarkGray" BorderThickness="1" CornerRadius="5" Width="170">
                                         <StackPanel>
 
                                             <Button Style="{StaticResource ImageTextButton}" Content="Duplicate" Tag="/Common/Images/duplicate.png" Height="20"
@@ -430,7 +429,7 @@
                                                     Command="{Binding DataContext.DuplicateNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
 
                                             <Button Style="{StaticResource ImageTextButton}" Content="Delete note" Tag="/Common/Images/deleteCategory.png" Height="20"
-                                                    FontSize="14" Margin="5,2,5,5"
+                                                    FontSize="14" Margin="5,2,5,2"
                                                     Command="{Binding DataContext.OpenPopupPasswordCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
                                                 <Button.CommandParameter>
                                                     <MultiBinding Converter="{StaticResource TupleForCheckPasswordConverter}">
@@ -513,13 +512,13 @@
 
             <ListView Grid.Row="3" Margin="5,0" ItemsSource="{Binding Notes}" ItemContainerStyle="{StaticResource NoteListViewItem}" BorderThickness="0"/>
 
-            <Button Grid.Row="4" Content="/Common/Images/scale.png" Height="33" Margin="5,0,5,5" VerticalAlignment="Bottom" 
+            <Button Grid.Row="4" Content="/Common/Images/scale.png" Height="30" Margin="5,0,5,5" VerticalAlignment="Bottom" 
                     Style="{StaticResource ImageModule}" ToolTip="Scale" Command="{Binding ScaleCommand}" Tag="Orange"/>
 
-            <Button Grid.Row="5" Content="/Common/Images/collapse.png" Height="33" Margin="5,0,5,5" VerticalAlignment="Bottom" 
+            <Button Grid.Row="5" Content="/Common/Images/collapse.png" Height="30" Margin="5,0,5,5" VerticalAlignment="Bottom" 
                     Style="{StaticResource ImageModule}" ToolTip="Collapse" Command="{Binding CollapseCommand}" Tag="Yellow"/>
 
-            <Button Grid.Row="6" Content="/Common/Images/close.png" Height="32" Margin="5,0,5,5" VerticalAlignment="Bottom"
+            <Button Grid.Row="6" Content="/Common/Images/close.png" Height="30" Margin="5,0,5,5" VerticalAlignment="Bottom"
                     Style="{StaticResource ImageModule}" ToolTip="Exit" Command="{Binding CloseCommand}" Tag="Red"/>
 
             <Popup IsOpen="{Binding IsPasswordPopupOpen}" AllowsTransparency="True" Placement="Center" StaysOpen="False">
@@ -529,7 +528,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        
+
                         <TextBlock Grid.Row="0" Text="Password" Margin="5,5,0,0"/>
                         <Grid Grid.Row="1" Width="200">
                             <Grid.ColumnDefinitions>
@@ -542,7 +541,7 @@
                             <Button Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/input.png" Height="20" Width="20" Margin="5,0,3,0"
                                     Tag="WhiteSmoke" Cursor="Hand" RenderOptions.BitmapScalingMode="Fant"
                                     Command="{Binding CheckPasswordCommand}"/>
-                            
+
                         </Grid>
                     </Grid>
                 </Border>

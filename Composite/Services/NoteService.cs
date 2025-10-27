@@ -66,6 +66,40 @@ namespace Composite.Services
                 return false;
             }
         }
+        public IEnumerable<NoteIdTitle> GetIdTitleNotes()
+        {
+            var notes = noteRepository.GetIdTitleNotes();
+            List<NoteIdTitle> notesIdTitle = new();
+
+            try
+            {
+                foreach (var note in notes)
+                {
+                    var noteIdTitle = noteMap.MapToNoteIdTitle(note);
+                    notesIdTitle.Add(noteIdTitle);
+                }
+                return notesIdTitle;
+            }
+            catch (Exception)
+            {
+                return notesIdTitle;
+            }
+        }
+        public async Task<NoteVM> GetNoteById(Guid id)
+        {
+            var note = await noteRepository.GetNoteById(id.ToString());
+            if (note == null) return null;
+
+            try
+            {
+                var noteVM = noteMap.MapToViewModel(note);
+                return noteVM;
+            }
+            catch (Exception) 
+            {
+                return null;
+            };
+        }
 
         public async Task<NoteVM> DuplicateNoteVM(NoteVM noteVM)
         {
@@ -91,6 +125,6 @@ namespace Composite.Services
             }
             
         }
-        public NoteVM CreateNoteVM(NoteVM noteVM) => noteFactory.CreateNoteVM(noteVM); 
+        public NoteVM CreateNoteVM(NoteVM noteVM) => noteFactory.CreateNoteVM(noteVM);
     }
 }

@@ -1,5 +1,9 @@
-﻿using Composite.Models;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Composite.Models;
 using Composite.Models.Notes.HardNote;
+using Composite.Services.TabService;
+using Composite.Services;
+using Composite.ViewModels.Notes;
 using Composite.ViewModels.Notes.HardNote;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -7,7 +11,7 @@ using System.Windows.Media.Imaging;
 
 namespace Composite.Common.Mappers
 {
-    public class HardNoteMap : IHardNoteMap
+    public class HardNoteMap(ITabService tabService, INoteService noteService, IHardNoteService hardNoteService, IMessenger messenger) : IHardNoteMap
     {
         public HardNote MapToModel(HardNoteVM hardNoteVM)
         {
@@ -71,7 +75,7 @@ namespace Composite.Common.Mappers
             }
             else compositesVM = new List<CompositeBaseVM>();
 
-            return new HardNoteVM()
+            return new HardNoteVM(tabService, noteService, hardNoteService, messenger)
             {
                 Id = Guid.Parse(hardNote.Id),
                 Title = hardNote.Title,
@@ -81,6 +85,11 @@ namespace Composite.Common.Mappers
                 Composites = new ObservableCollection<CompositeBaseVM>(compositesVM)
             };
         }
+        public NoteIdTitle MapToHardNoteIdTitle(HardNote hardNote) => new NoteIdTitle()
+        {
+            Id = Guid.Parse(hardNote.Id),
+            Title = hardNote.Title
+        };
 
         CompositeBase GetComposite(Guid id, CompositeBaseVM compositeBaseVM)
         {
@@ -150,6 +159,18 @@ namespace Composite.Common.Mappers
                     Comment = imageCompositeVM.Comment,
                     DataImage = BitmapImageToByteArray(imageCompositeVM.ImageSource),
                     HorizontalImage = imageCompositeVM.HorizontalImage,
+                    HardNoteId = id.ToString()
+                };
+            }
+            if (compositeBaseVM is RefCompositeVM refCompositeVM)
+            {
+                return new RefComposite()
+                {
+                    Id = refCompositeVM.Id.ToString(),
+                    Tag = refCompositeVM.Tag,
+                    Comment = refCompositeVM.Comment,
+                    ValueRef = refCompositeVM.ValueRef,
+                    Text = refCompositeVM.Text,
                     HardNoteId = id.ToString()
                 };
             }
@@ -227,6 +248,18 @@ namespace Composite.Common.Mappers
                     HardNoteId = id.ToString()
                 };
             }
+            if (compositeBaseVM is RefCompositeVM refCompositeVM)
+            {
+                return new RefComposite()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Tag = refCompositeVM.Tag,
+                    Comment = refCompositeVM.Comment,
+                    ValueRef = refCompositeVM.ValueRef,
+                    Text = refCompositeVM.Text,
+                    HardNoteId = id.ToString()
+                };
+            }
 
             return null;
         }
@@ -297,6 +330,17 @@ namespace Composite.Common.Mappers
                     HorizontalImage = compositeBase.HorizontalImage,
                     OriginalWidth = bitmapImage.PixelWidth,
                     OriginalHeight = bitmapImage.PixelHeight
+                };
+            }
+            if (compositeBase.CompositeType == "RefComposite")
+            {
+                return new RefCompositeVM(tabService, noteService, hardNoteService, messenger)
+                {
+                    Id = Guid.Parse(compositeBase.Id),
+                    Tag = compositeBase.Tag,
+                    Comment = compositeBase.Comment,
+                    ValueRef = compositeBase.ValueRef,
+                    Text = compositeBase.Text
                 };
             }
 

@@ -134,7 +134,6 @@ namespace Composite.ViewModels
             {
                 if (_tabService.CreateTab<ChangeHardNoteViewModel>($"{note.Title}")) _messenger.Send(new ChangeNoteMessage(note));
             }
-
         }
         [RelayCommand] void OpenPopupPassword((NoteBaseVM note, string identifier) parameters)
         {

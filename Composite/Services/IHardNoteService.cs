@@ -9,6 +9,8 @@ namespace Composite.Services
         Task<bool> DeleteHardNoteAsync(Guid id);
         Task<bool> UpdateHardNoteAsync(HardNoteVM hardNoteVM);
         IEnumerable<HardNoteVM> GetNotes();
+        IEnumerable<NoteIdTitle> GetIdTitleNotes();
+        Task<HardNoteVM> GetNoteById(Guid id);
 
         Task<HardNoteVM> DuplicateHardNoteVM(NoteBaseVM hardNoteVM);
         HardNoteVM CreateHardNoteVM(HardNoteVM hardNoteVM);

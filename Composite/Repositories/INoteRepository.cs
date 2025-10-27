@@ -8,5 +8,7 @@ namespace Composite.Repositories
         IEnumerable<Note> Read();
         Task<bool> Update(Note note);
         Task<bool> Delete(string id);
+        IEnumerable<Note> GetIdTitleNotes();
+        Task<Note> GetNoteById(string id);
     }
 }

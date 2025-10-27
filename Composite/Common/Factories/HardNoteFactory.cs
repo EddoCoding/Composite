@@ -1,8 +1,11 @@
-﻿using Composite.ViewModels.Notes.HardNote;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Composite.Services;
+using Composite.Services.TabService;
+using Composite.ViewModels.Notes.HardNote;
 
 namespace Composite.Common.Factories
 {
-    public class HardNoteFactory : IHardNoteFactory
+    public class HardNoteFactory(ITabService tabService, INoteService noteService, IHardNoteService hardNoteService, IMessenger messenger) : IHardNoteFactory
     {
         public HardNoteVM CreateHardNoteVM(HardNoteVM hardNoteVM)
         {
@@ -80,9 +83,21 @@ namespace Composite.Common.Factories
                     };
                     compositesVM.Add(newImageCompositeVM);
                 }
+                else if (compositeVM is RefCompositeVM refCompositeVM)
+                {
+                    var newRefCompositeVM = new RefCompositeVM(tabService, noteService, hardNoteService, messenger)
+                    {
+                        Id = refCompositeVM.Id,
+                        Tag = refCompositeVM.Tag,
+                        Comment = refCompositeVM.Comment,
+                        ValueRef = refCompositeVM.ValueRef,
+                        Text = refCompositeVM.Text
+                    };
+                    compositesVM.Add(newRefCompositeVM);
+                }
             }
 
-            return new HardNoteVM()
+            return new HardNoteVM(tabService, noteService, hardNoteService, messenger)
             {
                 Id = hardNoteVM.Id,
                 Title = hardNoteVM.Title,

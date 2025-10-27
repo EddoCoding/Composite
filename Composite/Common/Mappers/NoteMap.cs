@@ -27,5 +27,10 @@ namespace Composite.Common.Mappers
             FontSize = note.FontSize,
             Password = note.Password
         };
+        public NoteIdTitle MapToNoteIdTitle(Note note) => new NoteIdTitle()
+        {
+            Id = Guid.Parse(note.Id),
+            Title = note.Title
+        };
     }
 }

@@ -61,5 +61,29 @@ namespace Composite.Repositories
                 return false;
             }
         }
+        public IEnumerable<Note> GetIdTitleNotes()
+        {
+            using (var connection = dbConnectionFactory.CreateConnection())
+            {
+                connection.Open();
+
+                var queryGetIdTitleNotes = "Select Id, Title From Notes";
+                var resultGetIdTitleNotes = connection.Query<Note>(queryGetIdTitleNotes);
+
+                return resultGetIdTitleNotes;
+            }
+        }
+        public async Task<Note> GetNoteById(string id)
+        {
+            using (var connection = dbConnectionFactory.CreateConnection())
+            {
+                connection.Open();
+
+                var queryGetNoteById = "Select * From Notes Where Id = @Id";
+                var note = await connection.QueryFirstOrDefaultAsync<Note>(queryGetNoteById, new { Id = id });
+
+                return note;
+            }
+        }
     }
 }
