@@ -139,6 +139,27 @@ namespace Composite.ViewModels.Notes.HardNote
                     return textCompositeVM;
                 }
             }
+            if (current is NumericCompositeVM numericComposite)
+            {
+                if (numericComposite.Text != string.Empty)
+                {
+                    var numericCompositeVM = new NumericCompositeVM();
+                    int index = Composites.IndexOf(numericComposite);
+                    Composites.Insert(index + 1, numericCompositeVM);
+
+                    UpdateNumericSequence(index + 1);
+
+                    return numericCompositeVM;
+                }
+                else
+                {
+                    var textCompositeVM = new TextCompositeVM();
+                    int index = Composites.IndexOf(numericComposite);
+                    DeleteComposite(current);
+                    Composites.Insert(index, textCompositeVM);
+                    return textCompositeVM;
+                }
+            }
 
             return null;
         }
@@ -250,14 +271,60 @@ namespace Composite.ViewModels.Notes.HardNote
                     Composites.Insert(indexMarker, markerComposite);
                     return markerComposite;
                 }
+                case "/numeric":
+                {
+                        int indexNumeric = Composites.IndexOf(compositeBaseVM);
+                        DeleteComposite(compositeBaseVM);
+
+                        var numericComposite = new NumericCompositeVM();
+                        Composites.Insert(indexNumeric, numericComposite);
+
+                        UpdateNumericSequence(indexNumeric);
+
+                        return numericComposite;
+                    }
 
                 default: return null;
             }
         }
+
+        void UpdateNumericSequence(int changedIndex)
+        {
+            int sequenceStart = changedIndex;
+            while (sequenceStart > 0 && Composites[sequenceStart - 1] is NumericCompositeVM) sequenceStart--;
+
+            int sequenceEnd = changedIndex;
+            while (sequenceEnd < Composites.Count - 1 && Composites[sequenceEnd + 1] is NumericCompositeVM) sequenceEnd++;
+
+            int number = 1;
+            for (int i = sequenceStart; i <= sequenceEnd; i++)
+            {
+                if (Composites[i] is NumericCompositeVM numeric)
+                {
+                    numeric.Number = number;
+                    number++;
+                }
+            }
+        }
+
         [RelayCommand] public void DeleteComposite(CompositeBaseVM composite)
         {
+            int index = Composites.IndexOf(composite);
+            bool isNumeric = composite is NumericCompositeVM;
+
             Composites.Remove(composite);
             IsOpenPopup = false;
+
+            if (isNumeric && index >= 0 && Composites.Count > 0)
+            {
+                int updateIndex = Math.Min(index, Composites.Count - 1);
+
+                if (updateIndex >= 0 && (Composites[updateIndex] is NumericCompositeVM || (updateIndex > 0 && Composites[updateIndex - 1] is NumericCompositeVM)))
+                {
+                    int targetIndex = Composites[updateIndex] is NumericCompositeVM ? updateIndex : updateIndex - 1;
+                    UpdateNumericSequence(targetIndex);
+                }
+            }
         }
         void DuplicateComposite<T>(T composite) where T : CompositeBaseVM
         {

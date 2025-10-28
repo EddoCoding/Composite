@@ -190,6 +190,27 @@ namespace Composite.Repositories
                                    Values (@Id, @Tag, @Comment, @Text, @HardNoteId, @CompositeType, @OrderIndex)";
                             await connection.ExecuteAsync(queryMarkers, markerComposites, transaction);
                         }
+
+                        var numericComposites = compositesWithOrder
+                           .Where(x => x.Composite is NumericComposite)
+                           .Select(x => new
+                           {
+                               ((NumericComposite)x.Composite).Id,
+                               ((NumericComposite)x.Composite).Tag,
+                               ((NumericComposite)x.Composite).Comment,
+                               ((NumericComposite)x.Composite).Number,
+                               ((NumericComposite)x.Composite).Text,
+                               ((NumericComposite)x.Composite).HardNoteId,
+                               ((NumericComposite)x.Composite).CompositeType,
+                               x.OrderIndex
+                           })
+                           .ToList();
+                        if (numericComposites.Any())
+                        {
+                            var queryNumerics = @"Insert Into Composites(Id, Tag, Comment, Number, Text, HardNoteId, CompositeType, OrderIndex) 
+                                   Values (@Id, @Tag, @Comment, @Number, @Text, @HardNoteId, @CompositeType, @OrderIndex)";
+                            await connection.ExecuteAsync(queryNumerics, numericComposites, transaction);
+                        }
                     }
 
                     transaction.Commit();
@@ -225,8 +246,8 @@ namespace Composite.Repositories
 
                     if (hardNote.Composites?.Count > 0)
                     {
-                        var queryInsertComposites = @"Insert Into Composites (Id, Tag, Comment, Text, Header, FontWeightHeader, FontSizeHeader, Quote, TaskText, Completed, DataImage, HorizontalImage, ValueRef, HardNoteId, CompositeType, OrderIndex)
-                                                      Values (@Id, @Tag, @Comment, @Text, @Header, @FontWeightHeader, @FontSizeHeader, @Quote, @TaskText, @Completed, @DataImage, @HorizontalImage, @ValueRef, @HardNoteId, @CompositeType, @OrderIndex)";
+                        var queryInsertComposites = @"Insert Into Composites (Id, Tag, Comment, Text, Header, FontWeightHeader, FontSizeHeader, Quote, TaskText, Completed, DataImage, HorizontalImage, ValueRef, Number, HardNoteId, CompositeType, OrderIndex)
+                                                      Values (@Id, @Tag, @Comment, @Text, @Header, @FontWeightHeader, @FontSizeHeader, @Quote, @TaskText, @Completed, @DataImage, @HorizontalImage, @ValueRef, @Number, @HardNoteId, @CompositeType, @OrderIndex)";
 
                         var compositeData = hardNote.Composites.Select((c, index) => new
                         {
@@ -243,6 +264,7 @@ namespace Composite.Repositories
                             DataImage = c.DataImage,
                             HorizontalImage = c.HorizontalImage,
                             ValueRef = c.ValueRef,
+                            Number = c.Number,
                             HardNoteId = hardNote.Id,
                             CompositeType = c.CompositeType,
                             OrderIndex = index

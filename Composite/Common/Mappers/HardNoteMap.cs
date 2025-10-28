@@ -185,6 +185,18 @@ namespace Composite.Common.Mappers
                     HardNoteId = id.ToString()
                 };
             }
+            if (compositeBaseVM is NumericCompositeVM numericCompositeVM)
+            {
+                return new NumericComposite()
+                {
+                    Id = numericCompositeVM.Id.ToString(),
+                    Tag = numericCompositeVM.Tag,
+                    Comment = numericCompositeVM.Comment,
+                    Number = numericCompositeVM.Number,
+                    Text = numericCompositeVM.Text,
+                    HardNoteId = id.ToString()
+                };
+            }
 
             return null;
         }
@@ -282,6 +294,18 @@ namespace Composite.Common.Mappers
                     HardNoteId = id.ToString()
                 };
             }
+            if (compositeBaseVM is NumericCompositeVM numericCompositeVM)
+            {
+                return new NumericComposite()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Tag = numericCompositeVM.Tag,
+                    Comment = numericCompositeVM.Comment,
+                    Number = numericCompositeVM.Number,
+                    Text = numericCompositeVM.Text,
+                    HardNoteId = id.ToString()
+                };
+            }
 
             return null;
         }
@@ -372,6 +396,17 @@ namespace Composite.Common.Mappers
                     Id = Guid.Parse(compositeBase.Id),
                     Tag = compositeBase.Tag,
                     Comment = compositeBase.Comment,
+                    Text = compositeBase.Text
+                };
+            }
+            if (compositeBase.CompositeType == "NumericComposite")
+            {
+                return new NumericCompositeVM()
+                {
+                    Id = Guid.Parse(compositeBase.Id),
+                    Tag = compositeBase.Tag,
+                    Comment = compositeBase.Comment,
+                    Number = compositeBase.Number,
                     Text = compositeBase.Text
                 };
             }

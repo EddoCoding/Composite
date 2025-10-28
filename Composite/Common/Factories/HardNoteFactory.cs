@@ -106,6 +106,18 @@ namespace Composite.Common.Factories
                     };
                     compositesVM.Add(newMarkerCompositeVM);
                 }
+                else if (compositeVM is NumericCompositeVM numericCompositeVM)
+                {
+                    var newNumericCompositeVM = new NumericCompositeVM()
+                    {
+                        Id = numericCompositeVM.Id,
+                        Tag = numericCompositeVM.Tag,
+                        Comment = numericCompositeVM.Comment,
+                        Number = numericCompositeVM.Number,
+                        Text = numericCompositeVM.Text
+                    };
+                    compositesVM.Add(newNumericCompositeVM);
+                }
             }
 
             return new HardNoteVM(tabService, noteService, hardNoteService, messenger)

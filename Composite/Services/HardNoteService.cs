@@ -82,11 +82,11 @@ namespace Composite.Services
         }
         public IEnumerable<NoteIdTitle> GetIdTitleNotes()
         {
-            var hardNotes = _hardNoteRepository.GetIdTitleNotes();
             List<NoteIdTitle> hardNotesIdTitle = new();
 
             try
             {
+                var hardNotes = _hardNoteRepository.GetIdTitleNotes();
                 foreach (var hardNote in hardNotes)
                 {
                     var hardNoteIdTitle = _hardNoteMap.MapToHardNoteIdTitle(hardNote);
@@ -101,11 +101,11 @@ namespace Composite.Services
         }
         public async Task<HardNoteVM> GetNoteById(Guid id)
         {
-            var hardNote = await _hardNoteRepository.GetNoteById(id.ToString());
-            if (hardNote == null) return null;
-
             try
             {
+                var hardNote = await _hardNoteRepository.GetNoteById(id.ToString());
+                if (hardNote == null) return null;
+
                 var hardNoteVM = _hardNoteMap.MapToViewModel(hardNote);
                 return hardNoteVM;
             }

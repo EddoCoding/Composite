@@ -22,6 +22,8 @@
 
         public string ValueRef { get; set; } = string.Empty;
 
+        public int Number { get; set; }
+
         public string HardNoteId { get; set; } = string.Empty;
         public string CompositeType { get; set; } = string.Empty;
         public int OrderIndex { get; set; }
