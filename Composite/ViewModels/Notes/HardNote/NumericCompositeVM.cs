@@ -9,6 +9,6 @@ namespace Composite.ViewModels.Notes.HardNote
 
         public NumericCompositeVM() => Id = Guid.NewGuid();
 
-        public override object Clone() => new HeaderCompositeVM() { Id = Guid.NewGuid(), Tag = Tag, Comment = Comment, Text = Text};
+        public override object Clone() => new NumericCompositeVM() { Id = Guid.NewGuid(), Tag = Tag, Comment = Comment, Text = Text};
     }
 }

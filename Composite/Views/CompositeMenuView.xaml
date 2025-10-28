@@ -429,7 +429,7 @@
                                                     Command="{Binding DataContext.DuplicateNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
 
                                             <Button Style="{StaticResource ImageTextButton}" Content="Delete note" Tag="/Common/Images/deleteCategory.png" Height="20"
-                                                    FontSize="14" Margin="5,2,5,2"
+                                                    FontSize="14" Margin="5,2,5,5"
                                                     Command="{Binding DataContext.OpenPopupPasswordCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
                                                 <Button.CommandParameter>
                                                     <MultiBinding Converter="{StaticResource TupleForCheckPasswordConverter}">

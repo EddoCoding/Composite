@@ -283,6 +283,14 @@ namespace Composite.ViewModels.Notes.HardNote
 
                         return numericComposite;
                     }
+                case "/code":
+                {
+                    int indexCode = Composites.IndexOf(compositeBaseVM);
+                    DeleteComposite(compositeBaseVM);
+                    var codeComposite = new CodeCompositeVM();
+                    Composites.Insert(indexCode, codeComposite);
+                    return codeComposite;
+                }
 
                 default: return null;
             }
@@ -331,6 +339,9 @@ namespace Composite.ViewModels.Notes.HardNote
             var index = Composites.IndexOf(composite);
             var duplicateComposite = (T)composite.Clone();
             Composites.Insert(index + 1, duplicateComposite);
+
+            if (duplicateComposite is NumericCompositeVM) UpdateNumericSequence(index + 1);
+
             CloseContextMenus();
         }
         void ChangeTypeComposite(CompositeBaseVM composite, string selectType)

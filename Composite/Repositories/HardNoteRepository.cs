@@ -211,6 +211,26 @@ namespace Composite.Repositories
                                    Values (@Id, @Tag, @Comment, @Number, @Text, @HardNoteId, @CompositeType, @OrderIndex)";
                             await connection.ExecuteAsync(queryNumerics, numericComposites, transaction);
                         }
+
+                        var codeComposites = compositesWithOrder
+                           .Where(x => x.Composite is CodeComposite)
+                           .Select(x => new
+                           {
+                               ((CodeComposite)x.Composite).Id,
+                               ((CodeComposite)x.Composite).Tag,
+                               ((CodeComposite)x.Composite).Comment,
+                               ((CodeComposite)x.Composite).Text,
+                               ((CodeComposite)x.Composite).HardNoteId,
+                               ((CodeComposite)x.Composite).CompositeType,
+                               x.OrderIndex
+                           })
+                           .ToList();
+                        if (codeComposites.Any())
+                        {
+                            var queryCodes = @"Insert Into Composites(Id, Tag, Comment, Text, HardNoteId, CompositeType, OrderIndex) 
+                                   Values (@Id, @Tag, @Comment, @Text, @HardNoteId, @CompositeType, @OrderIndex)";
+                            await connection.ExecuteAsync(queryCodes, codeComposites, transaction);
+                        }
                     }
 
                     transaction.Commit();

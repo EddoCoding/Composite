@@ -197,6 +197,17 @@ namespace Composite.Common.Mappers
                     HardNoteId = id.ToString()
                 };
             }
+            if (compositeBaseVM is CodeCompositeVM codeCompositeVM)
+            {
+                return new CodeComposite()
+                {
+                    Id = codeCompositeVM.Id.ToString(),
+                    Tag = codeCompositeVM.Tag,
+                    Comment = codeCompositeVM.Comment,
+                    Text = codeCompositeVM.Text,
+                    HardNoteId = id.ToString()
+                };
+            }
 
             return null;
         }
@@ -306,6 +317,17 @@ namespace Composite.Common.Mappers
                     HardNoteId = id.ToString()
                 };
             }
+            if (compositeBaseVM is CodeCompositeVM codeCompositeVM)
+            {
+                return new CodeComposite()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Tag = codeCompositeVM.Tag,
+                    Comment = codeCompositeVM.Comment,
+                    Text = codeCompositeVM.Text,
+                    HardNoteId = id.ToString()
+                };
+            }
 
             return null;
         }
@@ -407,6 +429,16 @@ namespace Composite.Common.Mappers
                     Tag = compositeBase.Tag,
                     Comment = compositeBase.Comment,
                     Number = compositeBase.Number,
+                    Text = compositeBase.Text
+                };
+            }
+            if (compositeBase.CompositeType == "CodeComposite")
+            {
+                return new CodeCompositeVM()
+                {
+                    Id = Guid.Parse(compositeBase.Id),
+                    Tag = compositeBase.Tag,
+                    Comment = compositeBase.Comment,
                     Text = compositeBase.Text
                 };
             }

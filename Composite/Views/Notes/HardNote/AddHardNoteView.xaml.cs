@@ -392,7 +392,7 @@ namespace Composite.Views.Notes
             {
                 var item = items[i];
                 if (item is TextCompositeVM || item is HeaderCompositeVM || item is QuoteCompositeVM || item is TaskCompositeVM || item is MarkerCompositeVM
-                    || item is NumericCompositeVM) return i;
+                    || item is NumericCompositeVM || item is CodeCompositeVM) return i;
             }
             return -1;
         }
@@ -402,7 +402,7 @@ namespace Composite.Views.Notes
             {
                 var item = items[i];
                 if (item is TextCompositeVM || item is HeaderCompositeVM || item is QuoteCompositeVM || item is TaskCompositeVM || item is MarkerCompositeVM
-                    || item is NumericCompositeVM) return i;
+                    || item is NumericCompositeVM || item is CodeCompositeVM) return i;
             }
             return -1;
         }
