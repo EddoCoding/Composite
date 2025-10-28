@@ -276,6 +276,9 @@ namespace Composite.Repositories
                 var queryDeleteHardNote = "Delete From HardNotes Where Id = @id";
                 var resultDeleteHardNote = await connection.ExecuteAsync(queryDeleteHardNote, new { id });
 
+                var queryDeleteRefCompositeIdNote = "Delete From Composites Where ValueRef = @id";
+                var resultDeleteRefCompositeIdNote = await connection.ExecuteAsync(queryDeleteRefCompositeIdNote, new { id });
+
                 if (resultDeleteHardNote > 0) return true;
 
                 return false;

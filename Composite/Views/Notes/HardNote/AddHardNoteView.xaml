@@ -53,8 +53,8 @@
                             <ContentPresenter>
                                 <ContentPresenter.Content>
                                     <Image Height="{Binding Height, RelativeSource={RelativeSource AncestorType=Button}}" 
-                                       Width="{Binding Width, RelativeSource={RelativeSource AncestorType=Button}}"
-                                       Source="{Binding Content, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                           Width="{Binding Width, RelativeSource={RelativeSource AncestorType=Button}}"
+                                           Source="{Binding Content, RelativeSource={RelativeSource AncestorType=Button}}"/>
                                 </ContentPresenter.Content>
                             </ContentPresenter>
                         </Border>
@@ -985,7 +985,7 @@
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewModel:CommandContextMenu}">
-            <Button Style="{StaticResource ImageTextButton}" Content="{Binding NameCommand}" FontSize="15" Tag="{Binding PathImage}" Height="22" 
+            <Button Style="{StaticResource ImageTextButton}" Content="{Binding NameCommand}" FontSize="15" Tag="{Binding PathImage}" Height="20" 
                     Margin="3" RenderOptions.BitmapScalingMode="Fant" TextOptions.TextFormattingMode="Display"
                     Command="{Binding ActionCommand}" Click="PositionPopupType"/>
         </DataTemplate>

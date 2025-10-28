@@ -28,6 +28,7 @@
     <None Remove="Common\Images\header3.png" />
     <None Remove="Common\Images\input.png" />
     <None Remove="Common\Images\lock.png" />
+    <None Remove="Common\Images\marker.png" />
     <None Remove="Common\Images\next.png" />
     <None Remove="Common\Images\noteImage.png" />
     <None Remove="Common\Images\notes.png" />
@@ -67,6 +68,7 @@
 
   <ItemGroup>
     <Resource Include="Common\Images\close.png" />
+    <Resource Include="Common\Images\marker.png" />
     <Resource Include="Common\Images\next.png" />
     <Resource Include="Common\Images\noteImage.png" />
     <Resource Include="Common\Images\notes.png" />

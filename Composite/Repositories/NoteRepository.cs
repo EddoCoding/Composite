@@ -56,7 +56,10 @@ namespace Composite.Repositories
                 var queryDeleteNote = "Delete From Notes Where Id = @id";
                 var resultDeleteNote = await connection.ExecuteAsync(queryDeleteNote, new { id });
 
-                if(resultDeleteNote > 0) return true;
+                var queryDeleteRefCompositeIdNote = "Delete From Composites Where ValueRef = @id";
+                var resultDeleteRefCompositeIdNote = await connection.ExecuteAsync(queryDeleteRefCompositeIdNote, new { id });
+
+                if (resultDeleteNote > 0) return true;
 
                 return false;
             }

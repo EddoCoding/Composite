@@ -1,14 +1,13 @@
-﻿using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Composite.Common.Message.Notes;
 using Composite.Common.Message.Notes.Note;
-using Composite.Models.Notes.Note;
 using Composite.Services;
 using Composite.Services.TabService;
 using Composite.ViewModels.Notes;
 using Composite.ViewModels.Notes.HardNote;
+using System.Collections.ObjectModel;
 
 namespace Composite.ViewModels
 {
@@ -277,6 +276,8 @@ namespace Composite.ViewModels
                 {
                     _allNotes.Remove(noteVM);
                     Notes.Remove(noteVM);
+
+                    _messenger.Send(new RefMessage(noteVM.Id));
                 }
             }
             if (noteVM is HardNoteVM)
@@ -285,6 +286,8 @@ namespace Composite.ViewModels
                 {
                     _allNotes.Remove(noteVM);
                     Notes.Remove(noteVM);
+
+                    _messenger.Send(new RefMessage(noteVM.Id));
                 }
             }
 

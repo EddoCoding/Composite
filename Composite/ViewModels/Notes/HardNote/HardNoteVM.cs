@@ -1,12 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Composite.Services.TabService;
+using CommunityToolkit.Mvvm.Messaging;
+using Composite.Common.Message.Notes;
 using Composite.Services;
+using Composite.Services.TabService;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
-using CommunityToolkit.Mvvm.Messaging;
 
 namespace Composite.ViewModels.Notes.HardNote
 {
@@ -31,6 +32,16 @@ namespace Composite.ViewModels.Notes.HardNote
             Composites = new();
             Composites.Add(new TextCompositeVM());
             DateCreate = DateTime.Now;
+
+            messenger.Register<RefMessage>(this, (r, m) =>
+            {
+                var refs = Composites
+                .OfType<RefCompositeVM>()
+                .Where(x => x.ValueRef == m.Id.ToString())
+                .ToList();
+
+                foreach(var reference in refs) Composites.Remove(reference);
+            });
         }
 
         public void AddTextCompositeVM() => Composites.Add(new TextCompositeVM());
@@ -264,6 +275,7 @@ namespace Composite.ViewModels.Notes.HardNote
             else if (composite is HeaderCompositeVM headerComposite) text = headerComposite.Text;
             else if (composite is QuoteCompositeVM quoteComposite) text = quoteComposite.Text;
             else if (composite is TaskCompositeVM taskComposite) text = taskComposite.Text;
+            else if (composite is MarkerCompositeVM markerComposite) text = markerComposite.Text;
 
             CompositeBaseVM? newComposite = null;
 
@@ -287,6 +299,9 @@ namespace Composite.ViewModels.Notes.HardNote
                 case "Task":
                     newComposite = new TaskCompositeVM() { Text = text };
                     break;
+                case "Marker":
+                    newComposite = new MarkerCompositeVM() { Text = text };
+                    break;
             }
 
             if (newComposite != null)
@@ -300,6 +315,7 @@ namespace Composite.ViewModels.Notes.HardNote
         public void InsertComposite(int index, CompositeBaseVM composite) => Composites.Insert(index, composite);
         public int GetIndexComposite(CompositeBaseVM composite) => Composites.IndexOf(composite);
 
+        //Показ картинки в большом размере
         BitmapImage LoadBitmapImage(string filePath)
         {
             var bitmap = new BitmapImage();
@@ -338,6 +354,7 @@ namespace Composite.ViewModels.Notes.HardNote
         [ObservableProperty] bool _isImagePopupOpen;
         [ObservableProperty] BitmapImage _image;
 
+        //Контекстные менюшки
         [ObservableProperty] bool _isOpenPopup;
         [ObservableProperty] bool _isOpenPopupType;
         public ObservableCollection<CommandContextMenu> ContextMenu { get; set; } = new();
@@ -353,7 +370,8 @@ namespace Composite.ViewModels.Notes.HardNote
             if (composite is TextCompositeVM || 
                 composite is HeaderCompositeVM || 
                 composite is QuoteCompositeVM || 
-                composite is TaskCompositeVM) AddMethodOpenPopupType(composite);
+                composite is TaskCompositeVM ||
+                composite is MarkerCompositeVM) AddMethodOpenPopupType(composite);
 
             IsOpenPopup = true;
             return;
@@ -365,6 +383,7 @@ namespace Composite.ViewModels.Notes.HardNote
             IsOpenPopup = false;
         }
 
+        //Добавление методов отображаемые менюшками
         void AddMethodAddComposite(int index)
         {
             ContextMenu.Add(new CommandContextMenu("Add composite", "/Common/Images/addCategory.png", new RelayCommand(() =>
@@ -400,6 +419,8 @@ namespace Composite.ViewModels.Notes.HardNote
                 ContextMenuTypes.Add(new CommandContextMenu("Header3", "/Common/Images/header3.png", new RelayCommand(() => { ChangeTypeComposite(composite, "Header3"); })));
                 ContextMenuTypes.Add(new CommandContextMenu("Quote", "/Common/Images/quote.png", new RelayCommand(() => { ChangeTypeComposite(composite, "Quote"); })));
                 ContextMenuTypes.Add(new CommandContextMenu("Task", "/Common/Images/task.png", new RelayCommand(() => { ChangeTypeComposite(composite, "Task"); })));
+                ContextMenuTypes.Add(new CommandContextMenu("Marker", "/Common/Images/marker.png", new RelayCommand(() => { ChangeTypeComposite(composite, "Marker"); })));
+
                 IsOpenPopupType = true;
             })));
         }
@@ -419,6 +440,7 @@ namespace Composite.ViewModels.Notes.HardNote
             {
                 if (disposing)
                 {
+                    _messenger.UnregisterAll(this);
                     Composites.Clear();
                     ContextMenu.Clear();
                     ContextMenuTypes.Clear();
