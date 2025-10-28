@@ -110,6 +110,24 @@ namespace Composite.ViewModels.Notes.HardNote
                     return textCompositeVM;
                 }
             }
+            if (current is MarkerCompositeVM markerComposite)
+            {
+                if (markerComposite.Text != string.Empty)
+                {
+                    var markerCompositeVM = new MarkerCompositeVM();
+                    int index = Composites.IndexOf(markerComposite);
+                    Composites.Insert(index + 1, markerCompositeVM);
+                    return markerCompositeVM;
+                }
+                else
+                {
+                    var textCompositeVM = new TextCompositeVM();
+                    int index = Composites.IndexOf(markerComposite);
+                    DeleteComposite(current);
+                    Composites.Insert(index, textCompositeVM);
+                    return textCompositeVM;
+                }
+            }
 
             return null;
         }
@@ -204,15 +222,23 @@ namespace Composite.ViewModels.Notes.HardNote
                         return null;
                     }
                 case "/ref":
-                    {
-                        int indexRef = Composites.IndexOf(compositeBaseVM);
-                        DeleteComposite(compositeBaseVM);
-                        var refComposite = new RefCompositeVM(_tabService, _noteService, _hardNoteService, _messenger);
-                        Composites.Insert(indexRef, refComposite);
-                        var textComposite2 = new TextCompositeVM();
-                        Composites.Insert(indexRef + 1, textComposite2);
-                        return textComposite2;
-                    }
+                {
+                    int indexRef = Composites.IndexOf(compositeBaseVM);
+                    DeleteComposite(compositeBaseVM);
+                    var refComposite = new RefCompositeVM(_tabService, _noteService, _hardNoteService, _messenger);
+                    Composites.Insert(indexRef, refComposite);
+                    var textComposite2 = new TextCompositeVM();
+                    Composites.Insert(indexRef + 1, textComposite2);
+                    return textComposite2;
+                }
+                case "/marker":
+                {
+                    int indexMarker = Composites.IndexOf(compositeBaseVM);
+                    DeleteComposite(compositeBaseVM);
+                    var markerComposite = new MarkerCompositeVM();
+                    Composites.Insert(indexMarker, markerComposite);
+                    return markerComposite;
+                }
 
                 default: return null;
             }

@@ -174,6 +174,17 @@ namespace Composite.Common.Mappers
                     HardNoteId = id.ToString()
                 };
             }
+            if (compositeBaseVM is MarkerCompositeVM markerCompositeVM)
+            {
+                return new MarkerComposite()
+                {
+                    Id = markerCompositeVM.Id.ToString(),
+                    Tag = markerCompositeVM.Tag,
+                    Comment = markerCompositeVM.Comment,
+                    Text = markerCompositeVM.Text,
+                    HardNoteId = id.ToString()
+                };
+            }
 
             return null;
         }
@@ -260,6 +271,17 @@ namespace Composite.Common.Mappers
                     HardNoteId = id.ToString()
                 };
             }
+            if (compositeBaseVM is MarkerCompositeVM markerCompositeVM)
+            {
+                return new MarkerComposite()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Tag = markerCompositeVM.Tag,
+                    Comment = markerCompositeVM.Comment,
+                    Text = markerCompositeVM.Text,
+                    HardNoteId = id.ToString()
+                };
+            }
 
             return null;
         }
@@ -340,6 +362,16 @@ namespace Composite.Common.Mappers
                     Tag = compositeBase.Tag,
                     Comment = compositeBase.Comment,
                     ValueRef = compositeBase.ValueRef,
+                    Text = compositeBase.Text
+                };
+            }
+            if (compositeBase.CompositeType == "MarkerComposite")
+            {
+                return new MarkerCompositeVM()
+                {
+                    Id = Guid.Parse(compositeBase.Id),
+                    Tag = compositeBase.Tag,
+                    Comment = compositeBase.Comment,
                     Text = compositeBase.Text
                 };
             }

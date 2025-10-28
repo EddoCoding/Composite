@@ -170,6 +170,26 @@ namespace Composite.Repositories
                                    Values (@Id, @Tag, @Comment, @ValueRef, @Text, @HardNoteId, @CompositeType, @OrderIndex)";
                             await connection.ExecuteAsync(queryRefs, refComposites, transaction);
                         }
+
+                        var markerComposites = compositesWithOrder
+                           .Where(x => x.Composite is MarkerComposite)
+                           .Select(x => new
+                           {
+                               ((MarkerComposite)x.Composite).Id,
+                               ((MarkerComposite)x.Composite).Tag,
+                               ((MarkerComposite)x.Composite).Comment,
+                               ((MarkerComposite)x.Composite).Text,
+                               ((MarkerComposite)x.Composite).HardNoteId,
+                               ((MarkerComposite)x.Composite).CompositeType,
+                               x.OrderIndex
+                           })
+                           .ToList();
+                        if (markerComposites.Any())
+                        {
+                            var queryMarkers = @"Insert Into Composites(Id, Tag, Comment, Text, HardNoteId, CompositeType, OrderIndex) 
+                                   Values (@Id, @Tag, @Comment, @Text, @HardNoteId, @CompositeType, @OrderIndex)";
+                            await connection.ExecuteAsync(queryMarkers, markerComposites, transaction);
+                        }
                     }
 
                     transaction.Commit();

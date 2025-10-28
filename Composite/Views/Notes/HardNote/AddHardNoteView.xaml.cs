@@ -391,7 +391,7 @@ namespace Composite.Views.Notes
             for (int i = startIndex; i < items.Count; i++)
             {
                 var item = items[i];
-                if (item is TextCompositeVM || item is HeaderCompositeVM || item is QuoteCompositeVM || item is TaskCompositeVM) return i;
+                if (item is TextCompositeVM || item is HeaderCompositeVM || item is QuoteCompositeVM || item is TaskCompositeVM || item is MarkerCompositeVM) return i;
             }
             return -1;
         }
@@ -400,7 +400,7 @@ namespace Composite.Views.Notes
             for (int i = startIndex - 1; i >= 0; i--)
             {
                 var item = items[i];
-                if (item is TextCompositeVM || item is HeaderCompositeVM || item is QuoteCompositeVM || item is TaskCompositeVM) return i;
+                if (item is TextCompositeVM || item is HeaderCompositeVM || item is QuoteCompositeVM || item is TaskCompositeVM || item is MarkerCompositeVM) return i;
             }
             return -1;
         }

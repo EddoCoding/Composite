@@ -95,6 +95,17 @@ namespace Composite.Common.Factories
                     };
                     compositesVM.Add(newRefCompositeVM);
                 }
+                else if (compositeVM is MarkerCompositeVM markerCompositeVM)
+                {
+                    var newMarkerCompositeVM = new MarkerCompositeVM()
+                    {
+                        Id = markerCompositeVM.Id,
+                        Tag = markerCompositeVM.Tag,
+                        Comment = markerCompositeVM.Comment,
+                        Text = markerCompositeVM.Text
+                    };
+                    compositesVM.Add(newMarkerCompositeVM);
+                }
             }
 
             return new HardNoteVM(tabService, noteService, hardNoteService, messenger)
