@@ -21,6 +21,7 @@
     <None Remove="Common\Images\comment.png" />
     <None Remove="Common\Images\composite.png" />
     <None Remove="Common\Images\deleteCategory.png" />
+    <None Remove="Common\Images\doc.png" />
     <None Remove="Common\Images\duplicate.png" />
     <None Remove="Common\Images\hardNoteImage.png" />
     <None Remove="Common\Images\header1.png" />
@@ -57,6 +58,7 @@
     <Resource Include="Common\Images\comment.png" />
     <Resource Include="Common\Images\composite.png" />
     <Resource Include="Common\Images\deleteCategory.png" />
+    <Resource Include="Common\Images\doc.png" />
     <Resource Include="Common\Images\duplicate.png" />
     <Resource Include="Common\Images\hardNoteImage.png" />
     <Resource Include="Common\Images\header1.png" />

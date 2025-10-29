@@ -129,6 +129,18 @@ namespace Composite.Common.Factories
                     };
                     compositesVM.Add(newCodeCompositeVM);
                 }
+                else if (compositeVM is DocCompositeVM docCompositeVM)
+                {
+                    var newDocCompositeVM = new DocCompositeVM()
+                    {
+                        Id = docCompositeVM.Id,
+                        Tag = docCompositeVM.Tag,
+                        Text = docCompositeVM.Text,
+                        Comment = docCompositeVM.Comment,
+                        Data = docCompositeVM.Data
+                    };
+                    compositesVM.Add(newDocCompositeVM);
+                }
             }
 
             return new HardNoteVM(tabService, noteService, hardNoteService, messenger)

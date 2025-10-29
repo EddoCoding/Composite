@@ -291,6 +291,14 @@ namespace Composite.ViewModels.Notes.HardNote
                     Composites.Insert(indexCode, codeComposite);
                     return codeComposite;
                 }
+                case "/doc":
+                {
+                    int indexDoc = Composites.IndexOf(compositeBaseVM);
+                    DeleteComposite(compositeBaseVM);
+                    var docComposite = new DocCompositeVM();
+                    Composites.Insert(indexDoc, docComposite);
+                    return docComposite;
+                }
 
                 default: return null;
             }
