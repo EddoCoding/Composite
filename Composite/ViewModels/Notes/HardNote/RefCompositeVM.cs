@@ -12,7 +12,6 @@ namespace Composite.ViewModels.Notes.HardNote
         readonly ITabService _tabService;
         readonly INoteService _noteService;
         readonly IHardNoteService _hardNoteService;
-        readonly INoteCommonService _noteCommonService;
         readonly IMessenger _messenger;
 
         public string ValueRef { get; set; } = string.Empty;
@@ -27,7 +26,6 @@ namespace Composite.ViewModels.Notes.HardNote
             _tabService = tabService;
             _noteService = noteService;
             _hardNoteService = hardNoteService;
-            _noteCommonService = new NoteCommonService(tabService, noteService, hardNoteService, messenger);
             _messenger = messenger;
 
             Id = Guid.NewGuid();
@@ -46,7 +44,7 @@ namespace Composite.ViewModels.Notes.HardNote
             if (IsNotesPopup == false) IsNotesPopup = true;
             else IsNotesPopup = false;
         }
-        [RelayCommand] async Task CheckValuRef(RefCompositeVM refComposite) => _noteCommonService.CheckValuRef(refComposite);
+        [RelayCommand] async Task CheckValuRef(RefCompositeVM refComposite) => _hardNoteService.CheckValuRef(refComposite);
         [RelayCommand] void SelectNote(NoteIdTitle noteIdTitle)
         {
             ValueRef = noteIdTitle.Id.ToString();

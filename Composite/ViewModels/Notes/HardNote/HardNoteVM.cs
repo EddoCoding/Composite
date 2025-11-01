@@ -259,9 +259,7 @@ namespace Composite.ViewModels.Notes.HardNote
                     DeleteComposite(compositeBaseVM);
                     var refComposite = new RefCompositeVM(_tabService, _noteService, _hardNoteService, _messenger);
                     Composites.Insert(indexRef, refComposite);
-                    var textComposite2 = new TextCompositeVM();
-                    Composites.Insert(indexRef + 1, textComposite2);
-                    return textComposite2;
+                    return refComposite;
                 }
                 case "/marker":
                 {
@@ -295,7 +293,7 @@ namespace Composite.ViewModels.Notes.HardNote
                 {
                     int indexDoc = Composites.IndexOf(compositeBaseVM);
                     DeleteComposite(compositeBaseVM);
-                    var docComposite = new DocCompositeVM();
+                    var docComposite = new DocCompositeVM(_hardNoteService);
                     Composites.Insert(indexDoc, docComposite);
                     return docComposite;
                 }

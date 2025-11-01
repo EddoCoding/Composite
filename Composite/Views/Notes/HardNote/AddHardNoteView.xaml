@@ -1344,7 +1344,7 @@
                      Text="{Binding HardNoteVM.Password}" HorizontalAlignment="Right" Visibility="{Binding PasswordVisible}"
                      property:PlaceHolder.PlaceHolder="Enter password" property:PlaceHolder.ShowAlways="True"/>
             
-            <Button Grid.Column="3" Content="Сохранить" Style="{StaticResource AddNoteButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right"
+            <Button Grid.Column="3" Content="Save" Style="{StaticResource AddNoteButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right"
                     Command="{Binding CheckNoteCommand}"/>
 
         </Grid>

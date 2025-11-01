@@ -468,7 +468,7 @@ namespace Composite.Common.Mappers
             }
             if (compositeBase.CompositeType == "DocComposite")
             {
-                return new DocCompositeVM()
+                return new DocCompositeVM(hardNoteService)
                 {
                     Id = Guid.Parse(compositeBase.Id),
                     Tag = compositeBase.Tag,

@@ -1,24 +1,34 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using Composite.Common.Factories;
 using Composite.Common.Mappers;
+using Composite.Common.Message.Notes;
 using Composite.Repositories;
 using Composite.Services.TabService;
 using Composite.ViewModels.Notes;
 using Composite.ViewModels.Notes.HardNote;
+using System.Diagnostics;
+using System.IO;
+using System.Windows.Forms;
 
 namespace Composite.Services
 {
     public class HardNoteService : IHardNoteService
     {
+        readonly ITabService _tabService;
+        readonly INoteService _noteService;
         readonly IHardNoteRepository _hardNoteRepository;
         readonly IHardNoteMap _hardNoteMap;
         readonly IHardNoteFactory _hardNoteFactory;
+        readonly IMessenger _messenger;
 
         public HardNoteService(ITabService tabService, INoteService noteService, IHardNoteRepository hardNoteRepository, IMessenger messenger)
         {
+            _tabService = tabService;
+            _noteService = noteService;
             _hardNoteRepository = hardNoteRepository;
             _hardNoteFactory = new HardNoteFactory(tabService, noteService, this, messenger);
             _hardNoteMap = new HardNoteMap(tabService, noteService, this, messenger);
+            _messenger = messenger;
         }
 
         public async Task<bool> AddHardNoteAsync(HardNoteVM hardNoteVM)
@@ -112,6 +122,89 @@ namespace Composite.Services
             catch (Exception)
             {
                 return null;
+            }
+        }
+
+        //Для ссылки
+        public async Task CheckValuRef(RefCompositeVM refComposite)
+        {
+            if (Guid.TryParse(refComposite.ValueRef, out Guid result)) OpenNote(result);
+            else OpenURL(refComposite.Text);
+        }
+        async Task OpenNote(Guid result)
+        {
+            var noteVM = await _noteService.GetNoteById(result);
+            if (noteVM != null)
+            {
+                if (_tabService.CreateTab<ChangeNoteViewModel>($"{noteVM.Title}")) _messenger.Send(new ChangeNoteMessage(noteVM));
+                return;
+            }
+
+            var hardNoteVM = await GetNoteById(result);
+            if (hardNoteVM != null)
+            {
+                if (_tabService.CreateTab<ChangeHardNoteViewModel>($"{hardNoteVM.Title}")) _messenger.Send(new ChangeNoteMessage(hardNoteVM));
+                return;
+            }
+        }
+        async Task OpenURL(string value)
+        {
+            if (Uri.TryCreate(value, UriKind.Absolute, out Uri uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps))
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = uriResult.AbsoluteUri,
+                    UseShellExecute = true
+                });
+            }
+        }
+
+        //Для документа
+        (string, byte[]) IHardNoteService.SelectDocument()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog()
+            {
+                Filter = "Office Documents|*.docx;*.xlsx;*.pptx;*.doc;*.xls;*.ppt|" +
+                         "Word Documents|*.docx;*.doc|" +
+                         "Excel Documents|*.xlsx;*.xls|" +
+                         "PowerPoint Documents|*.pptx;*.ppt|" +
+                         "All files (*.*)|*.*",
+                Title = "Select Office Document"
+            };
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string Text = Path.GetFileName(openFileDialog.FileName);
+                byte[] Data = File.ReadAllBytes(openFileDialog.FileName);
+
+                return (Text, Data);
+            }
+
+            return (string.Empty, Array.Empty<byte>());
+        }
+        public async Task<byte[]?> OpenDocument(string text, byte[] data)
+        {
+            string extension = Path.GetExtension(text);
+            string tempFilePath = Path.Combine(Path.GetTempPath(), $"temp_{Guid.NewGuid()}{extension}");
+
+            try
+            {
+                await File.WriteAllBytesAsync(tempFilePath, data);
+
+                var processInfo = new ProcessStartInfo
+                {
+                    FileName = tempFilePath,
+                    UseShellExecute = true
+                };
+
+                using var process = Process.Start(processInfo);
+                if (process != null) await process.WaitForExitAsync();
+
+                return await File.ReadAllBytesAsync(tempFilePath);
+            }
+            finally
+            {
+                if (File.Exists(tempFilePath)) File.Delete(tempFilePath);
             }
         }
 

@@ -299,7 +299,7 @@
                      Text="{Binding NoteVM.Password}" Visibility="{Binding PasswordVisible}"
                      property:PlaceHolder.PlaceHolder="Enter password" property:PlaceHolder.ShowAlways="True"/>
 
-            <Button Grid.Column="5" Content="Сохранить" Style="{StaticResource AddNoteButton}" Command="{Binding CheckNoteCommand}"/>
+            <Button Grid.Column="5" Content="Save" Style="{StaticResource AddNoteButton}" Command="{Binding CheckNoteCommand}"/>
             
         </Grid>
 

@@ -131,7 +131,7 @@ namespace Composite.Common.Factories
                 }
                 else if (compositeVM is DocCompositeVM docCompositeVM)
                 {
-                    var newDocCompositeVM = new DocCompositeVM()
+                    var newDocCompositeVM = new DocCompositeVM(hardNoteService)
                     {
                         Id = docCompositeVM.Id,
                         Tag = docCompositeVM.Tag,
