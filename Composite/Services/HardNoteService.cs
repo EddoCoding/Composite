@@ -6,8 +6,10 @@ using Composite.Repositories;
 using Composite.Services.TabService;
 using Composite.ViewModels.Notes;
 using Composite.ViewModels.Notes.HardNote;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices.Marshalling;
 using System.Windows.Forms;
 
 namespace Composite.Services
@@ -151,11 +153,18 @@ namespace Composite.Services
         {
             if (Uri.TryCreate(value, UriKind.Absolute, out Uri uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps))
             {
-                Process.Start(new ProcessStartInfo
+                try
                 {
-                    FileName = uriResult.AbsoluteUri,
-                    UseShellExecute = true
-                });
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = uriResult.AbsoluteUri,
+                        UseShellExecute = true
+                    });
+                }
+                catch (Win32Exception)
+                {
+                    MessageBox.Show($"Не удалось открыть URL.");
+                }
             }
         }
 
@@ -174,10 +183,21 @@ namespace Composite.Services
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                string Text = Path.GetFileName(openFileDialog.FileName);
-                byte[] Data = File.ReadAllBytes(openFileDialog.FileName);
+                try
+                {
+                    string Text = Path.GetFileName(openFileDialog.FileName);
+                    byte[] Data = File.ReadAllBytes(openFileDialog.FileName);
 
-                return (Text, Data);
+                    return (Text, Data);
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    MessageBox.Show("У Вас нет прав на чтение этого документа.");
+                }
+                catch (FileNotFoundException)
+                {
+                    MessageBox.Show("Ошибка доступа.");
+                }
             }
 
             return (string.Empty, Array.Empty<byte>());
@@ -201,6 +221,26 @@ namespace Composite.Services
                 if (process != null) await process.WaitForExitAsync();
 
                 return await File.ReadAllBytesAsync(tempFilePath);
+            }
+            catch(FileNotFoundException)
+            {
+                MessageBox.Show("Ошибка доступа.");
+                return null;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("У Вас нет прав на чтение этого документа.");
+                return null;
+            }
+            catch (Win32Exception)
+            {
+                MessageBox.Show("Ошибка открытия документа.");
+                return null;
+            }
+            catch (InvalidOperationException)
+            {
+                MessageBox.Show("Ошибка открытия документа.");
+                return null;
             }
             finally
             {
