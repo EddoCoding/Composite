@@ -327,6 +327,7 @@ namespace Composite.ViewModels.Notes.HardNote
             bool isNumeric = composite is NumericCompositeVM;
 
             Composites.Remove(composite);
+            composite.Dispose();
             IsOpenPopup = false;
 
             if (isNumeric && index >= 0 && Composites.Count > 0)

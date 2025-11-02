@@ -4,7 +4,7 @@ using System.Windows.Media.Imaging;
 
 namespace Composite.ViewModels.Notes.HardNote
 {
-    public partial class ImageCompositeVM : CompositeBaseVM
+    public partial class ImageCompositeVM : CompositeBaseVM, IDisposable
     {
 
         BitmapImage _imageSource;
@@ -71,6 +71,14 @@ namespace Composite.ViewModels.Notes.HardNote
 
         void CalculateAspectRatio()
         {
+            if (ImageSource == null)
+            {
+                OriginalWidth = 0;
+                OriginalHeight = 0;
+                AspectRatio = 0;
+                return;
+            }
+
             OriginalWidth = ImageSource.PixelWidth;
             OriginalHeight = ImageSource.PixelHeight;
             AspectRatio = OriginalWidth / OriginalHeight;
@@ -78,5 +86,26 @@ namespace Composite.ViewModels.Notes.HardNote
 
         public override object Clone() => new ImageCompositeVM() { Id = Guid.NewGuid(), Tag = Tag, Comment = Comment, ImageSource = ImageSource, OriginalHeight = OriginalHeight,
             OriginalWidth = OriginalWidth, HorizontalImage = HorizontalImage };
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                Tag = string.Empty;
+                Comment = string.Empty;
+
+                if (ImageSource != null)
+                {
+                    ImageSource.StreamSource?.Dispose();
+                    ImageSource = null;
+                }
+
+                AspectRatio = 0;
+                OriginalWidth = 0;
+                OriginalHeight = 0;
+                HorizontalImage = string.Empty;
+            }
+            base.Dispose(disposing);
+        }
     }
 }

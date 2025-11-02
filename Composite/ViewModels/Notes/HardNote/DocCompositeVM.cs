@@ -1,11 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Composite.Services;
-using System.Windows.Forms;
 
 namespace Composite.ViewModels.Notes.HardNote
 {
-    public partial class DocCompositeVM : CompositeBaseVM
+    public partial class DocCompositeVM : CompositeBaseVM, IDisposable
     {
         readonly IHardNoteService _hardNoteService;
 
@@ -30,17 +29,22 @@ namespace Composite.ViewModels.Notes.HardNote
         {
             if (string.IsNullOrEmpty(Text)) return;
 
-            try
-            {
-                var result = await _hardNoteService.OpenDocument(Text, Data);
-                if (result != null) Data = result;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка");
-            }
+            var result = await _hardNoteService.OpenDocument(Text, Data);
+            if (result != null) Data = result;
         }
 
         public override object Clone() => new DocCompositeVM(_hardNoteService) { Id = Guid.NewGuid(), Tag = Tag, Comment = Comment, Text = Text };
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                Tag = string.Empty;
+                Comment = string.Empty;
+                Text = string.Empty;
+                Data = Array.Empty<byte>();
+            }
+            base.Dispose(disposing);
+        }
     }
 }

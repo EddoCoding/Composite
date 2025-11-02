@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 
 namespace Composite.ViewModels.Notes.HardNote
 {
-    public partial class RefCompositeVM : CompositeBaseVM
+    public partial class RefCompositeVM : CompositeBaseVM, IDisposable
     {
         readonly ITabService _tabService;
         readonly INoteService _noteService;
@@ -19,7 +19,7 @@ namespace Composite.ViewModels.Notes.HardNote
         [ObservableProperty] bool _isRefPopup;
         [ObservableProperty] bool _isNotesPopup;
 
-        public ObservableCollection<NoteIdTitle> Notes { get; } = new();
+        public ObservableCollection<NoteIdTitle> Notes { get; set; } = new();
 
         public RefCompositeVM(ITabService tabService, INoteService noteService, IHardNoteService hardNoteService, IMessenger messenger)
         {
@@ -68,5 +68,21 @@ namespace Composite.ViewModels.Notes.HardNote
             ValueRef = ValueRef, 
             Text = Text 
         };
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                Tag = string.Empty;
+                Comment = string.Empty;
+                ValueRef = string.Empty;
+                Text = string.Empty;
+                IsRefPopup = false;
+                IsNotesPopup = false;
+                Notes.Clear();
+                Notes = null;
+            }
+            base.Dispose(disposing);
+        }
     }
 }

@@ -9,7 +9,6 @@ using Composite.ViewModels.Notes.HardNote;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Runtime.InteropServices.Marshalling;
 using System.Windows.Forms;
 
 namespace Composite.Services
