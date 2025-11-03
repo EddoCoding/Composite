@@ -146,7 +146,7 @@ namespace Composite.Common.Mappers
                     Tag = taskCompositeVM.Tag,
                     Comment= taskCompositeVM.Comment,
                     Completed = taskCompositeVM.IsCompleted? 1 : 0,
-                    TaskText = taskCompositeVM.Text,
+                    Text = taskCompositeVM.Text,
                     HardNoteId = id.ToString()
                 };
             }
@@ -157,7 +157,7 @@ namespace Composite.Common.Mappers
                     Id = imageCompositeVM.Id.ToString(),
                     Tag = imageCompositeVM.Tag,
                     Comment = imageCompositeVM.Comment,
-                    DataImage = BitmapImageToByteArray(imageCompositeVM.ImageSource),
+                    Data = BitmapImageToByteArray(imageCompositeVM.ImageSource),
                     HorizontalImage = imageCompositeVM.HorizontalImage,
                     HardNoteId = id.ToString()
                 };
@@ -216,7 +216,7 @@ namespace Composite.Common.Mappers
                     Tag = docCompositeVM.Tag,
                     Comment = docCompositeVM.Comment,
                     Text = docCompositeVM.Text,
-                    DataImage = docCompositeVM.Data,
+                    Data = docCompositeVM.Data,
                     HardNoteId = id.ToString()
                 };
             }
@@ -278,7 +278,7 @@ namespace Composite.Common.Mappers
                     Tag = taskCompositeVM.Tag,
                     Comment = taskCompositeVM.Comment,
                     Completed = taskCompositeVM.IsCompleted ? 1 : 0,
-                    TaskText = taskCompositeVM.Text,
+                    Text = taskCompositeVM.Text,
                     HardNoteId = id.ToString()
                 };
             }
@@ -289,7 +289,7 @@ namespace Composite.Common.Mappers
                     Id = Guid.NewGuid().ToString(),
                     Tag = imageCompositeVM.Tag,
                     Comment = imageCompositeVM.Comment,
-                    DataImage = BitmapImageToByteArray(imageCompositeVM.ImageSource),
+                    Data = BitmapImageToByteArray(imageCompositeVM.ImageSource),
                     HorizontalImage = imageCompositeVM.HorizontalImage,
                     HardNoteId = id.ToString()
                 };
@@ -348,7 +348,7 @@ namespace Composite.Common.Mappers
                     Tag = docCompositeVM.Tag,
                     Comment = docCompositeVM.Comment,
                     Text = docCompositeVM.Text,
-                    DataImage = docCompositeVM.Data,
+                    Data = docCompositeVM.Data,
                     HardNoteId = id.ToString()
                 };
             }
@@ -406,12 +406,12 @@ namespace Composite.Common.Mappers
                     Tag = compositeBase.Tag,
                     Comment = compositeBase.Comment,
                     IsCompleted = (compositeBase.Completed == 1) ? true : false,
-                    Text = compositeBase.TaskText
+                    Text = compositeBase.Text
                 };
             }
             if (compositeBase.CompositeType == "ImageComposite")
             {
-                BitmapImage bitmapImage = ByteArrayToBitmapImage(compositeBase.DataImage);
+                BitmapImage bitmapImage = ByteArrayToBitmapImage(compositeBase.Data);
 
                 return new ImageCompositeVM()
                 {
@@ -474,7 +474,7 @@ namespace Composite.Common.Mappers
                     Tag = compositeBase.Tag,
                     Comment = compositeBase.Comment,
                     Text = compositeBase.Text,
-                    Data = compositeBase.DataImage
+                    Data = compositeBase.Data
                 };
             }
 

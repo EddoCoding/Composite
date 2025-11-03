@@ -96,7 +96,7 @@ namespace Composite.Repositories
                                ((TaskComposite)x.Composite).Id,
                                ((TaskComposite)x.Composite).Tag,
                                ((TaskComposite)x.Composite).Comment,
-                               ((TaskComposite)x.Composite).TaskText,
+                               ((TaskComposite)x.Composite).Text,
                                ((TaskComposite)x.Composite).Completed,
                                ((TaskComposite)x.Composite).HardNoteId,
                                ((TaskComposite)x.Composite).CompositeType,
@@ -105,8 +105,8 @@ namespace Composite.Repositories
                            .ToList();
                         if (taskComposites.Any())
                         {
-                            var queryTasks = @"Insert Into Composites(Id, Tag, Comment, TaskText, Completed, HardNoteId, CompositeType, OrderIndex) 
-                                   Values (@Id, @Tag, @Comment, @TaskText, @Completed, @HardNoteId, @CompositeType, @OrderIndex)";
+                            var queryTasks = @"Insert Into Composites(Id, Tag, Comment, Text, Completed, HardNoteId, CompositeType, OrderIndex) 
+                                   Values (@Id, @Tag, @Comment, @Text, @Completed, @HardNoteId, @CompositeType, @OrderIndex)";
                             await connection.ExecuteAsync(queryTasks, taskComposites, transaction);
                         }
 
@@ -136,7 +136,7 @@ namespace Composite.Repositories
                                ((ImageComposite)x.Composite).Id,
                                ((ImageComposite)x.Composite).Tag,
                                ((ImageComposite)x.Composite).Comment,
-                               ((ImageComposite)x.Composite).DataImage,
+                               ((ImageComposite)x.Composite).Data,
                                ((ImageComposite)x.Composite).HorizontalImage,
                                ((ImageComposite)x.Composite).HardNoteId,
                                ((ImageComposite)x.Composite).CompositeType,
@@ -145,8 +145,8 @@ namespace Composite.Repositories
                            .ToList();
                         if (imageComposites.Any())
                         {
-                            var queryImages = @"Insert Into Composites(Id, Tag, Comment, DataImage, HorizontalImage, HardNoteId, CompositeType, OrderIndex) 
-                                   Values (@Id, @Tag, @Comment, @DataImage, @HorizontalImage, @HardNoteId, @CompositeType, @OrderIndex)";
+                            var queryImages = @"Insert Into Composites(Id, Tag, Comment, Data, HorizontalImage, HardNoteId, CompositeType, OrderIndex) 
+                                   Values (@Id, @Tag, @Comment, @Data, @HorizontalImage, @HardNoteId, @CompositeType, @OrderIndex)";
                             await connection.ExecuteAsync(queryImages, imageComposites, transaction);
                         }
 
@@ -240,7 +240,7 @@ namespace Composite.Repositories
                                ((DocComposite)x.Composite).Tag,
                                ((DocComposite)x.Composite).Comment,
                                ((DocComposite)x.Composite).Text,
-                               ((DocComposite)x.Composite).DataImage,
+                               ((DocComposite)x.Composite).Data,
                                ((DocComposite)x.Composite).HardNoteId,
                                ((DocComposite)x.Composite).CompositeType,
                                x.OrderIndex
@@ -248,8 +248,8 @@ namespace Composite.Repositories
                            .ToList();
                         if (docComposites.Any())
                         {
-                            var queryDocs = @"Insert Into Composites(Id, Tag, Comment, Text, DataImage, HardNoteId, CompositeType, OrderIndex) 
-                                   Values (@Id, @Tag, @Comment, @Text, @DataImage, @HardNoteId, @CompositeType, @OrderIndex)";
+                            var queryDocs = @"Insert Into Composites(Id, Tag, Comment, Text, Data, HardNoteId, CompositeType, OrderIndex) 
+                                   Values (@Id, @Tag, @Comment, @Text, @Data, @HardNoteId, @CompositeType, @OrderIndex)";
                             await connection.ExecuteAsync(queryDocs, docComposites, transaction);
                         }
                     }
@@ -287,8 +287,8 @@ namespace Composite.Repositories
 
                     if (hardNote.Composites?.Count > 0)
                     {
-                        var queryInsertComposites = @"Insert Into Composites (Id, Tag, Comment, Text, Header, FontWeightHeader, FontSizeHeader, Quote, TaskText, Completed, DataImage, HorizontalImage, ValueRef, Number, HardNoteId, CompositeType, OrderIndex)
-                                                      Values (@Id, @Tag, @Comment, @Text, @Header, @FontWeightHeader, @FontSizeHeader, @Quote, @TaskText, @Completed, @DataImage, @HorizontalImage, @ValueRef, @Number, @HardNoteId, @CompositeType, @OrderIndex)";
+                        var queryInsertComposites = @"Insert Into Composites (Id, Tag, Comment, Text, Header, FontWeightHeader, FontSizeHeader, Quote, Completed, Data, HorizontalImage, ValueRef, Number, HardNoteId, CompositeType, OrderIndex)
+                                                      Values (@Id, @Tag, @Comment, @Text, @Header, @FontWeightHeader, @FontSizeHeader, @Quote, @Completed, @Data, @HorizontalImage, @ValueRef, @Number, @HardNoteId, @CompositeType, @OrderIndex)";
 
                         var compositeData = hardNote.Composites.Select((c, index) => new
                         {
@@ -300,9 +300,8 @@ namespace Composite.Repositories
                             FontWeightHeader = c.FontWeightHeader,
                             FontSizeHeader = c.FontSizeHeader,
                             Quote = c.Quote,
-                            TaskText = c.TaskText,
                             Completed = c.Completed,
-                            DataImage = c.DataImage,
+                            Data = c.Data,
                             HorizontalImage = c.HorizontalImage,
                             ValueRef = c.ValueRef,
                             Number = c.Number,

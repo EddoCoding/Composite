@@ -22,15 +22,22 @@ namespace Composite.ViewModels.Notes.HardNote
         {
             var tuple = _hardNoteService.SelectDocument();
 
-            Text = tuple.Item1;
-            Data = tuple.Item2;
+            if(tuple.Item1 != string.Empty)
+            {
+                Text = tuple.Item1;
+                Data = tuple.Item2;
+            }
         }
         [RelayCommand] async Task OpenDocument()
         {
             if (string.IsNullOrEmpty(Text)) return;
 
+            IsLoading = true;
+
             var result = await _hardNoteService.OpenDocument(Text, Data);
             if (result != null) Data = result;
+
+            IsLoading = false;
         }
 
         public override object Clone() => new DocCompositeVM(_hardNoteService) { Id = Guid.NewGuid(), Tag = Tag, Comment = Comment, Text = Text };
@@ -46,5 +53,7 @@ namespace Composite.ViewModels.Notes.HardNote
             }
             base.Dispose(disposing);
         }
+
+        [ObservableProperty] bool _isLoading;
     }
 }

@@ -280,12 +280,14 @@ namespace Composite.ViewModels
                     _messenger.Send(new RefMessage(noteVM.Id));
                 }
             }
-            if (noteVM is HardNoteVM)
+            if (noteVM is HardNoteVM note)
             {
                 if (await _hardNoteService.DeleteHardNoteAsync(noteVM.Id))
                 {
                     _allNotes.Remove(noteVM);
                     Notes.Remove(noteVM);
+
+                    note.Dispose();
 
                     _messenger.Send(new RefMessage(noteVM.Id));
                 }

@@ -13,11 +13,9 @@
         public double FontSizeHeader { get; set; }
 
         public string Quote { get; set; } = string.Empty;
-
-        public string TaskText { get; set; } = string.Empty;
         public int Completed { get; set; }
 
-        public byte[] DataImage { get; set; }
+        public byte[] Data { get; set; }
         public string HorizontalImage { get; set; } = string.Empty;
 
         public string ValueRef { get; set; } = string.Empty;

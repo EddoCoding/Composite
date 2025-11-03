@@ -1192,6 +1192,7 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="18"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="20"/>
                     <ColumnDefinition Width="Auto"/>
@@ -1231,7 +1232,25 @@
                     </Button.Style>
                 </Button>
 
-                <Button Grid.Column="4" Content="X" Cursor="Hand" VerticalAlignment="Top" Margin="10,10,0,0" FontSize="14"
+                <Grid Grid.Column="4" Width="18" Height="18" Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Left">
+                    <Ellipse Stroke="Gray" StrokeThickness="2" Opacity="0.3"/>
+                    <Ellipse Stroke="#2196F3" StrokeThickness="2" StrokeDashArray="12,8" RenderTransformOrigin="0.5,0.5">
+                        <Ellipse.RenderTransform>
+                            <RotateTransform x:Name="SpinnerRotate" Angle="0"/>
+                        </Ellipse.RenderTransform>
+                        <Ellipse.Triggers>
+                            <EventTrigger RoutedEvent="Loaded">
+                                <BeginStoryboard>
+                                    <Storyboard RepeatBehavior="Forever">
+                                        <DoubleAnimation Storyboard.TargetName="SpinnerRotate" Storyboard.TargetProperty="Angle" From="0" To="360" Duration="0:0:1"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Ellipse.Triggers>
+                    </Ellipse>
+                </Grid>
+
+                <Button Grid.Column="5" Content="X" Cursor="Hand" VerticalAlignment="Top" Margin="10,10,0,0" FontSize="14" HorizontalAlignment="Right"
                 Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
                 Command="{Binding DataContext.HardNoteVM.DeleteCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
                 CommandParameter="{Binding}">
@@ -1253,7 +1272,7 @@
                     </Button.Style>
                 </Button>
 
-                <Grid Grid.Column="5" Margin="5,9,5,0" VerticalAlignment="Top">
+                <Grid Grid.Column="6" Margin="5,9,5,0" VerticalAlignment="Top">
 
                     <TextBox Style="{StaticResource Text}" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" Foreground="Gray" FontSize="12"
                      Width="150" VerticalAlignment="Center" Visibility="{Binding IsEditing, Converter={StaticResource BoolToVis}}"
@@ -1412,6 +1431,10 @@
             </Border>
         </Popup>
 
+        <Popup IsOpen="{Binding HardNoteVM.IsOpenSnippetsPopup, Mode=TwoWay}" AllowsTransparency="True" StaysOpen="False" Placement="Center">
+            <Border Height="200" Width="200" Background="Red"/>
+        </Popup>
+        
     </Grid>
 
 </UserControl>

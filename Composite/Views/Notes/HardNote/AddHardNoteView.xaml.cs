@@ -104,8 +104,7 @@ namespace Composite.Views.Notes
             {
                 if (DataContext is AddHardNoteViewModel viewModel)
                 {
-                    var newItem = new TextCompositeVM { Text = string.Empty };
-                    viewModel.HardNoteVM.InsertComposite(0, newItem);
+                    var newItem = viewModel.HardNoteVM.InsertComposite(0);
                     Dispatcher.BeginInvoke(new Action(() =>
                     {
                         var container = listComposite.ItemContainerGenerator.ContainerFromItem(newItem) as ListViewItem;
