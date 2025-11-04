@@ -67,6 +67,34 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="SnippetButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="8">
+                            <Grid Margin="3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Image Grid.Column="0" Height="18" Width="18" Source="{Binding Tag, RelativeSource={RelativeSource AncestorType=Button}}"
+                               RenderOptions.BitmapScalingMode="Fant"/>
+                                <ContentPresenter Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="2" Text="{Binding Path=(property:ButtonHelper.AdditionalText), RelativeSource={RelativeSource AncestorType=Button}}"
+                                   VerticalAlignment="Center" Foreground="Gray"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="WhiteSmoke"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
         <Style x:Key="TitleTextBox" TargetType="TextBox">
             <Setter Property="FontSize" Value="26"/>
@@ -345,6 +373,139 @@
                     </Button>
 
                 </Grid>
+
+                <Popup IsOpen="{Binding IsOpenSnippetsPopup, Mode=TwoWay}" PlacementTarget="{Binding ElementName=textBox}" AllowsTransparency="True" 
+                       StaysOpen="False" Placement="Bottom">
+                    <Border Width="200" CornerRadius="8" Background="White" Margin="3">
+                        <Border.Effect>
+                            <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
+                        </Border.Effect>
+
+                        <StackPanel Margin="5">
+                            <Button Style="{DynamicResource SnippetButton}" Content="Header1" Tag="/Common/Images/header1.png" property:ButtonHelper.AdditionalText="/h1"
+                                    Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
+                                <Button.CommandParameter>
+                                    <helper:ParametersCompositeString Value="/h1">
+                                        <helper:ParametersCompositeString.CompositeBaseVM>
+                                            <Binding/>
+                                        </helper:ParametersCompositeString.CompositeBaseVM>
+                                    </helper:ParametersCompositeString>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button Style="{DynamicResource SnippetButton}" Content="Header2" Tag="/Common/Images/header2.png" property:ButtonHelper.AdditionalText="/h2"
+                                    Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
+                                <Button.CommandParameter>
+                                    <helper:ParametersCompositeString Value="/h2">
+                                        <helper:ParametersCompositeString.CompositeBaseVM>
+                                            <Binding/>
+                                        </helper:ParametersCompositeString.CompositeBaseVM>
+                                    </helper:ParametersCompositeString>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button Style="{DynamicResource SnippetButton}" Content="Header3" Tag="/Common/Images/header3.png" property:ButtonHelper.AdditionalText="/h3"
+                                    Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
+                                <Button.CommandParameter>
+                                    <helper:ParametersCompositeString Value="/h3">
+                                        <helper:ParametersCompositeString.CompositeBaseVM>
+                                            <Binding/>
+                                        </helper:ParametersCompositeString.CompositeBaseVM>
+                                    </helper:ParametersCompositeString>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button Style="{DynamicResource SnippetButton}" Content="Quote" Tag="/Common/Images/quote.png" property:ButtonHelper.AdditionalText="/quote"
+                                    Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
+                                <Button.CommandParameter>
+                                    <helper:ParametersCompositeString Value="/quote">
+                                        <helper:ParametersCompositeString.CompositeBaseVM>
+                                            <Binding/>
+                                        </helper:ParametersCompositeString.CompositeBaseVM>
+                                    </helper:ParametersCompositeString>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button Style="{DynamicResource SnippetButton}" Content="Line" Tag="/Common/Images/line.png" property:ButtonHelper.AdditionalText="/line"
+                                    Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
+                                <Button.CommandParameter>
+                                    <helper:ParametersCompositeString Value="/line">
+                                        <helper:ParametersCompositeString.CompositeBaseVM>
+                                            <Binding/>
+                                        </helper:ParametersCompositeString.CompositeBaseVM>
+                                    </helper:ParametersCompositeString>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button Style="{DynamicResource SnippetButton}" Content="Task" Tag="/Common/Images/task.png" property:ButtonHelper.AdditionalText="/task"
+                                    Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
+                                <Button.CommandParameter>
+                                    <helper:ParametersCompositeString Value="/task">
+                                        <helper:ParametersCompositeString.CompositeBaseVM>
+                                            <Binding/>
+                                        </helper:ParametersCompositeString.CompositeBaseVM>
+                                    </helper:ParametersCompositeString>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button Style="{DynamicResource SnippetButton}" Content="Image" Tag="/Common/Images/image.png" property:ButtonHelper.AdditionalText="/img"
+                                    Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
+                                <Button.CommandParameter>
+                                    <helper:ParametersCompositeString Value="/img">
+                                        <helper:ParametersCompositeString.CompositeBaseVM>
+                                            <Binding/>
+                                        </helper:ParametersCompositeString.CompositeBaseVM>
+                                    </helper:ParametersCompositeString>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button Style="{DynamicResource SnippetButton}" Content="Ref" Tag="/Common/Images/ref.png" property:ButtonHelper.AdditionalText="/ref"
+                                    Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
+                                <Button.CommandParameter>
+                                    <helper:ParametersCompositeString Value="/ref">
+                                        <helper:ParametersCompositeString.CompositeBaseVM>
+                                            <Binding/>
+                                        </helper:ParametersCompositeString.CompositeBaseVM>
+                                    </helper:ParametersCompositeString>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button Style="{DynamicResource SnippetButton}" Content="Marker" Tag="/Common/Images/marker.png" property:ButtonHelper.AdditionalText="/marker"
+                                    Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
+                                <Button.CommandParameter>
+                                    <helper:ParametersCompositeString Value="/marker">
+                                        <helper:ParametersCompositeString.CompositeBaseVM>
+                                            <Binding/>
+                                        </helper:ParametersCompositeString.CompositeBaseVM>
+                                    </helper:ParametersCompositeString>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button Style="{DynamicResource SnippetButton}" Content="Numeric" Tag="/Common/Images/numeric.png" property:ButtonHelper.AdditionalText="/num"
+                                    Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
+                                <Button.CommandParameter>
+                                    <helper:ParametersCompositeString Value="/num">
+                                        <helper:ParametersCompositeString.CompositeBaseVM>
+                                            <Binding/>
+                                        </helper:ParametersCompositeString.CompositeBaseVM>
+                                    </helper:ParametersCompositeString>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button Style="{DynamicResource SnippetButton}" Content="Code" Tag="/Common/Images/code.png" property:ButtonHelper.AdditionalText="/code"
+                                    Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
+                                <Button.CommandParameter>
+                                    <helper:ParametersCompositeString Value="/code">
+                                        <helper:ParametersCompositeString.CompositeBaseVM>
+                                            <Binding/>
+                                        </helper:ParametersCompositeString.CompositeBaseVM>
+                                    </helper:ParametersCompositeString>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button Style="{DynamicResource SnippetButton}" Content="Doc" Tag="/Common/Images/doc.png" property:ButtonHelper.AdditionalText="/doc"
+                                    Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
+                                <Button.CommandParameter>
+                                    <helper:ParametersCompositeString Value="/doc">
+                                        <helper:ParametersCompositeString.CompositeBaseVM>
+                                            <Binding/>
+                                        </helper:ParametersCompositeString.CompositeBaseVM>
+                                    </helper:ParametersCompositeString>
+                                </Button.CommandParameter>
+                            </Button>
+                        </StackPanel>
+
+                    </Border>
+                </Popup>
 
             </Grid>
         </DataTemplate>
@@ -1429,10 +1590,6 @@
                     </ListView.ItemContainerStyle>
                 </ListView>
             </Border>
-        </Popup>
-
-        <Popup IsOpen="{Binding HardNoteVM.IsOpenSnippetsPopup, Mode=TwoWay}" AllowsTransparency="True" StaysOpen="False" Placement="Center">
-            <Border Height="200" Width="200" Background="Red"/>
         </Popup>
 
     </Grid>

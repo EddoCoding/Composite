@@ -105,7 +105,7 @@
                                            Source="{Binding Tag, RelativeSource={RelativeSource AncestorType=Button}}"
                                            Margin="3,1,0,1"/>
 
-                                    <TextBlock Text="{Binding Content, RelativeSource={RelativeSource AncestorType=Button}}" Margin="10,1,0,1" VerticalAlignment="Center"
+                                    <TextBlock Text="{Binding Content, RelativeSource={RelativeSource AncestorType=Button}}" Margin="10,1,5,1" VerticalAlignment="Center"
                                                FontSize="{Binding FontSize, RelativeSource={RelativeSource AncestorType=Button}}"/>
 
                                 </StackPanel>

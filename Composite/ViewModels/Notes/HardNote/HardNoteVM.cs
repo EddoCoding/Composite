@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Composite.Common.Helpers;
 using Composite.Common.Message.Notes;
 using Composite.Services;
 using Composite.Services.TabService;
@@ -46,7 +47,6 @@ namespace Composite.ViewModels.Notes.HardNote
         public void AddTextCompositeVM()
         {
             var textComposite = new TextCompositeVM();
-            textComposite.TextStartsWithSlashChanged += OnTextStartsWithSlashChanged;
             Composites.Add(textComposite);
         }
         public CompositeBaseVM AddComposite(CompositeBaseVM current, int caretIndex)
@@ -54,7 +54,6 @@ namespace Composite.ViewModels.Notes.HardNote
             if (current is TextCompositeVM textComposite)
             {
                 var newTextComposite = new TextCompositeVM { Text = string.Empty };
-                newTextComposite.TextStartsWithSlashChanged += OnTextStartsWithSlashChanged;
                 int index = Composites.IndexOf(textComposite);
                 //Если каретка в начале
                 if (caretIndex == 0)
@@ -98,7 +97,6 @@ namespace Composite.ViewModels.Notes.HardNote
             {
                 int index = Composites.IndexOf(headerComposite);
                 var newTextComposite = new TextCompositeVM { Text = string.Empty };
-                newTextComposite.TextStartsWithSlashChanged += OnTextStartsWithSlashChanged;
                 Composites.Insert(index + 1, newTextComposite);
                 return newTextComposite;
             }
@@ -106,7 +104,6 @@ namespace Composite.ViewModels.Notes.HardNote
             {
                 int index = Composites.IndexOf(quoteComposite);
                 var newTextComposite = new TextCompositeVM { Text = string.Empty };
-                newTextComposite.TextStartsWithSlashChanged += OnTextStartsWithSlashChanged;
                 Composites.Insert(index + 1, newTextComposite);
                 return newTextComposite;
             }
@@ -122,7 +119,6 @@ namespace Composite.ViewModels.Notes.HardNote
                 else
                 {
                     var textCompositeVM = new TextCompositeVM();
-                    textCompositeVM.TextStartsWithSlashChanged += OnTextStartsWithSlashChanged;
                     int index = Composites.IndexOf(taskComposite);
                     DeleteComposite(current);
                     Composites.Insert(index, textCompositeVM);
@@ -141,7 +137,6 @@ namespace Composite.ViewModels.Notes.HardNote
                 else
                 {
                     var textCompositeVM = new TextCompositeVM();
-                    textCompositeVM.TextStartsWithSlashChanged += OnTextStartsWithSlashChanged;
                     int index = Composites.IndexOf(markerComposite);
                     DeleteComposite(current);
                     Composites.Insert(index, textCompositeVM);
@@ -161,7 +156,6 @@ namespace Composite.ViewModels.Notes.HardNote
                 else
                 {
                     var textCompositeVM = new TextCompositeVM();
-                    textCompositeVM.TextStartsWithSlashChanged += OnTextStartsWithSlashChanged;
                     int index = Composites.IndexOf(numericComposite);
                     DeleteComposite(current);
                     Composites.Insert(index, textCompositeVM);
@@ -171,25 +165,13 @@ namespace Composite.ViewModels.Notes.HardNote
 
             return null;
         }
-        public CompositeBaseVM CreateComposite(string value, CompositeBaseVM compositeBaseVM, int currentIndex)
+        public CompositeBaseVM CreateComposite(string value, CompositeBaseVM compositeBaseVM)
         {
             string Value = value.Trim().ToLower();
             switch (Value)
             {
-                case "/header":
-                    int index = Composites.IndexOf(compositeBaseVM);
-                    UnsubscribeFromTextComposite(compositeBaseVM);
-                    DeleteComposite(compositeBaseVM);
-                    var headerComposite = new HeaderCompositeVM
-                    {
-                        FontWeight = "Bold",
-                        FontSize = 24
-                    };
-                    Composites.Insert(index, headerComposite);
-                    return headerComposite;
-                case "/header1":
+                case "/h1":
                     int index1 = Composites.IndexOf(compositeBaseVM);
-                    UnsubscribeFromTextComposite(compositeBaseVM);
                     DeleteComposite(compositeBaseVM);
                     var headerComposite1 = new HeaderCompositeVM
                     {
@@ -198,9 +180,8 @@ namespace Composite.ViewModels.Notes.HardNote
                     };
                     Composites.Insert(index1, headerComposite1);
                     return headerComposite1;
-                case "/header2":
+                case "/h2":
                     int index2 = Composites.IndexOf(compositeBaseVM);
-                    UnsubscribeFromTextComposite(compositeBaseVM);
                     DeleteComposite(compositeBaseVM);
                     var headerComposite2 = new HeaderCompositeVM
                     {
@@ -209,9 +190,8 @@ namespace Composite.ViewModels.Notes.HardNote
                     };
                     Composites.Insert(index2, headerComposite2);
                     return headerComposite2;
-                case "/header3":
+                case "/h3":
                     int index3 = Composites.IndexOf(compositeBaseVM);
-                    UnsubscribeFromTextComposite(compositeBaseVM);
                     DeleteComposite(compositeBaseVM);
                     var headerComposite3 = new HeaderCompositeVM
                     {
@@ -222,31 +202,27 @@ namespace Composite.ViewModels.Notes.HardNote
                     return headerComposite3;
                 case "/quote":
                     int indexQuote = Composites.IndexOf(compositeBaseVM);
-                    UnsubscribeFromTextComposite(compositeBaseVM);
                     DeleteComposite(compositeBaseVM);
                     var quoteComposite = new QuoteCompositeVM();
                     Composites.Insert(indexQuote, quoteComposite);
                     return quoteComposite;
                 case "/line":
                     int indexLine = Composites.IndexOf(compositeBaseVM);
-                    UnsubscribeFromTextComposite(compositeBaseVM);
                     DeleteComposite(compositeBaseVM);
                     var lineComposite = new LineCompositeVM();
                     Composites.Insert(indexLine, lineComposite);
                     var textComposite = new TextCompositeVM();
-                    textComposite.TextStartsWithSlashChanged += OnTextStartsWithSlashChanged;
                     Composites.Insert(indexLine + 1, textComposite);
                     return textComposite;
                 case "/task":
                 {
                     int indexTask = Composites.IndexOf(compositeBaseVM);
-                    UnsubscribeFromTextComposite(compositeBaseVM);
                     DeleteComposite(compositeBaseVM);
                     var taskComposite = new TaskCompositeVM();
                     Composites.Insert(indexTask, taskComposite);
                     return taskComposite;
                 }
-                case "/image":
+                case "/img":
                 {
                     OpenFileDialog openFileDialog = new OpenFileDialog()
                     {
@@ -259,12 +235,10 @@ namespace Composite.ViewModels.Notes.HardNote
                         var bitmap = LoadBitmapImage(openFileDialog.FileName);
 
                         int indexImage = Composites.IndexOf(compositeBaseVM);
-                        UnsubscribeFromTextComposite(compositeBaseVM);
                         DeleteComposite(compositeBaseVM);
                         var imageComposite = new ImageCompositeVM() { ImageSource = bitmap };
                         Composites.Insert(indexImage, imageComposite);
                         var textComposite1 = new TextCompositeVM();
-                        textComposite1.TextStartsWithSlashChanged += OnTextStartsWithSlashChanged;
                         Composites.Insert(indexImage + 1, textComposite1);
                         return textComposite1;
                     }
@@ -274,7 +248,6 @@ namespace Composite.ViewModels.Notes.HardNote
                 case "/ref":
                 {
                     int indexRef = Composites.IndexOf(compositeBaseVM);
-                    UnsubscribeFromTextComposite(compositeBaseVM);
                     DeleteComposite(compositeBaseVM);
                     var refComposite = new RefCompositeVM(_tabService, _noteService, _hardNoteService, _messenger);
                     Composites.Insert(indexRef, refComposite);
@@ -283,16 +256,14 @@ namespace Composite.ViewModels.Notes.HardNote
                 case "/marker":
                 {
                     int indexMarker = Composites.IndexOf(compositeBaseVM);
-                    UnsubscribeFromTextComposite(compositeBaseVM);
                     DeleteComposite(compositeBaseVM);
                     var markerComposite = new MarkerCompositeVM();
                     Composites.Insert(indexMarker, markerComposite);
                     return markerComposite;
                 }
-                case "/numeric":
+                case "/num":
                 {
                     int indexNumeric = Composites.IndexOf(compositeBaseVM);
-                    UnsubscribeFromTextComposite(compositeBaseVM);
                     DeleteComposite(compositeBaseVM);
                     var numericComposite = new NumericCompositeVM();
                     Composites.Insert(indexNumeric, numericComposite);
@@ -304,7 +275,6 @@ namespace Composite.ViewModels.Notes.HardNote
                 case "/code":
                 {
                     int indexCode = Composites.IndexOf(compositeBaseVM);
-                    UnsubscribeFromTextComposite(compositeBaseVM);
                     DeleteComposite(compositeBaseVM);
                     var codeComposite = new CodeCompositeVM();
                     Composites.Insert(indexCode, codeComposite);
@@ -313,7 +283,6 @@ namespace Composite.ViewModels.Notes.HardNote
                 case "/doc":
                 {
                     int indexDoc = Composites.IndexOf(compositeBaseVM);
-                    UnsubscribeFromTextComposite(compositeBaseVM);
                     DeleteComposite(compositeBaseVM);
                     var docComposite = new DocCompositeVM(_hardNoteService);
                     Composites.Insert(indexDoc, docComposite);
@@ -323,10 +292,10 @@ namespace Composite.ViewModels.Notes.HardNote
                 default: return null;
             }
         }
+        [RelayCommand] void CreateComposite(ParametersCompositeString parameters) => CreateComposite(parameters.Value, parameters.CompositeBaseVM);
         [RelayCommand] public void DeleteComposite(CompositeBaseVM composite)
         {
             int index = Composites.IndexOf(composite);
-            UnsubscribeFromTextComposite(composite);
             RemoveFromComposites(composite);
             IsOpenPopup = false;
 
@@ -347,7 +316,6 @@ namespace Composite.ViewModels.Notes.HardNote
         {
             var index = Composites.IndexOf(composite);
             var duplicateComposite = (T)composite.Clone();
-            if (duplicateComposite is TextCompositeVM textComposite) textComposite.TextStartsWithSlashChanged += OnTextStartsWithSlashChanged;
             Composites.Insert(index + 1, duplicateComposite);
             if (duplicateComposite is NumericCompositeVM) UpdateNumericSequence(index + 1);
             CloseContextMenus();
@@ -396,9 +364,7 @@ namespace Composite.ViewModels.Notes.HardNote
 
             if (newComposite != null)
             {
-                UnsubscribeFromTextComposite(composite);
                 RemoveFromComposites(composite);
-                if (newComposite is TextCompositeVM tComposite) tComposite.TextStartsWithSlashChanged += OnTextStartsWithSlashChanged;
                 Composites.Insert(index, newComposite);
                 CloseContextMenus();
 
@@ -438,7 +404,6 @@ namespace Composite.ViewModels.Notes.HardNote
         public CompositeBaseVM InsertComposite(int index)
         {
             var textComposite = new TextCompositeVM();
-            textComposite.TextStartsWithSlashChanged += OnTextStartsWithSlashChanged;
             Composites.Insert(index, textComposite);
             return textComposite;
         }
@@ -486,7 +451,6 @@ namespace Composite.ViewModels.Notes.HardNote
         //Контекстные менюшки
         [ObservableProperty] bool _isOpenPopup;
         [ObservableProperty] bool _isOpenPopupType;
-        [ObservableProperty] bool _isOpenSnippetsPopup;
         public ObservableCollection<CommandContextMenu> ContextMenu { get; set; } = new();
         public ObservableCollection<CommandContextMenu> ContextMenuTypes { get; set; } = new();
         [RelayCommand] void OpenPopup(CompositeBaseVM composite)
@@ -507,7 +471,6 @@ namespace Composite.ViewModels.Notes.HardNote
             IsOpenPopup = true;
             return;
         }
-        void OnTextStartsWithSlashChanged(object? sender, bool startsWithSlash) => IsOpenSnippetsPopup = startsWithSlash;
         void CloseContextMenus()
         {
             IsOpenPopupType = false;
@@ -520,7 +483,6 @@ namespace Composite.ViewModels.Notes.HardNote
             ContextMenu.Add(new CommandContextMenu("Add composite", "/Common/Images/addCategory.png", new RelayCommand(() =>
             {
                 var textComposite = new TextCompositeVM();
-                textComposite.TextStartsWithSlashChanged += OnTextStartsWithSlashChanged;
                 Composites.Insert(index + 1, textComposite);
                 CloseContextMenus();
             })));
@@ -553,7 +515,7 @@ namespace Composite.ViewModels.Notes.HardNote
                 ContextMenuTypes.Add(new CommandContextMenu("Quote", "/Common/Images/quote.png", new RelayCommand(() => { ChangeTypeComposite(composite, "Quote"); })));
                 ContextMenuTypes.Add(new CommandContextMenu("Task", "/Common/Images/task.png", new RelayCommand(() => { ChangeTypeComposite(composite, "Task"); })));
                 ContextMenuTypes.Add(new CommandContextMenu("Marker", "/Common/Images/marker.png", new RelayCommand(() => { ChangeTypeComposite(composite, "Marker"); })));
-                ContextMenuTypes.Add(new CommandContextMenu("Numeric", "/Common/Images/marker.png", new RelayCommand(() => { ChangeTypeComposite(composite, "Numeric"); })));
+                ContextMenuTypes.Add(new CommandContextMenu("Numeric", "/Common/Images/numeric.png", new RelayCommand(() => { ChangeTypeComposite(composite, "Numeric"); })));
 
                 IsOpenPopupType = true;
             })));
@@ -562,10 +524,6 @@ namespace Composite.ViewModels.Notes.HardNote
         [RelayCommand] void StartEditing(CompositeBaseVM composite) => composite.IsEditing = true;
         [RelayCommand] void StopEditing(CompositeBaseVM composite) => composite.IsEditing = false;
 
-        void UnsubscribeFromTextComposite(CompositeBaseVM composite)
-        {
-            if (composite is TextCompositeVM textComposite) textComposite.TextStartsWithSlashChanged -= OnTextStartsWithSlashChanged;
-        }
         void RemoveFromComposites(CompositeBaseVM composite)
         {
             Composites.Remove(composite);

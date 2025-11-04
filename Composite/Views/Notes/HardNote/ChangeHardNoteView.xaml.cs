@@ -230,7 +230,7 @@ namespace Composite.Views.Notes.Notes
                     var listView = FindParent<ListView>(textBox1);
                     if (listView?.DataContext is ChangeHardNoteViewModel viewModel)
                     {
-                        var createdComposite = viewModel.HardNoteVM.CreateComposite(textValue, currentComposite, caretIndex);
+                        var createdComposite = viewModel.HardNoteVM.CreateComposite(textValue, currentComposite);
 
                         if (createdComposite != null)
                         {

@@ -1,4 +1,5 @@
-﻿using Composite.ViewModels.Notes.HardNote;
+﻿using Composite.Common.Helpers;
+using Composite.ViewModels.Notes.HardNote;
 using Composite.ViewModels.Notes.Note;
 using System.Windows;
 using System.Windows.Controls;
@@ -235,7 +236,7 @@ namespace Composite.Views.Notes
                     var listView = FindParent<ListView>(textBox1);
                     if (listView?.DataContext is AddHardNoteViewModel viewModel)
                     {
-                        var createdComposite = viewModel.HardNoteVM.CreateComposite(textValue, currentComposite, caretIndex);
+                        var createdComposite = viewModel.HardNoteVM.CreateComposite(textValue, currentComposite);
                         if (createdComposite != null)
                         {
                             Dispatcher.BeginInvoke(new Action(() =>
