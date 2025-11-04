@@ -167,7 +167,14 @@ namespace Composite.ViewModels.Notes.HardNote
         }
         public CompositeBaseVM CreateComposite(string value, CompositeBaseVM compositeBaseVM)
         {
-            string Value = value.Trim().ToLower();
+            string[] words = value.Split(' ');
+            string Value = words[0].Trim().ToLower();
+            string Value2 = string.Empty;
+            if (words.Length > 1)
+            {
+                Value2 = string.Join(" ", words, 1, words.Length - 1);
+            }
+
             switch (Value)
             {
                 case "/h1":
@@ -175,6 +182,7 @@ namespace Composite.ViewModels.Notes.HardNote
                     DeleteComposite(compositeBaseVM);
                     var headerComposite1 = new HeaderCompositeVM
                     {
+                        Text = Value2,
                         FontWeight = "Bold",
                         FontSize = 24
                     };
@@ -185,6 +193,7 @@ namespace Composite.ViewModels.Notes.HardNote
                     DeleteComposite(compositeBaseVM);
                     var headerComposite2 = new HeaderCompositeVM
                     {
+                        Text = Value2,
                         FontWeight = "Bold",
                         FontSize = 22
                     };
@@ -194,7 +203,8 @@ namespace Composite.ViewModels.Notes.HardNote
                     int index3 = Composites.IndexOf(compositeBaseVM);
                     DeleteComposite(compositeBaseVM);
                     var headerComposite3 = new HeaderCompositeVM
-                    {
+                    {   
+                        Text = Value2,
                         FontWeight = "Bold",
                         FontSize = 20
                     };
@@ -203,7 +213,7 @@ namespace Composite.ViewModels.Notes.HardNote
                 case "/quote":
                     int indexQuote = Composites.IndexOf(compositeBaseVM);
                     DeleteComposite(compositeBaseVM);
-                    var quoteComposite = new QuoteCompositeVM();
+                    var quoteComposite = new QuoteCompositeVM() { Text = Value2 };
                     Composites.Insert(indexQuote, quoteComposite);
                     return quoteComposite;
                 case "/line":
@@ -218,7 +228,7 @@ namespace Composite.ViewModels.Notes.HardNote
                 {
                     int indexTask = Composites.IndexOf(compositeBaseVM);
                     DeleteComposite(compositeBaseVM);
-                    var taskComposite = new TaskCompositeVM();
+                    var taskComposite = new TaskCompositeVM() { Text = Value2 };
                     Composites.Insert(indexTask, taskComposite);
                     return taskComposite;
                 }
@@ -257,7 +267,7 @@ namespace Composite.ViewModels.Notes.HardNote
                 {
                     int indexMarker = Composites.IndexOf(compositeBaseVM);
                     DeleteComposite(compositeBaseVM);
-                    var markerComposite = new MarkerCompositeVM();
+                    var markerComposite = new MarkerCompositeVM() { Text = Value2 };
                     Composites.Insert(indexMarker, markerComposite);
                     return markerComposite;
                 }
@@ -265,7 +275,7 @@ namespace Composite.ViewModels.Notes.HardNote
                 {
                     int indexNumeric = Composites.IndexOf(compositeBaseVM);
                     DeleteComposite(compositeBaseVM);
-                    var numericComposite = new NumericCompositeVM();
+                    var numericComposite = new NumericCompositeVM() { Text = Value2 };
                     Composites.Insert(indexNumeric, numericComposite);
 
                     UpdateNumericSequence(indexNumeric);

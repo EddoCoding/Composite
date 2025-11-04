@@ -243,7 +243,7 @@ namespace Composite.Views.Notes.Notes
                                     if (newTextBox != null)
                                     {
                                         newTextBox.Focus();
-                                        newTextBox.CaretIndex = 0;
+                                        newTextBox.CaretIndex = caretIndex;
                                     }
                                 }
                             }), DispatcherPriority.Background);
