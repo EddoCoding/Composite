@@ -170,10 +170,7 @@ namespace Composite.ViewModels.Notes.HardNote
             string[] words = value.Split(' ');
             string Value = words[0].Trim().ToLower();
             string Value2 = string.Empty;
-            if (words.Length > 1)
-            {
-                Value2 = string.Join(" ", words, 1, words.Length - 1);
-            }
+            if (words.Length > 1) Value2 = string.Join(" ", words, 1, words.Length - 1);
 
             switch (Value)
             {
