@@ -44,8 +44,13 @@ namespace Composite.ViewModels.Notes.Note
                 }
                 if (_id == m.Id)
                 {
-                    _messageCts?.Cancel(); //Падает исключение
-                    _messageCts = new CancellationTokenSource();
+                    try
+                    {
+                        _messageCts?.Cancel();
+                        _messageCts = new CancellationTokenSource();
+                    }
+                    catch { }
+                    
 
                     Message = m.ErrorMessage;
 
@@ -54,7 +59,7 @@ namespace Composite.ViewModels.Notes.Note
                         await Task.Delay(3000, _messageCts.Token);
                         Message = null;
                     }
-                    catch (TaskCanceledException) { }
+                    catch { }
                 }
             });
             messenger.Register<CategoryNoteMessage>(this, (r, m) =>
