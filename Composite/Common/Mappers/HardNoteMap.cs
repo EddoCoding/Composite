@@ -113,7 +113,7 @@ namespace Composite.Common.Mappers
                     Id = headerCompositeVM.Id.ToString(),
                     Tag = headerCompositeVM.Tag,
                     Comment = headerCompositeVM.Comment,
-                    Header = headerCompositeVM.Text,
+                    Text = headerCompositeVM.Text,
                     FontWeightHeader = headerCompositeVM.FontWeight,
                     FontSizeHeader = headerCompositeVM.FontSize,
                     HardNoteId = id.ToString()
@@ -126,7 +126,7 @@ namespace Composite.Common.Mappers
                     Id = quoteCompositeVM.Id.ToString(),
                     Tag = quoteCompositeVM.Tag,
                     Comment = quoteCompositeVM.Comment,
-                    Quote = quoteCompositeVM.Text,
+                    Text = quoteCompositeVM.Text,
                     HardNoteId = id.ToString()
                 };
             }
@@ -260,7 +260,7 @@ namespace Composite.Common.Mappers
                     Id = Guid.NewGuid().ToString(),
                     Tag = headerCompositeVM.Tag,
                     Comment = headerCompositeVM.Comment,
-                    Header = headerCompositeVM.Text,
+                    Text = headerCompositeVM.Text,
                     FontWeightHeader = headerCompositeVM.FontWeight,
                     FontSizeHeader = headerCompositeVM.FontSize,
                     HardNoteId = id.ToString()
@@ -273,7 +273,7 @@ namespace Composite.Common.Mappers
                     Id = Guid.NewGuid().ToString(),
                     Tag = quoteCompositeVM.Tag,
                     Comment = quoteCompositeVM.Comment,
-                    Quote = quoteCompositeVM.Text,
+                    Text = quoteCompositeVM.Text,
                     HardNoteId = id.ToString()
                 };
             }
@@ -405,7 +405,7 @@ namespace Composite.Common.Mappers
                     Id = Guid.Parse(compositeBase.Id),
                     Tag = compositeBase.Tag,
                     Comment = compositeBase.Comment,
-                    Text = compositeBase.Header,
+                    Text = compositeBase.Text,
                     FontWeight = compositeBase.FontWeightHeader,
                     FontSize = compositeBase.FontSizeHeader
                 };
@@ -417,7 +417,7 @@ namespace Composite.Common.Mappers
                     Id = Guid.Parse(compositeBase.Id),
                     Tag = compositeBase.Tag,
                     Comment = compositeBase.Comment,
-                    Text = compositeBase.Quote
+                    Text = compositeBase.Text
                 };
             }
             if (compositeBase.CompositeType == "LineComposite")

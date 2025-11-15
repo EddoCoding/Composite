@@ -142,7 +142,11 @@ namespace Composite.ViewModels.Notes.HardNote
                 Id = Guid.NewGuid(),
                 Tag = Tag,
                 Comment = Comment,
-                IsModified = IsModified
+                IsModified = IsModified,
+                SelectedBrSize = SelectedBrSize,
+                SelectedBrCornerRadius = SelectedBrCornerRadius,
+                SelectedBrColor = SelectedBrColor,
+                SelectedBgColor = SelectedBgColor
             };
 
             if (!XamlPackageContent.Any()) clone.LoadFromXamlPackage(XamlPackageContent);

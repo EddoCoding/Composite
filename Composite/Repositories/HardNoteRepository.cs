@@ -54,7 +54,7 @@ namespace Composite.Repositories
                                 ((HeaderComposite)x.Composite).Id,
                                 ((HeaderComposite)x.Composite).Tag,
                                 ((HeaderComposite)x.Composite).Comment,
-                                ((HeaderComposite)x.Composite).Header,
+                                ((HeaderComposite)x.Composite).Text,
                                 ((HeaderComposite)x.Composite).FontWeightHeader,
                                 ((HeaderComposite)x.Composite).FontSizeHeader,
                                 ((HeaderComposite)x.Composite).HardNoteId,
@@ -64,8 +64,8 @@ namespace Composite.Repositories
                             .ToList();
                         if (headerComposites.Any())
                         {
-                            var queryHeaders = @"Insert Into Composites(Id, Tag, Comment, Header, FontWeightHeader, FontSizeHeader, HardNoteId, CompositeType, OrderIndex) 
-                                   Values (@Id, @Tag, @Comment, @Header, @FontWeightHeader, @FontSizeHeader, @HardNoteId, @CompositeType, @OrderIndex)";
+                            var queryHeaders = @"Insert Into Composites(Id, Tag, Comment, Text, FontWeightHeader, FontSizeHeader, HardNoteId, CompositeType, OrderIndex) 
+                                   Values (@Id, @Tag, @Comment, @Text, @FontWeightHeader, @FontSizeHeader, @HardNoteId, @CompositeType, @OrderIndex)";
                             await connection.ExecuteAsync(queryHeaders, headerComposites, transaction);
                         }
 
@@ -76,7 +76,7 @@ namespace Composite.Repositories
                                ((QuoteComposite)x.Composite).Id,
                                ((QuoteComposite)x.Composite).Tag,
                                ((QuoteComposite)x.Composite).Comment,
-                               ((QuoteComposite)x.Composite).Quote,
+                               ((QuoteComposite)x.Composite).Text,
                                ((QuoteComposite)x.Composite).HardNoteId,
                                ((QuoteComposite)x.Composite).CompositeType,
                                x.OrderIndex
@@ -84,8 +84,8 @@ namespace Composite.Repositories
                            .ToList();
                         if (quoteComposites.Any())
                         {
-                            var queryQuotes = @"Insert Into Composites(Id, Tag, Comment, Quote, HardNoteId, CompositeType, OrderIndex) 
-                                   Values (@Id, @Tag, @Comment, @Quote, @HardNoteId, @CompositeType, @OrderIndex)";
+                            var queryQuotes = @"Insert Into Composites(Id, Tag, Comment, Text, HardNoteId, CompositeType, OrderIndex) 
+                                   Values (@Id, @Tag, @Comment, @Text, @HardNoteId, @CompositeType, @OrderIndex)";
                             await connection.ExecuteAsync(queryQuotes, quoteComposites, transaction);
                         }
 
@@ -311,9 +311,9 @@ namespace Composite.Repositories
 
                     if (hardNote.Composites?.Count > 0)
                     {
-                        var queryInsertComposites = @"Insert Into Composites (Id, Tag, Comment, Text, Header, FontWeightHeader, FontSizeHeader, Quote, Completed, Data, HorizontalImage, ValueRef, Number, 
+                        var queryInsertComposites = @"Insert Into Composites (Id, Tag, Comment, Text, FontWeightHeader, FontSizeHeader, Completed, Data, HorizontalImage, ValueRef, Number, 
                                                     BrSize, BgColor, BrColor, BrCornerRadius, HardNoteId, CompositeType, OrderIndex)
-                                                    Values (@Id, @Tag, @Comment, @Text, @Header, @FontWeightHeader, @FontSizeHeader, @Quote, @Completed, @Data, @HorizontalImage, @ValueRef, @Number, 
+                                                    Values (@Id, @Tag, @Comment, @Text, @FontWeightHeader, @FontSizeHeader, @Completed, @Data, @HorizontalImage, @ValueRef, @Number, 
                                                     @BrSize, @BgColor, @BrColor, @BrCornerRadius, @HardNoteId, @CompositeType, @OrderIndex)";
 
                         var compositeData = hardNote.Composites.Select((c, index) => new
@@ -322,10 +322,8 @@ namespace Composite.Repositories
                             Tag = c.Tag,
                             Comment = c.Comment,
                             Text = c.Text,
-                            Header = c.Header,
                             FontWeightHeader = c.FontWeightHeader,
                             FontSizeHeader = c.FontSizeHeader,
-                            Quote = c.Quote,
                             Completed = c.Completed,
                             Data = c.Data,
                             HorizontalImage = c.HorizontalImage,

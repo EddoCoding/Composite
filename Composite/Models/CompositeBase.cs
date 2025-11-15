@@ -8,11 +8,9 @@
 
         public string Text { get; set; } = string.Empty;
 
-        public string Header { get; set; } = string.Empty;
         public string FontWeightHeader { get; set; } = string.Empty;
         public double FontSizeHeader { get; set; }
 
-        public string Quote { get; set; } = string.Empty;
         public int Completed { get; set; }
 
         public byte[] Data { get; set; }
