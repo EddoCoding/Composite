@@ -1588,11 +1588,11 @@
                                   Style="{StaticResource ComboBoxCustom}" ItemContainerStyle="{StaticResource ComboBoxItemCustom}"/>
 
                         <Label Content="brColor" Margin="5,0,0,1" Foreground="Gray"/>
-                        <ComboBox ItemsSource="{Binding Colors}" SelectedItem="{Binding SelectedBrColor}" SelectedValue="Gray" HorizontalAlignment="Left" Cursor="Hand" Margin="0,0,0,1"
+                        <ComboBox ItemsSource="{Binding Colors}" SelectedItem="{Binding SelectedBrColor}" HorizontalAlignment="Left" Cursor="Hand" Margin="0,0,0,1"
                                   Style="{StaticResource ComboBoxCustom}" ItemContainerStyle="{StaticResource ComboBoxItemCustom3}"/>
 
                         <Label Content="bgColor" Margin="5,0,0,1" Foreground="Gray"/>
-                        <ComboBox ItemsSource="{Binding Colors}" SelectedItem="{Binding SelectedBgColor}" SelectedValue="White" HorizontalAlignment="Left" Cursor="Hand" Margin="0,0,0,1"
+                        <ComboBox ItemsSource="{Binding Colors}" SelectedItem="{Binding SelectedBgColor}" HorizontalAlignment="Left" Cursor="Hand" Margin="0,0,0,1"
                                   Style="{StaticResource ComboBoxCustom}" ItemContainerStyle="{StaticResource ComboBoxItemCustom3}"/>
 
                     </StackPanel>

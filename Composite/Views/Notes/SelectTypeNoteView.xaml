@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Composite.Views"
         MouseDown="MoveWindow" Background="WhiteSmoke" WindowStyle="None" 
         WindowStartupLocation="CenterScreen" RenderOptions.BitmapScalingMode="NearestNeighbor"
-        Title="{Binding Title}" MinHeight="250" MinWidth="550" MaxHeight="250" MaxWidth="550" ResizeMode="CanResizeWithGrip" 
+        Title="{Binding Title}" MinHeight="270" MinWidth="550" MaxHeight="270" MaxWidth="550" ResizeMode="CanResizeWithGrip" 
         AllowsTransparency="True" BorderBrush="LightGray" BorderThickness="1" FontFamily="Trebuchet MS"
         KeyboardNavigation.TabNavigation="None">
     <Window.Resources>

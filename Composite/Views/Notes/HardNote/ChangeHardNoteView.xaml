@@ -1620,11 +1620,11 @@
                                 <!--Шрифты-->
                                 <Grid>
                                     <ComboBox x:Name="fontComboBox" ItemsSource="{Binding Fonts}" Style="{StaticResource ComboBoxCustom}"
-              ItemContainerStyle="{StaticResource ComboBoxItemCustom2}" IsTextSearchEnabled="False">
+                                      ItemContainerStyle="{StaticResource ComboBoxItemCustom2}" IsTextSearchEnabled="False">
                                         <ComboBox.ItemTemplate>
                                             <DataTemplate>
                                                 <Button Command="{x:Static helper:FormattedTextCommands.ChangeFont}"
-                        CommandParameter="{Binding}" CommandTarget="{Binding ElementName=mainRTB}">
+                                                CommandParameter="{Binding}" CommandTarget="{Binding ElementName=mainRTB}">
                                                     <Button.Style>
                                                         <Style TargetType="Button">
                                                             <Setter Property="Background" Value="White"/>
@@ -1655,11 +1655,11 @@
                                 <!--Размеры шрифта-->
                                 <Grid>
                                     <ComboBox x:Name="sizeComboBox" ItemsSource="{Binding FontSizes}" Style="{StaticResource ComboBoxCustom}"
-              ItemContainerStyle="{StaticResource ComboBoxItemCustom2}" IsTextSearchEnabled="False">
+                                      ItemContainerStyle="{StaticResource ComboBoxItemCustom2}" IsTextSearchEnabled="False">
                                         <ComboBox.ItemTemplate>
                                             <DataTemplate>
                                                 <Button Command="{x:Static helper:FormattedTextCommands.ChangeSize}"
-                        CommandParameter="{Binding}" CommandTarget="{Binding ElementName=mainRTB}">
+                                                CommandParameter="{Binding}" CommandTarget="{Binding ElementName=mainRTB}">
                                                     <Button.Style>
                                                         <Style TargetType="Button">
                                                             <Setter Property="Background" Value="White"/>
@@ -1690,11 +1690,11 @@
                                 <!--Цвет текста-->
                                 <Grid Margin="0,0,5,0">
                                     <ComboBox x:Name="textColorComboBox" ItemsSource="{Binding Colors}" Style="{StaticResource ComboBoxCustom}"
-              ItemContainerStyle="{StaticResource ComboBoxItemCustom2}" IsTextSearchEnabled="False">
+                                      ItemContainerStyle="{StaticResource ComboBoxItemCustom2}" IsTextSearchEnabled="False">
                                         <ComboBox.ItemTemplate>
                                             <DataTemplate>
                                                 <Button Command="{x:Static helper:FormattedTextCommands.ChangeTextColor}"
-                        CommandParameter="{Binding}" CommandTarget="{Binding ElementName=mainRTB}">
+                                                        CommandParameter="{Binding}" CommandTarget="{Binding ElementName=mainRTB}">
                                                     <Button.Style>
                                                         <Style TargetType="Button">
                                                             <Setter Property="Background" Value="White"/>
@@ -1733,11 +1733,11 @@
                                 <!--Цвет заднего фона текста-->
                                 <Grid Margin="0,0,5,0">
                                     <ComboBox x:Name="bgTextColorComboBox" ItemsSource="{Binding Colors}" Style="{StaticResource ComboBoxCustom}"
-              ItemContainerStyle="{StaticResource ComboBoxItemCustom2}" IsTextSearchEnabled="False">
+                                              ItemContainerStyle="{StaticResource ComboBoxItemCustom2}" IsTextSearchEnabled="False">
                                         <ComboBox.ItemTemplate>
                                             <DataTemplate>
                                                 <Button Command="{x:Static helper:FormattedTextCommands.ChangeBgTextColor}"
-                        CommandParameter="{Binding}" CommandTarget="{Binding ElementName=mainRTB}">
+                                                        CommandParameter="{Binding}" CommandTarget="{Binding ElementName=mainRTB}">
                                                     <Button.Style>
                                                         <Style TargetType="Button">
                                                             <Setter Property="Background" Value="White"/>

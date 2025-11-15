@@ -15,8 +15,10 @@ namespace Composite.ViewModels.Notes
                                                         "3. Select category. \n" +
                                                         "4. Set password. \n";                  
 
-        public string DescriptionHardNote { get; } = "1. Text, headers, quote, line, task, \n" +
-                                                     "    image. \n" +
+        public string DescriptionHardNote { get; } = "1. Text, headers, quotes, lines, tasks, \n" +
+                                                     "    images, refs, markers, numerics, \n" +
+                                                     "    codeBlocks, documents, \n" +
+                                                     "    formattedText \n" +
                                                      "2. Select category. \n" +
                                                      "3. Set password. \n";
 
