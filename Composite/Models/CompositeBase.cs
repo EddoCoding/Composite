@@ -22,6 +22,11 @@
 
         public int Number { get; set; }
 
+        public int BrSize { get; set; }
+        public int BrCornerRadius { get; set; }
+        public string BrColor { get; set; }
+        public string BgColor { get; set; }
+
         public string HardNoteId { get; set; } = string.Empty;
         public string CompositeType { get; set; } = string.Empty;
         public int OrderIndex { get; set; }

@@ -44,7 +44,7 @@ namespace Composite.ViewModels.Notes.Note
                 }
                 if (_id == m.Id)
                 {
-                    _messageCts?.Cancel();
+                    _messageCts?.Cancel(); //Падает исключение
                     _messageCts = new CancellationTokenSource();
 
                     Message = m.ErrorMessage;

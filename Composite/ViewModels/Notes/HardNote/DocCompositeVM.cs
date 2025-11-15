@@ -41,7 +41,6 @@ namespace Composite.ViewModels.Notes.HardNote
         }
 
         public override object Clone() => new DocCompositeVM(_hardNoteService) { Id = Guid.NewGuid(), Tag = Tag, Comment = Comment, Text = Text };
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)

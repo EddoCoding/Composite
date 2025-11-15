@@ -1,12 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.Messaging;
 using Composite.Models;
 using Composite.Models.Notes.HardNote;
-using Composite.Services.TabService;
 using Composite.Services;
+using Composite.Services.TabService;
 using Composite.ViewModels.Notes;
 using Composite.ViewModels.Notes.HardNote;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Media.Imaging;
 
 namespace Composite.Common.Mappers
@@ -220,6 +222,21 @@ namespace Composite.Common.Mappers
                     HardNoteId = id.ToString()
                 };
             }
+            if (compositeBaseVM is FormattedTextCompositeVM ftCompositeVM)
+            {
+                return new FormattedTextComposite()
+                {
+                    Id = ftCompositeVM.Id.ToString(),
+                    Tag = ftCompositeVM.Tag,
+                    Comment = ftCompositeVM.Comment,
+                    Data = ftCompositeVM.XamlPackageContent,
+                    BrSize = (int)ftCompositeVM.BrSize,
+                    BrCornerRadius = (int)ftCompositeVM.BrCornerRadius,
+                    BrColor = ftCompositeVM.BrColor,
+                    BgColor = ftCompositeVM.BgColor,
+                    HardNoteId = id.ToString()
+                };
+            }
 
             return null;
         }
@@ -352,7 +369,21 @@ namespace Composite.Common.Mappers
                     HardNoteId = id.ToString()
                 };
             }
-
+            if (compositeBaseVM is FormattedTextCompositeVM ftCompositeVM)
+            {
+                return new FormattedTextComposite()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Tag = ftCompositeVM.Tag,
+                    Comment = ftCompositeVM.Comment,
+                    Data = ftCompositeVM.XamlPackageContent,
+                    BrSize = (int)ftCompositeVM.BrSize,
+                    BrCornerRadius = (int)ftCompositeVM.BrCornerRadius,
+                    BrColor = ftCompositeVM.BrColor,
+                    BgColor = ftCompositeVM.BgColor,
+                    HardNoteId = id.ToString()
+                };
+            }
             return null;
         }
         CompositeBaseVM GetCompositeVM(CompositeBase compositeBase)
@@ -477,7 +508,31 @@ namespace Composite.Common.Mappers
                     Data = compositeBase.Data
                 };
             }
+            if (compositeBase.CompositeType == "FormattedTextComposite")
+            {
+                var document = new FlowDocument();
+                TextRange range = new TextRange(document.ContentStart, document.ContentEnd);
 
+                using (MemoryStream stream = new MemoryStream(compositeBase.Data))
+                {
+                    range.Load(stream, DataFormats.XamlPackage);
+                }
+
+                return new FormattedTextCompositeVM()
+                {
+                    Id = Guid.Parse(compositeBase.Id),
+                    Tag = compositeBase.Tag,
+                    Comment = compositeBase.Comment,
+                    Document = document,
+                    SelectedBrSize = compositeBase.BrSize,
+                    SelectedBrCornerRadius = compositeBase.BrCornerRadius,
+                    SelectedBrColor = compositeBase.BrColor,
+                    SelectedBgColor = compositeBase.BgColor,
+                    XamlPackageContent = compositeBase.Data,
+                    IsModified = false
+                };
+
+            }
             return null;
         }
 

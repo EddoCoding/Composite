@@ -1,9 +1,10 @@
-﻿using System.Windows;
+﻿using Composite.ViewModels.Notes.HardNote;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
-using Composite.ViewModels.Notes.HardNote;
 
 namespace Composite.Views.Notes.Notes
 {
@@ -11,6 +12,7 @@ namespace Composite.Views.Notes.Notes
     {
         public ChangeHardNoteView() => InitializeComponent();
 
+        //3 Поиска по дереву
         T? FindParent<T>(DependencyObject child) where T : DependencyObject
         {
             DependencyObject? parentObject = VisualTreeHelper.GetParent(child);
@@ -79,6 +81,11 @@ namespace Composite.Views.Notes.Notes
                             targetTextBox.Focus();
                             targetTextBox.CaretIndex = targetTextBox.Text.Length;
                         }
+                        else
+                        {
+                            var targetRichTextBox = FindChildInColumn<RichTextBox>(container, 2);
+                            if (targetRichTextBox != null) targetRichTextBox.Focus();
+                        }
                     }
                 }), DispatcherPriority.Background);
             }
@@ -125,15 +132,15 @@ namespace Composite.Views.Notes.Notes
         void ListView_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Up && e.Key != Key.Down) return;
-            if (Keyboard.FocusedElement is not TextBox currentTextBox) return;
-            if (currentTextBox.DataContext is not CompositeBaseVM currentItem) return;
+            if (Keyboard.FocusedElement is not FrameworkElement focused) return;
+            if (focused is not TextBox && focused is not RichTextBox) return;
+            if (focused.DataContext is not CompositeBaseVM currentItem) return;
             if (listComposite.ItemsSource is not IList<CompositeBaseVM> items) return;
 
             int index = items.IndexOf(currentItem);
             if (index == -1) return;
 
             int targetIndex = FindNextTextBoxIndex(items, index, e.Key == Key.Up);
-
             if (targetIndex == -1)
             {
                 if (e.Key == Key.Up)
@@ -145,19 +152,37 @@ namespace Composite.Views.Notes.Notes
             }
 
             var targetItem = items[targetIndex];
+
             listComposite.Dispatcher.BeginInvoke(new Action(() =>
             {
+                listComposite.ScrollIntoView(targetItem);
+
                 var container = listComposite.ItemContainerGenerator.ContainerFromItem(targetItem) as ListViewItem;
-                if (container != null)
+                if (container == null) return;
+
+                var targetTextBox = FindChildInColumn<TextBox>(container, 2);
+                if (targetTextBox != null)
                 {
-                    var targetTextBox = FindChildInColumn<TextBox>(container, 2);
-                    if (targetTextBox != null)
+                    targetTextBox.Focus();
+                    targetTextBox.CaretIndex = targetTextBox.Text.Length;
+                    return;
+                }
+
+                var targetRichTextBox = FindChildInColumn<RichTextBox>(container, 2);
+                if (targetRichTextBox != null)
+                {
+                    targetRichTextBox.Focus();
+                    var end = targetRichTextBox.Document?.ContentEnd;
+                    if (end != null)
                     {
-                        targetTextBox.Focus();
-                        targetTextBox.CaretIndex = targetTextBox.Text.Length;
+                        var insertionPos = end.GetInsertionPosition(LogicalDirection.Backward);
+                        if (insertionPos != null) targetRichTextBox.CaretPosition = insertionPos;
+                        else targetRichTextBox.CaretPosition = end;
                     }
+                    targetRichTextBox.ScrollToEnd();
                 }
             }), DispatcherPriority.Background);
+
             e.Handled = true;
         }
         void HandleTitleTextBoxNavigation(KeyEventArgs e)
@@ -220,145 +245,203 @@ namespace Composite.Views.Notes.Notes
 
         void ListView_TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter && sender is TextBox textBox1)
+            if (sender is TextBox textBox1)
             {
-                int caretIndex = textBox1.CaretIndex;
-                string textValue = textBox1.Text;
-
-                if (textBox1.DataContext is CompositeBaseVM currentComposite)
+                if (e.Key == Key.Enter)
                 {
-                    var listView = FindParent<ListView>(textBox1);
-                    if (listView?.DataContext is ChangeHardNoteViewModel viewModel)
-                    {
-                        var createdComposite = viewModel.HardNoteVM.CreateComposite(textValue, currentComposite);
+                    int caretIndex = textBox1.CaretIndex;
+                    string textValue = textBox1.Text;
 
-                        if (createdComposite != null)
+                    if (textBox1.DataContext is CompositeBaseVM currentComposite)
+                    {
+                        var listView = FindParent<ListView>(textBox1);
+                        if (listView?.DataContext is ChangeHardNoteViewModel viewModel)
                         {
+                            var createdComposite = viewModel.HardNoteVM.CreateComposite(textValue, currentComposite);
+                            if (createdComposite != null)
+                            {
+                                Dispatcher.BeginInvoke(new Action(() =>
+                                {
+                                    var container = listView.ItemContainerGenerator.ContainerFromItem(createdComposite) as ListViewItem;
+                                    if (container != null)
+                                    {
+                                        var newTextBox = FindChildInColumn<TextBox>(container, 2);
+                                        if (newTextBox != null)
+                                        {
+                                            newTextBox.Focus();
+                                            newTextBox.CaretIndex = caretIndex;
+                                        }
+                                        else
+                                        {
+                                            var newRichTextBox = FindChildInColumn<RichTextBox>(container, 2);
+                                            if (newRichTextBox != null) newRichTextBox.Focus();
+                                        }
+                                    }
+                                }), DispatcherPriority.Background);
+
+                                e.Handled = true;
+                                return;
+                            }
+
+                            var newItem = viewModel.HardNoteVM.AddComposite(currentComposite, caretIndex);
                             Dispatcher.BeginInvoke(new Action(() =>
                             {
-                                var container = listView.ItemContainerGenerator.ContainerFromItem(createdComposite) as ListViewItem;
+                                var container = listView.ItemContainerGenerator.ContainerFromItem(newItem) as ListViewItem;
                                 if (container != null)
                                 {
                                     var newTextBox = FindChildInColumn<TextBox>(container, 2);
                                     if (newTextBox != null)
                                     {
                                         newTextBox.Focus();
-                                        newTextBox.CaretIndex = caretIndex;
+                                        newTextBox.CaretIndex = 0;
                                     }
                                 }
                             }), DispatcherPriority.Background);
-
-                            e.Handled = true;
-                            return;
                         }
-
-                        var newItem = viewModel.HardNoteVM.AddComposite(currentComposite, caretIndex);
-                        Dispatcher.BeginInvoke(new Action(() =>
-                        {
-                            var container = listView.ItemContainerGenerator.ContainerFromItem(newItem) as ListViewItem;
-                            if (container != null)
-                            {
-                                var newTextBox = FindChildInColumn<TextBox>(container, 2);
-                                if (newTextBox != null)
-                                {
-                                    newTextBox.Focus();
-                                    newTextBox.CaretIndex = 0;
-                                }
-                            }
-                        }), DispatcherPriority.Background);
+                        e.Handled = true;
                     }
-                    e.Handled = true;
                 }
-            }
-            if (e.Key == Key.Back)
-            {
-                var textBox2 = sender as TextBox;
-                var currentComposite = textBox2.DataContext as CompositeBaseVM;
-                if (currentComposite == null) return;
-                var listView = FindParent<ListView>(textBox2);
-                if (listView?.DataContext is ChangeHardNoteViewModel viewModel)
+                if (e.Key == Key.Back)
                 {
-                    int currentIndex = viewModel.HardNoteVM.GetIndexComposite(currentComposite);
-
-                    if (string.IsNullOrEmpty(textBox2.Text))
+                    var textBox2 = sender as TextBox;
+                    var currentComposite = textBox2.DataContext as CompositeBaseVM;
+                    if (currentComposite == null) return;
+                    var listView = FindParent<ListView>(textBox2);
+                    if (listView?.DataContext is ChangeHardNoteViewModel viewModel)
                     {
-                        DeleteComposite(viewModel, currentComposite);
+                        int currentIndex = viewModel.HardNoteVM.GetIndexComposite(currentComposite);
 
-                        if (currentIndex == 0) FocusTitleTextBox();
-                        else if (viewModel.HardNoteVM.Composites.Count > 0)
+                        if (string.IsNullOrEmpty(textBox2.Text))
                         {
-                            int previousTextBoxIndex = FindPreviousTextBoxIndex(viewModel.HardNoteVM.Composites, currentIndex);
-                            if (previousTextBoxIndex != -1) MoveFocusToTextBox(previousTextBoxIndex);
+                            DeleteComposite(viewModel, currentComposite);
+
+                            if (currentIndex == 0) FocusTitleTextBox();
+                            else if (viewModel.HardNoteVM.Composites.Count > 0)
+                            {
+                                int previousTextBoxIndex = FindPreviousTextBoxIndex(viewModel.HardNoteVM.Composites, currentIndex);
+                                if (previousTextBoxIndex != -1) MoveFocusToTextBox(previousTextBoxIndex);
+                                else FocusTitleTextBox();
+                            }
                             else FocusTitleTextBox();
-                        }
-                        else FocusTitleTextBox();
-                        e.Handled = true;
-                    }
-                    else if (textBox2.CaretIndex == 0 && currentIndex > 0 && currentComposite is TextCompositeVM currentTextComposite)
-                    {
-                        var previousTextComposite = FindPreviousTextComposite(viewModel.HardNoteVM.Composites, currentIndex);
-                        if (previousTextComposite != null)
-                        {
-                            int originalCaretPosition = previousTextComposite.Text.Length;
-                            previousTextComposite.Text += currentTextComposite.Text;
-                            viewModel.HardNoteVM.DeleteComposite(currentTextComposite);
-
-                            int previousIndex = viewModel.HardNoteVM.GetIndexComposite(previousTextComposite);
-                            textBox2.Dispatcher.BeginInvoke(new Action(() =>
-                            {
-                                MoveFocusToTextBox(previousIndex);
-                                var container = listComposite.ItemContainerGenerator.ContainerFromItem(previousTextComposite) as ListViewItem;
-                                if (container != null)
-                                {
-                                    var targetTextBox = FindChildInColumn<TextBox>(container, 2);
-                                    if (targetTextBox != null) targetTextBox.CaretIndex = originalCaretPosition;
-                                }
-                            }), DispatcherPriority.Input);
                             e.Handled = true;
                         }
-                    }
-                }
-            }
-            if (e.Key == Key.Delete)
-            {
-                var textBox3 = sender as TextBox;
-                var textComposite = textBox3.DataContext as TextCompositeVM;
-                if (textComposite == null) return;
-                var listView = FindParent<ListView>(textBox3);
-                if (listView?.DataContext is ChangeHardNoteViewModel viewModel)
-                {
-                    int currentIndex = viewModel.HardNoteVM.GetIndexComposite(textComposite);
-                    if (string.IsNullOrEmpty(textBox3.Text))
-                    {
-                        DeleteComposite(viewModel, textComposite);
-
-                        int nextTextBoxIndex = FindNextTextBoxIndex(viewModel.HardNoteVM.Composites, currentIndex);
-                        if (nextTextBoxIndex == -1) nextTextBoxIndex = FindPreviousTextBoxIndex(viewModel.HardNoteVM.Composites, currentIndex);
-                        if (nextTextBoxIndex != -1) MoveFocusToTextBox(nextTextBoxIndex);
-
-                        e.Handled = true;
-                    }
-                    else if (textBox3.CaretIndex == textBox3.Text.Length && currentIndex + 1 < viewModel.HardNoteVM.Composites.Count)
-                    {
-                        var nextTextComposite = FindNextTextComposite(viewModel.HardNoteVM.Composites, currentIndex);
-                        if (nextTextComposite != null)
+                        else if (textBox2.CaretIndex == 0 && currentIndex > 0 && currentComposite is TextCompositeVM currentTextComposite)
                         {
-                            if (string.IsNullOrEmpty(nextTextComposite.Text))
+                            var previousTextComposite = FindPreviousTextComposite(viewModel.HardNoteVM.Composites, currentIndex);
+                            if (previousTextComposite != null)
                             {
-                                DeleteComposite(viewModel, nextTextComposite);
-                                e.Handled = true;
-                            }
-                            else
-                            {
-                                int originalCaretPosition = textComposite.Text.Length;
-                                textComposite.Text += nextTextComposite.Text;
-                                DeleteComposite(viewModel, nextTextComposite);
-                                textBox3.Dispatcher.BeginInvoke(new Action(() =>
+                                int originalCaretPosition = previousTextComposite.Text.Length;
+                                previousTextComposite.Text += currentTextComposite.Text;
+                                viewModel.HardNoteVM.DeleteComposite(currentTextComposite);
+
+                                int previousIndex = viewModel.HardNoteVM.GetIndexComposite(previousTextComposite);
+                                textBox2.Dispatcher.BeginInvoke(new Action(() =>
                                 {
-                                    textBox3.CaretIndex = originalCaretPosition;
+                                    MoveFocusToTextBox(previousIndex);
+                                    var container = listComposite.ItemContainerGenerator.ContainerFromItem(previousTextComposite) as ListViewItem;
+                                    if (container != null)
+                                    {
+                                        var targetTextBox = FindChildInColumn<TextBox>(container, 2);
+                                        if (targetTextBox != null) targetTextBox.CaretIndex = originalCaretPosition;
+                                    }
                                 }), DispatcherPriority.Input);
                                 e.Handled = true;
                             }
+                        }
+                    }
+                }
+                if (e.Key == Key.Delete)
+                {
+                    var textBox3 = sender as TextBox;
+                    var textComposite = textBox3.DataContext as TextCompositeVM;
+                    if (textComposite == null) return;
+                    var listView = FindParent<ListView>(textBox3);
+                    if (listView?.DataContext is ChangeHardNoteViewModel viewModel)
+                    {
+                        int currentIndex = viewModel.HardNoteVM.GetIndexComposite(textComposite);
+                        if (string.IsNullOrEmpty(textBox3.Text))
+                        {
+                            DeleteComposite(viewModel, textComposite);
+
+                            int nextTextBoxIndex = FindNextTextBoxIndex(viewModel.HardNoteVM.Composites, currentIndex);
+                            if (nextTextBoxIndex == -1) nextTextBoxIndex = FindPreviousTextBoxIndex(viewModel.HardNoteVM.Composites, currentIndex);
+                            if (nextTextBoxIndex != -1) MoveFocusToTextBox(nextTextBoxIndex);
+
+                            e.Handled = true;
+                        }
+                        else if (textBox3.CaretIndex == textBox3.Text.Length && currentIndex + 1 < viewModel.HardNoteVM.Composites.Count)
+                        {
+                            var nextTextComposite = FindNextTextComposite(viewModel.HardNoteVM.Composites, currentIndex);
+                            if (nextTextComposite != null)
+                            {
+                                if (string.IsNullOrEmpty(nextTextComposite.Text))
+                                {
+                                    DeleteComposite(viewModel, nextTextComposite);
+                                    e.Handled = true;
+                                }
+                                else
+                                {
+                                    int originalCaretPosition = textComposite.Text.Length;
+                                    textComposite.Text += nextTextComposite.Text;
+                                    DeleteComposite(viewModel, nextTextComposite);
+                                    textBox3.Dispatcher.BeginInvoke(new Action(() =>
+                                    {
+                                        textBox3.CaretIndex = originalCaretPosition;
+                                    }), DispatcherPriority.Input);
+                                    e.Handled = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else if (sender is RichTextBox rtb)
+            {
+                if (e.Key == Key.Back)
+                {
+                    var currentComposite = rtb?.DataContext as CompositeBaseVM;
+                    if (currentComposite == null) return;
+                    var listView = FindParent<ListView>(rtb);
+                    if (listView?.DataContext is ChangeHardNoteViewModel viewModel)
+                    {
+                        int currentIndex = viewModel.HardNoteVM.GetIndexComposite(currentComposite);
+                        var text = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd).Text;
+
+                        if (string.IsNullOrWhiteSpace(text))
+                        {
+                            DeleteComposite(viewModel, currentComposite);
+
+                            if (currentIndex == 0) FocusTitleTextBox();
+                            else if (viewModel.HardNoteVM.Composites.Count > 0)
+                            {
+                                int previousTextBoxIndex = FindPreviousTextBoxIndex(viewModel.HardNoteVM.Composites, currentIndex);
+                                if (previousTextBoxIndex != -1) MoveFocusToTextBox(previousTextBoxIndex);
+                                else FocusTitleTextBox();
+                            }
+                            else FocusTitleTextBox();
+                            e.Handled = true;
+                        }
+                    }
+                }
+                if (e.Key == Key.Delete)
+                {
+                    var textComposite = rtb.DataContext as CompositeBaseVM;
+                    if (textComposite == null) return;
+                    var listView = FindParent<ListView>(rtb);
+                    if (listView?.DataContext is ChangeHardNoteViewModel viewModel)
+                    {
+                        int currentIndex = viewModel.HardNoteVM.GetIndexComposite(textComposite);
+                        var text = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd).Text;
+
+                        if (string.IsNullOrWhiteSpace(text))
+                        {
+                            DeleteComposite(viewModel, textComposite);
+
+                            int nextTextBoxIndex = FindNextTextBoxIndex(viewModel.HardNoteVM.Composites, currentIndex);
+                            if (nextTextBoxIndex == -1) nextTextBoxIndex = FindPreviousTextBoxIndex(viewModel.HardNoteVM.Composites, currentIndex);
+                            if (nextTextBoxIndex != -1) MoveFocusToTextBox(nextTextBoxIndex);
+
+                            e.Handled = true;
                         }
                     }
                 }
@@ -387,7 +470,7 @@ namespace Composite.Views.Notes.Notes
             {
                 var item = items[i];
                 if (item is TextCompositeVM || item is HeaderCompositeVM || item is QuoteCompositeVM || item is TaskCompositeVM || item is MarkerCompositeVM
-                    || item is NumericCompositeVM || item is CodeCompositeVM) return i;
+                    || item is NumericCompositeVM || item is CodeCompositeVM || item is FormattedTextCompositeVM) return i;
             }
             return -1;
         }
@@ -397,7 +480,7 @@ namespace Composite.Views.Notes.Notes
             {
                 var item = items[i];
                 if (item is TextCompositeVM || item is HeaderCompositeVM || item is QuoteCompositeVM || item is TaskCompositeVM || item is MarkerCompositeVM
-                    || item is NumericCompositeVM || item is CodeCompositeVM) return i;
+                    || item is NumericCompositeVM || item is CodeCompositeVM || item is FormattedTextCompositeVM) return i;
             }
             return -1;
         }

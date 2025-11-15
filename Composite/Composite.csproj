@@ -11,10 +11,16 @@
   <ItemGroup>
     <None Remove="Common\Images\actions.png" />
     <None Remove="Common\Images\addCategory.png" />
+    <None Remove="Common\Images\addIndentation.png" />
+    <None Remove="Common\Images\alignCenter.png" />
+    <None Remove="Common\Images\alignJustify.png" />
+    <None Remove="Common\Images\alignLeft.png" />
     <None Remove="Common\Images\AlignmentCenter.png" />
     <None Remove="Common\Images\AlignmentLeft.png" />
     <None Remove="Common\Images\AlignmentRight.png" />
+    <None Remove="Common\Images\alignRight.png" />
     <None Remove="Common\Images\back.png" />
+    <None Remove="Common\Images\bold.png" />
     <None Remove="Common\Images\changeType.png" />
     <None Remove="Common\Images\close.png" />
     <None Remove="Common\Images\code.png" />
@@ -24,12 +30,14 @@
     <None Remove="Common\Images\deleteCategory.png" />
     <None Remove="Common\Images\doc.png" />
     <None Remove="Common\Images\duplicate.png" />
+    <None Remove="Common\Images\ft.png" />
     <None Remove="Common\Images\hardNoteImage.png" />
     <None Remove="Common\Images\header1.png" />
     <None Remove="Common\Images\header2.png" />
     <None Remove="Common\Images\header3.png" />
     <None Remove="Common\Images\image.png" />
     <None Remove="Common\Images\input.png" />
+    <None Remove="Common\Images\italic.png" />
     <None Remove="Common\Images\line.png" />
     <None Remove="Common\Images\lock.png" />
     <None Remove="Common\Images\marker.png" />
@@ -39,24 +47,37 @@
     <None Remove="Common\Images\notRepeat.png" />
     <None Remove="Common\Images\numeric.png" />
     <None Remove="Common\Images\openImage.png" />
+    <None Remove="Common\Images\overline.png" />
     <None Remove="Common\Images\playStop.png" />
     <None Remove="Common\Images\quote.png" />
     <None Remove="Common\Images\ref.png" />
+    <None Remove="Common\Images\removeIndentation.png" />
     <None Remove="Common\Images\repeat.png" />
     <None Remove="Common\Images\scale.png" />
     <None Remove="Common\Images\sort.png" />
+    <None Remove="Common\Images\strikethrough.png" />
     <None Remove="Common\Images\task.png" />
     <None Remove="Common\Images\text.png" />
     <None Remove="Common\Images\threeDots.png" />
+    <None Remove="Common\Images\underlining.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Common\Images\addIndentation.png" />
+    <Resource Include="Common\Images\alignJustify.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Common\Images\actions.png" />
     <Resource Include="Common\Images\addCategory.png" />
+    <Resource Include="Common\Images\alignCenter.png" />
+    <Resource Include="Common\Images\alignLeft.png" />
     <Resource Include="Common\Images\AlignmentCenter.png" />
     <Resource Include="Common\Images\AlignmentLeft.png" />
     <Resource Include="Common\Images\AlignmentRight.png" />
+    <Resource Include="Common\Images\alignRight.png" />
     <Resource Include="Common\Images\back.png" />
+    <Resource Include="Common\Images\bold.png" />
     <Resource Include="Common\Images\changeType.png" />
     <Resource Include="Common\Images\code.png" />
     <Resource Include="Common\Images\collapse.png" />
@@ -65,12 +86,14 @@
     <Resource Include="Common\Images\deleteCategory.png" />
     <Resource Include="Common\Images\doc.png" />
     <Resource Include="Common\Images\duplicate.png" />
+    <Resource Include="Common\Images\ft.png" />
     <Resource Include="Common\Images\hardNoteImage.png" />
     <Resource Include="Common\Images\header1.png" />
     <Resource Include="Common\Images\header2.png" />
     <Resource Include="Common\Images\header3.png" />
     <Resource Include="Common\Images\image.png" />
     <Resource Include="Common\Images\input.png" />
+    <Resource Include="Common\Images\italic.png" />
     <Resource Include="Common\Images\line.png" />
     <Resource Include="Common\Images\lock.png" />
   </ItemGroup>
@@ -99,16 +122,20 @@
     <Resource Include="Common\Images\notRepeat.png" />
     <Resource Include="Common\Images\numeric.png" />
     <Resource Include="Common\Images\openImage.png" />
+    <Resource Include="Common\Images\overline.png" />
     <Resource Include="Common\Images\playStop.png" />
     <Resource Include="Common\Images\quote.png" />
     <Resource Include="Common\Images\ref.png" />
+    <Resource Include="Common\Images\removeIndentation.png" />
     <Resource Include="Common\Images\repeat.png" />
     <Resource Include="Common\Images\scale.png" />
     <Resource Include="Common\Images\search.png" />
     <Resource Include="Common\Images\sort.png" />
+    <Resource Include="Common\Images\strikethrough.png" />
     <Resource Include="Common\Images\task.png" />
     <Resource Include="Common\Images\text.png" />
     <Resource Include="Common\Images\threeDots.png" />
+    <Resource Include="Common\Images\underlining.png" />
   </ItemGroup>
 
   <ItemGroup>

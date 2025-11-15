@@ -86,7 +86,6 @@ namespace Composite.ViewModels.Notes.HardNote
 
         public override object Clone() => new ImageCompositeVM() { Id = Guid.NewGuid(), Tag = Tag, Comment = Comment, ImageSource = ImageSource, OriginalHeight = OriginalHeight,
             OriginalWidth = OriginalWidth, HorizontalImage = HorizontalImage };
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)

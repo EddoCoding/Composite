@@ -295,6 +295,12 @@ namespace Composite.ViewModels.Notes.HardNote
                     Composites.Insert(indexDoc, docComposite);
                     return docComposite;
                 }
+                case "/ft":
+                    int indexFT = Composites.IndexOf(compositeBaseVM);
+                    DeleteComposite(compositeBaseVM);
+                    var ftComposite = new FormattedTextCompositeVM();
+                    Composites.Insert(indexFT, ftComposite);
+                    return ftComposite;
 
                 default: return null;
             }

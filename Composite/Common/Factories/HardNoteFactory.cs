@@ -2,6 +2,9 @@
 using Composite.Services;
 using Composite.Services.TabService;
 using Composite.ViewModels.Notes.HardNote;
+using System.IO;
+using System.Windows;
+using System.Windows.Documents;
 
 namespace Composite.Common.Factories
 {
@@ -140,6 +143,31 @@ namespace Composite.Common.Factories
                         Data = docCompositeVM.Data
                     };
                     compositesVM.Add(newDocCompositeVM);
+                }
+                else if (compositeVM is FormattedTextCompositeVM ftCompositeVM)
+                {
+                    var document = new FlowDocument();
+                    TextRange range = new TextRange(document.ContentStart, document.ContentEnd);
+
+                    using (MemoryStream stream = new MemoryStream(ftCompositeVM.XamlPackageContent))
+                    {
+                        range.Load(stream, DataFormats.XamlPackage);
+                    }
+
+                    var newFTCompositeVM = new FormattedTextCompositeVM()
+                    {
+                        Id = ftCompositeVM.Id,
+                        Tag = ftCompositeVM.Tag,
+                        Comment = ftCompositeVM.Comment,
+                        Document = document,
+                        SelectedBrSize = ftCompositeVM.BrSize,
+                        SelectedBrCornerRadius = ftCompositeVM.BrCornerRadius,
+                        SelectedBrColor = ftCompositeVM.BrColor,
+                        SelectedBgColor = ftCompositeVM.BgColor,
+                        XamlPackageContent = ftCompositeVM.XamlPackageContent
+                    };
+
+                    compositesVM.Add(newFTCompositeVM);
                 }
             }
 

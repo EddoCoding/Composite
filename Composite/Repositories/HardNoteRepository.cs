@@ -252,6 +252,30 @@ namespace Composite.Repositories
                                    Values (@Id, @Tag, @Comment, @Text, @Data, @HardNoteId, @CompositeType, @OrderIndex)";
                             await connection.ExecuteAsync(queryDocs, docComposites, transaction);
                         }
+
+                        var ftComposites = compositesWithOrder
+                           .Where(x => x.Composite is FormattedTextComposite)
+                           .Select(x => new
+                           {
+                               ((FormattedTextComposite)x.Composite).Id,
+                               ((FormattedTextComposite)x.Composite).Tag,
+                               ((FormattedTextComposite)x.Composite).Comment,
+                               ((FormattedTextComposite)x.Composite).Data,
+                               ((FormattedTextComposite)x.Composite).BrSize,
+                               ((FormattedTextComposite)x.Composite).BrCornerRadius,
+                               ((FormattedTextComposite)x.Composite).BrColor,
+                               ((FormattedTextComposite)x.Composite).BgColor,
+                               ((FormattedTextComposite)x.Composite).HardNoteId,
+                               ((FormattedTextComposite)x.Composite).CompositeType,
+                               x.OrderIndex
+                           })
+                           .ToList();
+                        if (ftComposites.Any())
+                        {
+                            var queryFTs = @"Insert Into Composites(Id, Tag, Comment, Data, BrSize, BgColor, BrColor, BrCornerRadius, HardNoteId, CompositeType, OrderIndex) 
+                                             Values (@Id, @Tag, @Comment, @Data, @BrSize, @BgColor, @BrColor, @BrCornerRadius, @HardNoteId, @CompositeType, @OrderIndex)";
+                            await connection.ExecuteAsync(queryFTs, ftComposites, transaction);
+                        }
                     }
 
                     transaction.Commit();
@@ -287,8 +311,10 @@ namespace Composite.Repositories
 
                     if (hardNote.Composites?.Count > 0)
                     {
-                        var queryInsertComposites = @"Insert Into Composites (Id, Tag, Comment, Text, Header, FontWeightHeader, FontSizeHeader, Quote, Completed, Data, HorizontalImage, ValueRef, Number, HardNoteId, CompositeType, OrderIndex)
-                                                      Values (@Id, @Tag, @Comment, @Text, @Header, @FontWeightHeader, @FontSizeHeader, @Quote, @Completed, @Data, @HorizontalImage, @ValueRef, @Number, @HardNoteId, @CompositeType, @OrderIndex)";
+                        var queryInsertComposites = @"Insert Into Composites (Id, Tag, Comment, Text, Header, FontWeightHeader, FontSizeHeader, Quote, Completed, Data, HorizontalImage, ValueRef, Number, 
+                                                    BrSize, BgColor, BrColor, BrCornerRadius, HardNoteId, CompositeType, OrderIndex)
+                                                    Values (@Id, @Tag, @Comment, @Text, @Header, @FontWeightHeader, @FontSizeHeader, @Quote, @Completed, @Data, @HorizontalImage, @ValueRef, @Number, 
+                                                    @BrSize, @BgColor, @BrColor, @BrCornerRadius, @HardNoteId, @CompositeType, @OrderIndex)";
 
                         var compositeData = hardNote.Composites.Select((c, index) => new
                         {
@@ -305,6 +331,10 @@ namespace Composite.Repositories
                             HorizontalImage = c.HorizontalImage,
                             ValueRef = c.ValueRef,
                             Number = c.Number,
+                            BrSize = c.BrSize,
+                            BgColor = c.BgColor,
+                            BrColor = c.BrColor,
+                            BrCornerRadius = c.BrCornerRadius,
                             HardNoteId = hardNote.Id,
                             CompositeType = c.CompositeType,
                             OrderIndex = index

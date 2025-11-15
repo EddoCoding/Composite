@@ -95,6 +95,73 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="RichTextBoxButton" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="CommandTarget" Value="{Binding ElementName=mainRTB}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="5" Padding="2">
+                            <ContentPresenter>
+                                <ContentPresenter.Content>
+                                    <Image Height="{Binding Height, RelativeSource={RelativeSource AncestorType=Button}}" 
+                                           Width="{Binding Width, RelativeSource={RelativeSource AncestorType=Button}}"
+                                           Source="{Binding Content, RelativeSource={RelativeSource AncestorType=Button}}"
+                                           Margin="{Binding Tag, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                </ContentPresenter.Content>
+                            </ContentPresenter>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="WhiteSmoke"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ComboBoxItemCustom2" TargetType="ComboBoxItem">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                            <ContentPresenter HorizontalAlignment="Stretch" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="WhiteSmoke"/>
+                                <Setter Property="BorderBrush" Value="LightGray"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ComboBoxItemCustom3" TargetType="ComboBoxItem">
+            <Setter Property="Padding" Value="3"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                            <StackPanel Orientation="Horizontal">
+                                <Rectangle Fill="{Binding}" Height="13" Width="13"/>
+                                <TextBlock Text="{Binding}" Margin="10,0,0,0"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="WhiteSmoke"/>
+                                <Setter Property="BorderBrush" Value="LightGray"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
         <Style x:Key="TitleTextBox" TargetType="TextBox">
             <Setter Property="FontSize" Value="26"/>
@@ -382,7 +449,17 @@
                         </Border.Effect>
 
                         <StackPanel Margin="5">
-                            <Button Style="{DynamicResource SnippetButton}" Content="Header1" Tag="/Common/Images/header1.png" property:ButtonHelper.AdditionalText="/h1"
+                            <Button Style="{StaticResource SnippetButton}" Content="Formatted text" Tag="/Common/Images/ft.png" property:ButtonHelper.AdditionalText="/ft"
+                                    Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
+                                <Button.CommandParameter>
+                                    <helper:ParametersCompositeString Value="/ft">
+                                        <helper:ParametersCompositeString.CompositeBaseVM>
+                                            <Binding/>
+                                        </helper:ParametersCompositeString.CompositeBaseVM>
+                                    </helper:ParametersCompositeString>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button Style="{StaticResource SnippetButton}" Content="Header1" Tag="/Common/Images/header1.png" property:ButtonHelper.AdditionalText="/h1"
                                     Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
                                 <Button.CommandParameter>
                                     <helper:ParametersCompositeString Value="/h1">
@@ -392,7 +469,7 @@
                                     </helper:ParametersCompositeString>
                                 </Button.CommandParameter>
                             </Button>
-                            <Button Style="{DynamicResource SnippetButton}" Content="Header2" Tag="/Common/Images/header2.png" property:ButtonHelper.AdditionalText="/h2"
+                            <Button Style="{StaticResource SnippetButton}" Content="Header2" Tag="/Common/Images/header2.png" property:ButtonHelper.AdditionalText="/h2"
                                     Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
                                 <Button.CommandParameter>
                                     <helper:ParametersCompositeString Value="/h2">
@@ -402,7 +479,7 @@
                                     </helper:ParametersCompositeString>
                                 </Button.CommandParameter>
                             </Button>
-                            <Button Style="{DynamicResource SnippetButton}" Content="Header3" Tag="/Common/Images/header3.png" property:ButtonHelper.AdditionalText="/h3"
+                            <Button Style="{StaticResource SnippetButton}" Content="Header3" Tag="/Common/Images/header3.png" property:ButtonHelper.AdditionalText="/h3"
                                     Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
                                 <Button.CommandParameter>
                                     <helper:ParametersCompositeString Value="/h3">
@@ -412,7 +489,7 @@
                                     </helper:ParametersCompositeString>
                                 </Button.CommandParameter>
                             </Button>
-                            <Button Style="{DynamicResource SnippetButton}" Content="Quote" Tag="/Common/Images/quote.png" property:ButtonHelper.AdditionalText="/quote"
+                            <Button Style="{StaticResource SnippetButton}" Content="Quote" Tag="/Common/Images/quote.png" property:ButtonHelper.AdditionalText="/quote"
                                     Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
                                 <Button.CommandParameter>
                                     <helper:ParametersCompositeString Value="/quote">
@@ -422,7 +499,7 @@
                                     </helper:ParametersCompositeString>
                                 </Button.CommandParameter>
                             </Button>
-                            <Button Style="{DynamicResource SnippetButton}" Content="Line" Tag="/Common/Images/line.png" property:ButtonHelper.AdditionalText="/line"
+                            <Button Style="{StaticResource SnippetButton}" Content="Line" Tag="/Common/Images/line.png" property:ButtonHelper.AdditionalText="/line"
                                     Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
                                 <Button.CommandParameter>
                                     <helper:ParametersCompositeString Value="/line">
@@ -432,7 +509,7 @@
                                     </helper:ParametersCompositeString>
                                 </Button.CommandParameter>
                             </Button>
-                            <Button Style="{DynamicResource SnippetButton}" Content="Task" Tag="/Common/Images/task.png" property:ButtonHelper.AdditionalText="/task"
+                            <Button Style="{StaticResource SnippetButton}" Content="Task" Tag="/Common/Images/task.png" property:ButtonHelper.AdditionalText="/task"
                                     Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
                                 <Button.CommandParameter>
                                     <helper:ParametersCompositeString Value="/task">
@@ -442,7 +519,7 @@
                                     </helper:ParametersCompositeString>
                                 </Button.CommandParameter>
                             </Button>
-                            <Button Style="{DynamicResource SnippetButton}" Content="Image" Tag="/Common/Images/image.png" property:ButtonHelper.AdditionalText="/img"
+                            <Button Style="{StaticResource SnippetButton}" Content="Image" Tag="/Common/Images/image.png" property:ButtonHelper.AdditionalText="/img"
                                     Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
                                 <Button.CommandParameter>
                                     <helper:ParametersCompositeString Value="/img">
@@ -452,7 +529,7 @@
                                     </helper:ParametersCompositeString>
                                 </Button.CommandParameter>
                             </Button>
-                            <Button Style="{DynamicResource SnippetButton}" Content="Ref" Tag="/Common/Images/ref.png" property:ButtonHelper.AdditionalText="/ref"
+                            <Button Style="{StaticResource SnippetButton}" Content="Ref" Tag="/Common/Images/ref.png" property:ButtonHelper.AdditionalText="/ref"
                                     Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
                                 <Button.CommandParameter>
                                     <helper:ParametersCompositeString Value="/ref">
@@ -462,7 +539,7 @@
                                     </helper:ParametersCompositeString>
                                 </Button.CommandParameter>
                             </Button>
-                            <Button Style="{DynamicResource SnippetButton}" Content="Marker" Tag="/Common/Images/marker.png" property:ButtonHelper.AdditionalText="/marker"
+                            <Button Style="{StaticResource SnippetButton}" Content="Marker" Tag="/Common/Images/marker.png" property:ButtonHelper.AdditionalText="/marker"
                                     Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
                                 <Button.CommandParameter>
                                     <helper:ParametersCompositeString Value="/marker">
@@ -472,7 +549,7 @@
                                     </helper:ParametersCompositeString>
                                 </Button.CommandParameter>
                             </Button>
-                            <Button Style="{DynamicResource SnippetButton}" Content="Numeric" Tag="/Common/Images/numeric.png" property:ButtonHelper.AdditionalText="/num"
+                            <Button Style="{StaticResource SnippetButton}" Content="Numeric" Tag="/Common/Images/numeric.png" property:ButtonHelper.AdditionalText="/num"
                                     Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
                                 <Button.CommandParameter>
                                     <helper:ParametersCompositeString Value="/num">
@@ -482,7 +559,7 @@
                                     </helper:ParametersCompositeString>
                                 </Button.CommandParameter>
                             </Button>
-                            <Button Style="{DynamicResource SnippetButton}" Content="Code" Tag="/Common/Images/code.png" property:ButtonHelper.AdditionalText="/code"
+                            <Button Style="{StaticResource SnippetButton}" Content="Code" Tag="/Common/Images/code.png" property:ButtonHelper.AdditionalText="/code"
                                     Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
                                 <Button.CommandParameter>
                                     <helper:ParametersCompositeString Value="/code">
@@ -492,7 +569,7 @@
                                     </helper:ParametersCompositeString>
                                 </Button.CommandParameter>
                             </Button>
-                            <Button Style="{DynamicResource SnippetButton}" Content="Doc" Tag="/Common/Images/doc.png" property:ButtonHelper.AdditionalText="/doc"
+                            <Button Style="{StaticResource SnippetButton}" Content="Doc" Tag="/Common/Images/doc.png" property:ButtonHelper.AdditionalText="/doc"
                                     Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
                                 <Button.CommandParameter>
                                     <helper:ParametersCompositeString Value="/doc">
@@ -1462,9 +1539,318 @@
 
             </Grid>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:FormattedTextCompositeVM}">
+            <Grid Width="1150" Background="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="18"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.Resources>
+                    <Style TargetType="{x:Type Button}" x:Key="formatTextStyle">
+                        <Setter Property="FontFamily" Value="Palatino Linotype"></Setter>
+                        <Setter Property="Width" Value="30"></Setter>
+                        <Setter Property="FontSize" Value ="14"></Setter>
+                        <Setter Property="CommandTarget" Value="{Binding ElementName=mainRTB}"></Setter>
+                    </Style>
+
+                    <Style TargetType="{x:Type Button}" x:Key="formatImageStyle">
+                        <Setter Property="Width" Value="30"></Setter>
+                        <Setter Property="CommandTarget" Value="{Binding ElementName=mainRTB}"></Setter>
+                    </Style>
+                </Grid.Resources>
+
+                <TextBox Grid.Column="0" Style="{StaticResource Text}" Text="{Binding Tag}" Margin="5,0" Width="100" TextWrapping="NoWrap" Foreground="Gray"
+                         property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Top"/>
+
+                <Button Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/actions.png" Height="18" Width="18" VerticalAlignment="Top"
+                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="WhiteSmoke" Margin="0,1,0,0"
+                        Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                        CommandParameter="{Binding}"/>
+
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,-2,0,0">
+                        
+                        <Label Content="brSize" Margin="0,0,0,1" Foreground="Gray"/>
+                        <ComboBox ItemsSource="{Binding Borders}" SelectedItem="{Binding SelectedBrSize}" HorizontalAlignment="Left" Cursor="Hand" Margin="0,0,0,1"
+                                  Style="{StaticResource ComboBoxCustom}" ItemContainerStyle="{StaticResource ComboBoxItemCustom}"/>
+
+                        <Label Content="brCorner" Margin="5,0,0,1" Foreground="Gray"/>
+                        <ComboBox ItemsSource="{Binding Corners}" SelectedItem="{Binding SelectedBrCornerRadius}" HorizontalAlignment="Left" Cursor="Hand" Margin="0,0,0,1"
+                                  Style="{StaticResource ComboBoxCustom}" ItemContainerStyle="{StaticResource ComboBoxItemCustom}"/>
+
+                        <Label Content="brColor" Margin="5,0,0,1" Foreground="Gray"/>
+                        <ComboBox ItemsSource="{Binding Colors}" SelectedItem="{Binding SelectedBrColor}" SelectedValue="Gray" HorizontalAlignment="Left" Cursor="Hand" Margin="0,0,0,1"
+                                  Style="{StaticResource ComboBoxCustom}" ItemContainerStyle="{StaticResource ComboBoxItemCustom3}"/>
+
+                        <Label Content="bgColor" Margin="5,0,0,1" Foreground="Gray"/>
+                        <ComboBox ItemsSource="{Binding Colors}" SelectedItem="{Binding SelectedBgColor}" SelectedValue="White" HorizontalAlignment="Left" Cursor="Hand" Margin="0,0,0,1"
+                                  Style="{StaticResource ComboBoxCustom}" ItemContainerStyle="{StaticResource ComboBoxItemCustom3}"/>
+
+                    </StackPanel>
+
+                    <Border Grid.Row="1" Background="{Binding BgColor}" BorderThickness="{Binding BrSize}" BorderBrush="{Binding BrColor}" CornerRadius="{Binding BrCornerRadius}"
+                            Margin="6,0,0,5" Padding="3" >
+                        <RichTextBox Name="mainRTB" AcceptsTab="True" FontSize="16" FontFamily="Trebuchet MS" SelectionBrush="LightGray"
+                                     Background="{Binding BgColor}" CaretBrush="Gray" BorderThickness="0"
+                                     property:RichTextBoxHelper.BindToViewModel="True"
+                                     property:RichTextBoxHelper.EnableFormattingPopup="True"
+                                     property:RichTextBoxHelper.EnableTextFormatting="True"
+                                     PreviewKeyDown="ListView_TextBox_PreviewKeyDown">
+                            <RichTextBox.Resources>
+                                <Style TargetType="Paragraph">
+                                    <Setter Property="LineHeight" Value="6"/>
+                                </Style>
+                            </RichTextBox.Resources>
+                        </RichTextBox>
+                    </Border>
+
+                    <Popup Name="formattingPopup" StaysOpen="False" Placement="RelativePoint" AllowsTransparency="True" PopupAnimation="Fade" Height="33" VerticalOffset="100">
+                        <Border Background="White" CornerRadius="8" Padding="3" BorderBrush="Gray" BorderThickness="1">
+                            <StackPanel Orientation="Horizontal">
+
+                                <!--Шрифты-->
+                                <Grid>
+                                    <ComboBox x:Name="fontComboBox" ItemsSource="{Binding Fonts}" Style="{StaticResource ComboBoxCustom}"
+                                              ItemContainerStyle="{StaticResource ComboBoxItemCustom2}" IsTextSearchEnabled="False">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Button Command="{x:Static helper:FormattedTextCommands.ChangeFont}"
+                                                        CommandParameter="{Binding}" CommandTarget="{Binding ElementName=mainRTB}">
+                                                    <Button.Style>
+                                                        <Style TargetType="Button">
+                                                            <Setter Property="Background" Value="White"/>
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="Button">
+
+                                                                        <TextBlock Background="{TemplateBinding Background}" Text="{Binding}" Padding="3" Margin="-1"/>
+
+                                                                        <ControlTemplate.Triggers>
+                                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                                <Setter Property="Background" Value="WhiteSmoke"/>
+                                                                            </Trigger>
+                                                                        </ControlTemplate.Triggers>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Style>
+                                                    </Button.Style>
+                                                </Button>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+
+                                    <TextBlock Text="Fonts" IsHitTestVisible="False" VerticalAlignment="Center" Margin="5,0,0,0" Background="White"/>
+                                </Grid>
+                                
+                                <!--Размеры шрифта-->
+                                <Grid>
+                                    <ComboBox x:Name="sizeComboBox" ItemsSource="{Binding FontSizes}" Style="{StaticResource ComboBoxCustom}"
+                                              ItemContainerStyle="{StaticResource ComboBoxItemCustom2}" IsTextSearchEnabled="False">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Button Command="{x:Static helper:FormattedTextCommands.ChangeSize}"
+                                                        CommandParameter="{Binding}" CommandTarget="{Binding ElementName=mainRTB}">
+                                                    <Button.Style>
+                                                        <Style TargetType="Button">
+                                                            <Setter Property="Background" Value="White"/>
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="Button">
+                                                                        
+                                                                        <TextBlock Background="{TemplateBinding Background}" Text="{Binding}" Padding="3" Margin="-1"/>
+                                                                        
+                                                                        <ControlTemplate.Triggers>
+                                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                                <Setter Property="Background" Value="WhiteSmoke"/>
+                                                                            </Trigger>
+                                                                        </ControlTemplate.Triggers>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Style>
+                                                    </Button.Style>
+                                                </Button>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+
+                                    <TextBlock Text="Sizes" IsHitTestVisible="False" VerticalAlignment="Center" Margin="5,0,0,0" Background="White"/>
+                                </Grid>
+
+                                <!--Цвет текста-->
+                                <Grid Margin="0,0,5,0">
+                                    <ComboBox x:Name="textColorComboBox" ItemsSource="{Binding Colors}" Style="{StaticResource ComboBoxCustom}"
+                                              ItemContainerStyle="{StaticResource ComboBoxItemCustom2}" IsTextSearchEnabled="False">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Button Command="{x:Static helper:FormattedTextCommands.ChangeTextColor}"
+                                                        CommandParameter="{Binding}" CommandTarget="{Binding ElementName=mainRTB}">
+                                                    <Button.Style>
+                                                        <Style TargetType="Button">
+                                                            <Setter Property="Background" Value="White"/>
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="Button">
+                                                                        <Grid Background="{TemplateBinding Background}" Margin="-1">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="Auto"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+
+                                                                            <Rectangle Grid.Column="0" Fill="{Binding}" Height="13" Width="13" Margin="5,5,0,5"/>
+                                                                            <TextBlock Grid.Column="1" Text="{Binding}" Margin="5"/>
+
+                                                                        </Grid>
+
+                                                                        <ControlTemplate.Triggers>
+                                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                                <Setter Property="Background" Value="WhiteSmoke"/>
+                                                                            </Trigger>
+                                                                        </ControlTemplate.Triggers>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Style>
+                                                    </Button.Style>
+                                                </Button>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+
+                                    <TextBlock Text="TextColors" IsHitTestVisible="False" VerticalAlignment="Center" Margin="5,0,0,0" Background="White"/>
+                                </Grid>
+
+                                <!--Цвет заднего фона текста-->
+                                <Grid Margin="0,0,5,0">
+                                    <ComboBox x:Name="bgTextColorComboBox" ItemsSource="{Binding Colors}" Style="{StaticResource ComboBoxCustom}"
+                                              ItemContainerStyle="{StaticResource ComboBoxItemCustom2}" IsTextSearchEnabled="False">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Button Command="{x:Static helper:FormattedTextCommands.ChangeBgTextColor}"
+                                                        CommandParameter="{Binding}" CommandTarget="{Binding ElementName=mainRTB}">
+                                                    <Button.Style>
+                                                        <Style TargetType="Button">
+                                                            <Setter Property="Background" Value="White"/>
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="Button">
+                                                                        <Grid Background="{TemplateBinding Background}" Margin="-1">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="Auto"/>
+                                                                                <ColumnDefinition Width="*"/>
+                                                                            </Grid.ColumnDefinitions>
+
+                                                                            <Rectangle Grid.Column="0" Fill="{Binding}" Height="13" Width="13" Margin="5,5,0,5"/>
+                                                                            <TextBlock Grid.Column="1" Text="{Binding}" Margin="5"/>
+
+                                                                        </Grid>
+
+                                                                        <ControlTemplate.Triggers>
+                                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                                <Setter Property="Background" Value="WhiteSmoke"/>
+                                                                            </Trigger>
+                                                                        </ControlTemplate.Triggers>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Style>
+                                                    </Button.Style>
+                                                </Button>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+
+                                    <TextBlock Text="BgTextColors" IsHitTestVisible="False" VerticalAlignment="Center" Margin="5,0,0,0" Background="White"/>
+                                </Grid>
+
+                                <Button Style="{StaticResource RichTextBoxButton}" Content="/Common/Images/bold.png" Tag="4" Command="EditingCommands.ToggleBold"/>
+                                <Button Style="{StaticResource RichTextBoxButton}" Content="/Common/Images/italic.png" Tag="4" Command="EditingCommands.ToggleItalic"/>
+                                <Button Style="{StaticResource RichTextBoxButton}" Content="/Common/Images/underlining.png" Tag="4" Command="EditingCommands.ToggleUnderline"/>
+                                <Button Style="{StaticResource RichTextBoxButton}" Content="/Common/Images/strikethrough.png" Tag="4" Command="{x:Static helper:FormattedTextCommands.ToggleStrikethrough}"/>
+                                <Button Style="{StaticResource RichTextBoxButton}" Content="/Common/Images/overline.png" Tag="4" Command="{x:Static helper:FormattedTextCommands.ToggleOverline}"/>
+
+
+                                <Button Style="{StaticResource RichTextBoxButton}" Content="/Common/Images/alignLeft.png" Tag="2" RenderOptions.BitmapScalingMode="HighQuality" Command="EditingCommands.AlignLeft"/>
+                                <Button Style="{StaticResource RichTextBoxButton}" Content="/Common/Images/alignCenter.png" Tag="1" RenderOptions.BitmapScalingMode="HighQuality" Command="EditingCommands.AlignCenter"/>
+                                <Button Style="{StaticResource RichTextBoxButton}" Content="/Common/Images/alignRight.png" Tag="2" RenderOptions.BitmapScalingMode="HighQuality" Command="EditingCommands.AlignRight"/>
+                                <Button Style="{StaticResource RichTextBoxButton}" Content="/Common/Images/alignJustify.png" Tag="1" RenderOptions.BitmapScalingMode="HighQuality" Command="EditingCommands.AlignJustify"/>
+
+                                <Button Style="{StaticResource RichTextBoxButton}" Content="/Common/Images/addIndentation.png" Tag="1" RenderOptions.BitmapScalingMode="HighQuality" Command="EditingCommands.IncreaseIndentation"/>
+                                <Button Style="{StaticResource RichTextBoxButton}" Content="/Common/Images/removeIndentation.png" Tag="1" RenderOptions.BitmapScalingMode="HighQuality" Command="EditingCommands.DecreaseIndentation"/>
+
+                                <Button Style="{StaticResource RichTextBoxButton}" Content="/Common/Images/marker.png" Tag="2" RenderOptions.BitmapScalingMode="Fant" Command="EditingCommands.ToggleBullets"/>
+                                <Button Style="{StaticResource RichTextBoxButton}" Content="/Common/Images/numeric.png" Tag="1" RenderOptions.BitmapScalingMode="Fant" Command="EditingCommands.ToggleNumbering"/>
+
+                            </StackPanel>
+                        </Border>
+                    </Popup>
+
+                </Grid>
+
+                <Button Grid.Column="3" Content="X" Cursor="Hand" VerticalAlignment="Top" VerticalContentAlignment="Top" Margin="10,2,0,0" FontSize="14"
+                        Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Command="{Binding DataContext.HardNoteVM.DeleteCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
+                        CommandParameter="{Binding}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <ContentPresenter/>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Foreground" Value="Red"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Grid Grid.Column="4" Margin="5,1,5,0" VerticalAlignment="Top">
+
+                    <TextBox Style="{StaticResource Text}" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" Foreground="Gray" FontSize="12"
+                             Width="150" VerticalAlignment="Center" Visibility="{Binding IsEditing, Converter={StaticResource BoolToVis}}"
+                             property:PlaceHolder.PlaceHolder="Enter comment" property:PlaceHolder.ShowAlways="True">
+                        <i:Interaction.Behaviors>
+                            <helper:FocusTextBoxBehavior/>
+                        </i:Interaction.Behaviors>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="LostFocus">
+                                <i:InvokeCommandAction Command="{Binding DataContext.HardNoteVM.StopEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </TextBox>
+
+                    <Button Style="{StaticResource ImageButton}" Content="/Common/Images/comment.png" Height="18" Width="18" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top"
+                            Cursor="Hand" Command="{Binding DataContext.HardNoteVM.StartEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
+                        <Button.Visibility>
+                            <MultiBinding Converter="{StaticResource EditingAndHoverToVisibilityConverter}">
+                                <Binding Path="IsEditing"/>
+                                <Binding Path="IsMouseOver" RelativeSource="{RelativeSource AncestorType=ListViewItem}"/>
+                            </MultiBinding>
+                        </Button.Visibility>
+                    </Button>
+
+                </Grid>
+            </Grid>
+            
+        </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewModel:CommandContextMenu}">
-            <Button Style="{StaticResource ImageTextButton}" Content="{Binding NameCommand}" FontSize="15" Tag="{Binding PathImage}" Height="20" 
+            <Button Style="{StaticResource ImageTextButton}" Content="{Binding NameCommand}" FontSize="14" Tag="{Binding PathImage}" Height="18" 
                     Margin="3" RenderOptions.BitmapScalingMode="Fant" TextOptions.TextFormattingMode="Display"
                     Command="{Binding ActionCommand}" Click="PositionPopupType"/>
         </DataTemplate>
