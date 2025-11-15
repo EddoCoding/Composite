@@ -30,7 +30,20 @@ namespace Composite.Services
         {
             foreach (var item in container)
             {
-                if (openViews.Any(kv => kv.Value.GetType() == typeof(ViewModel))) return false;
+                var existingView = openViews.FirstOrDefault(kv => kv.Value.GetType() == typeof(ViewModel));
+
+                if (existingView.Value != null)
+                {
+                    var window = existingView.Key as Window;
+                    if (window != null)
+                    {
+                        if (window.WindowState == WindowState.Minimized) window.WindowState = WindowState.Normal;
+
+                        window.Activate();
+                        window.Focus();
+                    }
+                    return false;
+                }
                 if (item.Value == typeof(ViewModel))
                 {
                     var view = (Window)Activator.CreateInstance(item.Key);
