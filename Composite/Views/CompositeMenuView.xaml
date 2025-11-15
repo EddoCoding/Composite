@@ -409,12 +409,13 @@
                             <Grid Width="234" HorizontalAlignment="Left">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="170"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
                                 <Image Grid.Column="0" Source="{Binding ItemType, Converter={StaticResource NoteTypeToIconConverter}}" Height="24" Width="24" RenderOptions.BitmapScalingMode="Fant"/>
-                                <TextBlock Grid.Column="1" Text="{Binding Title}" FontSize="14" Margin="5" TextTrimming="CharacterEllipsis" TextOptions.TextFormattingMode="Ideal"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Title}" FontSize="14" Margin="5" TextTrimming="CharacterEllipsis" 
+                                           TextOptions.TextFormattingMode="Ideal"/>
                                 <Button x:Name="button" Grid.Column="2" Style="{StaticResource ImageButton}" Content="/Common/Images/threeDots.png" Tag="LightGray"
                                         Height="20" Width="20" RenderOptions.BitmapScalingMode="Fant" Visibility="Collapsed" Click="button_Click"/>
 
@@ -510,7 +511,8 @@
 
             <ContentControl Grid.Row="2" Style="{StaticResource ContentControlNotes}" Content="/Common/Images/notes.png" Tag="Notes" Height="28" Margin="3"/>
 
-            <ListView Grid.Row="3" Margin="5,0" ItemsSource="{Binding Notes}" ItemContainerStyle="{StaticResource NoteListViewItem}" BorderThickness="0"/>
+            <ListView Grid.Row="3" Margin="5,0" ItemsSource="{Binding Notes}" ItemContainerStyle="{StaticResource NoteListViewItem}" BorderThickness="0"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
 
             <Button Grid.Row="4" Content="/Common/Images/scale.png" Height="30" Margin="5,0,5,5" VerticalAlignment="Bottom" 
                     Style="{StaticResource ImageModule}" ToolTip="Scale" Command="{Binding ScaleCommand}" Tag="Orange"/>
