@@ -400,6 +400,32 @@ namespace Composite.Views.Notes
                         }
                     }
                 }
+                if (Keyboard.IsKeyDown(Key.LeftCtrl) && Keyboard.IsKeyDown(Key.D))
+                {
+                    if (textBox1.DataContext is CompositeBaseVM currentComposite)
+                    {
+                        var listView = FindParent<ListView>(textBox1);
+                        if (listView?.DataContext is AddHardNoteViewModel viewModel)
+                        {
+                            var duplicateComposite = viewModel.HardNoteVM.DuplicateComposite(currentComposite);
+
+                            Dispatcher.BeginInvoke(new Action(() =>
+                            {
+                                var container = listView.ItemContainerGenerator.ContainerFromItem(duplicateComposite) as ListViewItem;
+                                if (container != null)
+                                {
+                                    var textBox = FindChildInColumn<TextBox>(container, 2);
+                                    if (textBox != null)
+                                    {
+                                        textBox.Focus();
+                                        textBox.CaretIndex = textBox.Text.Length;
+                                    }
+                                }
+                            }), DispatcherPriority.Background);
+                        }
+                    }
+                    e.Handled = true;
+                }
             }
             else if(sender is RichTextBox rtb)
             {
@@ -450,6 +476,34 @@ namespace Composite.Views.Notes
                             e.Handled = true;
                         }
                     }
+                }
+                if (Keyboard.IsKeyDown(Key.LeftCtrl) && Keyboard.IsKeyDown(Key.D))
+                {
+                    if (rtb.DataContext is CompositeBaseVM currentComposite)
+                    {
+                        var listView = FindParent<ListView>(rtb);
+                        if (listView?.DataContext is AddHardNoteViewModel viewModel)
+                        {
+                            var duplicateComposite = viewModel.HardNoteVM.DuplicateComposite(currentComposite);
+
+                            Dispatcher.BeginInvoke(new Action(() =>
+                            {
+                                var container = listView.ItemContainerGenerator.ContainerFromItem(duplicateComposite) as ListViewItem;
+                                if (container != null)
+                                {
+                                    var richTextBox = FindChildInColumn<RichTextBox>(container, 2);
+                                    if (richTextBox != null)
+                                    {
+                                        richTextBox.Focus();
+                                        TextPointer endPointer = richTextBox.Document.ContentEnd;
+                                        richTextBox.CaretPosition = endPointer;
+                                        richTextBox.ScrollToEnd();
+                                    }
+                                }
+                            }), DispatcherPriority.Background);
+                        }
+                    }
+                    e.Handled = true;
                 }
             }
         }

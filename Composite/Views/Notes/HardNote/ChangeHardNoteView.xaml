@@ -390,7 +390,7 @@
                         CommandParameter="{Binding}"/>
 
                 <TextBox Grid.Column="2" Style="{StaticResource Text}" Margin="10,0,0,0"
-                         property:PlaceHolder.PlaceHolder="Enter text" PreviewKeyDown="ListView_TextBox_PreviewKeyDown"/>
+                         property:PlaceHolder.PlaceHolder="Enter text or '/' for snippets" PreviewKeyDown="ListView_TextBox_PreviewKeyDown"/>
 
                 <Button Grid.Column="3" Content="X" Cursor="Hand" VerticalAlignment="Top" VerticalContentAlignment="Top" Margin="10,2,0,0" FontSize="14"
                         Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"

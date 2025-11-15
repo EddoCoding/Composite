@@ -325,13 +325,15 @@ namespace Composite.ViewModels.Notes.HardNote
             }
         }
 
-        void DuplicateComposite<T>(T composite) where T : CompositeBaseVM
+        public T DuplicateComposite<T>(T composite) where T : CompositeBaseVM
         {
             var index = Composites.IndexOf(composite);
             var duplicateComposite = (T)composite.Clone();
             Composites.Insert(index + 1, duplicateComposite);
             if (duplicateComposite is NumericCompositeVM) UpdateNumericSequence(index + 1);
             CloseContextMenus();
+
+            return duplicateComposite;
         }
         void ChangeTypeComposite(CompositeBaseVM composite, string selectType)
         {
