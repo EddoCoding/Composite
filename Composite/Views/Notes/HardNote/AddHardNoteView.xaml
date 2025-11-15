@@ -1845,6 +1845,7 @@
     </UserControl.Resources>
     <UserControl.InputBindings>
         <KeyBinding Gesture="CTRL+S" Command="{Binding CheckNoteCommand}"/>
+        <KeyBinding Gesture="CTRL+W" Command="{Binding CloseTabCommand}"/>
     </UserControl.InputBindings>
 
     <Grid PreviewKeyDown="Grid_PreviewKeyDown">

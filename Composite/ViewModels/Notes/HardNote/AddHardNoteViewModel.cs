@@ -88,6 +88,7 @@ namespace Composite.ViewModels.Notes.Note
             if (PasswordVisible == "Collapsed") PasswordVisible = "Visible";
             else PasswordVisible = "Collapsed";
         }
+        [RelayCommand] void CloseTab() => _tabService.RemoveTab(this);
 
         bool _disposed = false;
         public virtual void Dispose()

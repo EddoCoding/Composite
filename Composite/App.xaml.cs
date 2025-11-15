@@ -106,7 +106,7 @@ namespace Composite
                 
                 //Функциональный заметки
                 var queryCreateHardNotes = "Create Table If Not Exists HardNotes(Id Text Primary Key, Title Text Default '', DateCreate DateTime Not Null, Category Text, Password Text)";
-                var queryCreateComposites = "Create Table If Not Exists Composites(Id Text Primary Key, Tag Text, Comment Text, Text Text, Header Text, FontWeightHeader Text, FontSizeHeader Integer, Quote Text, " +
+                var queryCreateComposites = "Create Table If Not Exists Composites(Id Text Primary Key, Tag Text, Comment Text, Text Text, FontWeightHeader Text, FontSizeHeader Integer, " +
                                             "Completed Integer Default 0, Data Blob, HorizontalImage Text Default 'Center', ValueRef Text, Number Integer, BrSize Integer, BrColor Text " +
                                             "BgColor Text, BrCornerRadius Integer " +
                                             "HardNoteId TEXT NOT NULL, CompositeType TEXT NOT NULL, OrderIndex Integer, Foreign Key (HardNoteId) References HardNotes(Id) On Delete Cascade)";

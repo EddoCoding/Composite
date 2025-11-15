@@ -95,6 +95,7 @@ namespace Composite.ViewModels.Notes.HardNote
             if (PasswordVisible == "Collapsed") PasswordVisible = "Visible";
             else PasswordVisible = "Collapsed";
         }
+        [RelayCommand] void CloseTab() => _tabService.RemoveTab(this);
 
         void CopyHardNoteVM(HardNoteVM originalHardNoteVM) => HardNoteVM = _hardNoteService.CreateHardNoteVM(originalHardNoteVM);
 

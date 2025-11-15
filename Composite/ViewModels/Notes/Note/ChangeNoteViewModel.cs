@@ -96,6 +96,7 @@ namespace Composite.ViewModels.Notes
             if (PasswordVisible == "Collapsed") PasswordVisible = "Visible";
             else PasswordVisible = "Collapsed";
         }
+        [RelayCommand] void CloseTab() => _tabService.RemoveTab(this);
 
         void CopyNoteVM(NoteVM originalNoteVM) => NoteVM = _noteService.CreateNoteVM(originalNoteVM);
 
