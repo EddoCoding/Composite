@@ -2,6 +2,7 @@
 using Composite.ViewModels.Notes.Note;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -15,14 +16,33 @@ namespace Composite.Views.Notes
         {
             InitializeComponent();
             Loaded += (s, e) => titleTextBox.Focus();
+
+            EventManager.RegisterClassHandler(typeof(ComboBox), UIElement.PreviewMouseWheelEvent, new MouseWheelEventHandler(OnComboBoxMouseWheel), true);
         }
 
+        void OnComboBoxMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (sender is ComboBox cb && cb.IsDropDownOpen)
+            {
+                var popup = cb.Template?.FindName("PART_Popup", cb) as Popup;
+                if (popup?.Child != null)
+                {
+                    var sv = FindChild<ScrollViewer>(popup.Child);
+                    if (sv != null)
+                    {
+                        sv.ScrollToVerticalOffset(sv.VerticalOffset - e.Delta / 3.0);
+                        e.Handled = true;
+                    }
+                }
+            }
+        }
+        
         void PositionPopupType(object sender, RoutedEventArgs e)
         {
             if (sender is Button button) PopupType.PlacementTarget = button;
         }
 
-        //3 Поиска по дереву
+        //4 Поиска по дереву
         T? FindParent<T>(DependencyObject child) where T : DependencyObject
         {
             DependencyObject? parentObject = VisualTreeHelper.GetParent(child);
@@ -67,6 +87,21 @@ namespace Composite.Views.Notes
                 var result = FindChildRecursive<T>(child);
                 if (result != null) return result;
             }
+            return null;
+        }
+        static T FindChild<T>(DependencyObject parent) where T : DependencyObject
+        {
+            if (parent == null) return null;
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child is T result) return result;
+
+                result = FindChild<T>(child);
+                if (result != null) return result;
+            }
+
             return null;
         }
 

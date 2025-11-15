@@ -1548,19 +1548,6 @@
                     <ColumnDefinition Width="20"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Grid.Resources>
-                    <Style TargetType="{x:Type Button}" x:Key="formatTextStyle">
-                        <Setter Property="FontFamily" Value="Palatino Linotype"></Setter>
-                        <Setter Property="Width" Value="30"></Setter>
-                        <Setter Property="FontSize" Value ="14"></Setter>
-                        <Setter Property="CommandTarget" Value="{Binding ElementName=mainRTB}"></Setter>
-                    </Style>
-
-                    <Style TargetType="{x:Type Button}" x:Key="formatImageStyle">
-                        <Setter Property="Width" Value="30"></Setter>
-                        <Setter Property="CommandTarget" Value="{Binding ElementName=mainRTB}"></Setter>
-                    </Style>
-                </Grid.Resources>
 
                 <TextBox Grid.Column="0" Style="{StaticResource Text}" Text="{Binding Tag}" Margin="5,0" Width="100" TextWrapping="NoWrap" Foreground="Gray"
                          property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Top"/>
@@ -1977,7 +1964,6 @@
                 </ListView>
             </Border>
         </Popup>
-
     </Grid>
 
 </UserControl>

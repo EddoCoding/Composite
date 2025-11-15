@@ -141,7 +141,7 @@
                     </TextBlock>
 
                     <Popup Name="SongActionsPopup" PlacementTarget="{Binding ElementName=SongTextBlock}" Placement="Bottom" StaysOpen="True"
-                    AllowsTransparency="True" PopupAnimation="Slide">
+                        AllowsTransparency="True" PopupAnimation="Slide">
                         <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="5"
                         MouseEnter="PopupBorder_MouseEnter" MouseLeave="PopupBorder_MouseLeave">
                             <Border.Effect>

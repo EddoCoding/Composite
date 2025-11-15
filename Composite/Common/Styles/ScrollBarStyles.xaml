@@ -45,12 +45,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Thumb">
-                    <Rectangle x:Name="rectangle" Fill="Black" Height="{TemplateBinding Height}" SnapsToDevicePixels="True" RadiusX="6" RadiusY="6"/>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsDragging" Value="true">
-                            <Setter Property="Fill" TargetName="rectangle" Value="Black"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
+                    <Border BorderBrush="Gray" BorderThickness="0.6" CornerRadius="6">
+                        <Rectangle x:Name="rectangle" Fill="#F0F0F0" Height="{TemplateBinding Height}" SnapsToDevicePixels="True" RadiusX="6" RadiusY="6"/>
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -62,12 +59,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Thumb">
-                    <Rectangle x:Name="rectangle" Fill="Black" Height="{TemplateBinding Height}" SnapsToDevicePixels="True" RadiusX="6" RadiusY="6"/>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsDragging" Value="true">
-                            <Setter Property="Fill" TargetName="rectangle" Value="Black"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
+                    <Border BorderBrush="Gray" BorderThickness="0.6" CornerRadius="6">
+                        <Rectangle x:Name="rectangle" Fill="#F0F0F0" Height="{TemplateBinding Height}" SnapsToDevicePixels="True" RadiusX="6" RadiusY="6"/>
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
