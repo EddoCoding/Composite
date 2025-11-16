@@ -162,10 +162,26 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
+        <Style x:Key="AddNoteButton" TargetType="Button">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="Gray"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <TextBlock Text="Save" Foreground="{TemplateBinding Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="6"/>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
         <Style x:Key="TitleTextBox" TargetType="TextBox">
             <Setter Property="FontSize" Value="26"/>
-            <Setter Property="Margin" Value="0,30,0,5"/>
+            <Setter Property="Margin" Value="0,10,0,5"/>
             <Setter Property="FontFamily" Value="Trebuchet MS"/>
             <Setter Property="SelectionBrush" Value="LightGray"/>
             <Setter Property="CaretBrush" Value="Gray"/>
@@ -227,28 +243,6 @@
             <Setter Property="X2" Value="1"/>
             <Setter Property="Height" Value="20"/>
             <Setter Property="Margin" Value="10,10,0,0"/>
-        </Style>
-        <Style x:Key="AddNoteButton" TargetType="Button">
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="border" BorderThickness="0" HorizontalAlignment="Right" Background="White" Margin="0,8,8,8">
-                            <Border.Effect>
-                                <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
-                            </Border.Effect>
-
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="6"/>
-
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="WhiteSmoke"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
         </Style>
         <Style x:Key="CheckBoxTask" TargetType="CheckBox">
             <Setter Property="Background" Value="White"/>
@@ -748,8 +742,6 @@
                 </Grid>
 
             </Grid>
-
-            
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:LineCompositeVM}">
             <Grid Width="1150" Background="Transparent">
@@ -1082,7 +1074,7 @@
 
                 <Popup IsOpen="{Binding IsRefPopup, Mode=TwoWay}" PlacementTarget="{Binding ElementName=RefButton}" AllowsTransparency="True" StaysOpen="False" 
                        Placement="Bottom" VerticalOffset="10">
-                    <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="8" Width="400">
+                    <Border Background="WhiteSmoke" BorderBrush="Gray" BorderThickness="1" CornerRadius="8" Width="400">
                         <Border.Effect>
                             <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
                         </Border.Effect>
@@ -1115,7 +1107,7 @@
                                         </Style>
                                     </Button.Style>
                                 </Button>
-                                <TextBlock Text="{Binding Text}" VerticalAlignment="Center" Margin="10,0,0,0" MaxWidth="200" 
+                                <TextBlock Text="{Binding Text}" VerticalAlignment="Center" Margin="5,0,0,0" MaxWidth="200" 
                                            TextTrimming="CharacterEllipsis" FontSize="14"/>
                                 <Button Command="{Binding ClearSelectedNoteCommand}">
                                     <Button.Style>
@@ -1148,7 +1140,7 @@
                 <Popup IsOpen="{Binding IsNotesPopup, Mode=TwoWay}" PlacementTarget="{Binding ElementName=RefPopup}" AllowsTransparency="True" StaysOpen="False" Placement="Bottom"
                        VerticalOffset="20" HorizontalOffset="-10">
                     <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="8" MaxHeight="250">
-                        <ListView ItemsSource="{Binding Notes}" BorderThickness="0" Margin="0,5">
+                        <ListView ItemsSource="{Binding Notes}" BorderThickness="0" Margin="0,5" Background="WhiteSmoke">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
                                     <Setter Property="Template">
@@ -1157,7 +1149,7 @@
                                                 <Button Command="{Binding DataContext.SelectNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
                                                     <Button.Style>
                                                         <Style TargetType="Button">
-                                                            <Setter Property="Background" Value="Transparent"/>
+                                                            <Setter Property="Background" Value="WhiteSmoke"/>
                                                             <Setter Property="Template">
                                                                 <Setter.Value>
                                                                     <ControlTemplate TargetType="Button">
@@ -1166,7 +1158,7 @@
                                                                         </Border>
                                                                         <ControlTemplate.Triggers>
                                                                             <Trigger Property="IsMouseOver" Value="True">
-                                                                                <Setter Property="Background" Value="WhiteSmoke"/>
+                                                                                <Setter Property="Background" Value="#E6E6E6"/>
                                                                             </Trigger>
                                                                         </ControlTemplate.Triggers>
                                                                     </ControlTemplate>
@@ -1371,7 +1363,7 @@
                         Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                         CommandParameter="{Binding}"/>
 
-                <TextBox Grid.Column="2" Style="{DynamicResource Code}"/>
+                <TextBox Grid.Column="2" Style="{StaticResource Code}"/>
 
                 <Button Grid.Column="3" Content="X" Cursor="Hand" VerticalAlignment="Top" Margin="10,5,0,0" FontSize="14"
                         Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
@@ -1860,7 +1852,7 @@
                  property:PlaceHolder.PlaceHolder="Headline" PreviewKeyDown="TitleTextBox_PreviewKeyDown"/>
 
         <ListView Grid.Row="1" x:Name="listComposite" ItemsSource="{Binding HardNoteVM.Composites}" BorderThickness="0" HorizontalContentAlignment="Stretch"
-                  Focusable="False" Cursor="IBeam" ScrollViewer.CanContentScroll="False" Padding="0,0,0,15"
+                  Focusable="False" Cursor="IBeam" ScrollViewer.CanContentScroll="False" Padding="0,0,0,15" Background="WhiteSmoke"
                   PreviewKeyDown="ListView_PreviewKeyDown" MouseDown="listComposite_MouseDown" PreviewMouseWheel="listComposite_PreviewMouseWheel">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
@@ -1877,25 +1869,22 @@
             </ListView.ItemContainerStyle>
         </ListView>
 
-        <Grid Grid.Row="2" Background="White" Margin="-2,-1">
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Grid.Effect>
-                <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
-            </Grid.Effect>
 
-            <ComboBox Grid.Column="0" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" Style="{StaticResource ComboBoxCustom}" ItemContainerStyle="{StaticResource ComboBoxItemCustom}"
-                FontSize="12" DisplayMemberPath="NameCategory"/>
+            <ComboBox Grid.Column="0" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" Style="{StaticResource ComboBoxCustom}" 
+                      ItemContainerStyle="{StaticResource ComboBoxItemCustom}" FontSize="12" DisplayMemberPath="NameCategory"/>
 
-            <Button Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/lock.png" HorizontalAlignment="Right" Margin="0,5,10,0" Height="18" Width="18"
+            <Button Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/lock.png" HorizontalAlignment="Right" Margin="0,0,10,0" Height="18" Width="18"
                     RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Center" Command="{Binding ShowPasswordCommand}"/>
             
-            <TextBox Grid.Column="2" Width="120" Style="{StaticResource PasswordTextBox}" VerticalAlignment="Bottom" FontSize="14" Margin="0,0,20,4" MaxLength="13"
-                     Text="{Binding HardNoteVM.Password}" HorizontalAlignment="Right" Visibility="{Binding PasswordVisible}"
+            <TextBox Grid.Column="2" Width="120" Style="{StaticResource PasswordTextBox}" FontSize="14" Margin="0,0,10,0" MaxLength="13" Background="Transparent"
+                     Text="{Binding HardNoteVM.Password}" HorizontalAlignment="Right" Visibility="{Binding PasswordVisible}" VerticalAlignment="Bottom"
                      property:PlaceHolder.PlaceHolder="Enter password" property:PlaceHolder.ShowAlways="True"/>
             
             <Button Grid.Column="3" Content="Save" Style="{StaticResource AddNoteButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right"
@@ -1965,6 +1954,7 @@
                 </ListView>
             </Border>
         </Popup>
+        
     </Grid>
 
 </UserControl>

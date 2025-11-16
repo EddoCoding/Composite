@@ -26,11 +26,12 @@
         <Style x:Key="CustomTabItem" TargetType="TabItem">
             <Setter Property="Height" Value="25"/>
             <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Background" Value="#E6E6E6"/>
+            <Setter Property="Background" Value="WhiteSmoke"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TabItem">
-                        <Border BorderThickness="1" BorderBrush="LightGray" Margin="0" Background="{TemplateBinding Background}">
+                        <Border BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="4" Margin="0" Background="{TemplateBinding Background}">
                             <Grid Margin="5,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -38,19 +39,20 @@
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock Grid.Column="0" Text="{Binding TitleTab}" VerticalAlignment="Center" MaxWidth="200" TextTrimming="CharacterEllipsis"/>
-                                <Button Grid.Column="1" Content="X" Margin="5,0,0,0" VerticalAlignment="Center" Style="{StaticResource ButtonTab}" Command="{Binding CloseTabCommand}"/>
+                                <Button Grid.Column="1" Content="X" Margin="5,0,0,0" VerticalAlignment="Center" FontSize="15"
+                                        Style="{StaticResource ButtonTab}" Command="{Binding CloseTabCommand}"/>
                                 
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="BorderBrush" Value="Gray"/>
                             </Trigger>
                             <Trigger Property="IsFocused" Value="True">
-                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="BorderBrush" Value="Gray"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="BorderBrush" Value="Gray"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -59,11 +61,8 @@
         </Style>
     </UserControl.Resources>
 
-    <TabControl Grid.Row="0" Background="White" Margin="10,0,0,10" BorderThickness="0" ItemContainerStyle="{StaticResource CustomTabItem}"
+    <TabControl Grid.Row="0" Background="WhiteSmoke" Margin="10,0,0,10" BorderThickness="0" ItemContainerStyle="{StaticResource CustomTabItem}"
             ItemsSource="{Binding TabService.Tabs}" SelectedItem="{Binding TabService.SelectedTab}">
-        <TabControl.Effect>
-            <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
-        </TabControl.Effect>
         <TabControl.ContentTemplate>
             <DataTemplate>
                 <ContentPresenter Content="{Binding ContentTab}"/>

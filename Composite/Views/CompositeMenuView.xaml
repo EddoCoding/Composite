@@ -14,34 +14,40 @@
 
         <Style x:Key="ImageModule" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="Gray"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="7" Padding="3,5">
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="{Binding Content, RelativeSource={RelativeSource AncestorType=Button}}" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                       RenderOptions.BitmapScalingMode="Fant"/>
-                                <TextBlock Text="{Binding ToolTip, RelativeSource={RelativeSource AncestorType=Button}}" FontSize="13" Margin="10,0,0,0" VerticalAlignment="Center"
-                                           TextOptions.TextFormattingMode="Ideal"/>
-                            </StackPanel>
+                        <Border x:Name="border" CornerRadius="7" Padding="3,5" Background="WhiteSmoke">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock x:Name="q" Grid.Column="0" Text="{Binding ToolTip, RelativeSource={RelativeSource AncestorType=Button}}" FontSize="13" VerticalAlignment="Center"
+                                           Foreground="{TemplateBinding Foreground}" HorizontalAlignment="Right" TextOptions.TextFormattingMode="Ideal"/>
+                                <Image Grid.Column="1" Source="{Binding Content, RelativeSource={RelativeSource AncestorType=Button}}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Margin="10,0,5,0" RenderOptions.BitmapScalingMode="Fant"/>
+
+                            </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="{Binding Tag, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                <Setter TargetName="q" Property="Foreground" Value="{Binding Tag, RelativeSource={RelativeSource AncestorType=Button}}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-
         <Style x:Key="TextBoxSearch" TargetType="TextBox">
             <Setter Property="FontSize" Value="13"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="SelectionBrush" Value="LightGray"/>
             <Setter Property="CaretBrush" Value="Gray"/>
             <Setter Property="FontFamily" Value="Trebuchet MS"/>
-            <Setter Property="Background" Value="White"/>
+            <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
@@ -62,7 +68,7 @@
             </Setter>
         </Style>
         <Style x:Key="ImageButton" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Background" Value="WhiteSmoke"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -70,14 +76,44 @@
                             <ContentPresenter>
                                 <ContentPresenter.Content>
                                     <Image Height="{Binding Height, RelativeSource={RelativeSource AncestorType=Button}}" 
-                                               Width="{Binding Width, RelativeSource={RelativeSource AncestorType=Button}}"
-                                               Source="{Binding Content, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                           Width="{Binding Width, RelativeSource={RelativeSource AncestorType=Button}}"
+                                           Source="{Binding Content, RelativeSource={RelativeSource AncestorType=Button}}"/>
                                 </ContentPresenter.Content>
                             </ContentPresenter>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="{Binding Tag, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                <Setter TargetName="border" Property="Background" Value="{Binding Path=Tag, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ImageTextButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" Background="Transparent" CornerRadius="5">
+                            <ContentPresenter>
+                                <ContentPresenter.Content>
+                                    <StackPanel Orientation="Horizontal" Height="{Binding Height, RelativeSource={RelativeSource AncestorType=Button}}">
+
+                                        <Image Width="{Binding Width, RelativeSource={RelativeSource AncestorType=Button}}"
+                                               Source="{Binding Tag, RelativeSource={RelativeSource AncestorType=Button}}"
+                                               Margin="3,1,0,1"/>
+
+                                        <TextBlock Text="{Binding Content, RelativeSource={RelativeSource AncestorType=Button}}" Margin="10,1,5,1" VerticalAlignment="Center"
+                                                   FontSize="{Binding FontSize, RelativeSource={RelativeSource AncestorType=Button}}"/>
+
+                                    </StackPanel>
+                                </ContentPresenter.Content>
+                            </ContentPresenter>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#E6E6E6"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -89,7 +125,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListViewItem">
-                        <Button Command="{Binding DataContext.SortByCategoryCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
+                        <Button Command="{Binding DataContext.SortByCategoryCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}">
                             <Button.Style>
                                 <Style TargetType="Button">
                                     <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -107,18 +143,18 @@
                                                         </Grid.ColumnDefinitions>
 
                                                         <TextBlock Grid.Column="0" Text="{Binding NameCategory}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
-                                                            Margin="5" Width="140" TextTrimming="CharacterEllipsis"/>
+                                                                   Margin="5" Width="140" TextTrimming="CharacterEllipsis"/>
 
-                                                        <Button Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/deleteCategory.png" Height="22" Width="22" 
-                                                                Margin="0,0,5,0" Tag="LightGray" 
-                                                                Command="{Binding DataContext.DeleteCategoryCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                                                        <Button Name="button" Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/deleteCategory.png" Height="22" Width="22" 
+                                                                Margin="0,0,5,0" Tag="LightGray" Background="WhiteSmoke"
+                                                                Command="{Binding DataContext.DeleteCategoryCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                                 CommandParameter="{Binding}"/>
-
                                                     </Grid>
                                                 </Border>
                                                 <ControlTemplate.Triggers>
                                                     <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter Property="Background" Value="WhiteSmoke"/>
+                                                        <Setter Property="Background" Value="#E6E6E6"/>
+                                                        <Setter TargetName="button" Property="Background" Value="#E6E6E6"/>
                                                     </Trigger>
                                                 </ControlTemplate.Triggers>
                                             </ControlTemplate>
@@ -149,59 +185,38 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="WhiteSmoke"/>
+                                <Setter Property="Background" Value="#E6E6E6"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="ContentControlNotes" TargetType="ContentControl">
+
+        <Style x:Key="addNoteButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="Gray"/>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="ContentControl">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="7" Padding="3">
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6" Margin="0,2">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <Image Grid.Column="0" Source="{Binding Content, RelativeSource={RelativeSource AncestorType=ContentControl}}"/>
-                                <TextBlock Grid.Column="1" Text="{Binding Tag, RelativeSource={RelativeSource AncestorType=ContentControl}}" Margin="10,0,0,0" FontSize="14" VerticalAlignment="Center"/>
-                                <Button Grid.Column="2" Margin="0,0,3,0" Content="/Common/Images/threeDots.png" Style="{StaticResource ImageButton}" Height="20" Width="20" 
-                                        RenderOptions.BitmapScalingMode="Fant" Tag="LightGray" Command="{Binding OpenClosePopupCommand}"/>
+                                <TextBlock Grid.Column="0" Text="{Binding Title}" Foreground="{TemplateBinding Foreground}" FontSize="16" Margin="5" TextOptions.TextFormattingMode="Ideal"/>
 
-                                <Popup IsOpen="{Binding IsPopupOpen}" PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=Grid}}" Placement="Bottom" StaysOpen="False" AllowsTransparency="True">
-                                    <Border Background="White" BorderBrush="DarkGray" BorderThickness="1" CornerRadius="5" Width="200">
+                                <Button Grid.Column="1" Content="/Common/Images/threeDots.png" Style="{StaticResource ImageButton}" Margin="0,0,20,0" Height="20" Width="20" 
+                                        RenderOptions.BitmapScalingMode="Fant" Tag="LightGray" Background="{TemplateBinding Background}" HorizontalAlignment="Right"
+                                        Command="{Binding DataContext.OpenClosePopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"/>
+
+                                <Popup IsOpen="{Binding DataContext.IsPopupOpen, RelativeSource={RelativeSource AncestorType=ListView}}" 
+                                       PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=Grid}}" Placement="Bottom" StaysOpen="False" AllowsTransparency="True">
+                                    <Border Background="WhiteSmoke" BorderBrush="DarkGray" BorderThickness="1" CornerRadius="5" Width="200">
                                         <StackPanel>
 
-                                            <Button Content="+ Add note" Command="{Binding SelectTypeNoteCommand}">
-                                                <Button.Style>
-                                                    <Style TargetType="Button">
-                                                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                                                        <Setter Property="HorizontalContentAlignment" Value="Left"/>
-                                                        <Setter Property="FontSize" Value="14"/>
-                                                        <Setter Property="Background" Value="Transparent"/>
-                                                        <Setter Property="Template">
-                                                            <Setter.Value>
-                                                                <ControlTemplate TargetType="Button">
-                                                                    <Border Background="{TemplateBinding Background}" Margin="5,5,5,2" CornerRadius="5">
-                                                                        <ContentPresenter Margin="5,5,0,5"/>
-                                                                    </Border>
-                                                                    <ControlTemplate.Triggers>
-                                                                        <Trigger Property="IsMouseOver" Value="True">
-                                                                            <Setter Property="Background" Value="WhiteSmoke"/>
-                                                                        </Trigger>
-                                                                    </ControlTemplate.Triggers>
-                                                                </ControlTemplate>
-                                                            </Setter.Value>
-                                                        </Setter>
-                                                    </Style>
-                                                </Button.Style>
-                                            </Button>
                                             <ContentControl Name="SortContentControl">
                                                 <ContentControl.Style>
                                                     <Style TargetType="ContentControl">
@@ -219,7 +234,7 @@
                                                                     </Border>
                                                                     <ControlTemplate.Triggers>
                                                                         <Trigger Property="IsMouseOver" Value="True">
-                                                                            <Setter Property="Background" Value="WhiteSmoke"/>
+                                                                            <Setter Property="Background" Value="#E6E6E6"/>
                                                                         </Trigger>
                                                                     </ControlTemplate.Triggers>
                                                                 </ControlTemplate>
@@ -265,7 +280,7 @@
                                                                     </Border>
                                                                     <ControlTemplate.Triggers>
                                                                         <Trigger Property="IsMouseOver" Value="True">
-                                                                            <Setter Property="Background" Value="WhiteSmoke"/>
+                                                                            <Setter Property="Background" Value="#E6E6E6"/>
                                                                         </Trigger>
                                                                     </ControlTemplate.Triggers>
                                                                 </ControlTemplate>
@@ -317,11 +332,12 @@
                                                         </BeginStoryboard>
                                                     </EventTrigger>
                                                 </Popup.Triggers>
-                                                <Border Background="White" BorderBrush="DarkGray" BorderThickness="1" CornerRadius="5" Width="180">
-
+                                                <Border Background="WhiteSmoke" BorderBrush="DarkGray" BorderThickness="1" CornerRadius="5" Width="180">
                                                     <StackPanel>
-                                                        <Button Content="by Title" Style="{StaticResource Buttons}" Margin="5,5,5,2" Command="{Binding SortByTitleCommand}"/>
-                                                        <Button Content="by DateCreate" Style="{StaticResource Buttons}" Margin="5,2,5,5" Command="{Binding SortByDateCreateCommand}"/>
+                                                        <Button Content="by Title" Style="{StaticResource Buttons}" Margin="5,5,5,2" 
+                                                                Command="{Binding DataContext.SortByTitleCommand, RelativeSource={RelativeSource AncestorType=ListView}}"/>
+                                                        <Button Content="by DateCreate" Style="{StaticResource Buttons}" Margin="5,2,5,5" 
+                                                                Command="{Binding DataContext.SortByDateCreateCommand, RelativeSource={RelativeSource AncestorType=ListView}}"/>
                                                     </StackPanel>
                                                 </Border>
                                             </Popup>
@@ -347,13 +363,15 @@
                                                         </BeginStoryboard>
                                                     </EventTrigger>
                                                 </Popup.Triggers>
-                                                <Border Background="White" BorderBrush="DarkGray" BorderThickness="1" CornerRadius="5" Width="200">
+                                                <Border Background="WhiteSmoke" BorderBrush="DarkGray" BorderThickness="1" CornerRadius="5" Width="200">
 
                                                     <StackPanel>
-                                                        <Button Content="+ Add category" Style="{StaticResource Buttons}" Margin="5,5,5,2" Command="{Binding OpenAddCategoryNoteViewCommand}"/>
-                                                        <Button Content="Show all" Style="{StaticResource Buttons}" Margin="5,2" Command="{Binding ShowAllCategoriesCommand}"/>
-                                                        <ListView Grid.Row="1" ItemsSource="{Binding Categories}" ItemContainerStyle="{DynamicResource CategoryListViewItem}" 
-                                                                  BorderThickness="0" Margin="5,2,5,5"/>
+                                                        <Button Content="+ Add category" Style="{StaticResource Buttons}" Margin="5,5,5,2" 
+                                                                Command="{Binding DataContext.OpenAddCategoryNoteViewCommand, RelativeSource={RelativeSource AncestorType=ListView}}"/>
+                                                        <Button Content="Show all" Style="{StaticResource Buttons}" Margin="5,2" 
+                                                                Command="{Binding DataContext.ShowAllCategoriesCommand, RelativeSource={RelativeSource AncestorType=ListView}}"/>
+                                                        <ListView ItemsSource="{Binding DataContext.Categories, RelativeSource={RelativeSource AncestorType=ListView}}" BorderThickness="0" Margin="5,2,5,5" Background="Transparent"
+                                                                  ItemContainerStyle="{StaticResource CategoryListViewItem}"/>
                                                     </StackPanel>
 
                                                 </Border>
@@ -367,33 +385,8 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="WhiteSmoke"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="addNoteButton" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="6" Margin="0,2">
-                            <Grid Width="185" HorizontalAlignment="Left">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock Grid.Column="0" Text="{Binding Title}" FontSize="14" Margin="5" TextOptions.TextFormattingMode="Ideal"/>
-
-                            </Grid>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="WhiteSmoke"/>
+                                <Setter Property="Background" Value="#E6E6E6"/>
+                                <Setter Property="Foreground" Value="Black"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -401,7 +394,8 @@
             </Setter>
         </Style>
         <Style x:Key="NoteButton" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Background" Value="WhiteSmoke"/>
+            <Setter Property="Foreground" Value="Gray"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -414,15 +408,14 @@
                                 </Grid.ColumnDefinitions>
 
                                 <Image Grid.Column="0" Source="{Binding ItemType, Converter={StaticResource NoteTypeToIconConverter}}" Height="24" Width="24" RenderOptions.BitmapScalingMode="Fant"/>
-                                <TextBlock Grid.Column="1" Text="{Binding Title}" FontSize="14" Margin="5" TextTrimming="CharacterEllipsis" 
+                                <TextBlock Grid.Column="1" Text="{Binding Title}" FontSize="16" Margin="5" TextTrimming="CharacterEllipsis" Foreground="{TemplateBinding Foreground}"
                                            TextOptions.TextFormattingMode="Ideal"/>
-                                <Button x:Name="button" Grid.Column="2" Style="{StaticResource ImageButton}" Content="/Common/Images/threeDots.png" Tag="LightGray"
+                                <Button x:Name="button" Grid.Column="2" Style="{StaticResource ImageButton}" Content="/Common/Images/threeDots.png" Tag="#E6E6E6"
                                         Height="20" Width="20" RenderOptions.BitmapScalingMode="Fant" Visibility="Collapsed" Click="button_Click"/>
 
-                                <Popup x:Name="NotePopup"
-                                       PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=Button}}" 
+                                <Popup x:Name="NotePopup" PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=Button}}" 
                                        Placement="Right" StaysOpen="False" AllowsTransparency="True">
-                                    <Border Background="White" BorderBrush="DarkGray" BorderThickness="1" CornerRadius="5" Width="170">
+                                    <Border Background="WhiteSmoke" BorderBrush="DarkGray" BorderThickness="1" CornerRadius="5" Width="170">
                                         <StackPanel>
 
                                             <Button Style="{StaticResource ImageTextButton}" Content="Duplicate" Tag="/Common/Images/duplicate.png" Height="20"
@@ -448,7 +441,7 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="WhiteSmoke"/>
+                                <Setter Property="Foreground" Value="Black"/>
                                 <Setter TargetName="button" Property="Visibility" Value="Visible"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
@@ -481,77 +474,54 @@
         </Style>
     </UserControl.Resources>
 
-    <Border Background="White" Margin="10,0,10,10" BorderThickness="1" CornerRadius="8" Width="250">
-        <Border.Effect>
-            <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
-        </Border.Effect>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <ListView Grid.Row="1" ItemsSource="{Binding Notes}" BorderThickness="0" Margin="5,10,5,0" Background="WhiteSmoke"
+                  ItemContainerStyle="{StaticResource NoteListViewItem}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
 
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+        <Button Grid.Row="2" Content="/Common/Images/scale.png" Height="30" Margin="5,0,5,5" VerticalAlignment="Bottom" 
+                Style="{StaticResource ImageModule}" ToolTip="Scale" Command="{Binding ScaleCommand}" Tag="Orange"/>
 
-            <Grid Margin="5" Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+        <Button Grid.Row="3" Content="/Common/Images/collapse.png" Height="30" Margin="5,0,5,5" VerticalAlignment="Bottom" 
+                Style="{StaticResource ImageModule}" ToolTip="Collapse" Command="{Binding CollapseCommand}" Tag="Tomato"/>
 
-                <TextBox Grid.Column="0" Text="{Binding TextSearch}" Style="{StaticResource TextBoxSearch}"/>
-                <Button Grid.Column="1" Content="/Common/Images/search.png" Style="{StaticResource ImageButton}" Height="24" Width="24" Margin="3,0,0,0" 
-                    Tag="#E6E6E6" RenderOptions.BitmapScalingMode="Fant" Command="{Binding SearchNoteCommand}"/>
+        <Button Grid.Row="4" Content="/Common/Images/close.png" Height="30" Margin="5,0,5,5" VerticalAlignment="Bottom"
+                Style="{StaticResource ImageModule}" ToolTip="Exit" Command="{Binding CloseCommand}" Tag="Red"/>
 
-            </Grid>
+        <Popup IsOpen="{Binding IsPasswordPopupOpen}" AllowsTransparency="True" Placement="Center" StaysOpen="False">
+            <Border CornerRadius="8" Background="WhiteSmoke" BorderBrush="Gray" BorderThickness="1">
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-            <ContentControl Grid.Row="2" Style="{StaticResource ContentControlNotes}" Content="/Common/Images/notes.png" Tag="Notes" Height="28" Margin="3"/>
+                    <TextBlock Grid.Row="0" Text="Password" Margin="5,5,0,0"/>
+                    <Grid Grid.Row="1" Width="200">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-            <ListView Grid.Row="3" Margin="5,0" ItemsSource="{Binding Notes}" ItemContainerStyle="{StaticResource NoteListViewItem}" BorderThickness="0"
-                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+                        <TextBox Grid.Column="0" Style="{StaticResource CustomTextBoxSearch}" Text="{Binding Password}" Margin="5,0,5,3" MaxLength="13"
+                                 Background="WhiteSmoke" property:PlaceHolder.PlaceHolder="Enter password" property:PlaceHolder.ShowAlways="True"/>
+                        <Button Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/input.png" Height="20" Width="20" Margin="5,0,3,0"
+                                Tag="WhiteSmoke" Cursor="Hand" RenderOptions.BitmapScalingMode="Fant"
+                                Command="{Binding CheckPasswordCommand}"/>
 
-            <Button Grid.Row="4" Content="/Common/Images/scale.png" Height="30" Margin="5,0,5,5" VerticalAlignment="Bottom" 
-                    Style="{StaticResource ImageModule}" ToolTip="Scale" Command="{Binding ScaleCommand}" Tag="Orange"/>
-
-            <Button Grid.Row="5" Content="/Common/Images/collapse.png" Height="30" Margin="5,0,5,5" VerticalAlignment="Bottom" 
-                    Style="{StaticResource ImageModule}" ToolTip="Collapse" Command="{Binding CollapseCommand}" Tag="Yellow"/>
-
-            <Button Grid.Row="6" Content="/Common/Images/close.png" Height="30" Margin="5,0,5,5" VerticalAlignment="Bottom"
-                    Style="{StaticResource ImageModule}" ToolTip="Exit" Command="{Binding CloseCommand}" Tag="Red"/>
-
-            <Popup IsOpen="{Binding IsPasswordPopupOpen}" AllowsTransparency="True" Placement="Center" StaysOpen="False">
-                <Border CornerRadius="8" Background="White" BorderBrush="Gray" BorderThickness="1">
-                    <Grid Margin="5">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <TextBlock Grid.Row="0" Text="Password" Margin="5,5,0,0"/>
-                        <Grid Grid.Row="1" Width="200">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-
-                            <TextBox Grid.Column="0" Style="{StaticResource CustomTextBoxSearch}" Text="{Binding Password}" Margin="5,0,5,3" MaxLength="13"
-                                     property:PlaceHolder.PlaceHolder="Enter password" property:PlaceHolder.ShowAlways="True"/>
-                            <Button Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/input.png" Height="20" Width="20" Margin="5,0,3,0"
-                                    Tag="WhiteSmoke" Cursor="Hand" RenderOptions.BitmapScalingMode="Fant"
-                                    Command="{Binding CheckPasswordCommand}"/>
-
-                        </Grid>
                     </Grid>
-                </Border>
-            </Popup>
+                </Grid>
+            </Border>
+        </Popup>
 
-        </Grid>
+    </Grid>
 
-    </Border>
-    
 
 </UserControl>

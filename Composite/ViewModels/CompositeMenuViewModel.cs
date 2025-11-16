@@ -24,7 +24,6 @@ namespace Composite.ViewModels
         public ObservableCollection<NoteBaseVM> Notes { get; set; } = new();
         public ObservableCollection<CategoryNoteVM> Categories { get; set; }
 
-        public string TextSearch { get; set; } = string.Empty;
         [ObservableProperty] bool _isPopupOpen;
         [ObservableProperty] bool _isPasswordPopupOpen;
         [ObservableProperty] string _password;
@@ -116,13 +115,6 @@ namespace Composite.ViewModels
         }
 
         [RelayCommand] void SelectTypeNote() => _viewService.ShowView<SelectTypeNoteViewModel>();
-        [RelayCommand] void SearchNote()
-        {
-            var notesVM = _allNotes.Where(x => x.Title.Contains(TextSearch));
-            Notes.Clear();
-            GetAddButtonNote();
-            foreach (var noteVM in notesVM) Notes.Add(noteVM);
-        }
         void OpenNote(NoteBaseVM note)
         {
             if(note is NoteVM)

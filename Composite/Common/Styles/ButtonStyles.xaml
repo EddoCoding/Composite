@@ -24,54 +24,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="OkButton" TargetType="Button">
-        <Setter Property="Background" Value="White"/>
-        <Setter Property="FontFamily" Value="Verdana"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Grid Background="{TemplateBinding Background}">
-                        <Grid.Effect>
-                            <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
-                        </Grid.Effect>
-
-                        <ContentPresenter Margin="5,4"/>
-
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="LightSeaGreen"/>
-                            <Setter Property="Foreground" Value="WhiteSmoke"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <Style x:Key="NotOkButton" TargetType="Button">
-        <Setter Property="Background" Value="White"/>
-        <Setter Property="FontFamily" Value="Verdana"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Grid Background="{TemplateBinding Background}">
-                        <Grid.Effect>
-                            <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
-                        </Grid.Effect>
-
-                        <ContentPresenter Margin="5,4"/>
-
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="IndianRed"/>
-                            <Setter Property="Foreground" Value="WhiteSmoke"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
     <Style x:Key="DefaultButton" TargetType="Button">
         <Setter Property="FontFamily" Value="Verdana"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
