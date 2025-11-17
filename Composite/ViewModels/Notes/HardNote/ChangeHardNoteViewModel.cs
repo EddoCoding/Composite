@@ -14,7 +14,6 @@ namespace Composite.ViewModels.Notes.HardNote
         readonly Guid _id;
         readonly ITabService _tabService;
         readonly IMessenger _messenger;
-        readonly INoteService _noteService;
         readonly IHardNoteService _hardNoteService;
         [ObservableProperty] string _message;
         [ObservableProperty] HardNoteVM _hardNoteVM;
@@ -24,15 +23,14 @@ namespace Composite.ViewModels.Notes.HardNote
 
         public ObservableCollection<CategoryNoteVM> Categories { get; }
 
-        public ChangeHardNoteViewModel(ITabService tabService, IMessenger messenger, INoteService noteService, IHardNoteService hardNoteService, ICategoryNoteService categoryNoteService)
+        public ChangeHardNoteViewModel(ITabService tabService, IMessenger messenger, IHardNoteService hardNoteService, ICategoryNoteService categoryNoteService)
         {
             _id = Guid.NewGuid();
             _tabService = tabService;
             _messenger = messenger;
-            _noteService = noteService;
             _hardNoteService = hardNoteService;
 
-            HardNoteVM = new(tabService, noteService, hardNoteService, messenger);
+            HardNoteVM = new(tabService, hardNoteService, messenger);
             Categories = new(categoryNoteService.GetCategories());
 
             messenger.Register<ChangeNoteMessage>(this, (r, m) =>

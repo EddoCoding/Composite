@@ -1,4 +1,4 @@
-﻿using Composite.ViewModels.Notes;
+﻿using Composite.ViewModels.Notes.HardNote;
 using System.Globalization;
 using System.Windows.Data;
 
@@ -8,7 +8,7 @@ namespace Composite.Common.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            var note = values[0] as NoteBaseVM;
+            var note = values[0] as HardNoteVM;
             var Identifier = values[1] as string;
 
             return (note, Identifier);

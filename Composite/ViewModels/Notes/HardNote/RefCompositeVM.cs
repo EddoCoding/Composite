@@ -10,7 +10,6 @@ namespace Composite.ViewModels.Notes.HardNote
     public partial class RefCompositeVM : CompositeBaseVM, IDisposable
     {
         readonly ITabService _tabService;
-        readonly INoteService _noteService;
         readonly IHardNoteService _hardNoteService;
         readonly IMessenger _messenger;
 
@@ -21,16 +20,14 @@ namespace Composite.ViewModels.Notes.HardNote
 
         public ObservableCollection<NoteIdTitle> Notes { get; set; } = new();
 
-        public RefCompositeVM(ITabService tabService, INoteService noteService, IHardNoteService hardNoteService, IMessenger messenger)
+        public RefCompositeVM(ITabService tabService, IHardNoteService hardNoteService, IMessenger messenger)
         {
             _tabService = tabService;
-            _noteService = noteService;
             _hardNoteService = hardNoteService;
             _messenger = messenger;
 
             Id = Guid.NewGuid();
 
-            foreach (var noteIdTitle in noteService.GetIdTitleNotes()) Notes.Add(noteIdTitle);
             foreach (var hardNoteIdTitle in hardNoteService.GetIdTitleNotes()) Notes.Add(hardNoteIdTitle);
         }
 
@@ -60,7 +57,7 @@ namespace Composite.ViewModels.Notes.HardNote
             IsRefPopup = false;
         }
 
-        public override object Clone() => new RefCompositeVM(_tabService, _noteService, _hardNoteService, _messenger) 
+        public override object Clone() => new RefCompositeVM(_tabService, _hardNoteService, _messenger) 
         { 
             Id = Guid.NewGuid(), 
             Tag = Tag, 

@@ -16,19 +16,17 @@ namespace Composite.Services
     public class HardNoteService : IHardNoteService
     {
         readonly ITabService _tabService;
-        readonly INoteService _noteService;
         readonly IHardNoteRepository _hardNoteRepository;
         readonly IHardNoteMap _hardNoteMap;
         readonly IHardNoteFactory _hardNoteFactory;
         readonly IMessenger _messenger;
 
-        public HardNoteService(ITabService tabService, INoteService noteService, IHardNoteRepository hardNoteRepository, IMessenger messenger)
+        public HardNoteService(ITabService tabService, IHardNoteRepository hardNoteRepository, IMessenger messenger)
         {
             _tabService = tabService;
-            _noteService = noteService;
             _hardNoteRepository = hardNoteRepository;
-            _hardNoteFactory = new HardNoteFactory(tabService, noteService, this, messenger);
-            _hardNoteMap = new HardNoteMap(tabService, noteService, this, messenger);
+            _hardNoteFactory = new HardNoteFactory(tabService, this, messenger);
+            _hardNoteMap = new HardNoteMap(tabService, this, messenger);
             _messenger = messenger;
         }
 
@@ -134,13 +132,6 @@ namespace Composite.Services
         }
         async Task OpenNote(Guid result)
         {
-            var noteVM = await _noteService.GetNoteById(result);
-            if (noteVM != null)
-            {
-                if (_tabService.CreateTab<ChangeNoteViewModel>($"{noteVM.Title}")) _messenger.Send(new ChangeNoteMessage(noteVM));
-                return;
-            }
-
             var hardNoteVM = await GetNoteById(result);
             if (hardNoteVM != null)
             {

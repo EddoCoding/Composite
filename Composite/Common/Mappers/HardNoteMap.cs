@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 
 namespace Composite.Common.Mappers
 {
-    public class HardNoteMap(ITabService tabService, INoteService noteService, IHardNoteService hardNoteService, IMessenger messenger) : IHardNoteMap
+    public class HardNoteMap(ITabService tabService, IHardNoteService hardNoteService, IMessenger messenger) : IHardNoteMap
     {
         public HardNote MapToModel(HardNoteVM hardNoteVM)
         {
@@ -77,7 +77,7 @@ namespace Composite.Common.Mappers
             }
             else compositesVM = new List<CompositeBaseVM>();
 
-            return new HardNoteVM(tabService, noteService, hardNoteService, messenger)
+            return new HardNoteVM(tabService, hardNoteService, messenger)
             {
                 Id = Guid.Parse(hardNote.Id),
                 Title = hardNote.Title,
@@ -457,7 +457,7 @@ namespace Composite.Common.Mappers
             }
             if (compositeBase.CompositeType == "RefComposite")
             {
-                return new RefCompositeVM(tabService, noteService, hardNoteService, messenger)
+                return new RefCompositeVM(tabService, hardNoteService, messenger)
                 {
                     Id = Guid.Parse(compositeBase.Id),
                     Tag = compositeBase.Tag,

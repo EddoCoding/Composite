@@ -1,5 +1,4 @@
 ﻿using Composite.Models.Notes.HardNote;
-using Composite.Models.Notes.Note;
 
 namespace Composite.Repositories
 {

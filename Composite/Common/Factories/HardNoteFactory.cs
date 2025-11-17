@@ -8,7 +8,7 @@ using System.Windows.Documents;
 
 namespace Composite.Common.Factories
 {
-    public class HardNoteFactory(ITabService tabService, INoteService noteService, IHardNoteService hardNoteService, IMessenger messenger) : IHardNoteFactory
+    public class HardNoteFactory(ITabService tabService, IHardNoteService hardNoteService, IMessenger messenger) : IHardNoteFactory
     {
         public HardNoteVM CreateHardNoteVM(HardNoteVM hardNoteVM)
         {
@@ -88,7 +88,7 @@ namespace Composite.Common.Factories
                 }
                 else if (compositeVM is RefCompositeVM refCompositeVM)
                 {
-                    var newRefCompositeVM = new RefCompositeVM(tabService, noteService, hardNoteService, messenger)
+                    var newRefCompositeVM = new RefCompositeVM(tabService, hardNoteService, messenger)
                     {
                         Id = refCompositeVM.Id,
                         Tag = refCompositeVM.Tag,
@@ -171,7 +171,7 @@ namespace Composite.Common.Factories
                 }
             }
 
-            return new HardNoteVM(tabService, noteService, hardNoteService, messenger)
+            return new HardNoteVM(tabService, hardNoteService, messenger)
             {
                 Id = hardNoteVM.Id,
                 Title = hardNoteVM.Title,

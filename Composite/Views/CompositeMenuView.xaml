@@ -465,7 +465,7 @@
                         <ControlTemplate.Triggers>
                             <DataTrigger Binding="{Binding ItemType}" Value="AddNoteButton">
                                 <Setter TargetName="ItemButton" Property="Style" Value="{StaticResource addNoteButton}"/>
-                                <Setter TargetName="ItemButton" Property="Command" Value="{Binding DataContext.SelectTypeNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}"/>
+                                <Setter TargetName="ItemButton" Property="Command" Value="{Binding DataContext.AddNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}"/>
                             </DataTrigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>

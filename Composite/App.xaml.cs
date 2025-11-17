@@ -60,11 +60,6 @@ namespace Composite
             services.AddTransient<ISongMap, SongMap>();
 
             //Заметки
-            services.AddTransient<INoteService, NoteService>();
-            services.AddTransient<INoteRepository, NoteRepository>();
-            services.AddTransient<INoteMap, NoteMap>();
-            services.AddTransient<INoteFactory, NoteFactory>();
-
             services.AddTransient<IHardNoteService, HardNoteService>();
             services.AddTransient<IHardNoteRepository, HardNoteRepository>();
             services.AddTransient<IHardNoteMap, HardNoteMap>();
@@ -84,13 +79,9 @@ namespace Composite
             _serviceView.Register<CompositeMainView, CompositeMainViewModel>();
 
             //Заметки
-            _serviceView.Register<AddNoteView, AddNoteViewModel>();
-            _serviceView.Register<ChangeNoteView, ChangeNoteViewModel>();
-            _serviceView.Register<SelectTypeNoteView, SelectTypeNoteViewModel>();
 
             _serviceView.Register<AddHardNoteView, AddHardNoteViewModel>();
             _serviceView.Register<ChangeHardNoteView, ChangeHardNoteViewModel>();
-
             _serviceView.Register<AddCategoryNoteView, AddCategoryNoteViewModel>();
         }
 
@@ -100,15 +91,11 @@ namespace Composite
             {
                 connection.Open();
                 
-                //Простые заметки
-                var queryCreateNotes = "Create Table If Not Exists Notes(Id Text Primary Key, Title Text Not Null, Content Text, DateCreate DateTime Not Null, Category Text,  " +
-                                       "FontFamily Text, FontSize Real, Password Text)";
-                
                 //Функциональный заметки
                 var queryCreateHardNotes = "Create Table If Not Exists HardNotes(Id Text Primary Key, Title Text Default '', DateCreate DateTime Not Null, Category Text, Password Text)";
                 var queryCreateComposites = "Create Table If Not Exists Composites(Id Text Primary Key, Tag Text, Comment Text, Text Text, FontWeightHeader Text, FontSizeHeader Integer, " +
-                                            "Completed Integer Default 0, Data Blob, HorizontalImage Text Default 'Center', ValueRef Text, Number Integer, BrSize Integer, BrColor Text " +
-                                            "BgColor Text, BrCornerRadius Integer " +
+                                            "Completed Integer Default 0, Data Blob, HorizontalImage Text Default 'Center', ValueRef Text, Number Integer, BrSize Integer, BrColor Text, " +
+                                            "BgColor Text, BrCornerRadius Integer, " +
                                             "HardNoteId TEXT NOT NULL, CompositeType TEXT NOT NULL, OrderIndex Integer, Foreign Key (HardNoteId) References HardNotes(Id) On Delete Cascade)";
 
                 //Допы
@@ -116,7 +103,6 @@ namespace Composite
                 var queryCreateCategories = "Create Table if Not Exists Categories(NameCategory Text Primary Key)";
                 var queryInsertCategory = "Insert Or Ignore Into Categories (NameCategory) Values (@NameCategory)";
 
-                connection.Execute(queryCreateNotes);
                 connection.Execute(queryCreateHardNotes);
                 connection.Execute(queryCreateComposites);
 

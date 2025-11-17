@@ -15,17 +15,15 @@ namespace Composite.ViewModels.Notes.HardNote
     public partial class HardNoteVM : NoteBaseVM, IDisposable
     {
         readonly ITabService _tabService;
-        readonly INoteService _noteService;
         readonly IHardNoteService _hardNoteService;
         readonly IMessenger _messenger;
 
         public override string ItemType => "HardNote";
         public ObservableCollection<CompositeBaseVM> Composites { get; set; }
 
-        public HardNoteVM(ITabService tabService, INoteService noteService, IHardNoteService hardNoteService, IMessenger messenger)
+        public HardNoteVM(ITabService tabService, IHardNoteService hardNoteService, IMessenger messenger)
         {
             _tabService = tabService;
-            _noteService = noteService;
             _hardNoteService = hardNoteService;
             _messenger = messenger;
 
@@ -256,7 +254,7 @@ namespace Composite.ViewModels.Notes.HardNote
                 {
                     int indexRef = Composites.IndexOf(compositeBaseVM);
                     DeleteComposite(compositeBaseVM);
-                    var refComposite = new RefCompositeVM(_tabService, _noteService, _hardNoteService, _messenger);
+                    var refComposite = new RefCompositeVM(_tabService, _hardNoteService, _messenger);
                     Composites.Insert(indexRef, refComposite);
                     return refComposite;
                 }

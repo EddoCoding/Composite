@@ -1849,7 +1849,7 @@
         </Grid.RowDefinitions>
 
         <TextBox x:Name="titleTextBox" Grid.Row="0" Text="{Binding HardNoteVM.Title, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TitleTextBox}" 
-                 property:PlaceHolder.PlaceHolder="Headline" PreviewKeyDown="TitleTextBox_PreviewKeyDown"/>
+                 property:PlaceHolder.PlaceHolder="Headline" property:PlaceHolder.ShowAlways="True" PreviewKeyDown="TitleTextBox_PreviewKeyDown"/>
 
         <ListView Grid.Row="1" x:Name="listComposite" ItemsSource="{Binding HardNoteVM.Composites}" BorderThickness="0" HorizontalContentAlignment="Stretch"
                   Focusable="False" Cursor="IBeam" ScrollViewer.CanContentScroll="False" Padding="0,0,0,15" Background="WhiteSmoke"
@@ -1892,10 +1892,7 @@
 
         </Grid>
 
-        <Grid Grid.Row="3" Background="White" Margin="0,2,0,0">
-            <Grid.Effect>
-                <DropShadowEffect Opacity="0" ShadowDepth="0"/>
-            </Grid.Effect>
+        <Grid Grid.Row="3" Background="WhiteSmoke" Margin="0,2,0,0">
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Visible"/>
@@ -1907,7 +1904,7 @@
                 </Style>
             </Grid.Style>
 
-            <TextBlock Text="{Binding Message}" Foreground="OrangeRed" Margin="10,3,0,3"/>
+            <TextBlock Text="{Binding Message}" Foreground="OrangeRed" Margin="10,0,0,0"/>
 
         </Grid>
 
