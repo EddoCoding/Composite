@@ -355,7 +355,7 @@
                                 <TextBlock Text="codeBlock" Panel.ZIndex="1" Margin="5,0,0,10" FontSize="14"/>
 
                                 <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"
-                                              HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
+                                              HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="15,0"/>
 
                             </StackPanel>
                         </Border>
