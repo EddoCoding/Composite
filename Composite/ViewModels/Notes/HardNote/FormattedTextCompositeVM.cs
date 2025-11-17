@@ -15,8 +15,8 @@ namespace Composite.ViewModels.Notes.HardNote
 
         [ObservableProperty] double _brSize;
         [ObservableProperty] double _brCornerRadius;
-        [ObservableProperty] string _brColor;
-        [ObservableProperty] string _bgColor;
+        [ObservableProperty] string _brColor = "WhiteSmoke";
+        [ObservableProperty] string _bgColor = "WhiteSmoke";
 
         double _slectedBrSize;
         public double SelectedBrSize
@@ -40,7 +40,7 @@ namespace Composite.ViewModels.Notes.HardNote
             }
         }
 
-        string _selectedBrColor = "Gray";
+        string _selectedBrColor = "WhiteSmoke";
         public string SelectedBrColor
         {
             get => _selectedBrColor;
@@ -51,7 +51,7 @@ namespace Composite.ViewModels.Notes.HardNote
             }
         }
 
-        string _selectedBgColor = "White";
+        string _selectedBgColor = "WhiteSmoke";
         public string SelectedBgColor
         {
             get => _selectedBgColor;
