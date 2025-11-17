@@ -1550,14 +1550,24 @@
                         Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                         CommandParameter="{Binding}"/>
 
-                <Grid Grid.Column="2">
+                <Grid Grid.Column="2" Background="Transparent">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
                     <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,-2,0,0">
-                        
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+
                         <Label Content="brSize" Margin="0,0,0,1" Foreground="Gray"/>
                         <ComboBox ItemsSource="{Binding Borders}" SelectedItem="{Binding SelectedBrSize}" HorizontalAlignment="Left" Cursor="Hand" Margin="0,0,0,1"
                                   Style="{StaticResource ComboBoxCustom}" ItemContainerStyle="{StaticResource ComboBoxItemCustom}"/>
@@ -1824,6 +1834,7 @@
                     </Button>
 
                 </Grid>
+
             </Grid>
             
         </DataTemplate>
