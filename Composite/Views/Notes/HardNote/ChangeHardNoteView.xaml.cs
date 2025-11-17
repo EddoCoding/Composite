@@ -458,6 +458,48 @@ namespace Composite.Views.Notes.Notes
                     }
                     e.Handled = true;
                 }
+                if (Keyboard.IsKeyDown(Key.LeftCtrl) && Keyboard.IsKeyDown(Key.Space))
+                {
+                    var listView = FindParent<ListView>(textBox1);
+                    if (listView?.DataContext is ChangeHardNoteViewModel viewModel) viewModel.ExecuteCommand("CTRLSPACE");
+                    e.Handled = true;
+                }
+                if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.Z))
+                {
+                    var listView = FindParent<ListView>(textBox1);
+                    if (listView?.DataContext is ChangeHardNoteViewModel viewModel) viewModel.ExecuteCommand("ALTZ");
+                    e.Handled = true;
+                }
+                if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.X))
+                {
+                    var listView = FindParent<ListView>(textBox1);
+                    if (listView?.DataContext is ChangeHardNoteViewModel viewModel) viewModel.ExecuteCommand("ALTX");
+                    e.Handled = true;
+                }
+                if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.C))
+                {
+                    var listView = FindParent<ListView>(textBox1);
+                    if (listView?.DataContext is ChangeHardNoteViewModel viewModel) viewModel.ExecuteCommand("ALTC");
+                    e.Handled = true;
+                }
+                if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.V))
+                {
+                    var listView = FindParent<ListView>(textBox1);
+                    if (listView?.DataContext is ChangeHardNoteViewModel viewModel) viewModel.ExecuteCommand("ALTV");
+                    e.Handled = true;
+                }
+                if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.Up))
+                {
+                    var listView = FindParent<ListView>(textBox1);
+                    if (listView?.DataContext is ChangeHardNoteViewModel viewModel) viewModel.ExecuteCommand("ALT+");
+                    e.Handled = true;
+                }
+                if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.Down))
+                {
+                    var listView = FindParent<ListView>(textBox1);
+                    if (listView?.DataContext is ChangeHardNoteViewModel viewModel) viewModel.ExecuteCommand("ALT-");
+                    e.Handled = true;
+                }
             }
             else if (sender is RichTextBox rtb)
             {
@@ -536,6 +578,69 @@ namespace Composite.Views.Notes.Notes
                         }
                     }
                     e.Handled = true;
+                }
+                if (Keyboard.IsKeyDown(Key.LeftCtrl) && Keyboard.IsKeyDown(Key.Space))
+                {
+                    if (rtb.DataContext is CompositeBaseVM currentComposite)
+                    {
+                        var listView = FindParent<ListView>(rtb);
+                        if (listView?.DataContext is ChangeHardNoteViewModel viewModel) viewModel.ExecuteCommand("CTRLSPACE");
+                        e.Handled = true;
+                    }
+                }
+                if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.Z))
+                {
+                    if (rtb.DataContext is CompositeBaseVM currentComposite)
+                    {
+                        var listView = FindParent<ListView>(rtb);
+                        if (listView?.DataContext is ChangeHardNoteViewModel viewModel) viewModel.ExecuteCommand("ALTZ");
+                        e.Handled = true;
+                    }
+                }
+                if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.X))
+                {
+                    if (rtb.DataContext is CompositeBaseVM currentComposite)
+                    {
+                        var listView = FindParent<ListView>(rtb);
+                        if (listView?.DataContext is ChangeHardNoteViewModel viewModel) viewModel.ExecuteCommand("ALTX");
+                        e.Handled = true;
+                    }
+                }
+                if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.C))
+                {
+                    if (rtb.DataContext is CompositeBaseVM currentComposite)
+                    {
+                        var listView = FindParent<ListView>(rtb);
+                        if (listView?.DataContext is ChangeHardNoteViewModel viewModel) viewModel.ExecuteCommand("ALTC");
+                        e.Handled = true;
+                    }
+                }
+                if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.V))
+                {
+                    if (rtb.DataContext is CompositeBaseVM currentComposite)
+                    {
+                        var listView = FindParent<ListView>(rtb);
+                        if (listView?.DataContext is ChangeHardNoteViewModel viewModel) viewModel.ExecuteCommand("ALTV");
+                        e.Handled = true;
+                    }
+                }
+                if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.Up))
+                {
+                    if (rtb.DataContext is CompositeBaseVM currentComposite)
+                    {
+                        var listView = FindParent<ListView>(rtb);
+                        if (listView?.DataContext is ChangeHardNoteViewModel viewModel) viewModel.ExecuteCommand("ALT+");
+                        e.Handled = true;
+                    }
+                }
+                if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.Down))
+                {
+                    if (rtb.DataContext is CompositeBaseVM currentComposite)
+                    {
+                        var listView = FindParent<ListView>(rtb);
+                        if (listView?.DataContext is ChangeHardNoteViewModel viewModel) viewModel.ExecuteCommand("ALT-");
+                        e.Handled = true;
+                    }
                 }
             }
         }

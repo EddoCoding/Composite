@@ -6,19 +6,28 @@ using Composite.Services;
 
 namespace Composite.ViewModels
 {
-    public partial class CompositeHeaderViewModel(IMediaPlayerFactory mediaPlayerFactory) : ObservableObject
+    public partial class CompositeHeaderViewModel : ObservableObject
     {
+        readonly IMediaPlayerFactory _mediaPlayerFactory;
+
         public string Title { get; set; } = "Composite";
 
         [ObservableProperty] string nameButtonStartStopMediaPlayer = "Turn on player";
         [ObservableProperty] IMediaPlayerService mediaPlayerService;
         [ObservableProperty] Visibility visibility = Visibility.Collapsed;
 
+        public CompositeHeaderViewModel(IMediaPlayerFactory mediaPlayerFactory, ICommandService commandService)
+        {
+            _mediaPlayerFactory = mediaPlayerFactory;
+
+            commandService.RegsiterCommand("CTRLSPACE", StarStopMediaPlayer);
+        }
+
         [RelayCommand] void StarStopMediaPlayer()
         {
             if (MediaPlayerService == null)
             {
-                MediaPlayerService = mediaPlayerFactory.Create();
+                MediaPlayerService = _mediaPlayerFactory.Create();
                 Visibility = Visibility.Visible;
                 NameButtonStartStopMediaPlayer = "Turn off player";
             }

@@ -12,6 +12,7 @@ namespace Composite.Services
     public partial class MediaPlayerService : ObservableObject, IMediaPlayerService, IDisposable
     {
         readonly ISettingMediaPlayerService _settingMediaPlayerService;
+        readonly ICommandService _commandService;
 
         WaveOutEvent _outputDevice;
         WaveStream _audioReader;
@@ -25,16 +26,17 @@ namespace Composite.Services
 
         [ObservableProperty] int _currentSongIndex;
         [ObservableProperty] string _nameSong;
-        [ObservableProperty] double _volume = 0.5;
+        [ObservableProperty] float _volume = 0.5f;
         [ObservableProperty] double _position;
         [ObservableProperty] double _duration;
         [ObservableProperty] string _currentTime = "0:00";
         [ObservableProperty] string _totalTime = "0:00";
         [ObservableProperty] string _pathImageRepeat = "/Common/Images/notRepeat.png";
 
-        public MediaPlayerService(ISettingMediaPlayerService settingMediaPlayerService)
+        public MediaPlayerService(ISettingMediaPlayerService settingMediaPlayerService, ICommandService commandService)
         {
             _settingMediaPlayerService = settingMediaPlayerService;
+            _commandService = commandService;
 
             InitializeAudioPlayer();
             Songs = new(settingMediaPlayerService.GetSongsVM());
@@ -46,9 +48,16 @@ namespace Composite.Services
                 UpdateNameSong(_currentSongIndex);
             }
             else NameSong = "No songs found";
+
+            commandService.RegsiterCommand("ALTX", Play);
+            commandService.RegsiterCommand("ALTZ", Back);
+            commandService.RegsiterCommand("ALTC", Next);
+            commandService.RegsiterCommand("ALTV", Repeat);
+            commandService.RegsiterCommand("ALT+", IncreaseTheVolume);
+            commandService.RegsiterCommand("ALT-", TurnDownTheVolume);
         }
 
-        [RelayCommand] async Task Play()
+        [RelayCommand] public async Task Play()
         {
             if (Songs.Count == 0) return;
 
@@ -71,24 +80,24 @@ namespace Composite.Services
                 _isPlaying = !_isPlaying;
             }
             catch (Exception ex) { _isPlaying = false; }
-        }
-        [RelayCommand] async Task Next()
+        }           //Запуск и стоп плеера
+        [RelayCommand] public async Task Next()
         {
             if (Songs.Count == 0) return;
 
             StopAndCleanCurrentSong();
             _currentSongIndex = (_currentSongIndex + 1) % Songs.Count;
             await PlaySongOptimized(_currentSongIndex);
-        }
-        [RelayCommand] async Task Back()
+        }           //Следующая песня
+        [RelayCommand] public async Task Back()
         {
             if (Songs.Count == 0) return;
 
             StopAndCleanCurrentSong();
             _currentSongIndex = (_currentSongIndex - 1 + Songs.Count) % Songs.Count;
             await PlaySongOptimized(_currentSongIndex);
-        }
-        [RelayCommand] void Repeat()
+        }           //Предыдущая песня
+        [RelayCommand] public void Repeat()
         {
             if (PathImageRepeat == "/Common/Images/notRepeat.png")
             {
@@ -100,7 +109,21 @@ namespace Composite.Services
                 PathImageRepeat = "/Common/Images/notRepeat.png";
                 _isRepeat = false;
             }
-        }
+        }               //Повторять песню
+        [RelayCommand] public void IncreaseTheVolume()
+        {
+            float maxVolume = 1.0f;
+            float volumeToAdd = Math.Min(0.1f, maxVolume - _outputDevice.Volume);
+            _outputDevice.Volume += volumeToAdd;
+            Volume = Math.Min(Volume + volumeToAdd, maxVolume);
+        }    //Увеличить громкость
+        [RelayCommand] public void TurnDownTheVolume()
+        {
+            float minVolume = 0.0f;
+            float volumeToSubtract = Math.Min(0.1f, _outputDevice.Volume - minVolume);
+            _outputDevice.Volume -= volumeToSubtract;
+            Volume = Math.Max(Volume - volumeToSubtract, minVolume);
+        }    //Уменьшить громкость
 
         [RelayCommand] async Task SelectSongs()
         {
@@ -314,7 +337,7 @@ namespace Composite.Services
         {
             if (index >= 0 && index < Songs.Count) NameSong = Songs[index].Title ?? "Unknown Song";
         }
-        partial void OnVolumeChanged(double value)
+        partial void OnVolumeChanged(float value)
         {
             if (_outputDevice != null) _outputDevice.Volume = (float)value;
         }
@@ -492,6 +515,7 @@ namespace Composite.Services
             catch (Exception ex) { }
         }
 
+
         bool _disposed = false;
         public virtual void Dispose()
         {
@@ -522,11 +546,17 @@ namespace Composite.Services
                     Songs?.Clear();
                     _songCache?.Clear();
                     ClearCurrentSongData();
+
+                    _commandService.DeleteCommand("ALTX");
+                    _commandService.DeleteCommand("ALTZ");
+                    _commandService.DeleteCommand("ALTC");
+                    _commandService.DeleteCommand("ALTV");
+                    _commandService.DeleteCommand("ALT+");
+                    _commandService.DeleteCommand("ALT-");
                 }
                 _disposed = true;
             }
         }
-
         ~MediaPlayerService() => Dispose(false);
     }
 }

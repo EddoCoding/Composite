@@ -9,7 +9,16 @@
         Title="{Binding Header.Title}" Height="850" Width="1500" ResizeMode="CanResizeWithGrip" 
         AllowsTransparency="True" FontFamily="Trebuchet MS"
         TextOptions.TextFormattingMode="Display" Icon="/Common/Images/composite.png">
-
+    <Window.InputBindings>
+        <KeyBinding Gesture="CTRL+SPACE" Command="{Binding Header.StarStopMediaPlayerCommand}"/>
+        <KeyBinding Gesture="ALT+Z" Command="{Binding Header.MediaPlayerService.BackCommand}"/>
+        <KeyBinding Gesture="ALT+X" Command="{Binding Header.MediaPlayerService.PlayCommand}"/>
+        <KeyBinding Gesture="ALT+C" Command="{Binding Header.MediaPlayerService.NextCommand}"/>
+        <KeyBinding Gesture="ALT+V" Command="{Binding Header.MediaPlayerService.RepeatCommand}"/>
+        <KeyBinding Gesture="ALT+UP" Command="{Binding Header.MediaPlayerService.IncreaseTheVolumeCommand}"/>
+        <KeyBinding Gesture="ALT+DOWN" Command="{Binding Header.MediaPlayerService.TurnDownTheVolumeCommand}"/>
+    </Window.InputBindings>
+    
     <Border CornerRadius="8" BorderThickness="1" BorderBrush="LightGray" Background="WhiteSmoke">
         <Grid>
             <Grid.RowDefinitions>

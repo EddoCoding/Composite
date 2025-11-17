@@ -68,6 +68,10 @@ namespace Composite
             services.AddTransient<ICategoryNoteService, CategoryNoteService>();
             services.AddTransient<ICategoryNoteRepository, CategoryNoteRepository>();
             services.AddTransient<ICategoryNoteMap, CategoryNoteMap>();
+
+
+
+            services.AddSingleton<ICommandService, CommandService>();
         }
 
         void RegisterView()

@@ -16,6 +16,7 @@ namespace Composite.ViewModels.Notes.Note
         readonly ITabService _tabService;
         readonly IMessenger _messenger;
         readonly IHardNoteService _hardNoteService;
+        readonly ICommandService _commandService;
         [ObservableProperty] string _message;
         [ObservableProperty] CategoryNoteVM selectedCategory;
         [ObservableProperty] string _passwordVisible = "Collapsed";
@@ -24,12 +25,14 @@ namespace Composite.ViewModels.Notes.Note
         public HardNoteVM HardNoteVM { get; set; }
         public ObservableCollection<CategoryNoteVM> Categories { get; }
 
-        public AddHardNoteViewModel(ITabService tabService, IMessenger messenger, IHardNoteService hardNoteService, ICategoryNoteService categoryNoteService)
+        public AddHardNoteViewModel(ITabService tabService, IMessenger messenger, IHardNoteService hardNoteService, 
+            ICategoryNoteService categoryNoteService, ICommandService commandService)
         {
             _id = Guid.NewGuid();
             _tabService = tabService;
             _messenger = messenger;
             _hardNoteService = hardNoteService;
+            _commandService = commandService;
 
             HardNoteVM = new(tabService, hardNoteService, messenger);
             Categories = new(categoryNoteService.GetCategories());
@@ -75,6 +78,7 @@ namespace Composite.ViewModels.Notes.Note
 
         [RelayCommand] void CheckNote() => _messenger.Send(new CheckNoteMessage(_id, HardNoteVM.Title));
 
+        public void ExecuteCommand(string keyboardShortcut) => _commandService.ExecuteCommand(keyboardShortcut);
         async Task SaveHardNote()
         {
             if(await _hardNoteService.AddHardNoteAsync(HardNoteVM))

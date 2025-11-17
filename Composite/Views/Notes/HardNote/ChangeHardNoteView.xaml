@@ -1542,19 +1542,6 @@
                     <ColumnDefinition Width="20"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Grid.Resources>
-                    <Style TargetType="{x:Type Button}" x:Key="formatTextStyle">
-                        <Setter Property="FontFamily" Value="Palatino Linotype"></Setter>
-                        <Setter Property="Width" Value="30"></Setter>
-                        <Setter Property="FontSize" Value ="14"></Setter>
-                        <Setter Property="CommandTarget" Value="{Binding ElementName=mainRTB}"></Setter>
-                    </Style>
-
-                    <Style TargetType="{x:Type Button}" x:Key="formatImageStyle">
-                        <Setter Property="Width" Value="30"></Setter>
-                        <Setter Property="CommandTarget" Value="{Binding ElementName=mainRTB}"></Setter>
-                    </Style>
-                </Grid.Resources>
 
                 <TextBox Grid.Column="0" Style="{StaticResource Text}" Text="{Binding Tag}" Margin="5,0" Width="100" TextWrapping="NoWrap" Foreground="Gray"
                          property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Top"/>
@@ -1574,7 +1561,7 @@
                     <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,-2,0,0">
                         <StackPanel.Style>
                             <Style TargetType="StackPanel">
-                                <Setter Property="Visibility" Value="Hidden"/>
+                                <Setter Property="Visibility" Value="Collapsed"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}}" Value="True">
                                         <Setter Property="Visibility" Value="Visible"/>
