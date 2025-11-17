@@ -4,32 +4,34 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Composite.Views"
-        MouseDown="MoveWindow" Background="WhiteSmoke" WindowStyle="None"
+        MouseDown="MoveWindow" Background="Transparent" WindowStyle="None"
         WindowStartupLocation="CenterScreen" RenderOptions.BitmapScalingMode="NearestNeighbor"
         Title="{Binding Header.Title}" Height="850" Width="1500" ResizeMode="CanResizeWithGrip" 
-        AllowsTransparency="True" BorderBrush="LightGray" BorderThickness="1" FontFamily="Trebuchet MS"
+        AllowsTransparency="True" FontFamily="Trebuchet MS"
         TextOptions.TextFormattingMode="Display" Icon="/Common/Images/composite.png">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <Border CornerRadius="8" BorderThickness="1" BorderBrush="LightGray" Background="WhiteSmoke">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <local:CompositeHeaderView Grid.Row="0" DataContext="{Binding Header}"/>
+            <local:CompositeHeaderView Grid.Row="0" DataContext="{Binding Header}"/>
 
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-            <local:CompositeMainView Grid.Column="0" DataContext="{Binding Main}"/>
+                <local:CompositeMainView Grid.Column="0" DataContext="{Binding Main}"/>
 
-            <local:CompositeMenuView Grid.Column="1" DataContext="{Binding Menu}"/>
-            
+                <local:CompositeMenuView Grid.Column="1" DataContext="{Binding Menu}"/>
+
+            </Grid>
+
         </Grid>
-        
-    </Grid>
+    </Border>
 
 </Window>
