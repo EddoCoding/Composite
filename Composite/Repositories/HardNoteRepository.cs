@@ -117,6 +117,8 @@ namespace Composite.Repositories
                                ((LineComposite)x.Composite).Id,
                                ((LineComposite)x.Composite).Tag,
                                ((LineComposite)x.Composite).Comment,
+                               ((LineComposite)x.Composite).BrSize,
+                               ((LineComposite)x.Composite).BrColor,
                                ((LineComposite)x.Composite).HardNoteId,
                                ((LineComposite)x.Composite).CompositeType,
                                x.OrderIndex
@@ -124,8 +126,8 @@ namespace Composite.Repositories
                            .ToList();
                         if (lineComposites.Any())
                         {
-                            var queryLines = @"Insert Into Composites(Id, Tag, Comment, HardNoteId, CompositeType, OrderIndex) 
-                                   Values (@Id, @Tag, @Comment, @HardNoteId, @CompositeType, @OrderIndex)";
+                            var queryLines = @"Insert Into Composites(Id, Tag, Comment, BrSize, BrColor, HardNoteId, CompositeType, OrderIndex) 
+                                   Values (@Id, @Tag, @Comment, @BrSize, @BrColor, @HardNoteId, @CompositeType, @OrderIndex)";
                             await connection.ExecuteAsync(queryLines, lineComposites, transaction);
                         }
 

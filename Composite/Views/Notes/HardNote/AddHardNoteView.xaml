@@ -236,13 +236,13 @@
         </Style>
         <Style x:Key="Line" TargetType="Line">
             <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="Stroke" Value="LightGray"/>
-            <Setter Property="StrokeThickness" Value="1"/>
             <Setter Property="Stretch" Value="Fill"/>
             <Setter Property="X1" Value="0"/>
             <Setter Property="X2" Value="1"/>
-            <Setter Property="Height" Value="20"/>
+            <Setter Property="Height" Value="10"/>
             <Setter Property="Margin" Value="10,10,0,0"/>
+            <Setter Property="StrokeStartLineCap" Value="Round"/>
+            <Setter Property="StrokeEndLineCap" Value="Round"/>
         </Style>
         <Style x:Key="CheckBoxTask" TargetType="CheckBox">
             <Setter Property="Background" Value="White"/>
@@ -762,7 +762,66 @@
                         Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                         CommandParameter="{Binding}"/>
 
-                <Line Grid.Column="2" Style="{StaticResource Line}"/>
+                <Grid Grid.Column="2" Background="Transparent">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="7,-2,0,0">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Opacity" Value="0"/>
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}}" Value="True">
+                                        <DataTrigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.3" />
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" BeginTime="0:0:0" Duration="0:0:0">
+                                                        <DiscreteObjectKeyFrame KeyTime="0:0:0">
+                                                            <DiscreteObjectKeyFrame.Value>
+                                                                <Visibility>Visible</Visibility>
+                                                            </DiscreteObjectKeyFrame.Value>
+                                                        </DiscreteObjectKeyFrame>
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.EnterActions>
+                                        <DataTrigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.3" />
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" BeginTime="0:0:0.3" Duration="0:0:0">
+                                                        <DiscreteObjectKeyFrame KeyTime="0:0:0">
+                                                            <DiscreteObjectKeyFrame.Value>
+                                                                <Visibility>Collapsed</Visibility>
+                                                            </DiscreteObjectKeyFrame.Value>
+                                                        </DiscreteObjectKeyFrame>
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.ExitActions>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+
+                        <Label Content="lineSize" Margin="0,0,0,1" Foreground="Gray"/>
+                        <ComboBox ItemsSource="{Binding Lines}" SelectedItem="{Binding SelectedLineSize}" HorizontalAlignment="Left" Cursor="Hand" Margin="0,0,0,1"
+                                  Style="{StaticResource ComboBoxCustom}" ItemContainerStyle="{StaticResource ComboBoxItemCustom}"/>
+
+                        <Label Content="lineColor" Margin="5,0,0,1" Foreground="Gray"/>
+                        <ComboBox ItemsSource="{Binding Colors}" SelectedItem="{Binding SelectedLineColor}" HorizontalAlignment="Left" Cursor="Hand" Margin="0,0,0,1"
+                                  Style="{StaticResource ComboBoxCustom}" ItemContainerStyle="{StaticResource ComboBoxItemCustom3}"/>
+
+                    </StackPanel>
+
+                    <Line Grid.Row="1" Style="{StaticResource Line}" StrokeThickness="{Binding LineSize}" Stroke="{Binding LineColor}" 
+                          StrokeDashArray="{Binding DashArray}"/>
+                    
+                </Grid>
 
                 <Button Grid.Column="3" Content="X" Cursor="Hand" VerticalAlignment="Top" Margin="10,2,0,0" FontSize="14"
                         Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
@@ -1556,7 +1615,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,-2,0,0">
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="7,-2,0,0">
                         <StackPanel.Style>
                             <Style TargetType="StackPanel">
                                 <Setter Property="Opacity" Value="0"/>
@@ -1615,7 +1674,7 @@
                     </StackPanel>
 
                     <Border Grid.Row="1" Background="{Binding BgColor}" BorderThickness="{Binding BrSize}" BorderBrush="{Binding BrColor}" CornerRadius="{Binding BrCornerRadius}"
-                            Margin="6,0,0,5" Padding="3" >
+                            Margin="4,0,0,5" Padding="3" >
                         <RichTextBox Name="mainRTB" AcceptsTab="True" FontSize="16" FontFamily="Trebuchet MS" SelectionBrush="LightGray"
                                      Background="{Binding BgColor}" CaretBrush="Gray" BorderThickness="0"
                                      property:RichTextBoxHelper.BindToViewModel="True"

@@ -447,7 +447,10 @@ namespace Composite.Services
                         _currentAudioStream = new MemoryStream(songData);
                         _currentAudioStream.Position = 0;
 
-                        try { _audioReader = new Mp3FileReader(_currentAudioStream); }
+                        try 
+                        { 
+                            _audioReader = new Mp3FileReader(_currentAudioStream); 
+                        }
                         catch
                         {
                             try

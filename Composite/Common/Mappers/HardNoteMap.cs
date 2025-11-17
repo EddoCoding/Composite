@@ -137,6 +137,8 @@ namespace Composite.Common.Mappers
                     Id = lineCompositeVM.Id.ToString(),
                     Tag = lineCompositeVM.Tag,
                     Comment = lineCompositeVM.Comment,
+                    BrSize = (int)lineCompositeVM.LineSize, 
+                    BrColor = lineCompositeVM.LineColor,    
                     HardNoteId = id.ToString()
                 };
             }
@@ -284,6 +286,8 @@ namespace Composite.Common.Mappers
                     Id = Guid.NewGuid().ToString(),
                     Tag = lineCompositeVM.Tag,
                     Comment = lineCompositeVM.Comment,
+                    BrSize = (int)lineCompositeVM.LineSize, 
+                    BrColor = lineCompositeVM.LineColor,  
                     HardNoteId = id.ToString()
                 };
             }
@@ -426,6 +430,8 @@ namespace Composite.Common.Mappers
                 {
                     Id = Guid.Parse(compositeBase.Id),
                     Tag = compositeBase.Tag,
+                    SelectedLineSize = compositeBase.BrSize,   
+                    SelectedLineColor = compositeBase.BrColor,
                     Comment = compositeBase.Comment
                 };
             }

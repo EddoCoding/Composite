@@ -7,7 +7,7 @@
         MouseDown="MoveWindow" Background="WhiteSmoke" WindowStyle="None" 
         WindowStartupLocation="CenterScreen" RenderOptions.BitmapScalingMode="NearestNeighbor"
         Title="{Binding Title}" Height="110" Width="300" ResizeMode="CanResizeWithGrip" 
-        AllowsTransparency="True" FontFamily="Trebuchet MS"
+        AllowsTransparency="True" FontFamily="Trebuchet MS" Icon="/Common/Images/addCategory.png"
         TextOptions.TextFormattingMode="Display" KeyboardNavigation.TabNavigation="None">
     <Window.Resources>
         <Style x:Key="Button" TargetType="Button">

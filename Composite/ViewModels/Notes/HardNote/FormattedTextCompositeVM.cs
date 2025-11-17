@@ -18,13 +18,13 @@ namespace Composite.ViewModels.Notes.HardNote
         [ObservableProperty] string _brColor = "WhiteSmoke";
         [ObservableProperty] string _bgColor = "WhiteSmoke";
 
-        double _slectedBrSize;
+        double _selectedBrSize;
         public double SelectedBrSize
         {
-            get => _slectedBrSize;
+            get => _selectedBrSize;
             set
             {
-                SetProperty(ref _slectedBrSize, value);
+                SetProperty(ref _selectedBrSize, value);
                 ChangeBorderSize(SelectedBrSize);
             }
         }
@@ -66,8 +66,7 @@ namespace Composite.ViewModels.Notes.HardNote
         public double[] FontSizes { get; set; } //Выборка размера шрифта
         public double[] Borders { get; set; } //Выборка размера рамки
         public double[] Corners { get; set; } //Выборка угла рамки
-        public string[] Colors { get; set; } //Выборка цветов для рамки и заднего фона
-
+        public string[] Colors { get; set; } //Выборка цветов для рамки, заднего фона и цвета текса
 
         public FormattedTextCompositeVM()
         {

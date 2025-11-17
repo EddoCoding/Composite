@@ -56,7 +56,9 @@ namespace Composite.Common.Factories
                     {
                         Id = lineCompositeVM.Id,
                         Tag = lineCompositeVM.Tag,
-                        Comment = lineCompositeVM.Comment
+                        Comment = lineCompositeVM.Comment,
+                        SelectedLineSize = lineCompositeVM.LineSize,
+                        SelectedLineColor = lineCompositeVM.LineColor
                     };
                     compositesVM.Add(newLineCompositeVM);
                 }
