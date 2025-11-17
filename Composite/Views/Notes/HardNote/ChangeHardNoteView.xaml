@@ -820,8 +820,7 @@
 
                     </StackPanel>
 
-                    <Line Grid.Row="1" Style="{StaticResource Line}" StrokeThickness="{Binding LineSize}" Stroke="{Binding LineColor}" 
-                          StrokeDashArray="{Binding DashArray}"/>
+                    <Line Grid.Row="1" Style="{StaticResource Line}" StrokeThickness="{Binding SelectedLineSize}" Stroke="{Binding SelectedLineColor}"/>
 
                 </Grid>
 
@@ -1675,7 +1674,7 @@
 
                     </StackPanel>
 
-                    <Border Grid.Row="1" Background="{Binding BgColor}" BorderThickness="{Binding BrSize}" BorderBrush="{Binding BrColor}" CornerRadius="{Binding BrCornerRadius}"
+                    <Border Grid.Row="1" Background="{Binding SelectedBgColor}" BorderThickness="{Binding SelectedBrSize}" BorderBrush="{Binding SelectedBrColor}" CornerRadius="{Binding SelectedBrCornerRadius}"
                             Margin="4,0,0,5" Padding="3" >
                         <RichTextBox Name="mainRTB" AcceptsTab="True" FontSize="16" FontFamily="Trebuchet MS" SelectionBrush="LightGray"
                                      Background="{Binding BgColor}" CaretBrush="Gray" BorderThickness="0"
@@ -1689,7 +1688,7 @@
                                 </Style>
                             </RichTextBox.Resources>
                         </RichTextBox>
-                    </Border>
+                    </Border>                                                   
 
                     <Popup Name="formattingPopup" StaysOpen="False" Placement="RelativePoint" AllowsTransparency="True" PopupAnimation="Fade" Height="33" VerticalOffset="100">
                         <Border Background="White" CornerRadius="8" Padding="3" BorderBrush="Gray" BorderThickness="1">

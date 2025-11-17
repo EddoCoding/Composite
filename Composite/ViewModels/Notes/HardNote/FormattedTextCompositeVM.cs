@@ -13,54 +13,10 @@ namespace Composite.ViewModels.Notes.HardNote
         [ObservableProperty] bool _isModified;
         [ObservableProperty] byte[] _xamlPackageContent;
 
-        [ObservableProperty] double _brSize;
-        [ObservableProperty] double _brCornerRadius;
-        [ObservableProperty] string _brColor = "WhiteSmoke";
-        [ObservableProperty] string _bgColor = "WhiteSmoke";
-
-        double _selectedBrSize;
-        public double SelectedBrSize
-        {
-            get => _selectedBrSize;
-            set
-            {
-                SetProperty(ref _selectedBrSize, value);
-                ChangeBorderSize(SelectedBrSize);
-            }
-        }
-
-        double _selectedBrCornerRadius;
-        public double SelectedBrCornerRadius
-        {
-            get => _selectedBrCornerRadius;
-            set
-            {
-                SetProperty(ref _selectedBrCornerRadius, value);
-                ChangeBrCornerRadius(SelectedBrCornerRadius);
-            }
-        }
-
-        string _selectedBrColor = "WhiteSmoke";
-        public string SelectedBrColor
-        {
-            get => _selectedBrColor;
-            set
-            {
-                SetProperty(ref _selectedBrColor, value);
-                ChangeBrColor(SelectedBrColor);
-            }
-        }
-
-        string _selectedBgColor = "WhiteSmoke";
-        public string SelectedBgColor
-        {
-            get => _selectedBgColor;
-            set
-            {
-                SetProperty(ref _selectedBgColor, value);
-                ChangeBgColor(SelectedBgColor);
-            }
-        }
+        [ObservableProperty] double _selectedBrSize;
+        [ObservableProperty] double _selectedBrCornerRadius;
+        [ObservableProperty] string _selectedBrColor = "WhiteSmoke";
+        [ObservableProperty]string _selectedBgColor = "WhiteSmoke";
 
         public List<string> Fonts { get; } //Выборка шрифтов
         public double[] FontSizes { get; set; } //Выборка размера шрифта
@@ -126,11 +82,6 @@ namespace Composite.ViewModels.Notes.HardNote
             }
             catch (Exception ex) { }
         }
-
-        void ChangeBorderSize(double borderSize) => BrSize = borderSize;
-        void ChangeBrCornerRadius(double brCornerRadius) => BrCornerRadius = brCornerRadius;
-        void ChangeBrColor(string brColor) => BrColor = brColor;
-        void ChangeBgColor(string bgColor) => BgColor = bgColor;
 
 
         public override object Clone()

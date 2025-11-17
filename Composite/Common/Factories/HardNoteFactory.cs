@@ -57,8 +57,8 @@ namespace Composite.Common.Factories
                         Id = lineCompositeVM.Id,
                         Tag = lineCompositeVM.Tag,
                         Comment = lineCompositeVM.Comment,
-                        SelectedLineSize = lineCompositeVM.LineSize,
-                        SelectedLineColor = lineCompositeVM.LineColor
+                        SelectedLineSize = lineCompositeVM.SelectedLineSize,
+                        SelectedLineColor = lineCompositeVM.SelectedLineColor
                     };
                     compositesVM.Add(newLineCompositeVM);
                 }
@@ -162,10 +162,10 @@ namespace Composite.Common.Factories
                         Tag = ftCompositeVM.Tag,
                         Comment = ftCompositeVM.Comment,
                         Document = document,
-                        SelectedBrSize = ftCompositeVM.BrSize,
-                        SelectedBrCornerRadius = ftCompositeVM.BrCornerRadius,
-                        SelectedBrColor = ftCompositeVM.BrColor,
-                        SelectedBgColor = ftCompositeVM.BgColor,
+                        SelectedBrSize = ftCompositeVM.SelectedBrSize,
+                        SelectedBrCornerRadius = ftCompositeVM.SelectedBrCornerRadius,
+                        SelectedBrColor = ftCompositeVM.SelectedBrColor,
+                        SelectedBgColor = ftCompositeVM.SelectedBgColor,
                         XamlPackageContent = ftCompositeVM.XamlPackageContent
                     };
 

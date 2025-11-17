@@ -137,8 +137,8 @@ namespace Composite.Common.Mappers
                     Id = lineCompositeVM.Id.ToString(),
                     Tag = lineCompositeVM.Tag,
                     Comment = lineCompositeVM.Comment,
-                    BrSize = (int)lineCompositeVM.LineSize, 
-                    BrColor = lineCompositeVM.LineColor,    
+                    BrSize = (int)lineCompositeVM.SelectedLineSize, 
+                    BrColor = lineCompositeVM.SelectedLineColor,    
                     HardNoteId = id.ToString()
                 };
             }
@@ -232,10 +232,10 @@ namespace Composite.Common.Mappers
                     Tag = ftCompositeVM.Tag,
                     Comment = ftCompositeVM.Comment,
                     Data = ftCompositeVM.XamlPackageContent,
-                    BrSize = (int)ftCompositeVM.BrSize,
-                    BrCornerRadius = (int)ftCompositeVM.BrCornerRadius,
-                    BrColor = ftCompositeVM.BrColor,
-                    BgColor = ftCompositeVM.BgColor,
+                    BrSize = (int)ftCompositeVM.SelectedBrSize,
+                    BrCornerRadius = (int)ftCompositeVM.SelectedBrCornerRadius,
+                    BrColor = ftCompositeVM.SelectedBrColor,
+                    BgColor = ftCompositeVM.SelectedBgColor,
                     HardNoteId = id.ToString()
                 };
             }
@@ -286,8 +286,8 @@ namespace Composite.Common.Mappers
                     Id = Guid.NewGuid().ToString(),
                     Tag = lineCompositeVM.Tag,
                     Comment = lineCompositeVM.Comment,
-                    BrSize = (int)lineCompositeVM.LineSize, 
-                    BrColor = lineCompositeVM.LineColor,  
+                    BrSize = (int)lineCompositeVM.SelectedLineSize, 
+                    BrColor = lineCompositeVM.SelectedLineColor,  
                     HardNoteId = id.ToString()
                 };
             }
@@ -381,10 +381,10 @@ namespace Composite.Common.Mappers
                     Tag = ftCompositeVM.Tag,
                     Comment = ftCompositeVM.Comment,
                     Data = ftCompositeVM.XamlPackageContent,
-                    BrSize = (int)ftCompositeVM.BrSize,
-                    BrCornerRadius = (int)ftCompositeVM.BrCornerRadius,
-                    BrColor = ftCompositeVM.BrColor,
-                    BgColor = ftCompositeVM.BgColor,
+                    BrSize = (int)ftCompositeVM.SelectedBrSize,
+                    BrCornerRadius = (int)ftCompositeVM.SelectedBrCornerRadius,
+                    BrColor = ftCompositeVM.SelectedBrColor,
+                    BgColor = ftCompositeVM.SelectedBgColor,
                     HardNoteId = id.ToString()
                 };
             }
