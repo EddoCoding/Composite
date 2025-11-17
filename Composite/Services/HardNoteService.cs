@@ -163,12 +163,9 @@ namespace Composite.Services
         {
             OpenFileDialog openFileDialog = new OpenFileDialog()
             {
-                Filter = "Office Documents|*.docx;*.xlsx;*.pptx;*.doc;*.xls;*.ppt|" +
-                         "Word Documents|*.docx;*.doc|" +
-                         "Excel Documents|*.xlsx;*.xls|" +
-                         "PowerPoint Documents|*.pptx;*.ppt|" +
+                Filter = "Office & PDF Documents|*.docx;*.xlsx;*.pptx;*.doc;*.xls;*.ppt;*.pdf|" +
                          "All files (*.*)|*.*",
-                Title = "Select Office Document"
+                Title = "Select document"
             };
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
