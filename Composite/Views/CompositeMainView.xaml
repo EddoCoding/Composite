@@ -61,7 +61,7 @@
         </Style>
     </UserControl.Resources>
 
-    <TabControl Grid.Row="0" Background="WhiteSmoke" Margin="10,0,0,10" BorderThickness="0" ItemContainerStyle="{StaticResource CustomTabItem}"
+    <TabControl Grid.Row="0" Background="WhiteSmoke" Margin="5,0,0,10" BorderThickness="0" ItemContainerStyle="{StaticResource CustomTabItem}"
             ItemsSource="{Binding TabService.Tabs}" SelectedItem="{Binding TabService.SelectedTab}">
         <TabControl.ContentTemplate>
             <DataTemplate>

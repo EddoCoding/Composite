@@ -21,6 +21,7 @@
     <None Remove="Common\Images\alignRight.png" />
     <None Remove="Common\Images\back.png" />
     <None Remove="Common\Images\bold.png" />
+    <None Remove="Common\Images\calendar.png" />
     <None Remove="Common\Images\changeType.png" />
     <None Remove="Common\Images\close.png" />
     <None Remove="Common\Images\code.png" />
@@ -53,6 +54,7 @@
     <None Remove="Common\Images\removeIndentation.png" />
     <None Remove="Common\Images\repeat.png" />
     <None Remove="Common\Images\scale.png" />
+    <None Remove="Common\Images\setting.png" />
     <None Remove="Common\Images\sort.png" />
     <None Remove="Common\Images\strikethrough.png" />
     <None Remove="Common\Images\task.png" />
@@ -77,6 +79,7 @@
     <Resource Include="Common\Images\alignRight.png" />
     <Resource Include="Common\Images\back.png" />
     <Resource Include="Common\Images\bold.png" />
+    <Resource Include="Common\Images\calendar.png" />
     <Resource Include="Common\Images\changeType.png" />
     <Resource Include="Common\Images\code.png" />
     <Resource Include="Common\Images\collapse.png" />
@@ -128,6 +131,7 @@
     <Resource Include="Common\Images\repeat.png" />
     <Resource Include="Common\Images\scale.png" />
     <Resource Include="Common\Images\search.png" />
+    <Resource Include="Common\Images\setting.png" />
     <Resource Include="Common\Images\sort.png" />
     <Resource Include="Common\Images\strikethrough.png" />
     <Resource Include="Common\Images\task.png" />

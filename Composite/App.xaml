@@ -11,6 +11,7 @@
                 <ResourceDictionary Source="Common/Styles/ScrollBarStyles.xaml"/>
                 <ResourceDictionary Source="Common/Styles/TextBoxStyles.xaml"/>
                 <ResourceDictionary Source="Common/Styles/ComboBoxStyles.xaml"/>
+                <ResourceDictionary Source="Common/Styles/DatePickerCalendarStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
         </ResourceDictionary>

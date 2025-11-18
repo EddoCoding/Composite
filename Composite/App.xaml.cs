@@ -69,8 +69,6 @@ namespace Composite
             services.AddTransient<ICategoryNoteRepository, CategoryNoteRepository>();
             services.AddTransient<ICategoryNoteMap, CategoryNoteMap>();
 
-
-
             services.AddSingleton<ICommandService, CommandService>();
         }
 

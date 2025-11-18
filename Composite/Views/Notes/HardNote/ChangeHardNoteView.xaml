@@ -1967,7 +1967,7 @@
             </ListView.ItemContainerStyle>
         </ListView>
 
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2" Margin="-5,0,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -2002,7 +2002,7 @@
                 </Style>
             </Grid.Style>
 
-            <TextBlock Text="{Binding Message}" Foreground="OrangeRed" Margin="10,0,0,0"/>
+            <TextBlock Text="{Binding Message}" Foreground="OrangeRed" Margin="5,0,0,0"/>
 
         </Grid>
 

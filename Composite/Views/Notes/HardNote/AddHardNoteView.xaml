@@ -67,6 +67,31 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="ImageTaskButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Opacity" Value="0"/>
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="5">
+                            <ContentPresenter>
+                                <ContentPresenter.Content>
+                                    <Image Height="{Binding Height, RelativeSource={RelativeSource AncestorType=Button}}" 
+                                           Width="{Binding Width, RelativeSource={RelativeSource AncestorType=Button}}"
+                                           Source="{Binding Content, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                </ContentPresenter.Content>
+                            </ContentPresenter>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{Binding Tag, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style x:Key="SnippetButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Template">
@@ -1966,7 +1991,7 @@
             </ListView.ItemContainerStyle>
         </ListView>
 
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2" Margin="-5,0,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -2001,7 +2026,7 @@
                 </Style>
             </Grid.Style>
 
-            <TextBlock Text="{Binding Message}" Foreground="OrangeRed" Margin="10,0,0,0"/>
+            <TextBlock Text="{Binding Message}" Foreground="OrangeRed" Margin="5,0,0,0"/>
 
         </Grid>
 
