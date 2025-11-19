@@ -1999,23 +1999,45 @@
         <Grid Grid.Row="2" Margin="-5,0,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <ComboBox Grid.Column="0" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" Style="{StaticResource ComboBoxCustom}" 
                       ItemContainerStyle="{StaticResource ComboBoxItemCustom}" FontSize="12" DisplayMemberPath="NameCategory" Cursor="Hand"/>
 
-            <Button Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/lock.png" HorizontalAlignment="Right" Margin="0,0,10,0" Height="18" Width="18"
+            <Button Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/lock.png" HorizontalAlignment="Left" Margin="10,0,0,0" Height="18" Width="18"
                     RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Center" Command="{Binding ShowPasswordCommand}" Cursor="Hand"/>
             
-            <TextBox Grid.Column="2" Width="120" Style="{StaticResource PasswordTextBox}" FontSize="14" Margin="0,0,10,0" MaxLength="13" Background="Transparent"
-                     Text="{Binding HardNoteVM.Password}" HorizontalAlignment="Right" Visibility="{Binding PasswordVisible}" VerticalAlignment="Bottom"
+            <TextBox Grid.Column="2" Width="120" Style="{StaticResource PasswordTextBox}" FontSize="14" Margin="10,0,0,0" MaxLength="13" Background="Transparent"
+                     Text="{Binding HardNoteVM.Password}" HorizontalAlignment="Left" Visibility="{Binding PasswordVisible}" VerticalAlignment="Bottom"
                      property:PlaceHolder.PlaceHolder="Enter password" property:PlaceHolder.ShowAlways="True"/>
-            
-            <Button Grid.Column="3" Content="Save" Style="{StaticResource AddNoteButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                    Command="{Binding CheckNoteCommand}"  Cursor="Hand"/>
+
+            <Button Grid.Column="3" VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                    Command="{Binding CheckNoteCommand}" Cursor="Hand">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="q" BorderBrush="LightGray" BorderThickness="1" CornerRadius="4" Background="White" Width="100">
+                                        <Border.Effect>
+                                            <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
+                                        </Border.Effect>
+                                        <StackPanel Orientation="Horizontal" Margin="3">
+
+                                            <TextBlock Grid.Column="0" Text="Save" Foreground="DarkSlateGray" FontSize="16" Margin="5,0,0,0" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="1" Text="ctrl + s" Foreground="DarkGray" Margin="15,0,0,0" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+
+                                        </StackPanel>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
 
         </Grid>
 
