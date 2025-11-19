@@ -13,6 +13,7 @@
         <converter:TupleForCheckPasswordConverter x:Key="TupleForCheckPasswordConverter"/>
 
         <Style x:Key="ImageModule" TargetType="Button">
+            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="Gray"/>
             <Setter Property="Template">
@@ -92,6 +93,7 @@
         </Style>
         <Style x:Key="ImageTextButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -173,6 +175,7 @@
             </Setter>
         </Style>
         <Style x:Key="Buttons" TargetType="Button">
+            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
             <Setter Property="FontSize" Value="14"/>
@@ -453,7 +456,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListViewItem">
-                        <Button x:Name="ItemButton" Style="{StaticResource NoteButton}"
+                        <Button x:Name="ItemButton" Style="{StaticResource NoteButton}" Cursor="Hand"
                                 Command="{Binding DataContext.OpenPopupPasswordCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
                             <Button.CommandParameter>
                                 <MultiBinding Converter="{StaticResource TupleForCheckPasswordConverter}">

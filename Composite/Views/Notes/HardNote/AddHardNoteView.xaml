@@ -93,6 +93,7 @@
             </Setter>
         </Style>
         <Style x:Key="SnippetButton" TargetType="Button">
+            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -121,6 +122,7 @@
             </Setter>
         </Style>
         <Style x:Key="RichTextBoxButton" TargetType="{x:Type Button}">
+            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="CommandTarget" Value="{Binding ElementName=mainRTB}"/>
             <Setter Property="Template">
@@ -264,7 +266,7 @@
             <Setter Property="Stretch" Value="Fill"/>
             <Setter Property="X1" Value="0"/>
             <Setter Property="X2" Value="1"/>
-            <Setter Property="Height" Value="10"/>
+            <Setter Property="Height" Value="5"/>
             <Setter Property="Margin" Value="10,10,0,0"/>
             <Setter Property="StrokeStartLineCap" Value="Round"/>
             <Setter Property="StrokeEndLineCap" Value="Round"/>
@@ -793,7 +795,7 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="7,-2,0,0">
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="7,-2,0,-10">
                         <StackPanel.Style>
                             <Style TargetType="StackPanel">
                                 <Setter Property="Opacity" Value="0"/>
@@ -1084,7 +1086,7 @@
                         Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                         CommandParameter="{Binding}"/>
 
-                <Button x:Name="RefButton" Grid.Column="2" Style="{StaticResource ImageButton}" Content="/Common/Images/ref.png" Tag="WhiteSmoke" Height="18" Margin="10,9,0,0"
+                <Button x:Name="RefButton" Grid.Column="2" Style="{StaticResource ImageButton}" Content="/Common/Images/ref.png" Tag="WhiteSmoke" Height="18" Width="20" Margin="10,9,0,0"
                         Cursor="Hand" FontSize="14" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top" Command="{Binding OpenRefPopupCommand}"/>
 
                 <Button Grid.Column="3" Margin="10,5" Cursor="Hand" HorizontalAlignment="Left" MinWidth="100" VerticalAlignment="Top"
@@ -1094,10 +1096,12 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="Button">
-                                        <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="8" Height="25" Background="WhiteSmoke">
-                                            <TextBlock Text="{Binding DataContext.Text, RelativeSource={RelativeSource TemplatedParent}}"
-                                                       FontSize="14" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Padding="5,3"
-                                                       Background="Transparent"/>
+                                        <Border BorderThickness="1" CornerRadius="8" Height="25" Background="White">
+                                            <Border.Effect>
+                                                <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
+                                            </Border.Effect>
+                                            <TextBlock Text="{Binding DataContext.Text, RelativeSource={RelativeSource TemplatedParent}}" Foreground="Gray"
+                                                       FontSize="14" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Padding="5,3" Background="Transparent"/>
                                         </Border>
                                     </ControlTemplate>
                                 </Setter.Value>
@@ -1157,7 +1161,7 @@
 
                 <Popup IsOpen="{Binding IsRefPopup, Mode=TwoWay}" PlacementTarget="{Binding ElementName=RefButton}" AllowsTransparency="True" StaysOpen="False" 
                        Placement="Bottom" VerticalOffset="10">
-                    <Border Background="WhiteSmoke" BorderBrush="Gray" BorderThickness="1" CornerRadius="8" Width="400">
+                    <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="8" Width="400">
                         <Border.Effect>
                             <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
                         </Border.Effect>
@@ -1174,6 +1178,7 @@
                                 <Button x:Name="RefPopup" HorizontalAlignment="Left" Command="{Binding OpenNotesPopupCommand}" VerticalAlignment="Center" FontSize="14">
                                     <Button.Style>
                                         <Style TargetType="Button">
+                                            <Setter Property="Cursor" Value="Hand"/>
                                             <Setter Property="Foreground" Value="Gray"/>
                                             <Setter Property="Template">
                                                 <Setter.Value>
@@ -1190,11 +1195,11 @@
                                         </Style>
                                     </Button.Style>
                                 </Button>
-                                <TextBlock Text="{Binding Text}" VerticalAlignment="Center" Margin="5,0,0,0" MaxWidth="200" 
-                                           TextTrimming="CharacterEllipsis" FontSize="14"/>
+                                <TextBlock Text="{Binding Text}" VerticalAlignment="Center" Margin="5,0,0,0" MaxWidth="200" TextTrimming="CharacterEllipsis" FontSize="14"/>
                                 <Button Command="{Binding ClearSelectedNoteCommand}">
                                     <Button.Style>
                                         <Style TargetType="Button">
+                                            <Setter Property="Cursor" Value="Hand"/>
                                             <Setter Property="Foreground" Value="Gray"/>
                                             <Setter Property="Margin" Value="5,0,0,0"/>
                                             <Setter Property="Template">
@@ -1222,8 +1227,8 @@
 
                 <Popup IsOpen="{Binding IsNotesPopup, Mode=TwoWay}" PlacementTarget="{Binding ElementName=RefPopup}" AllowsTransparency="True" StaysOpen="False" Placement="Bottom"
                        VerticalOffset="20" HorizontalOffset="-10">
-                    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="8" MaxHeight="250">
-                        <ListView ItemsSource="{Binding Notes}" BorderThickness="0" Margin="0,5" Background="WhiteSmoke">
+                    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="8" MaxHeight="250" Background="White">
+                        <ListView ItemsSource="{Binding Notes}" BorderThickness="0" Margin="0,5" Background="White">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
                                     <Setter Property="Template">
@@ -1232,7 +1237,7 @@
                                                 <Button Command="{Binding DataContext.SelectNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
                                                     <Button.Style>
                                                         <Style TargetType="Button">
-                                                            <Setter Property="Background" Value="WhiteSmoke"/>
+                                                            <Setter Property="Background" Value="White"/>
                                                             <Setter Property="Template">
                                                                 <Setter.Value>
                                                                     <ControlTemplate TargetType="Button">
@@ -1241,7 +1246,7 @@
                                                                         </Border>
                                                                         <ControlTemplate.Triggers>
                                                                             <Trigger Property="IsMouseOver" Value="True">
-                                                                                <Setter Property="Background" Value="#E6E6E6"/>
+                                                                                <Setter Property="Background" Value="WhiteSmoke"/>
                                                                             </Trigger>
                                                                         </ControlTemplate.Triggers>
                                                                     </ControlTemplate>
@@ -1280,13 +1285,13 @@
                         Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                         CommandParameter="{Binding}"/>
 
-                <Grid Grid.Column="2">
+                <Grid Grid.Column="2" Margin="10,0,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0" Text="•" FontSize="16" Margin="30,5,0,0"/>
+                    <TextBlock Grid.Column="0" Text="•" FontSize="16" Margin="27,5,0,0"/>
 
                     <TextBox Grid.Column="1" Style="{StaticResource Marker}" Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
                              property:PlaceHolder.PlaceHolder="Enter marker text" PreviewKeyDown="ListView_TextBox_PreviewKeyDown"/>
@@ -1363,13 +1368,13 @@
                         Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                         CommandParameter="{Binding}"/>
 
-                <Grid Grid.Column="2">
+                <Grid Grid.Column="2" Margin="10,0,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0" Text="{Binding Number}" FontSize="16" Margin="30,5,0,0"/>
+                    <TextBlock Grid.Column="0" Text="{Binding Number}" FontSize="16" Margin="0,5,0,0" Width="16"/>
 
                     <TextBox Grid.Column="1" Style="{StaticResource Numeric}" Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
                              property:PlaceHolder.PlaceHolder="Enter numeric text" PreviewKeyDown="ListView_TextBox_PreviewKeyDown"/>
@@ -1505,38 +1510,38 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="18"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="20"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <TextBox Grid.Column="0" Style="{StaticResource Text}" Text="{Binding Tag}" Margin="5,7,5,0" Width="100" TextWrapping="NoWrap" Foreground="Gray"
-                 property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Top"/>
+                         property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Top"/>
 
                 <Button Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/actions.png" Height="18" Width="18" VerticalAlignment="Top"
-                RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="WhiteSmoke" Margin="0,9,0,0"
-                Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
-                CommandParameter="{Binding}"/>
+                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="WhiteSmoke" Margin="0,9,0,0"
+                        Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                        CommandParameter="{Binding}"/>
 
                 <Button Grid.Column="2" Style="{StaticResource ImageButton}" Content="/Common/Images/doc.png" Tag="WhiteSmoke" Height="20" Margin="10,8,0,0"
-                Cursor="Hand" FontSize="14" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top"
-                Command="{Binding SelectDocumentCommand}"/>
+                        Cursor="Hand" FontSize="14" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top"
+                        Command="{Binding SelectDocumentCommand}"/>
 
                 <Button Grid.Column="3" Margin="10,5" Cursor="Hand" HorizontalAlignment="Left" MinWidth="100" VerticalAlignment="Top"
-                Command="{Binding OpenDocumentCommand}" CommandParameter="{Binding}">
+                        Command="{Binding OpenDocumentCommand}" CommandParameter="{Binding}">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="Button">
-                                        <Border BorderThickness="1" CornerRadius="8" Height="25" Background="WhiteSmoke">
+                                        <Border BorderThickness="1" CornerRadius="8" Height="25" Background="White">
                                             <Border.Effect>
                                                 <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
                                             </Border.Effect>
                                             <TextBlock Text="{Binding DataContext.Text, RelativeSource={RelativeSource TemplatedParent}}" Foreground="Gray"
-                                       FontSize="14" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Padding="5,3" Background="Transparent"/>
+                                                       FontSize="14" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Padding="5,3" Background="Transparent"/>
                                         </Border>
                                     </ControlTemplate>
                                 </Setter.Value>
@@ -1564,9 +1569,9 @@
                 </Grid>
 
                 <Button Grid.Column="5" Content="X" Cursor="Hand" VerticalAlignment="Top" Margin="10,10,0,0" FontSize="14" HorizontalAlignment="Right"
-                Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Command="{Binding DataContext.HardNoteVM.DeleteCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
-                CommandParameter="{Binding}">
+                        Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Command="{Binding DataContext.HardNoteVM.DeleteCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
+                        CommandParameter="{Binding}">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Template">
@@ -1719,7 +1724,7 @@
 
                                 <!--Шрифты-->
                                 <Grid>
-                                    <ComboBox x:Name="fontComboBox" ItemsSource="{Binding Fonts}" Style="{StaticResource ComboBoxCustom}"
+                                    <ComboBox x:Name="fontComboBox" ItemsSource="{Binding Fonts}" Style="{StaticResource ComboBoxCustom}" Cursor="Hand"
                                               ItemContainerStyle="{StaticResource ComboBoxItemCustom2}" IsTextSearchEnabled="False">
                                         <ComboBox.ItemTemplate>
                                             <DataTemplate>
@@ -1754,7 +1759,7 @@
                                 
                                 <!--Размеры шрифта-->
                                 <Grid>
-                                    <ComboBox x:Name="sizeComboBox" ItemsSource="{Binding FontSizes}" Style="{StaticResource ComboBoxCustom}"
+                                    <ComboBox x:Name="sizeComboBox" ItemsSource="{Binding FontSizes}" Style="{StaticResource ComboBoxCustom}" Cursor="Hand"
                                               ItemContainerStyle="{StaticResource ComboBoxItemCustom2}" IsTextSearchEnabled="False">
                                         <ComboBox.ItemTemplate>
                                             <DataTemplate>
@@ -1789,7 +1794,7 @@
 
                                 <!--Цвет текста-->
                                 <Grid Margin="0,0,5,0">
-                                    <ComboBox x:Name="textColorComboBox" ItemsSource="{Binding Colors}" Style="{StaticResource ComboBoxCustom}"
+                                    <ComboBox x:Name="textColorComboBox" ItemsSource="{Binding Colors}" Style="{StaticResource ComboBoxCustom}" Cursor="Hand"
                                               ItemContainerStyle="{StaticResource ComboBoxItemCustom2}" IsTextSearchEnabled="False">
                                         <ComboBox.ItemTemplate>
                                             <DataTemplate>
@@ -1832,7 +1837,7 @@
 
                                 <!--Цвет заднего фона текста-->
                                 <Grid Margin="0,0,5,0">
-                                    <ComboBox x:Name="bgTextColorComboBox" ItemsSource="{Binding Colors}" Style="{StaticResource ComboBoxCustom}"
+                                    <ComboBox x:Name="bgTextColorComboBox" ItemsSource="{Binding Colors}" Style="{StaticResource ComboBoxCustom}" Cursor="Hand"
                                               ItemContainerStyle="{StaticResource ComboBoxItemCustom2}" IsTextSearchEnabled="False">
                                         <ComboBox.ItemTemplate>
                                             <DataTemplate>
@@ -2000,17 +2005,17 @@
             </Grid.ColumnDefinitions>
 
             <ComboBox Grid.Column="0" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" Style="{StaticResource ComboBoxCustom}" 
-                      ItemContainerStyle="{StaticResource ComboBoxItemCustom}" FontSize="12" DisplayMemberPath="NameCategory"/>
+                      ItemContainerStyle="{StaticResource ComboBoxItemCustom}" FontSize="12" DisplayMemberPath="NameCategory" Cursor="Hand"/>
 
             <Button Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/lock.png" HorizontalAlignment="Right" Margin="0,0,10,0" Height="18" Width="18"
-                    RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Center" Command="{Binding ShowPasswordCommand}"/>
+                    RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Center" Command="{Binding ShowPasswordCommand}" Cursor="Hand"/>
             
             <TextBox Grid.Column="2" Width="120" Style="{StaticResource PasswordTextBox}" FontSize="14" Margin="0,0,10,0" MaxLength="13" Background="Transparent"
                      Text="{Binding HardNoteVM.Password}" HorizontalAlignment="Right" Visibility="{Binding PasswordVisible}" VerticalAlignment="Bottom"
                      property:PlaceHolder.PlaceHolder="Enter password" property:PlaceHolder.ShowAlways="True"/>
             
             <Button Grid.Column="3" Content="Save" Style="{StaticResource AddNoteButton}" VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                    Command="{Binding CheckNoteCommand}"/>
+                    Command="{Binding CheckNoteCommand}"  Cursor="Hand"/>
 
         </Grid>
 
@@ -2045,7 +2050,7 @@
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="ListViewItem">
-                                            <ContentPresenter/>
+                                            <ContentPresenter Cursor="Hand"/>
                                         </ControlTemplate>
                                     </Setter.Value>
                                 </Setter>
@@ -2064,7 +2069,7 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="ListViewItem">
-                                        <ContentPresenter/>
+                                        <ContentPresenter Cursor="Hand"/>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>

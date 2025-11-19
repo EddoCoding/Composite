@@ -175,7 +175,7 @@
                                             </Button.Style>
                                         </Button>
 
-                                        <Button Grid.Column="1" Content="delete" Style="{StaticResource DefaultButton}" HorizontalAlignment="Right"
+                                        <Button Grid.Column="1" Content="delete" Style="{StaticResource DefaultButton}" HorizontalAlignment="Right" Cursor="Hand"
                                                 Command="{Binding DataContext.MediaPlayerService.DeleteSongCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
                                                 CommandParameter="{Binding}"/>
 
@@ -215,9 +215,9 @@
                             <TextBlock Grid.Column="0" Text="number of songs:" FontWeight="Bold" VerticalAlignment="Center"/>
                             <TextBlock Grid.Column="1" Text="{Binding MediaPlayerService.Songs.Count}" Margin="5,0,0,0" VerticalAlignment="Center"/>
                             <Button Grid.Column="2" Content="add song" Style="{StaticResource DefaultButton}" HorizontalAlignment="Right"
-                                    Command="{Binding MediaPlayerService.SelectSongsCommand}"/>
+                                    Cursor="Hand" Command="{Binding MediaPlayerService.SelectSongsCommand}"/>
                             <Button Grid.Column="3" Content="delete all" Style="{StaticResource DefaultButton}" Margin="5,0,2,0"
-                                    Command="{Binding MediaPlayerService.DeleteSongsCommand}"/>
+                                    Cursor="Hand" Command="{Binding MediaPlayerService.DeleteSongsCommand}"/>
                             
                         </Grid>
                         
@@ -226,6 +226,15 @@
             </Popup>
 
             <Grid Grid.Column="1" Margin="10,0" Visibility="{Binding Visibility}" VerticalAlignment="Center">
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding MediaPlayerService}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -240,26 +249,17 @@
                         local:SliderBehavior.StopSeekCommand="{Binding MediaPlayerService.StopSeekingCommand}"/>
 
                 <TextBlock Grid.Column="2" Text="{Binding MediaPlayerService.TotalTime}" Margin="5,0,0,0" VerticalAlignment="Center"/>
-
-                <Grid.Style>
-                    <Style TargetType="Grid">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding MediaPlayerService}" Value="{x:Null}">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
+                
             </Grid>
 
             <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="{Binding Visibility}">
 
                 <Button Content="/Common/Images/back.png" Style="{StaticResource ImageButton}" Height="16" Width="16" RenderOptions.BitmapScalingMode="Fant"
-                        Command="{Binding MediaPlayerService.BackCommand}"/>
+                        Cursor="Hand" Command="{Binding MediaPlayerService.BackCommand}"/>
                 <Button Content="/Common/Images/playStop.png" Style="{StaticResource ImageButton}" Height="26" Width="26" RenderOptions.BitmapScalingMode="Fant"
-                        Command="{Binding MediaPlayerService.PlayCommand}"/>
+                        Cursor="Hand" Command="{Binding MediaPlayerService.PlayCommand}"/>
                 <Button Content="/Common/Images/next.png" Style="{StaticResource ImageButton}" Height="16" Width="16" RenderOptions.BitmapScalingMode="Fant"
-                        Command="{Binding MediaPlayerService.NextCommand}"/>
+                        Cursor="Hand" Command="{Binding MediaPlayerService.NextCommand}"/>
 
                 <StackPanel.Style>
                     <Style TargetType="StackPanel">
@@ -273,12 +273,12 @@
             </StackPanel>
 
             <Button Grid.Column="3" Content="{Binding MediaPlayerService.PathImageRepeat}" Style="{StaticResource ImageButton}" Height="17" Width="17" Margin="5,0,0,0"
-                    RenderOptions.BitmapScalingMode="Fant" Visibility="{Binding Visibility}" Command="{Binding MediaPlayerService.RepeatCommand}"/>
+                    RenderOptions.BitmapScalingMode="Fant" Visibility="{Binding Visibility}" Cursor="Hand" Command="{Binding MediaPlayerService.RepeatCommand}"/>
 
             <Slider Grid.Column="4" Value="{Binding MediaPlayerService.Volume}" Style="{StaticResource customSlider}" Width="80" Visibility="{Binding Visibility}"/>
 
             <Button Grid.Column="5" Content="{Binding NameButtonStartStopMediaPlayer}" Style="{StaticResource DefaultButton}" Margin="0,0,5,0"
-                    RenderOptions.BitmapScalingMode="Fant" Command="{Binding StarStopMediaPlayerCommand}" Focusable="False"/>
+                    RenderOptions.BitmapScalingMode="Fant" Command="{Binding StarStopMediaPlayerCommand}" Focusable="False" Cursor="Hand"/>
 
         </Grid>
 

@@ -8,6 +8,7 @@
              KeyboardNavigation.TabNavigation="None">
     <UserControl.Resources>
         <Style x:Key="ButtonTab" TargetType="Button">
+            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
