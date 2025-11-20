@@ -456,7 +456,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListViewItem">
-                        <Button x:Name="ItemButton" Style="{StaticResource NoteButton}" Cursor="Hand"
+                        <Button x:Name="ItemButton" Style="{StaticResource NoteButton}" Cursor="Hand" VerticalAlignment="Center" VerticalContentAlignment="Center"
                                 Command="{Binding DataContext.OpenPopupPasswordCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
                             <Button.CommandParameter>
                                 <MultiBinding Converter="{StaticResource TupleForCheckPasswordConverter}">

@@ -249,6 +249,8 @@
             <Setter Property="SelectionBrush" Value="LightGray"/>
             <Setter Property="CaretBrush" Value="Gray"/>
             <Setter Property="MinWidth" Value="85"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
             <Setter Property="Margin" Value="3,-10"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="AcceptsReturn" Value="True"/>
@@ -713,7 +715,9 @@
 
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="“" FontSize="18"/>
 
-                    <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource TextQuote}" property:PlaceHolder.PlaceHolder="Enter quote" PreviewKeyDown="ListView_TextBox_PreviewKeyDown"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource TextQuote}"
+                             property:PlaceHolder.PlaceHolder="Enter quote" 
+                             PreviewKeyDown="ListView_TextBox_PreviewKeyDown"/>
 
                     <TextBlock Grid.Row="2" Grid.Column="2" Text="„" FontSize="18"/>
 
@@ -1101,7 +1105,7 @@
                                                 <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
                                             </Border.Effect>
                                             <TextBlock Text="{Binding DataContext.Text, RelativeSource={RelativeSource TemplatedParent}}" Foreground="Gray"
-                                                       FontSize="14" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Padding="5,3" Background="Transparent"/>
+                                                       FontSize="14" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Padding="8,3" Background="Transparent"/>
                                         </Border>
                                     </ControlTemplate>
                                 </Setter.Value>
@@ -1541,7 +1545,7 @@
                                                 <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
                                             </Border.Effect>
                                             <TextBlock Text="{Binding DataContext.Text, RelativeSource={RelativeSource TemplatedParent}}" Foreground="Gray"
-                                                       FontSize="14" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Padding="5,3" Background="Transparent"/>
+                                                       FontSize="14" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Padding="8,3" Background="Transparent"/>
                                         </Border>
                                     </ControlTemplate>
                                 </Setter.Value>

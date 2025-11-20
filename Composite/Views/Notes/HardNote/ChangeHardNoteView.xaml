@@ -1078,7 +1078,7 @@
                                                 <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
                                             </Border.Effect>
                                             <TextBlock Text="{Binding DataContext.Text, RelativeSource={RelativeSource TemplatedParent}}" Foreground="Gray"
-                                                       FontSize="14" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Padding="5,3" Background="Transparent"/>
+                                                       FontSize="14" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Padding="8,3" Background="Transparent"/>
                                         </Border>
                                     </ControlTemplate>
                                 </Setter.Value>
@@ -1519,7 +1519,7 @@
                                                 <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
                                             </Border.Effect>
                                             <TextBlock Text="{Binding DataContext.Text, RelativeSource={RelativeSource TemplatedParent}}" Foreground="Gray"
-                               FontSize="14" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Padding="5,3" Background="Transparent"/>
+                               FontSize="14" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Padding="8,3" Background="Transparent"/>
                                         </Border>
                                     </ControlTemplate>
                                 </Setter.Value>

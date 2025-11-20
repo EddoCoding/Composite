@@ -179,7 +179,7 @@ namespace Composite.ViewModels.Notes.HardNote
                     {
                         Text = Value2,
                         FontWeight = "Bold",
-                        FontSize = 24
+                        FontSize = 25
                     };
                     Composites.Insert(index1, headerComposite1);
                     return headerComposite1;
@@ -201,7 +201,7 @@ namespace Composite.ViewModels.Notes.HardNote
                     {   
                         Text = Value2,
                         FontWeight = "Bold",
-                        FontSize = 20
+                        FontSize = 19
                     };
                     Composites.Insert(index3, headerComposite3);
                     return headerComposite3;
@@ -251,13 +251,11 @@ namespace Composite.ViewModels.Notes.HardNote
                     return null;
                 }
                 case "/ref":
-                {
                     int indexRef = Composites.IndexOf(compositeBaseVM);
                     DeleteComposite(compositeBaseVM);
                     var refComposite = new RefCompositeVM(_tabService, _hardNoteService, _messenger);
                     Composites.Insert(indexRef, refComposite);
                     return refComposite;
-                }
                 case "/marker":
                 {
                     int indexMarker = Composites.IndexOf(compositeBaseVM);
@@ -278,21 +276,17 @@ namespace Composite.ViewModels.Notes.HardNote
                     return numericComposite;
                 }
                 case "/code":
-                {
                     int indexCode = Composites.IndexOf(compositeBaseVM);
                     DeleteComposite(compositeBaseVM);
                     var codeComposite = new CodeCompositeVM();
                     Composites.Insert(indexCode, codeComposite);
                     return codeComposite;
-                }
                 case "/doc":
-                {
                     int indexDoc = Composites.IndexOf(compositeBaseVM);
                     DeleteComposite(compositeBaseVM);
                     var docComposite = new DocCompositeVM(_hardNoteService);
                     Composites.Insert(indexDoc, docComposite);
                     return docComposite;
-                }
                 case "/ft":
                     int indexFT = Composites.IndexOf(compositeBaseVM);
                     DeleteComposite(compositeBaseVM);
