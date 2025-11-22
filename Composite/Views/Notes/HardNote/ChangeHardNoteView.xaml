@@ -1066,7 +1066,7 @@
                 <Button x:Name="RefButton" Grid.Column="2" Style="{StaticResource ImageButton}" Content="/Common/Images/ref.png" Tag="WhiteSmoke" Height="18"  Width="20" Margin="10,9,0,0"
                         Cursor="Hand" FontSize="14" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top" Command="{Binding OpenRefPopupCommand}"/>
 
-                <Button Grid.Column="3" Margin="10,5" Cursor="Hand" HorizontalAlignment="Left" MinWidth="100" VerticalAlignment="Top"
+                <Button Grid.Column="3" Margin="10,5" Cursor="Hand" HorizontalAlignment="Left" MinWidth="100" MaxWidth="300" VerticalAlignment="Top"
                         Command="{Binding CheckValuRefCommand}" CommandParameter="{Binding}">
                     <Button.Style>
                         <Style TargetType="Button">
@@ -1488,7 +1488,7 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="18"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="20"/>
                     <ColumnDefinition Width="Auto"/>
@@ -1507,7 +1507,7 @@
                         Cursor="Hand" FontSize="14" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top"
                         Command="{Binding SelectDocumentCommand}"/>
 
-                <Button Grid.Column="3" Margin="10,5" Cursor="Hand" HorizontalAlignment="Left" MinWidth="100" VerticalAlignment="Top"
+                <Button Grid.Column="3" Margin="10,5" Cursor="Hand" HorizontalAlignment="Left" MinWidth="100" MaxWidth="300" VerticalAlignment="Top"
                         Command="{Binding OpenDocumentCommand}" CommandParameter="{Binding}">
                     <Button.Style>
                         <Style TargetType="Button">
@@ -1957,6 +1957,7 @@
 
         <ListView Grid.Row="1" x:Name="listComposite" ItemsSource="{Binding HardNoteVM.Composites}" BorderThickness="0" HorizontalContentAlignment="Stretch"
                   Focusable="False" Cursor="IBeam" ScrollViewer.CanContentScroll="False" Padding="0,0,0,15" Background="WhiteSmoke"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   PreviewKeyDown="ListView_PreviewKeyDown" MouseDown="listComposite_MouseDown" PreviewMouseWheel="listComposite_PreviewMouseWheel">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
