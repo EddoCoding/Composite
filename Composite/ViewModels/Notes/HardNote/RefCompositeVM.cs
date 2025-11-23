@@ -65,7 +65,6 @@ namespace Composite.ViewModels.Notes.HardNote
             ValueRef = ValueRef, 
             Text = Text 
         };
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
