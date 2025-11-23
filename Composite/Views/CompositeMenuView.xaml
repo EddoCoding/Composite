@@ -211,7 +211,7 @@
 
                                 <TextBlock Grid.Column="0" Text="{Binding Title}" Foreground="{TemplateBinding Foreground}" FontSize="16" Margin="5" TextOptions.TextFormattingMode="Ideal"/>
 
-                                <Button Grid.Column="1" Content="/Common/Images/threeDots.png" Style="{StaticResource ImageButton}" Margin="0,0,20,0" Height="20" Width="20" 
+                                <Button Grid.Column="1" Content="/Common/Images/threeDots.png" Style="{StaticResource ImageButton}" Margin="10,0,20,0" Height="20" Width="20" 
                                         RenderOptions.BitmapScalingMode="Fant" Tag="LightGray" Background="{TemplateBinding Background}" HorizontalAlignment="Right"
                                         Command="{Binding DataContext.OpenClosePopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"/>
 

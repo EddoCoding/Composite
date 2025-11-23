@@ -11,7 +11,6 @@ using Composite.ViewModels.Notes.Note;
 using Composite.Views;
 using Composite.Views.Notes;
 using Composite.Views.Notes.Notes;
-using Dapper;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 
@@ -92,25 +91,46 @@ namespace Composite
             using (var connection = _dbConnectionFactory.CreateConnection())
             {
                 connection.Open();
+                //НОВАЯ БД НОВАЯ БД НОВАЯ БД НОВАЯ БД
+
+                //var queryCreateHardNotes = "Create Table If Not Exists HardNotes(Id Text Primary Key, Title Text Default '', DateCreate DateTime Not Null, Category Text, Password Text)";
+                //var queryCompositeBase = "Create Table CompositeBase(Id Text Primary Key, HardNoteId Text Not Null, CompositeType Text Not Null, Tag Text, Comment Text, OrderIndex Integer, " +
+                //                         "Foreign Key (HardNoteId) References HardNotes(Id) On Delete Cascade)";
+                //var queryTextComposite = "Create Table TextComposites(Id Text Primary Key, Text Text, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)";
+                //var queryHeaderComposite = "Create Table HeaderComposites(Id Text Primary Key, Text Text, FontWeight Text, FontSize Integer, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)";
+                //var queryQuoteComposite = "Create Table QuoteComposites(Id Text Primary Key, Text Text, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)";
+                //var queryCodeComposite = "Create Table CodeComposites(Id Text Primary Key, Text Text, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)";
+                //var queryMarkerComposite = "Create Table MarkerComposites(Id Text Primary Key, Text Text, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)";
+                //var queryNumericComposite = "Create Table NumericComposites(Id Text Primary Key, Number Integer, Text Text, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)";
+                //var queryTaskComposite = "Create Table TaskComposites(Id Text Primary Key, isCompleted Integer, Text Text, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)";
+                //var queryLineComposite = "Create Table LineComposites(Id Text Primary Key, LineSize Integer, LineColor Text, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)";
+                //var queryDocumentComposite = "Create Table DocumentComposites(Id Text Primary Key, Text Text, Data Blob, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)";
+                //var ReferenceComposite = "Create Table ReferenceComposites(Id Text Primary Key, Text Text, ValueRef Text, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)";
+                //var queryImageComposite = "Create Table ImageComposites(Id Text Primary Key, HorizontalAlignment Text, Data Blob, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)";
+                //var queryFormattedTextComposite = "Create Table FormattedTextComposites(Id Text Primary Key, BorderSize Integer, CornerRadius Integer, BorderColor Text, BackgroundColor Text, Data Blob, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)";
                 
-                //Функциональный заметки
-                var queryCreateHardNotes = "Create Table If Not Exists HardNotes(Id Text Primary Key, Title Text Default '', DateCreate DateTime Not Null, Category Text, Password Text)";
-                var queryCreateComposites = "Create Table If Not Exists Composites(Id Text Primary Key, Tag Text, Comment Text, Text Text, FontWeightHeader Text, FontSizeHeader Integer, " +
-                                            "Completed Integer Default 0, Data Blob, HorizontalImage Text Default 'Center', ValueRef Text, Number Integer, BrSize Integer, BrColor Text, " +
-                                            "BgColor Text, BrCornerRadius Integer, " +
-                                            "HardNoteId TEXT NOT NULL, CompositeType TEXT NOT NULL, OrderIndex Integer, Foreign Key (HardNoteId) References HardNotes(Id) On Delete Cascade)";
+                //var queryCreateSongs = "Create Table If Not Exists Songs(Id Text Primary Key, Title Text, Data Blob)";
+                //var queryCreateCategories = "Create Table if Not Exists Categories(NameCategory Text Primary Key)";
+                //var queryInsertCategory = "Insert Or Ignore Into Categories (NameCategory) Values (@NameCategory)";
 
-                //Допы
-                var queryCreateSongs = "Create Table If Not Exists Songs(Id Text Primary Key, Title Text, Data Blob)";
-                var queryCreateCategories = "Create Table if Not Exists Categories(NameCategory Text Primary Key)";
-                var queryInsertCategory = "Insert Or Ignore Into Categories (NameCategory) Values (@NameCategory)";
+                //connection.Execute(queryCreateHardNotes);
+                //connection.Execute(queryCompositeBase);
+                //connection.Execute(queryTextComposite);
+                //connection.Execute(queryHeaderComposite);
+                //connection.Execute(queryQuoteComposite);
+                //connection.Execute(queryCodeComposite);
+                //connection.Execute(queryMarkerComposite);
+                //connection.Execute(queryNumericComposite);
+                //connection.Execute(queryTaskComposite);
+                //connection.Execute(queryLineComposite);
+                //connection.Execute(queryDocumentComposite);
+                //connection.Execute(ReferenceComposite);
+                //connection.Execute(queryImageComposite);
+                //connection.Execute(queryFormattedTextComposite);
 
-                connection.Execute(queryCreateHardNotes);
-                connection.Execute(queryCreateComposites);
-
-                connection.Execute(queryCreateSongs);
-                connection.Execute(queryCreateCategories);
-                connection.Execute(queryInsertCategory, new { NameCategory = "Без категории" });
+                //connection.Execute(queryCreateSongs);
+                //connection.Execute(queryCreateCategories);
+                //connection.Execute(queryInsertCategory, new { NameCategory = "Uncategorized" });
             }
         }
     }

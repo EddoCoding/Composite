@@ -16,7 +16,7 @@ namespace Composite.ViewModels.Notes.HardNote
         [ObservableProperty] double _selectedBrSize;
         [ObservableProperty] double _selectedBrCornerRadius;
         [ObservableProperty] string _selectedBrColor = "WhiteSmoke";
-        [ObservableProperty]string _selectedBgColor = "WhiteSmoke";
+        [ObservableProperty] string _selectedBgColor = "WhiteSmoke";
 
         public List<string> Fonts { get; } //Выборка шрифтов
         public double[] FontSizes { get; set; } //Выборка размера шрифта

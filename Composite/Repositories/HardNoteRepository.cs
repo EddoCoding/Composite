@@ -2,6 +2,7 @@
 using Composite.Models;
 using Composite.Models.Notes.HardNote;
 using Dapper;
+using System.Data;
 
 namespace Composite.Repositories
 {
@@ -12,6 +13,7 @@ namespace Composite.Repositories
             using (var connection = dbConnectionFactory.CreateConnection())
             {
                 connection.Open();
+
                 using var transaction = connection.BeginTransaction();
 
                 try
@@ -19,264 +21,99 @@ namespace Composite.Repositories
                     var queryAddHardNote = "Insert Into HardNotes(Id, Title, Category, DateCreate, Password) Values (@Id, @Title, @Category, @DateCreate, @Password)";
                     var resultAddHardNote = await connection.ExecuteAsync(queryAddHardNote, hardNote, transaction);
 
-                    if (hardNote.Composites?.Any() == true)
+                    if(hardNote.Composites?.Any() == true)
                     {
-                        // Создаем список с порядковыми номерами
-                        var compositesWithOrder = hardNote.Composites
-                            .Select((composite, index) => new { Composite = composite, OrderIndex = index })
-                            .ToList();
-
-                        var textComposites = compositesWithOrder
-                            .Where(x => x.Composite is TextComposite)
-                            .Select(x => new
+                        var tptMap = new Dictionary<Type, (string sql, Func<object, object> Map)>
+                        {
+                            [typeof(TextComposite)] = (@"Insert Into TextComposites(Id, Text) Values (@Id, @Text)", x => new
                             {
-                                ((TextComposite)x.Composite).Id,
-                                ((TextComposite)x.Composite).Tag,
-                                ((TextComposite)x.Composite).Comment,
-                                ((TextComposite)x.Composite).Text,
-                                ((TextComposite)x.Composite).HardNoteId,
-                                ((TextComposite)x.Composite).CompositeType,
-                                x.OrderIndex
-                            })
-                            .ToList();
-                        if (textComposites.Any())
-                        {
-                            var queryTexts = @"Insert Into Composites(Id, Tag, Comment, Text, HardNoteId, CompositeType, OrderIndex) 
-                                 Values (@Id, @Tag, @Comment, @Text, @HardNoteId, @CompositeType, @OrderIndex)";
-                            await connection.ExecuteAsync(queryTexts, textComposites, transaction);
-                        }
-
-
-                        var headerComposites = compositesWithOrder
-                            .Where(x => x.Composite is HeaderComposite)
-                            .Select(x => new
+                                ((TextComposite)x).Id,
+                                ((TextComposite)x).Text
+                            }),
+                            [typeof(TaskComposite)] = (@"Insert Into TaskComposites(Id, Completed, Text) Values (@Id, @Completed, @Text)", x => new
                             {
-                                ((HeaderComposite)x.Composite).Id,
-                                ((HeaderComposite)x.Composite).Tag,
-                                ((HeaderComposite)x.Composite).Comment,
-                                ((HeaderComposite)x.Composite).Text,
-                                ((HeaderComposite)x.Composite).FontWeightHeader,
-                                ((HeaderComposite)x.Composite).FontSizeHeader,
-                                ((HeaderComposite)x.Composite).HardNoteId,
-                                ((HeaderComposite)x.Composite).CompositeType,
-                                x.OrderIndex
+                                ((TaskComposite)x).Id,
+                                ((TaskComposite)x).Completed,
+                                ((TaskComposite)x).Text
+                            }),
+                            [typeof(RefComposite)] = (@"Insert Into ReferenceComposites(Id, Text, ValueRef) Values (@Id, @Text, @ValueRef)", x => new
+                            {
+                                ((RefComposite)x).Id,
+                                ((RefComposite)x).Text,
+                                ((RefComposite)x).ValueRef
+                            }),
+                            [typeof(QuoteComposite)] = (@"Insert Into QuoteComposites(Id, Text) Values (@Id, @Text)", x => new
+                            {
+                                ((QuoteComposite)x).Id,
+                                ((QuoteComposite)x).Text
+                            }),
+                            [typeof(NumericComposite)] = (@"Insert Into NumericComposites(Id, Number, Text) Values (@Id, @Number, @Text)", x => new
+                            {
+                                ((NumericComposite)x).Id,
+                                ((NumericComposite)x).Number,
+                                ((NumericComposite)x).Text
+                            }),
+                            [typeof(MarkerComposite)] = (@"Insert Into MarkerComposites(Id, Text) Values (@Id, @Text)", x => new
+                            {
+                                ((MarkerComposite)x).Id,
+                                ((MarkerComposite)x).Text
+                            }),
+                            [typeof(LineComposite)] = (@"Insert Into LineComposites(Id, LineSize, LineColor) Values (@Id, @LineSize, @LineColor)", x => new
+                            {
+                                ((LineComposite)x).Id,
+                                ((LineComposite)x).LineSize,
+                                ((LineComposite)x).LineColor
+                            }),
+                            [typeof(ImageComposite)] = (@"Insert Into ImageComposites(Id, HorizontalAlignment, Data) Values (@Id, @HorizontalAlignment, @Data)", x => new
+                            {
+                                ((ImageComposite)x).Id,
+                                ((ImageComposite)x).HorizontalAlignment,
+                                ((ImageComposite)x).Data
+                            }),
+                            [typeof(HeaderComposite)] = (@"Insert Into HeaderComposites(Id, Text, FontWeight, FontSize) Values (@Id, @Text, @FontWeight, @FontSize)", x => new
+                            {
+                                ((HeaderComposite)x).Id,
+                                ((HeaderComposite)x).Text,
+                                ((HeaderComposite)x).FontWeight,
+                                ((HeaderComposite)x).FontSize
+                            }),
+                            [typeof(FormattedTextComposite)] = (@"Insert Into FormattedTextComposites(Id, BorderSize, CornerRadius, BorderColor, BackgroundColor, Data) Values (@Id, @BorderSize, @CornerRadius, @BorderColor, @BackgroundColor, @Data)", x => new
+                            {
+                                ((FormattedTextComposite)x).Id,
+                                ((FormattedTextComposite)x).BorderSize,
+                                ((FormattedTextComposite)x).CornerRadius,
+                                ((FormattedTextComposite)x).BorderColor,
+                                ((FormattedTextComposite)x).BackgroundColor,
+                                ((FormattedTextComposite)x).Data
+                            }),
+                            [typeof(DocComposite)] = (@"Insert Into DocumentComposites(Id, Text, Data) Values (@Id, @Text, @Data)", x => new
+                            {
+                                ((DocComposite)x).Id,
+                                ((DocComposite)x).Text,
+                                ((DocComposite)x).Data
+                            }),
+                            [typeof(CodeComposite)] = (@"Insert Into CodeComposites(Id, Text) Values (@Id, @Text)", x => new
+                            {
+                                ((CodeComposite)x).Id,
+                                ((CodeComposite)x).Text
                             })
-                            .ToList();
-                        if (headerComposites.Any())
-                        {
-                            var queryHeaders = @"Insert Into Composites(Id, Tag, Comment, Text, FontWeightHeader, FontSizeHeader, HardNoteId, CompositeType, OrderIndex) 
-                                   Values (@Id, @Tag, @Comment, @Text, @FontWeightHeader, @FontSizeHeader, @HardNoteId, @CompositeType, @OrderIndex)";
-                            await connection.ExecuteAsync(queryHeaders, headerComposites, transaction);
-                        }
+                        };
 
-                        var quoteComposites = compositesWithOrder
-                           .Where(x => x.Composite is QuoteComposite)
-                           .Select(x => new
-                           {
-                               ((QuoteComposite)x.Composite).Id,
-                               ((QuoteComposite)x.Composite).Tag,
-                               ((QuoteComposite)x.Composite).Comment,
-                               ((QuoteComposite)x.Composite).Text,
-                               ((QuoteComposite)x.Composite).HardNoteId,
-                               ((QuoteComposite)x.Composite).CompositeType,
-                               x.OrderIndex
-                           })
-                           .ToList();
-                        if (quoteComposites.Any())
-                        {
-                            var queryQuotes = @"Insert Into Composites(Id, Tag, Comment, Text, HardNoteId, CompositeType, OrderIndex) 
-                                   Values (@Id, @Tag, @Comment, @Text, @HardNoteId, @CompositeType, @OrderIndex)";
-                            await connection.ExecuteAsync(queryQuotes, quoteComposites, transaction);
-                        }
+                        const string baseSql = "Insert Into CompositeBase(Id, HardNoteId, CompositeType, Tag, Comment, OrderIndex) Values(@Id, @HardNoteId, @CompositeType, @Tag, @Comment, @OrderIndex)";
 
-                        var taskComposites = compositesWithOrder
-                           .Where(x => x.Composite is TaskComposite)
-                           .Select(x => new
-                           {
-                               ((TaskComposite)x.Composite).Id,
-                               ((TaskComposite)x.Composite).Tag,
-                               ((TaskComposite)x.Composite).Comment,
-                               ((TaskComposite)x.Composite).Text,
-                               ((TaskComposite)x.Composite).Completed,
-                               ((TaskComposite)x.Composite).HardNoteId,
-                               ((TaskComposite)x.Composite).CompositeType,
-                               x.OrderIndex
-                           })
-                           .ToList();
-                        if (taskComposites.Any())
+                        foreach (var (composite, index) in hardNote.Composites.Select((c, i) => (c, i)))
                         {
-                            var queryTasks = @"Insert Into Composites(Id, Tag, Comment, Text, Completed, HardNoteId, CompositeType, OrderIndex) 
-                                   Values (@Id, @Tag, @Comment, @Text, @Completed, @HardNoteId, @CompositeType, @OrderIndex)";
-                            await connection.ExecuteAsync(queryTasks, taskComposites, transaction);
-                        }
+                            composite.OrderIndex = index;
 
-                        var lineComposites = compositesWithOrder
-                           .Where(x => x.Composite is LineComposite)
-                           .Select(x => new
-                           {
-                               ((LineComposite)x.Composite).Id,
-                               ((LineComposite)x.Composite).Tag,
-                               ((LineComposite)x.Composite).Comment,
-                               ((LineComposite)x.Composite).BrSize,
-                               ((LineComposite)x.Composite).BrColor,
-                               ((LineComposite)x.Composite).HardNoteId,
-                               ((LineComposite)x.Composite).CompositeType,
-                               x.OrderIndex
-                           })
-                           .ToList();
-                        if (lineComposites.Any())
-                        {
-                            var queryLines = @"Insert Into Composites(Id, Tag, Comment, BrSize, BrColor, HardNoteId, CompositeType, OrderIndex) 
-                                   Values (@Id, @Tag, @Comment, @BrSize, @BrColor, @HardNoteId, @CompositeType, @OrderIndex)";
-                            await connection.ExecuteAsync(queryLines, lineComposites, transaction);
-                        }
+                            await connection.ExecuteAsync(baseSql, composite, transaction);
 
-                        var imageComposites = compositesWithOrder
-                           .Where(x => x.Composite is ImageComposite)
-                           .Select(x => new
-                           {
-                               ((ImageComposite)x.Composite).Id,
-                               ((ImageComposite)x.Composite).Tag,
-                               ((ImageComposite)x.Composite).Comment,
-                               ((ImageComposite)x.Composite).Data,
-                               ((ImageComposite)x.Composite).HorizontalImage,
-                               ((ImageComposite)x.Composite).HardNoteId,
-                               ((ImageComposite)x.Composite).CompositeType,
-                               x.OrderIndex
-                           })
-                           .ToList();
-                        if (imageComposites.Any())
-                        {
-                            var queryImages = @"Insert Into Composites(Id, Tag, Comment, Data, HorizontalImage, HardNoteId, CompositeType, OrderIndex) 
-                                   Values (@Id, @Tag, @Comment, @Data, @HorizontalImage, @HardNoteId, @CompositeType, @OrderIndex)";
-                            await connection.ExecuteAsync(queryImages, imageComposites, transaction);
-                        }
+                            if (tptMap.TryGetValue(composite.GetType(), out var handler))
+                            {
+                                var (sql, map) = handler;
+                                var parameters = map(composite);
 
-                        var refComposites = compositesWithOrder
-                           .Where(x => x.Composite is RefComposite)
-                           .Select(x => new
-                           {
-                               ((RefComposite)x.Composite).Id,
-                               ((RefComposite)x.Composite).Tag,
-                               ((RefComposite)x.Composite).Comment,
-                               ((RefComposite)x.Composite).ValueRef,
-                               ((RefComposite)x.Composite).Text,
-                               ((RefComposite)x.Composite).HardNoteId,
-                               ((RefComposite)x.Composite).CompositeType,
-                               x.OrderIndex
-                           })
-                           .ToList();
-                        if (refComposites.Any())
-                        {
-                            var queryRefs = @"Insert Into Composites(Id, Tag, Comment, ValueRef, Text, HardNoteId, CompositeType, OrderIndex) 
-                                   Values (@Id, @Tag, @Comment, @ValueRef, @Text, @HardNoteId, @CompositeType, @OrderIndex)";
-                            await connection.ExecuteAsync(queryRefs, refComposites, transaction);
-                        }
-
-                        var markerComposites = compositesWithOrder
-                           .Where(x => x.Composite is MarkerComposite)
-                           .Select(x => new
-                           {
-                               ((MarkerComposite)x.Composite).Id,
-                               ((MarkerComposite)x.Composite).Tag,
-                               ((MarkerComposite)x.Composite).Comment,
-                               ((MarkerComposite)x.Composite).Text,
-                               ((MarkerComposite)x.Composite).HardNoteId,
-                               ((MarkerComposite)x.Composite).CompositeType,
-                               x.OrderIndex
-                           })
-                           .ToList();
-                        if (markerComposites.Any())
-                        {
-                            var queryMarkers = @"Insert Into Composites(Id, Tag, Comment, Text, HardNoteId, CompositeType, OrderIndex) 
-                                   Values (@Id, @Tag, @Comment, @Text, @HardNoteId, @CompositeType, @OrderIndex)";
-                            await connection.ExecuteAsync(queryMarkers, markerComposites, transaction);
-                        }
-
-                        var numericComposites = compositesWithOrder
-                           .Where(x => x.Composite is NumericComposite)
-                           .Select(x => new
-                           {
-                               ((NumericComposite)x.Composite).Id,
-                               ((NumericComposite)x.Composite).Tag,
-                               ((NumericComposite)x.Composite).Comment,
-                               ((NumericComposite)x.Composite).Number,
-                               ((NumericComposite)x.Composite).Text,
-                               ((NumericComposite)x.Composite).HardNoteId,
-                               ((NumericComposite)x.Composite).CompositeType,
-                               x.OrderIndex
-                           })
-                           .ToList();
-                        if (numericComposites.Any())
-                        {
-                            var queryNumerics = @"Insert Into Composites(Id, Tag, Comment, Number, Text, HardNoteId, CompositeType, OrderIndex) 
-                                   Values (@Id, @Tag, @Comment, @Number, @Text, @HardNoteId, @CompositeType, @OrderIndex)";
-                            await connection.ExecuteAsync(queryNumerics, numericComposites, transaction);
-                        }
-
-                        var codeComposites = compositesWithOrder
-                           .Where(x => x.Composite is CodeComposite)
-                           .Select(x => new
-                           {
-                               ((CodeComposite)x.Composite).Id,
-                               ((CodeComposite)x.Composite).Tag,
-                               ((CodeComposite)x.Composite).Comment,
-                               ((CodeComposite)x.Composite).Text,
-                               ((CodeComposite)x.Composite).HardNoteId,
-                               ((CodeComposite)x.Composite).CompositeType,
-                               x.OrderIndex
-                           })
-                           .ToList();
-                        if (codeComposites.Any())
-                        {
-                            var queryCodes = @"Insert Into Composites(Id, Tag, Comment, Text, HardNoteId, CompositeType, OrderIndex) 
-                                   Values (@Id, @Tag, @Comment, @Text, @HardNoteId, @CompositeType, @OrderIndex)";
-                            await connection.ExecuteAsync(queryCodes, codeComposites, transaction);
-                        }
-
-                        var docComposites = compositesWithOrder
-                           .Where(x => x.Composite is DocComposite)
-                           .Select(x => new
-                           {
-                               ((DocComposite)x.Composite).Id,
-                               ((DocComposite)x.Composite).Tag,
-                               ((DocComposite)x.Composite).Comment,
-                               ((DocComposite)x.Composite).Text,
-                               ((DocComposite)x.Composite).Data,
-                               ((DocComposite)x.Composite).HardNoteId,
-                               ((DocComposite)x.Composite).CompositeType,
-                               x.OrderIndex
-                           })
-                           .ToList();
-                        if (docComposites.Any())
-                        {
-                            var queryDocs = @"Insert Into Composites(Id, Tag, Comment, Text, Data, HardNoteId, CompositeType, OrderIndex) 
-                                   Values (@Id, @Tag, @Comment, @Text, @Data, @HardNoteId, @CompositeType, @OrderIndex)";
-                            await connection.ExecuteAsync(queryDocs, docComposites, transaction);
-                        }
-
-                        var ftComposites = compositesWithOrder
-                           .Where(x => x.Composite is FormattedTextComposite)
-                           .Select(x => new
-                           {
-                               ((FormattedTextComposite)x.Composite).Id,
-                               ((FormattedTextComposite)x.Composite).Tag,
-                               ((FormattedTextComposite)x.Composite).Comment,
-                               ((FormattedTextComposite)x.Composite).Data,
-                               ((FormattedTextComposite)x.Composite).BrSize,
-                               ((FormattedTextComposite)x.Composite).BrCornerRadius,
-                               ((FormattedTextComposite)x.Composite).BrColor,
-                               ((FormattedTextComposite)x.Composite).BgColor,
-                               ((FormattedTextComposite)x.Composite).HardNoteId,
-                               ((FormattedTextComposite)x.Composite).CompositeType,
-                               x.OrderIndex
-                           })
-                           .ToList();
-                        if (ftComposites.Any())
-                        {
-                            var queryFTs = @"Insert Into Composites(Id, Tag, Comment, Data, BrSize, BgColor, BrColor, BrCornerRadius, HardNoteId, CompositeType, OrderIndex) 
-                                             Values (@Id, @Tag, @Comment, @Data, @BrSize, @BgColor, @BrColor, @BrCornerRadius, @HardNoteId, @CompositeType, @OrderIndex)";
-                            await connection.ExecuteAsync(queryFTs, ftComposites, transaction);
+                                await connection.ExecuteAsync(sql, parameters, transaction);
+                            }
                         }
                     }
 
@@ -292,71 +129,151 @@ namespace Composite.Repositories
         }
         public async Task<bool> Update(HardNote hardNote)
         {
-            using (var connection = dbConnectionFactory.CreateConnection())
+            using var connection = dbConnectionFactory.CreateConnection();
+            connection.Open();
+
+            using var transaction = connection.BeginTransaction();
+
+            try
             {
-                connection.Open();
-                using var transaction = connection.BeginTransaction();
+                var queryUpdateHardNote = "Update HardNotes Set Title = @Title, DateCreate = @DateCreate, Category = @Category, Password = @Password Where Id = @Id";
+                var resultHardNote = await connection.ExecuteAsync(queryUpdateHardNote, hardNote, transaction);
 
-                try
+                if (resultHardNote == 0)
                 {
-                    var queryUpdateHardNote = "Update HardNotes Set Title = @Title, Category = @Category, Password = @Password Where Id = @Id";
-                    var resultUpdateHardNote = await connection.ExecuteAsync(queryUpdateHardNote, hardNote, transaction);
+                    transaction.Rollback();
+                    return false;
+                }
 
-                    if (resultUpdateHardNote == 0)
-                    {
-                        transaction.Rollback();
-                        return false;
-                    }
+                await connection.ExecuteAsync("Delete From CompositeBase Where HardNoteId = @Id", new { Id = hardNote.Id }, transaction);
 
-                    var queryDeleteComposites = "Delete From Composites Where HardNoteId = @Id";
-                    await connection.ExecuteAsync(queryDeleteComposites, new { Id = hardNote.Id }, transaction);
+                var tptTables = new[]
+                {
+                    "TextComposites",
+                    "TaskComposites",
+                    "ReferenceComposites",
+                    "QuoteComposites",
+                    "NumericComposites",
+                    "MarkerComposites",
+                    "LineComposites",
+                    "ImageComposites",
+                    "HeaderComposites",
+                    "FormattedTextComposites",
+                    "DocumentComposites",
+                    "CodeComposites"
+                };
 
-                    if (hardNote.Composites?.Count > 0)
-                    {
-                        var queryInsertComposites = @"Insert Into Composites (Id, Tag, Comment, Text, FontWeightHeader, FontSizeHeader, Completed, Data, HorizontalImage, ValueRef, Number, 
-                                                    BrSize, BgColor, BrColor, BrCornerRadius, HardNoteId, CompositeType, OrderIndex)
-                                                    Values (@Id, @Tag, @Comment, @Text, @FontWeightHeader, @FontSizeHeader, @Completed, @Data, @HorizontalImage, @ValueRef, @Number, 
-                                                    @BrSize, @BgColor, @BrColor, @BrCornerRadius, @HardNoteId, @CompositeType, @OrderIndex)";
+                foreach (var table in tptTables)
+                {
+                    await connection.ExecuteAsync($"Delete From {table} Where Id In (Select Id From CompositeBase Where HardNoteId = @HardNoteId)", new { HardNoteId = hardNote.Id }, transaction);
+                }
 
-                        var compositeData = hardNote.Composites.Select((c, index) => new
-                        {
-                            Id = c.Id,
-                            Tag = c.Tag,
-                            Comment = c.Comment,
-                            Text = c.Text,
-                            FontWeightHeader = c.FontWeightHeader,
-                            FontSizeHeader = c.FontSizeHeader,
-                            Completed = c.Completed,
-                            Data = c.Data,
-                            HorizontalImage = c.HorizontalImage,
-                            ValueRef = c.ValueRef,
-                            Number = c.Number,
-                            BrSize = c.BrSize,
-                            BgColor = c.BgColor,
-                            BrColor = c.BrColor,
-                            BrCornerRadius = c.BrCornerRadius,
-                            HardNoteId = hardNote.Id,
-                            CompositeType = c.CompositeType,
-                            OrderIndex = index
-                        });
-
-                        var resultInsertComposites = await connection.ExecuteAsync(queryInsertComposites, compositeData, transaction);
-
-                        if (resultInsertComposites != hardNote.Composites.Count)
-                        {
-                            transaction.Rollback();
-                            return false;
-                        }
-                    }
-
+                if (hardNote.Composites == null || hardNote.Composites.Count == 0)
+                {
                     transaction.Commit();
                     return true;
                 }
-                catch (Exception)
+
+                var tptMap = new Dictionary<Type, (string sql, Func<object, object> Map)>
                 {
-                    transaction.Rollback();
-                    throw;
+                    [typeof(TextComposite)] = (@"Insert Into TextComposites(Id, Text) Values (@Id, @Text)", x => new
+                    {
+                        ((TextComposite)x).Id,
+                        ((TextComposite)x).Text
+                    }),
+                    [typeof(TaskComposite)] = (@"Insert Into TaskComposites(Id, Completed, Text) Values (@Id, @Completed, @Text)", x => new
+                    {
+                        ((TaskComposite)x).Id,
+                        ((TaskComposite)x).Completed,
+                        ((TaskComposite)x).Text
+                    }),
+                    [typeof(RefComposite)] = (@"Insert Into ReferenceComposites(Id, Text, ValueRef) Values (@Id, @Text, @ValueRef)", x => new
+                    {
+                        ((RefComposite)x).Id,
+                        ((RefComposite)x).Text,
+                        ((RefComposite)x).ValueRef
+                    }),
+                    [typeof(QuoteComposite)] = (@"Insert Into QuoteComposites(Id, Text) Values (@Id, @Text)", x => new
+                    {
+                        ((QuoteComposite)x).Id,
+                        ((QuoteComposite)x).Text
+                    }),
+                    [typeof(NumericComposite)] = (@"Insert Into NumericComposites(Id, Number, Text) Values (@Id, @Number, @Text)", x => new
+                    {
+                        ((NumericComposite)x).Id,
+                        ((NumericComposite)x).Number,
+                        ((NumericComposite)x).Text
+                    }),
+                    [typeof(MarkerComposite)] = (@"Insert Into MarkerComposites(Id, Text) Values (@Id, @Text)", x => new
+                    {
+                        ((MarkerComposite)x).Id,
+                        ((MarkerComposite)x).Text
+                    }),
+                    [typeof(LineComposite)] = (@"Insert Into LineComposites(Id, LineSize, LineColor) Values (@Id, @LineSize, @LineColor)", x => new
+                    {
+                        ((LineComposite)x).Id,
+                        ((LineComposite)x).LineSize,
+                        ((LineComposite)x).LineColor
+                    }),
+                    [typeof(ImageComposite)] = (@"Insert Into ImageComposites(Id, HorizontalAlignment, Data) Values (@Id, @HorizontalAlignment, @Data)", x => new
+                    {
+                        ((ImageComposite)x).Id,
+                        ((ImageComposite)x).HorizontalAlignment,
+                        ((ImageComposite)x).Data
+                    }),
+                    [typeof(HeaderComposite)] = (@"Insert Into HeaderComposites(Id, Text, FontWeight, FontSize) Values (@Id, @Text, @FontWeight, @FontSize)", x => new
+                    {
+                        ((HeaderComposite)x).Id,
+                        ((HeaderComposite)x).Text,
+                        ((HeaderComposite)x).FontWeight,
+                        ((HeaderComposite)x).FontSize
+                    }),
+                    [typeof(FormattedTextComposite)] = (@"Insert Into FormattedTextComposites(Id, BorderSize, CornerRadius, BorderColor, BackgroundColor, Data) Values (@Id, @BorderSize, @CornerRadius, @BorderColor, @BackgroundColor, @Data)", x => new
+                    {
+                        ((FormattedTextComposite)x).Id,
+                        ((FormattedTextComposite)x).BorderSize,
+                        ((FormattedTextComposite)x).CornerRadius,
+                        ((FormattedTextComposite)x).BorderColor,
+                        ((FormattedTextComposite)x).BackgroundColor,
+                        ((FormattedTextComposite)x).Data
+                    }),
+                    [typeof(DocComposite)] = (@"Insert Into DocumentComposites(Id, Text, Data) Values (@Id, @Text, @Data)", x => new
+                    {
+                        ((DocComposite)x).Id,
+                        ((DocComposite)x).Text,
+                        ((DocComposite)x).Data
+                    }),
+                    [typeof(CodeComposite)] = (@"Insert Into CodeComposites(Id, Text) Values (@Id, @Text)", x => new
+                    {
+                        ((CodeComposite)x).Id,
+                        ((CodeComposite)x).Text
+                    })
+                };
+
+                const string baseSql = "Insert Into CompositeBase(Id, HardNoteId, CompositeType, Tag, Comment, OrderIndex) Values (@Id, @HardNoteId, @CompositeType, @Tag, @Comment, @OrderIndex)";
+                   
+                foreach (var (composite, index) in hardNote.Composites.Select((c, i) => (c, i)))
+                {
+                    composite.OrderIndex = index;
+
+                    await connection.ExecuteAsync(baseSql, composite, transaction);
+
+                    if (tptMap.TryGetValue(composite.GetType(), out var handler))
+                    {
+                        var (sql, map) = handler;
+                        var parameters = map(composite);
+
+                        await connection.ExecuteAsync(sql, parameters, transaction);
+                    }
                 }
+
+                transaction.Commit();
+                return true;
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
             }
         }
         public async Task<bool> Delete(string id)
@@ -368,7 +285,7 @@ namespace Composite.Repositories
                 var queryDeleteHardNote = "Delete From HardNotes Where Id = @id";
                 var resultDeleteHardNote = await connection.ExecuteAsync(queryDeleteHardNote, new { id });
 
-                var queryDeleteRefCompositeIdNote = "Delete From Composites Where ValueRef = @id";
+                var queryDeleteRefCompositeIdNote = "Delete From ReferenceComposites Where ValueRef = @id";
                 var resultDeleteRefCompositeIdNote = await connection.ExecuteAsync(queryDeleteRefCompositeIdNote, new { id });
 
                 if (resultDeleteHardNote > 0) return true;
@@ -385,12 +302,7 @@ namespace Composite.Repositories
                 var queryGetHardNotes = "Select * From HardNotes";
                 var resultGetHardNotes = connection.Query<HardNote>(queryGetHardNotes).ToList();
 
-                foreach (var hardNote in resultGetHardNotes)
-                {
-                    var queryGetComposites = "Select * From Composites Where HardNoteId = @HardNoteId Order By OrderIndex";
-                    var composites = connection.Query<CompositeBase>(queryGetComposites, new { HardNoteId = hardNote.Id });
-                    hardNote.Composites = composites.ToList();
-                }
+                foreach (var hardNote in resultGetHardNotes) hardNote.Composites = GetComposites(connection, hardNote.Id);
 
                 return resultGetHardNotes;
             }
@@ -416,12 +328,146 @@ namespace Composite.Repositories
                 var queryGetHardNoteById = "Select * From HardNotes Where Id = @Id";
                 var hardNote = await connection.QueryFirstOrDefaultAsync<HardNote>(queryGetHardNoteById, new { Id = id });
 
-                var queryGetComposites = "Select * From Composites Where HardNoteId = @HardNoteId Order By OrderIndex";
-                var composites = await connection.QueryAsync<CompositeBase>(queryGetComposites, new { HardNoteId = hardNote.Id });
-                hardNote.Composites = composites.ToList();
+                var queryGetComposites = "Select * From CompositeBase Where HardNoteId = @HardNoteId Order By OrderIndex";
+                hardNote.Composites = GetComposites(connection, id);
 
                 return hardNote;
             }
+        }
+
+        List<CompositeBase> GetComposites(IDbConnection connection, string hardNoteId)
+        {
+            var composites = new List<CompositeBase>();
+            var queryGetCompositesBase = "Select * From CompositeBase Where HardNoteId = @HardNoteId Order By OrderIndex";
+            var compositeBases = connection.Query<CompositeBase>(queryGetCompositesBase, new { HardNoteId = hardNoteId }).ToList();
+
+            if (!compositeBases.Any()) return composites;
+
+            var ids = compositeBases.Select(x => x.Id).ToList();
+
+            var textComposites = GetTextComposites(connection, ids);
+            var headerComposites = GetHeaderComposites(connection, ids);
+            var quoteComposites = GetQuoteComposites(connection, ids);
+            var codeComposites = GetCodeComposites(connection, ids);
+            var markerComposites = GetMarkerComposites(connection, ids);
+            var numericComposites = GetNumericComposites(connection, ids);
+            var taskComposites = GetTaskComposites(connection, ids);
+            var lineComposites = GetLineComposites(connection, ids);
+            var documentComposites = GetDocumentComposites(connection, ids);
+            var referenceComposites = GetReferenceComposites(connection, ids);
+            var imageComposites = GetImageComposites(connection, ids);
+            var formattedTextComposites = GetFormattedTextComposites(connection, ids);
+
+            var textDict = textComposites.ToDictionary(c => c.Id);
+            var headerDict = headerComposites.ToDictionary(c => c.Id);
+            var quoteDict = quoteComposites.ToDictionary(c => c.Id);
+            var codeDict = codeComposites.ToDictionary(c => c.Id);
+            var markerDict = markerComposites.ToDictionary(c => c.Id);
+            var numericDict = numericComposites.ToDictionary(c => c.Id);
+            var taskDict = taskComposites.ToDictionary(c => c.Id);
+            var lineDict = lineComposites.ToDictionary(c => c.Id);
+            var documentDict = documentComposites.ToDictionary(c => c.Id);
+            var referenceDict = referenceComposites.ToDictionary(c => c.Id);
+            var imageDict = imageComposites.ToDictionary(c => c.Id);
+            var formattedDict = formattedTextComposites.ToDictionary(c => c.Id);
+
+            foreach (var baseComposite in compositeBases)
+            {
+                CompositeBase composite = baseComposite.CompositeType switch
+                {
+                    nameof(TextComposite) => MapComposite(baseComposite, textDict),
+                    nameof(HeaderComposite) => MapComposite(baseComposite, headerDict),
+                    nameof(QuoteComposite) => MapComposite(baseComposite, quoteDict),
+                    nameof(CodeComposite) => MapComposite(baseComposite, codeDict),
+                    nameof(MarkerComposite) => MapComposite(baseComposite, markerDict),
+                    nameof(NumericComposite) => MapComposite(baseComposite, numericDict),
+                    nameof(TaskComposite) => MapComposite(baseComposite, taskDict),
+                    nameof(LineComposite) => MapComposite(baseComposite, lineDict),
+                    nameof(DocComposite) => MapComposite(baseComposite, documentDict),
+                    nameof(RefComposite) => MapComposite(baseComposite, referenceDict),
+                    nameof(ImageComposite) => MapComposite(baseComposite, imageDict),
+                    nameof(FormattedTextComposite) => MapComposite(baseComposite, formattedDict),
+                    _ => baseComposite
+                };
+
+                composites.Add(composite);
+            }
+
+            return composites;
+        }
+
+        T MapComposite<T>(CompositeBase baseComposite, Dictionary<string, T> dict) where T : CompositeBase
+        {
+            if (dict.TryGetValue(baseComposite.Id, out var specific))
+            {
+                specific.HardNoteId = baseComposite.HardNoteId;
+                specific.CompositeType = baseComposite.CompositeType;
+                specific.Tag = baseComposite.Tag;
+                specific.Comment = baseComposite.Comment;
+                specific.OrderIndex = baseComposite.OrderIndex;
+                return specific;
+            }
+            return null;
+        }
+        List<TextComposite> GetTextComposites(IDbConnection connection, List<string> ids)
+        {
+            var query = "Select * From TextComposites Where Id IN @Ids";
+            return connection.Query<TextComposite>(query, new { Ids = ids }).ToList();
+        }
+        List<HeaderComposite> GetHeaderComposites(IDbConnection connection, List<string> ids)
+        {
+            var query = "Select * From HeaderComposites Where Id IN @Ids";
+            return connection.Query<HeaderComposite>(query, new { Ids = ids }).ToList();
+        }
+        List<QuoteComposite> GetQuoteComposites(IDbConnection connection, List<string> ids)
+        {
+            var query = "Select * From QuoteComposites Where Id IN @Ids";
+            return connection.Query<QuoteComposite>(query, new { Ids = ids }).ToList();
+        }
+        List<CodeComposite> GetCodeComposites(IDbConnection connection, List<string> ids)
+        {
+            var query = "Select * From CodeComposites Where Id IN @Ids";
+            return connection.Query<CodeComposite>(query, new { Ids = ids }).ToList();
+        }
+        List<MarkerComposite> GetMarkerComposites(IDbConnection connection, List<string> ids)
+        {
+            var query = "Select * From MarkerComposites Where Id IN @Ids";
+            return connection.Query<MarkerComposite>(query, new { Ids = ids }).ToList();
+        }
+        List<NumericComposite> GetNumericComposites(IDbConnection connection, List<string> ids)
+        {
+            var query = "Select * From NumericComposites Where Id IN @Ids";
+            return connection.Query<NumericComposite>(query, new { Ids = ids }).ToList();
+        }
+        List<TaskComposite> GetTaskComposites(IDbConnection connection, List<string> ids)
+        {
+            var query = "Select * From TaskComposites Where Id IN @Ids";
+            return connection.Query<TaskComposite>(query, new { Ids = ids }).ToList();
+        }
+        List<LineComposite> GetLineComposites(IDbConnection connection, List<string> ids)
+        {
+            var query = "Select * From LineComposites Where Id IN @Ids";
+            return connection.Query<LineComposite>(query, new { Ids = ids }).ToList();
+        }
+        List<DocComposite> GetDocumentComposites(IDbConnection connection, List<string> ids)
+        {
+            var query = "Select * From DocumentComposites Where Id IN @Ids";
+            return connection.Query<DocComposite>(query, new { Ids = ids }).ToList();
+        }
+        List<RefComposite> GetReferenceComposites(IDbConnection connection, List<string> ids)
+        {
+            var query = "Select * From ReferenceComposites Where Id IN @Ids";
+            return connection.Query<RefComposite>(query, new { Ids = ids }).ToList();
+        }
+        List<ImageComposite> GetImageComposites(IDbConnection connection, List<string> ids)
+        {
+            var query = "Select * From ImageComposites Where Id IN @Ids";
+            return connection.Query<ImageComposite>(query, new { Ids = ids }).ToList();
+        }
+        List<FormattedTextComposite> GetFormattedTextComposites(IDbConnection connection, List<string> ids)
+        {
+            var query = "Select * From FormattedTextComposites Where Id IN @Ids";
+            return connection.Query<FormattedTextComposite>(query, new { Ids = ids }).ToList();
         }
     }
 }

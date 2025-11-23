@@ -81,7 +81,7 @@ namespace Composite.Common.Mappers
             {
                 Id = Guid.Parse(hardNote.Id),
                 Title = hardNote.Title,
-                Category= hardNote.Category,
+                Category = hardNote.Category,
                 DateCreate = hardNote.DateCreate,
                 Password = hardNote.Password,
                 Composites = new ObservableCollection<CompositeBaseVM>(compositesVM)
@@ -114,8 +114,8 @@ namespace Composite.Common.Mappers
                     Tag = headerCompositeVM.Tag,
                     Comment = headerCompositeVM.Comment,
                     Text = headerCompositeVM.Text,
-                    FontWeightHeader = headerCompositeVM.FontWeight,
-                    FontSizeHeader = headerCompositeVM.FontSize,
+                    FontWeight = headerCompositeVM.FontWeight,
+                    FontSize = (int)headerCompositeVM.FontSize,
                     HardNoteId = id.ToString()
                 };
             }
@@ -137,8 +137,8 @@ namespace Composite.Common.Mappers
                     Id = lineCompositeVM.Id.ToString(),
                     Tag = lineCompositeVM.Tag,
                     Comment = lineCompositeVM.Comment,
-                    BrSize = (int)lineCompositeVM.SelectedLineSize, 
-                    BrColor = lineCompositeVM.SelectedLineColor,    
+                    LineSize = (int)lineCompositeVM.SelectedLineSize,
+                    LineColor = lineCompositeVM.SelectedLineColor,
                     HardNoteId = id.ToString()
                 };
             }
@@ -148,8 +148,8 @@ namespace Composite.Common.Mappers
                 {
                     Id = taskCompositeVM.Id.ToString(),
                     Tag = taskCompositeVM.Tag,
-                    Comment= taskCompositeVM.Comment,
-                    Completed = taskCompositeVM.IsCompleted? 1 : 0,
+                    Comment = taskCompositeVM.Comment,
+                    Completed = taskCompositeVM.IsCompleted ? 1 : 0,
                     Text = taskCompositeVM.Text,
                     HardNoteId = id.ToString()
                 };
@@ -162,7 +162,7 @@ namespace Composite.Common.Mappers
                     Tag = imageCompositeVM.Tag,
                     Comment = imageCompositeVM.Comment,
                     Data = BitmapImageToByteArray(imageCompositeVM.ImageSource),
-                    HorizontalImage = imageCompositeVM.HorizontalImage,
+                    HorizontalAlignment = imageCompositeVM.HorizontalImage,
                     HardNoteId = id.ToString()
                 };
             }
@@ -232,10 +232,10 @@ namespace Composite.Common.Mappers
                     Tag = ftCompositeVM.Tag,
                     Comment = ftCompositeVM.Comment,
                     Data = ftCompositeVM.XamlPackageContent,
-                    BrSize = (int)ftCompositeVM.SelectedBrSize,
-                    BrCornerRadius = (int)ftCompositeVM.SelectedBrCornerRadius,
-                    BrColor = ftCompositeVM.SelectedBrColor,
-                    BgColor = ftCompositeVM.SelectedBgColor,
+                    BorderSize = (int)ftCompositeVM.SelectedBrSize,
+                    CornerRadius = (int)ftCompositeVM.SelectedBrCornerRadius,
+                    BorderColor = ftCompositeVM.SelectedBrColor,
+                    BackgroundColor = ftCompositeVM.SelectedBgColor,
                     HardNoteId = id.ToString()
                 };
             }
@@ -263,8 +263,8 @@ namespace Composite.Common.Mappers
                     Tag = headerCompositeVM.Tag,
                     Comment = headerCompositeVM.Comment,
                     Text = headerCompositeVM.Text,
-                    FontWeightHeader = headerCompositeVM.FontWeight,
-                    FontSizeHeader = headerCompositeVM.FontSize,
+                    FontWeight = headerCompositeVM.FontWeight,
+                    FontSize = (int)headerCompositeVM.FontSize,
                     HardNoteId = id.ToString()
                 };
             }
@@ -286,8 +286,8 @@ namespace Composite.Common.Mappers
                     Id = Guid.NewGuid().ToString(),
                     Tag = lineCompositeVM.Tag,
                     Comment = lineCompositeVM.Comment,
-                    BrSize = (int)lineCompositeVM.SelectedLineSize, 
-                    BrColor = lineCompositeVM.SelectedLineColor,  
+                    LineSize = (int)lineCompositeVM.SelectedLineSize,
+                    LineColor = lineCompositeVM.SelectedLineColor,
                     HardNoteId = id.ToString()
                 };
             }
@@ -311,7 +311,7 @@ namespace Composite.Common.Mappers
                     Tag = imageCompositeVM.Tag,
                     Comment = imageCompositeVM.Comment,
                     Data = BitmapImageToByteArray(imageCompositeVM.ImageSource),
-                    HorizontalImage = imageCompositeVM.HorizontalImage,
+                    HorizontalAlignment = imageCompositeVM.HorizontalImage,
                     HardNoteId = id.ToString()
                 };
             }
@@ -381,165 +381,149 @@ namespace Composite.Common.Mappers
                     Tag = ftCompositeVM.Tag,
                     Comment = ftCompositeVM.Comment,
                     Data = ftCompositeVM.XamlPackageContent,
-                    BrSize = (int)ftCompositeVM.SelectedBrSize,
-                    BrCornerRadius = (int)ftCompositeVM.SelectedBrCornerRadius,
-                    BrColor = ftCompositeVM.SelectedBrColor,
-                    BgColor = ftCompositeVM.SelectedBgColor,
+                    BorderSize = (int)ftCompositeVM.SelectedBrSize,
+                    CornerRadius = (int)ftCompositeVM.SelectedBrCornerRadius,
+                    BorderColor = ftCompositeVM.SelectedBrColor,
+                    BackgroundColor = ftCompositeVM.SelectedBgColor,
                     HardNoteId = id.ToString()
                 };
             }
+
             return null;
         }
         CompositeBaseVM GetCompositeVM(CompositeBase compositeBase)
         {
-            if (compositeBase.CompositeType == "TextComposite")
+            switch (compositeBase)
             {
-                return new TextCompositeVM()
-                {
-                    Id = Guid.Parse(compositeBase.Id),
-                    Tag = compositeBase.Tag,
-                    Comment = compositeBase.Comment,
-                    Text = compositeBase.Text
-                };
-            }
-            if (compositeBase.CompositeType == "HeaderComposite")
-            {
-                return new HeaderCompositeVM()
-                {
-                    Id = Guid.Parse(compositeBase.Id),
-                    Tag = compositeBase.Tag,
-                    Comment = compositeBase.Comment,
-                    Text = compositeBase.Text,
-                    FontWeight = compositeBase.FontWeightHeader,
-                    FontSize = compositeBase.FontSizeHeader
-                };
-            }
-            if (compositeBase.CompositeType == "QuoteComposite")
-            {
-                return new QuoteCompositeVM()
-                {
-                    Id = Guid.Parse(compositeBase.Id),
-                    Tag = compositeBase.Tag,
-                    Comment = compositeBase.Comment,
-                    Text = compositeBase.Text
-                };
-            }
-            if (compositeBase.CompositeType == "LineComposite")
-            {
-                return new LineCompositeVM()
-                {
-                    Id = Guid.Parse(compositeBase.Id),
-                    Tag = compositeBase.Tag,
-                    SelectedLineSize = compositeBase.BrSize,   
-                    SelectedLineColor = compositeBase.BrColor,
-                    Comment = compositeBase.Comment
-                };
-            }
-            if (compositeBase.CompositeType == "TaskComposite")
-            {
-                return new TaskCompositeVM()
-                {
-                    Id = Guid.Parse(compositeBase.Id),
-                    Tag = compositeBase.Tag,
-                    Comment = compositeBase.Comment,
-                    IsCompleted = (compositeBase.Completed == 1) ? true : false,
-                    Text = compositeBase.Text
-                };
-            }
-            if (compositeBase.CompositeType == "ImageComposite")
-            {
-                BitmapImage bitmapImage = ByteArrayToBitmapImage(compositeBase.Data);
+                case TextComposite textComposite:
+                    return new TextCompositeVM()
+                    {
+                        Id = Guid.Parse(textComposite.Id),
+                        Tag = textComposite.Tag,
+                        Comment = textComposite.Comment,
+                        Text = textComposite.Text
+                    };
+                case HeaderComposite headerComposite:
+                    return new HeaderCompositeVM()
+                    {
+                        Id = Guid.Parse(headerComposite.Id),
+                        Tag = headerComposite.Tag,
+                        Comment = headerComposite.Comment,
+                        Text = headerComposite.Text,
+                        FontWeight = headerComposite.FontWeight,
+                        FontSize = headerComposite.FontSize
+                    };
+                case QuoteComposite quoteComposite:
+                    return new QuoteCompositeVM()
+                    {
+                        Id = Guid.Parse(quoteComposite.Id),
+                        Tag = quoteComposite.Tag,
+                        Comment = quoteComposite.Comment,
+                        Text = quoteComposite.Text
+                    };
+                case LineComposite lineComposite:
+                    return new LineCompositeVM()
+                    {
+                        Id = Guid.Parse(lineComposite.Id),
+                        Tag = lineComposite.Tag,
+                        SelectedLineSize = lineComposite.LineSize,
+                        SelectedLineColor = lineComposite.LineColor,
+                        Comment = lineComposite.Comment
+                    };
+                case TaskComposite taskComposite:
+                    return new TaskCompositeVM()
+                    {
+                        Id = Guid.Parse(taskComposite.Id),
+                        Tag = taskComposite.Tag,
+                        Comment = taskComposite.Comment,
+                        IsCompleted = taskComposite.Completed == 1,
+                        Text = taskComposite.Text
+                    };
+                case ImageComposite imageComposite:
+                    {
+                        BitmapImage bitmapImage = ByteArrayToBitmapImage(imageComposite.Data);
+                        return new ImageCompositeVM()
+                        {
+                            Id = Guid.Parse(imageComposite.Id),
+                            Tag = imageComposite.Tag,
+                            Comment = imageComposite.Comment,
+                            ImageSource = bitmapImage,
+                            HorizontalImage = imageComposite.HorizontalAlignment,
+                            OriginalWidth = bitmapImage.PixelWidth,
+                            OriginalHeight = bitmapImage.PixelHeight
+                        };
+                    }
+                case RefComposite referenceComposite:
+                    return new RefCompositeVM(tabService, hardNoteService, messenger)
+                    {
+                        Id = Guid.Parse(referenceComposite.Id),
+                        Tag = referenceComposite.Tag,
+                        Comment = referenceComposite.Comment,
+                        ValueRef = referenceComposite.ValueRef,
+                        Text = referenceComposite.Text
+                    };
+                case MarkerComposite markerComposite:
+                    return new MarkerCompositeVM()
+                    {
+                        Id = Guid.Parse(markerComposite.Id),
+                        Tag = markerComposite.Tag,
+                        Comment = markerComposite.Comment,
+                        Text = markerComposite.Text
+                    };
+                case NumericComposite numericComposite:
+                    return new NumericCompositeVM()
+                    {
+                        Id = Guid.Parse(numericComposite.Id),
+                        Tag = numericComposite.Tag,
+                        Comment = numericComposite.Comment,
+                        Number = numericComposite.Number,
+                        Text = numericComposite.Text
+                    };
+                case CodeComposite codeComposite:
+                    return new CodeCompositeVM()
+                    {
+                        Id = Guid.Parse(codeComposite.Id),
+                        Tag = codeComposite.Tag,
+                        Comment = codeComposite.Comment,
+                        Text = codeComposite.Text
+                    };
+                case DocComposite documentComposite:
+                    return new DocCompositeVM(hardNoteService)
+                    {
+                        Id = Guid.Parse(documentComposite.Id),
+                        Tag = documentComposite.Tag,
+                        Comment = documentComposite.Comment,
+                        Text = documentComposite.Text,
+                        Data = documentComposite.Data
+                    };
+                case FormattedTextComposite formattedTextComposite:
+                    {
+                        var document = new FlowDocument();
+                        TextRange range = new TextRange(document.ContentStart, document.ContentEnd);
 
-                return new ImageCompositeVM()
-                {
-                    Id = Guid.Parse(compositeBase.Id),
-                    Tag = compositeBase.Tag,
-                    Comment = compositeBase.Comment,
-                    ImageSource = bitmapImage,
-                    HorizontalImage = compositeBase.HorizontalImage,
-                    OriginalWidth = bitmapImage.PixelWidth,
-                    OriginalHeight = bitmapImage.PixelHeight
-                };
-            }
-            if (compositeBase.CompositeType == "RefComposite")
-            {
-                return new RefCompositeVM(tabService, hardNoteService, messenger)
-                {
-                    Id = Guid.Parse(compositeBase.Id),
-                    Tag = compositeBase.Tag,
-                    Comment = compositeBase.Comment,
-                    ValueRef = compositeBase.ValueRef,
-                    Text = compositeBase.Text
-                };
-            }
-            if (compositeBase.CompositeType == "MarkerComposite")
-            {
-                return new MarkerCompositeVM()
-                {
-                    Id = Guid.Parse(compositeBase.Id),
-                    Tag = compositeBase.Tag,
-                    Comment = compositeBase.Comment,
-                    Text = compositeBase.Text
-                };
-            }
-            if (compositeBase.CompositeType == "NumericComposite")
-            {
-                return new NumericCompositeVM()
-                {
-                    Id = Guid.Parse(compositeBase.Id),
-                    Tag = compositeBase.Tag,
-                    Comment = compositeBase.Comment,
-                    Number = compositeBase.Number,
-                    Text = compositeBase.Text
-                };
-            }
-            if (compositeBase.CompositeType == "CodeComposite")
-            {
-                return new CodeCompositeVM()
-                {
-                    Id = Guid.Parse(compositeBase.Id),
-                    Tag = compositeBase.Tag,
-                    Comment = compositeBase.Comment,
-                    Text = compositeBase.Text
-                };
-            }
-            if (compositeBase.CompositeType == "DocComposite")
-            {
-                return new DocCompositeVM(hardNoteService)
-                {
-                    Id = Guid.Parse(compositeBase.Id),
-                    Tag = compositeBase.Tag,
-                    Comment = compositeBase.Comment,
-                    Text = compositeBase.Text,
-                    Data = compositeBase.Data
-                };
-            }
-            if (compositeBase.CompositeType == "FormattedTextComposite")
-            {
-                var document = new FlowDocument();
-                TextRange range = new TextRange(document.ContentStart, document.ContentEnd);
+                        using (MemoryStream stream = new MemoryStream(formattedTextComposite.Data))
+                        {
+                            range.Load(stream, DataFormats.XamlPackage);
+                        }
 
-                using (MemoryStream stream = new MemoryStream(compositeBase.Data))
-                {
-                    range.Load(stream, DataFormats.XamlPackage);
-                }
+                        return new FormattedTextCompositeVM()
+                        {
+                            Id = Guid.Parse(formattedTextComposite.Id),
+                            Tag = formattedTextComposite.Tag,
+                            Comment = formattedTextComposite.Comment,
+                            Document = document,
+                            SelectedBrSize = formattedTextComposite.BorderSize,
+                            SelectedBrCornerRadius = formattedTextComposite.CornerRadius,
+                            SelectedBrColor = formattedTextComposite.BorderColor,
+                            SelectedBgColor = formattedTextComposite.BackgroundColor,
+                            XamlPackageContent = formattedTextComposite.Data,
+                            IsModified = false
+                        };
+                    }
 
-                return new FormattedTextCompositeVM()
-                {
-                    Id = Guid.Parse(compositeBase.Id),
-                    Tag = compositeBase.Tag,
-                    Comment = compositeBase.Comment,
-                    Document = document,
-                    SelectedBrSize = compositeBase.BrSize,
-                    SelectedBrCornerRadius = compositeBase.BrCornerRadius,
-                    SelectedBrColor = compositeBase.BrColor,
-                    SelectedBgColor = compositeBase.BgColor,
-                    XamlPackageContent = compositeBase.Data,
-                    IsModified = false
-                };
-
+                default:
+                    return null;
             }
-            return null;
         }
 
         byte[] BitmapImageToByteArray(BitmapImage bitmapImage)
