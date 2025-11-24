@@ -63,8 +63,8 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" Content="Add category" Style="{DynamicResource Button}" Command="{Binding AddCategoryCommand}"/>
-                <Button Grid.Column="1" Content="Cancel" Style="{DynamicResource Button}" Margin="10,0,0,0" Command="{Binding CloseCommand}"/>
+                <Button Grid.Column="0" Content="Add category" Style="{StaticResource Button}" Cursor="Hand" Command="{Binding AddCategoryCommand}"/>
+                <Button Grid.Column="1" Content="Cancel" Style="{StaticResource Button}" Margin="10,0,0,0" Cursor="Hand" Command="{Binding CloseCommand}"/>
 
             </Grid>
 
