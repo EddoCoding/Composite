@@ -169,9 +169,11 @@ namespace Composite.Services
         {
             OpenFileDialog openFileDialog = new OpenFileDialog()
             {
-                Filter = "Office & PDF Documents|*.docx;*.xlsx;*.pptx;*.doc;*.xls;*.ppt;*.pdf|" +
-                         "All files (*.*)|*.*",
-                Title = "Select document"
+                Filter = "Office & PDF Documents|*.docx;*.xlsx;*.pptx;*.doc;*.xls;*.ppt;*.pdf",
+                Title = "Select document",
+                FilterIndex = 1,
+                CheckFileExists = true,
+                Multiselect = false
             };
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
