@@ -655,7 +655,7 @@ namespace Composite.Views.Notes.Notes
             while (targetIndex >= 0 && targetIndex < items.Count)
             {
                 var item = items[targetIndex];
-                if (item is not LineCompositeVM && item is not ImageCompositeVM && item is not RefCompositeVM) return targetIndex;
+                if (item is not LineCompositeVM && item is not ImageCompositeVM && item is not RefCompositeVM && item is not RefListCompositeVM) return targetIndex;
                 targetIndex += direction;
             }
 

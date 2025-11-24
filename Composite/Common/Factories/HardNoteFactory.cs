@@ -171,6 +171,28 @@ namespace Composite.Common.Factories
 
                     compositesVM.Add(newFTCompositeVM);
                 }
+
+                else if (compositeVM is RefListCompositeVM refListCompositeVM)
+                {
+                    var newRefListCompositeVM = new RefListCompositeVM(tabService, hardNoteService, messenger)
+                    {
+                        Id = refListCompositeVM.Id,
+                        Tag = refListCompositeVM.Tag,
+                        Comment = refListCompositeVM.Comment
+                    };
+
+                    foreach(var referenceVM in refListCompositeVM.References)
+                    {
+                        newRefListCompositeVM.References.Add(new ReferenceCompositeVM(tabService, hardNoteService, messenger)
+                        {
+                            Id = referenceVM.Id,
+                            Text = referenceVM.Text,
+                            ValueRef = referenceVM.ValueRef
+                        });
+                    }
+
+                    compositesVM.Add(newRefListCompositeVM);
+                }
             }
 
             return new HardNoteVM(tabService, hardNoteService, messenger)

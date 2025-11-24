@@ -240,6 +240,36 @@ namespace Composite.Common.Mappers
                 };
             }
 
+            if (compositeBaseVM is RefListCompositeVM refListCompositeVM)
+            {
+                var refListComposite = new RefListComposite()
+                {
+                    Id = refListCompositeVM.Id.ToString(),
+                    Tag = refListCompositeVM.Tag,
+                    Comment = refListCompositeVM.Comment,
+                    HardNoteId = id.ToString(),
+                    Children = new List<CompositeBase>()
+                };
+
+                foreach (var referenceVM in refListCompositeVM.References)
+                {
+                    var refComposite = new RefComposite()
+                    {
+                        Id = referenceVM.Id.ToString(),
+                        Tag = referenceVM.Tag,
+                        Comment = referenceVM.Comment,
+                        Text = referenceVM.Text,
+                        ValueRef = referenceVM.ValueRef,
+                        HardNoteId = id.ToString(),
+                        ParentId = refListComposite.Id
+                    };
+
+                    refListComposite.Children.Add(refComposite);
+                }
+
+                return refListComposite;
+            }
+
             return null;
         }
         CompositeBase GetCompositeNewId(Guid id, CompositeBaseVM compositeBaseVM)
@@ -389,6 +419,36 @@ namespace Composite.Common.Mappers
                 };
             }
 
+            if (compositeBaseVM is RefListCompositeVM refListCompositeVM)
+            {
+                var refListComposite = new RefListComposite()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Tag = refListCompositeVM.Tag,
+                    Comment = refListCompositeVM.Comment,
+                    HardNoteId = id.ToString(),
+                    Children = new List<CompositeBase>()
+                };
+
+                foreach (var referenceVM in refListCompositeVM.References)
+                {
+                    var refComposite = new RefComposite()
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Tag = referenceVM.Tag,
+                        Comment = referenceVM.Comment,
+                        Text = referenceVM.Text,
+                        ValueRef = referenceVM.ValueRef,
+                        HardNoteId = id.ToString(),
+                        ParentId = refListComposite.Id
+                    };
+
+                    refListComposite.Children.Add(refComposite);
+                }
+
+                return refListComposite;
+            }
+
             return null;
         }
         CompositeBaseVM GetCompositeVM(CompositeBase compositeBase)
@@ -497,29 +557,51 @@ namespace Composite.Common.Mappers
                         Data = documentComposite.Data
                     };
                 case FormattedTextComposite formattedTextComposite:
+                    var document = new FlowDocument();
+                    TextRange range = new TextRange(document.ContentStart, document.ContentEnd);
+
+                    using (MemoryStream stream = new MemoryStream(formattedTextComposite.Data))
                     {
-                        var document = new FlowDocument();
-                        TextRange range = new TextRange(document.ContentStart, document.ContentEnd);
-
-                        using (MemoryStream stream = new MemoryStream(formattedTextComposite.Data))
-                        {
-                            range.Load(stream, DataFormats.XamlPackage);
-                        }
-
-                        return new FormattedTextCompositeVM()
-                        {
-                            Id = Guid.Parse(formattedTextComposite.Id),
-                            Tag = formattedTextComposite.Tag,
-                            Comment = formattedTextComposite.Comment,
-                            Document = document,
-                            SelectedBrSize = formattedTextComposite.BorderSize,
-                            SelectedBrCornerRadius = formattedTextComposite.CornerRadius,
-                            SelectedBrColor = formattedTextComposite.BorderColor,
-                            SelectedBgColor = formattedTextComposite.BackgroundColor,
-                            XamlPackageContent = formattedTextComposite.Data,
-                            IsModified = false
-                        };
+                        range.Load(stream, DataFormats.XamlPackage);
                     }
+
+                    return new FormattedTextCompositeVM()
+                    {
+                        Id = Guid.Parse(formattedTextComposite.Id),
+                        Tag = formattedTextComposite.Tag,
+                        Comment = formattedTextComposite.Comment,
+                        Document = document,
+                        SelectedBrSize = formattedTextComposite.BorderSize,
+                        SelectedBrCornerRadius = formattedTextComposite.CornerRadius,
+                        SelectedBrColor = formattedTextComposite.BorderColor,
+                        SelectedBgColor = formattedTextComposite.BackgroundColor,
+                        XamlPackageContent = formattedTextComposite.Data,
+                        IsModified = false
+                    };
+
+                case RefListComposite refListComposite:
+                    var refListVM = new RefListCompositeVM(tabService, hardNoteService, messenger)
+                    {
+                        Id = Guid.Parse(refListComposite.Id),
+                        Tag = refListComposite.Tag,
+                        Comment = refListComposite.Comment
+                    };
+
+                    foreach (var child in refListComposite.Children.OfType<RefComposite>().OrderBy(c => c.OrderIndex))
+                    {
+                        var refVM = new ReferenceCompositeVM(tabService, hardNoteService, messenger)
+                        {
+                            Id = Guid.Parse(child.Id),
+                            Tag = child.Tag,
+                            Comment = child.Comment,
+                            Text = child.Text,
+                            ValueRef = child.ValueRef
+                        };
+
+                        refListVM.References.Add(refVM);
+                    }
+
+                    return refListVM;
 
                 default:
                     return null;

@@ -535,6 +535,16 @@
                                     </helper:ParametersCompositeString>
                                 </Button.CommandParameter>
                             </Button>
+                            <Button Style="{StaticResource SnippetButton}" Content="RefList" Tag="/Common/Images/refList.png" property:ButtonHelper.AdditionalText="/refs"
+                                    Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
+                                <Button.CommandParameter>
+                                    <helper:ParametersCompositeString Value="/refs">
+                                        <helper:ParametersCompositeString.CompositeBaseVM>
+                                            <Binding/>
+                                        </helper:ParametersCompositeString.CompositeBaseVM>
+                                    </helper:ParametersCompositeString>
+                                </Button.CommandParameter>
+                            </Button>
                             <Button Style="{StaticResource SnippetButton}" Content="Marker" Tag="/Common/Images/marker.png" property:ButtonHelper.AdditionalText="/marker"
                                     Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
                                 <Button.CommandParameter>
@@ -1241,6 +1251,264 @@
                         </ListView>
                     </Border>
                 </Popup>
+
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:ReferenceCompositeVM}">
+            <Grid Background="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="RefButton" Grid.Column="0" Style="{StaticResource ImageButton}" Content="/Common/Images/ref.png" Tag="WhiteSmoke" Height="17" Width="17" Margin="5,9,5,0"
+                        Cursor="Hand" FontSize="14" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top" Command="{Binding OpenRefPopupCommand}"
+                        Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                <Button Grid.Column="1" Margin="0,5,0,5" Cursor="Hand" HorizontalAlignment="Left" MinWidth="100" MaxWidth="300" VerticalAlignment="Top"
+                        Command="{Binding CheckValuRefCommand}" CommandParameter="{Binding}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border BorderThickness="1" CornerRadius="8" Height="25" Background="White">
+                                            <Border.Effect>
+                                                <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
+                                            </Border.Effect>
+                                            <TextBlock Text="{Binding DataContext.Text, RelativeSource={RelativeSource TemplatedParent}}" Foreground="Gray"
+                                               FontSize="14" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Padding="8,3" Background="Transparent"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Grid.Column="2" Content="X" Cursor="Hand" VerticalAlignment="Top" Margin="5,9,0,0" FontSize="16"
+                        Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Command="{Binding DataContext.DeleteRefCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                        CommandParameter="{Binding}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <ContentPresenter/>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Foreground" Value="Red"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Popup IsOpen="{Binding IsRefPopup, Mode=TwoWay}" PlacementTarget="{Binding ElementName=RefButton}" AllowsTransparency="True" StaysOpen="False" 
+                       Placement="Bottom" VerticalOffset="10">
+                    <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="8" Width="400">
+                        <Border.Effect>
+                            <DropShadowEffect Opacity="0.3" ShadowDepth="1"/>
+                        </Border.Effect>
+
+                        <StackPanel Margin="10">
+
+                            <Border Grid.Column="0" BorderBrush="Gray" BorderThickness="1" CornerRadius="8">
+                                <TextBox Grid.Column="0" Style="{StaticResource Text}" Text="{Binding Text}" Margin="3,5,3,0" FontSize="13" TextWrapping="NoWrap"
+                                         property:PlaceHolder.PlaceHolder="URL or note" property:PlaceHolder.ShowAlways="True"/>
+                            </Border>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+
+                                <Button x:Name="RefPopup" HorizontalAlignment="Left" Command="{Binding OpenNotesPopupCommand}" VerticalAlignment="Center" FontSize="14">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Cursor" Value="Hand"/>
+                                            <Setter Property="Foreground" Value="Gray"/>
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <TextBlock Text="select note" Foreground="{TemplateBinding Foreground}"/>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter Property="Foreground" Value="Black"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                                <TextBlock Text="{Binding Text}" VerticalAlignment="Center" Margin="5,0,0,0" MaxWidth="200" TextTrimming="CharacterEllipsis" FontSize="14"/>
+                                <Button Command="{Binding ClearSelectedNoteCommand}">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Cursor" Value="Hand"/>
+                                            <Setter Property="Foreground" Value="Gray"/>
+                                            <Setter Property="Margin" Value="5,0,0,0"/>
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <TextBlock Text="clear" Foreground="{TemplateBinding Foreground}" FontSize="14"/>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter Property="Foreground" Value="Black"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+
+                            </StackPanel>
+
+                        </StackPanel>
+
+                    </Border>
+                </Popup>
+
+                <Popup IsOpen="{Binding IsNotesPopup, Mode=TwoWay}" PlacementTarget="{Binding ElementName=RefPopup}" AllowsTransparency="True" StaysOpen="False" Placement="Bottom"
+                       VerticalOffset="20" HorizontalOffset="-10">
+                    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="8" MaxHeight="250" Background="White">
+                        <ListView ItemsSource="{Binding Notes}" BorderThickness="0" Margin="0,5" Background="White">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListViewItem">
+                                                <Button Command="{Binding DataContext.SelectNoteCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
+                                                    <Button.Style>
+                                                        <Style TargetType="Button">
+                                                            <Setter Property="Background" Value="White"/>
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="Button">
+                                                                        <Border CornerRadius="8" Margin="3" Background="{TemplateBinding Background}">
+                                                                            <TextBlock Text="{Binding Title}" Margin="5" Width="175" FontSize="13" TextTrimming="CharacterEllipsis"/>
+                                                                        </Border>
+                                                                        <ControlTemplate.Triggers>
+                                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                                <Setter Property="Background" Value="WhiteSmoke"/>
+                                                                            </Trigger>
+                                                                        </ControlTemplate.Triggers>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Style>
+                                                    </Button.Style>
+                                                </Button>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                        </ListView>
+                    </Border>
+                </Popup>
+
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:RefListCompositeVM}">
+            <Grid MaxWidth="1150" Background="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="18"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox Grid.Column="0" Style="{StaticResource Text}" Text="{Binding Tag}" Margin="5,7,5,0" Width="100" TextWrapping="NoWrap" Foreground="Gray"
+                         property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Top"/>
+
+                <Button Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/actions.png" Height="18" Width="18" VerticalAlignment="Top"
+                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="WhiteSmoke" Margin="0,10,0,0"
+                        Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                        CommandParameter="{Binding}"/>
+
+                <Button Grid.Column="2" Style="{StaticResource ImageButton}" Content="/Common/Images/add.png" Height="21" Width="21" VerticalAlignment="Top" 
+                        Margin="10,8,10,0" Cursor="Hand" RenderOptions.BitmapScalingMode="Fant" Tag="#E6E6E6"
+                        Command="{Binding AddRefCompositeCommand}"/>
+
+                <ListView Grid.Column="3" ItemsSource="{Binding References}" BorderThickness="0" Background="Transparent" VerticalAlignment="Top"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <ContentPresenter/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+
+                <Button Grid.Column="4" Content="X" Cursor="Hand" VerticalAlignment="Top" Margin="5,12,0,0" FontSize="14"
+                        Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Command="{Binding DataContext.HardNoteVM.DeleteCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
+                        CommandParameter="{Binding}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <ContentPresenter/>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Foreground" Value="Red"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Grid Grid.Column="5" Margin="5,11,5,0" VerticalAlignment="Top">
+
+                    <TextBox Style="{StaticResource Text}" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" Foreground="Gray" FontSize="12"
+                             Width="150" VerticalAlignment="Center" Visibility="{Binding IsEditing, Converter={StaticResource BoolToVis}}"
+                             property:PlaceHolder.PlaceHolder="Enter comment" property:PlaceHolder.ShowAlways="True">
+                        <i:Interaction.Behaviors>
+                            <helper:FocusTextBoxBehavior/>
+                        </i:Interaction.Behaviors>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="LostFocus">
+                                <i:InvokeCommandAction Command="{Binding DataContext.HardNoteVM.StopEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </TextBox>
+
+                    <Button Style="{StaticResource ImageButton}" Content="/Common/Images/comment.png" Height="18" Width="18" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top"
+                            Cursor="Hand" Command="{Binding DataContext.HardNoteVM.StartEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
+                        <Button.Visibility>
+                            <MultiBinding Converter="{StaticResource EditingAndHoverToVisibilityConverter}">
+                                <Binding Path="IsEditing"/>
+                                <Binding Path="IsMouseOver" RelativeSource="{RelativeSource AncestorType=ListViewItem}"/>
+                            </MultiBinding>
+                        </Button.Visibility>
+                    </Button>
+
+                </Grid>
 
             </Grid>
         </DataTemplate>

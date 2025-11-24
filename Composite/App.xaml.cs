@@ -11,7 +11,6 @@ using Composite.ViewModels.Notes.Note;
 using Composite.Views;
 using Composite.Views.Notes;
 using Composite.Views.Notes.Notes;
-using Dapper;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 
@@ -92,6 +91,12 @@ namespace Composite
             using (var connection = _dbConnectionFactory.CreateConnection())
             {
                 connection.Open();
+
+                //connection.Execute("Create Table ReferencesComposites(Id Text Primary Key, Foreign Key(Id) References CompositeBase(Id) On Delete Cascade)");
+
+                //connection.Execute("Create Table CompositeBase(Id Text Primary Key, HardNoteId Text, ParentId Text, CompositeType Text, Tag Text, Comment Text, OrderIndex Integer," +
+                //    "Foreign Key(HardNoteId) References HardNotes(Id) On Delete Cascade, " +
+                //    "Foreign Key(ParentId) References CompositeBase(Id) On Delete Cascade)");
 
                 //var queryCreateHardNotes = "Create Table If Not Exists HardNotes(Id Text Primary Key, Title Text Default '', DateCreate DateTime Not Null, Category Text, Password Text)";
                 //var queryCompositeBase = "Create Table CompositeBase(Id Text Primary Key, HardNoteId Text Not Null, CompositeType Text Not Null, Tag Text, Comment Text, OrderIndex Integer, " +

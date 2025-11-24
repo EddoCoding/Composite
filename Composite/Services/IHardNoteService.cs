@@ -12,7 +12,7 @@ namespace Composite.Services
         IEnumerable<NoteIdTitle> GetIdTitleNotes();
         Task<HardNoteVM> GetNoteById(Guid id);
 
-        Task CheckValuRef(RefCompositeVM refComposite);
+        Task CheckValuRef<T>(T refComposite);
 
         (string, byte[]) SelectDocument();
         Task<byte[]?> OpenDocument(string text, byte[] data);

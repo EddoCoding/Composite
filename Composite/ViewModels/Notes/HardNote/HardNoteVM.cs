@@ -33,12 +33,26 @@ namespace Composite.ViewModels.Notes.HardNote
 
             messenger.Register<RefMessage>(this, (r, m) =>
             {
-                var refs = Composites
-                .OfType<RefCompositeVM>()
-                .Where(x => x.ValueRef == m.Id.ToString())
-                .ToList();
+                var refLists = Composites.OfType<RefListCompositeVM>().ToList();
 
-                foreach(var reference in refs) Composites.Remove(reference);
+                foreach (var refList in refLists)
+                {
+                    var referencesToRemove = refList.References.Where(x => x.ValueRef == m.Id.ToString()).ToList();
+
+                    foreach (var reference in referencesToRemove)
+                    {
+                        reference.Dispose();
+                        refList.References.Remove(reference);
+                    }
+                }
+
+                var refs = Composites.OfType<RefCompositeVM>().Where(x => x.ValueRef == m.Id.ToString()).ToList();
+
+                foreach (var reference in refs)
+                {
+                    reference.Dispose();
+                    Composites.Remove(reference);
+                }
             });
         }
 
@@ -256,6 +270,12 @@ namespace Composite.ViewModels.Notes.HardNote
                     var refComposite = new RefCompositeVM(_tabService, _hardNoteService, _messenger);
                     Composites.Insert(indexRef, refComposite);
                     return refComposite;
+                case "/refs":
+                    int indexRefList = Composites.IndexOf(compositeBaseVM);
+                    DeleteComposite(compositeBaseVM);
+                    var refListComposite = new RefListCompositeVM(_tabService, _hardNoteService, _messenger);
+                    Composites.Insert(indexRefList, refListComposite);
+                    return refListComposite;
                 case "/marker":
                 {
                     int indexMarker = Composites.IndexOf(compositeBaseVM);

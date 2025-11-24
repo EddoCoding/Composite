@@ -10,8 +10,10 @@
 
   <ItemGroup>
     <None Remove="Common\Images\actions.png" />
+    <None Remove="Common\Images\add.png" />
     <None Remove="Common\Images\addCategory.png" />
     <None Remove="Common\Images\addIndentation.png" />
+    <None Remove="Common\Images\addRef.png" />
     <None Remove="Common\Images\alignCenter.png" />
     <None Remove="Common\Images\alignJustify.png" />
     <None Remove="Common\Images\alignLeft.png" />
@@ -51,6 +53,7 @@
     <None Remove="Common\Images\playStop.png" />
     <None Remove="Common\Images\quote.png" />
     <None Remove="Common\Images\ref.png" />
+    <None Remove="Common\Images\refList.png" />
     <None Remove="Common\Images\removeIndentation.png" />
     <None Remove="Common\Images\repeat.png" />
     <None Remove="Common\Images\scale.png" />
@@ -64,7 +67,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Common\Images\add.png" />
     <Resource Include="Common\Images\addIndentation.png" />
+    <Resource Include="Common\Images\addRef.png" />
     <Resource Include="Common\Images\alignJustify.png" />
   </ItemGroup>
 
@@ -127,6 +132,7 @@
     <Resource Include="Common\Images\playStop.png" />
     <Resource Include="Common\Images\quote.png" />
     <Resource Include="Common\Images\ref.png" />
+    <Resource Include="Common\Images\refList.png" />
     <Resource Include="Common\Images\removeIndentation.png" />
     <Resource Include="Common\Images\repeat.png" />
     <Resource Include="Common\Images\scale.png" />

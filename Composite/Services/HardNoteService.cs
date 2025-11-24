@@ -125,10 +125,16 @@ namespace Composite.Services
         }
 
         //Для ссылки
-        public async Task CheckValuRef(RefCompositeVM refComposite)
+        public async Task CheckValuRef<T>(T refComposite)
         {
-            if (Guid.TryParse(refComposite.ValueRef, out Guid result)) OpenNote(result);
-            else OpenURL(refComposite.Text);
+            var valueRefProp = typeof(T).GetProperty("ValueRef");
+            var textProp = typeof(T).GetProperty("Text");
+
+            var valueRef = valueRefProp?.GetValue(refComposite)?.ToString();
+            var text = textProp?.GetValue(refComposite)?.ToString();
+
+            if (Guid.TryParse(valueRef, out Guid result)) OpenNote(result);
+            else OpenURL(text);
         }
         async Task OpenNote(Guid result)
         {
