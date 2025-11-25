@@ -180,15 +180,16 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style x:Key="TitleTextBox" TargetType="TextBox">
             <Setter Property="FontSize" Value="26"/>
-            <Setter Property="Margin" Value="0,10,0,5"/>
+            <Setter Property="Margin" Value="100,10,0,5"/>
             <Setter Property="FontFamily" Value="Trebuchet MS"/>
             <Setter Property="SelectionBrush" Value="LightGray"/>
             <Setter Property="CaretBrush" Value="Gray"/>
             <Setter Property="MaxWidth" Value="800"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
@@ -345,6 +346,7 @@
             <Setter Property="AcceptsReturn" Value="True"/>
             <Setter Property="Background" Value="WhiteSmoke"/>
             <Setter Property="Margin" Value="10,5,0,5"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
@@ -367,7 +369,7 @@
         </Style>
 
         <DataTemplate DataType="{x:Type viewModel:TextCompositeVM}">
-            <Grid Width="1150" Background="Transparent">
+            <Grid MaxWidth="1400" Background="Transparent">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="18"/>
@@ -594,7 +596,7 @@
             </Grid>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:HeaderCompositeVM}">
-            <Grid Width="1150" Background="Transparent">
+            <Grid MaxWidth="1400" Background="Transparent">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="18"/>
@@ -668,7 +670,7 @@
             </Grid>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:QuoteCompositeVM}">
-            <Grid Width="1150" Background="Transparent">
+            <Grid MaxWidth="1400" Background="Transparent">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="18"/>
@@ -761,7 +763,7 @@
             </Grid>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:LineCompositeVM}">
-            <Grid Width="1150" Background="Transparent">
+            <Grid MaxWidth="1400" Background="Transparent">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="18"/>
@@ -892,7 +894,7 @@
             </Grid>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:TaskCompositeVM}">
-            <Grid x:Name="rootPanel" Width="1150" Background="Transparent">
+            <Grid x:Name="rootPanel" MaxWidth="1400" Background="Transparent">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="18"/>
@@ -965,7 +967,7 @@
             </Grid>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:ImageCompositeVM}">
-            <Border MaxWidth="1150" BorderThickness="1" BorderBrush="Transparent" Margin="0,5">
+            <Border MaxWidth="1400" BorderThickness="1" BorderBrush="Transparent" Margin="0,5">
                 <Grid Background="Transparent">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -1060,7 +1062,7 @@
             </Border>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:RefCompositeVM}">
-            <Grid Width="1150" Background="Transparent">
+            <Grid MaxWidth="1400" Background="Transparent">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="18"/>
@@ -1424,7 +1426,7 @@
             </Grid>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:RefListCompositeVM}">
-            <Grid MaxWidth="1150" Background="Transparent">
+            <Grid MaxWidth="1400" Background="Transparent">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="18"/>
@@ -1520,7 +1522,7 @@
             </Grid>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:MarkerCompositeVM}">
-            <Grid  Width="1150" Background="Transparent">
+            <Grid MaxWidth="1400" Background="Transparent">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="18"/>
@@ -1604,7 +1606,7 @@
             </Grid>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:NumericCompositeVM}">
-            <Grid  Width="1150" Background="Transparent" Margin="0,-3">
+            <Grid MaxWidth="1400" Background="Transparent" Margin="0,-3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="18"/>
@@ -1688,7 +1690,7 @@
             </Grid>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:CodeCompositeVM}">
-            <Grid Width="1150" Background="Transparent">
+            <Grid MaxWidth="1400" Background="Transparent">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="18"/>
@@ -1761,7 +1763,7 @@
             </Grid>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:DocCompositeVM}">
-            <Grid Width="1150" Background="Transparent">
+            <Grid MaxWidth="1400" Background="Transparent">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="18"/>
@@ -1877,7 +1879,7 @@
             </Grid>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:FormattedTextCompositeVM}">
-            <Grid Width="1150" Background="Transparent">
+            <Grid MaxWidth="1400" Background="Transparent">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="18"/>
