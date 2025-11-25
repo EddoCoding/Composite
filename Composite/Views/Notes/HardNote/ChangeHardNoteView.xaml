@@ -183,13 +183,13 @@
 
         <Style x:Key="TitleTextBox" TargetType="TextBox">
             <Setter Property="FontSize" Value="26"/>
-            <Setter Property="Margin" Value="100,10,0,5"/>
+            <Setter Property="Margin" Value="150,10,0,5"/>
             <Setter Property="FontFamily" Value="Trebuchet MS"/>
             <Setter Property="SelectionBrush" Value="LightGray"/>
             <Setter Property="CaretBrush" Value="Gray"/>
-            <Setter Property="MaxWidth" Value="800"/>
+            <Setter Property="MaxWidth" Value="1400"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
-            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
