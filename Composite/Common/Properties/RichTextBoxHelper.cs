@@ -1,5 +1,6 @@
 ﻿using Composite.Common.Helpers;
 using Composite.ViewModels.Notes.HardNote;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -12,7 +13,8 @@ namespace Composite.Common.Properties
 {
     public class RichTextBoxHelper
     {
-        private static bool _isUpdating = false;
+        static bool _isUpdating = false;
+        static bool _suspendTextChanged = false;
 
         //Для биндинга RichTextBox.Document к FlowDocumewwnt во ViewModel
         public static readonly DependencyProperty BindToViewModelProperty =
@@ -50,26 +52,47 @@ namespace Composite.Common.Properties
         }
         static void LoadDocument(RichTextBox rtb, FormattedTextCompositeVM vm)
         {
-            if (_isUpdating) return;
-            _isUpdating = true;
+            _suspendTextChanged = true;
 
             try
             {
-                rtb.Document = vm.Document ?? new FlowDocument(new Paragraph { LineHeight = 7 });
+                rtb.Document = CloneDocument(vm.Document);
             }
-            catch { }
-            finally { _isUpdating = false; }
+            finally
+            {
+                _suspendTextChanged = false;
+            }
         }
         static void OnTextChanged(object sender, TextChangedEventArgs e)
         {
+            if (_suspendTextChanged) return;
             if (_isUpdating || sender is not RichTextBox rtb) return;
 
             _isUpdating = true;
             try
             {
-                if (rtb.DataContext is FormattedTextCompositeVM vm) vm.OnTextChanged(rtb.Document);
+                if (rtb.DataContext is FormattedTextCompositeVM vm)
+                    vm.OnTextChanged(rtb.Document);
             }
-            finally { _isUpdating = false; }
+            finally
+            {
+                _isUpdating = false;
+            }
+        }
+        static FlowDocument CloneDocument(FlowDocument original)
+        {
+            if (original == null) return new FlowDocument(new Paragraph());
+
+            TextRange source = new TextRange(original.ContentStart, original.ContentEnd);
+            using MemoryStream stream = new MemoryStream();
+            source.Save(stream, DataFormats.XamlPackage);
+
+            FlowDocument clone = new FlowDocument();
+            TextRange copy = new TextRange(clone.ContentStart, clone.ContentEnd);
+            stream.Position = 0;
+            copy.Load(stream, DataFormats.XamlPackage);
+
+            return clone;
         }
 
         //Автоматичесий показ Popup при выборке фрагмента текста

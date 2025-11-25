@@ -13,7 +13,6 @@ using Composite.Views.Notes;
 using Composite.Views.Notes.Notes;
 using Dapper;
 using Microsoft.Extensions.DependencyInjection;
-using System.Collections.Generic;
 using System.Windows;
 
 namespace Composite

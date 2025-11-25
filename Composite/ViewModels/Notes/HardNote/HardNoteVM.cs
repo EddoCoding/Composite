@@ -7,6 +7,7 @@ using Composite.Services;
 using Composite.Services.TabService;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 
@@ -335,6 +336,28 @@ namespace Composite.ViewModels.Notes.HardNote
                     UpdateNumericSequence(targetIndex);
                 }
             }
+        }
+        public CompositeBaseVM SwapComposite(CompositeBaseVM composite, string key)
+        {
+            if (Composites == null || Composites.Count == 0) return null;
+
+            int index = GetIndexComposite(composite);
+
+            if (index < 0) return null;
+
+            if (key == "UP")
+            {
+                if (index == 0) return null;
+                Composites.Move(index, index - 1);
+                return Composites[index - 1];
+            }
+            else if (key == "DOWN")
+            {
+                if (index == Composites.Count - 1) return null;
+                Composites.Move(index, index + 1);
+                return Composites[index + 1];
+            }
+            return null;
         }
 
         public T DuplicateComposite<T>(T composite) where T : CompositeBaseVM

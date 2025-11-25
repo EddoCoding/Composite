@@ -250,7 +250,6 @@
             <Setter Property="SelectionBrush" Value="LightGray"/>
             <Setter Property="CaretBrush" Value="Gray"/>
             <Setter Property="MinWidth" Value="85"/>
-            <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
             <Setter Property="Margin" Value="3,-10"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
@@ -729,7 +728,7 @@
 
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="“" FontSize="18"/>
 
-                    <TextBox Grid.Row="1" Grid.Column="1" Style="{StaticResource TextQuote}"
+                    <TextBox Grid.Row="1" Grid.Column="1" Style="{DynamicResource TextQuote}"
                              property:PlaceHolder.PlaceHolder="Enter quote" 
                              PreviewKeyDown="ListView_TextBox_PreviewKeyDown"/>
 
@@ -1735,7 +1734,7 @@
                         Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                         CommandParameter="{Binding}"/>
 
-                <TextBox Grid.Column="2" Style="{StaticResource Code}" VerticalAlignment="Top"/>
+                <TextBox Grid.Column="2" Style="{StaticResource Code}" VerticalAlignment="Top" PreviewKeyDown="ListView_TextBox_PreviewKeyDown_ForCodeBlock"/>
 
                 <Button Grid.Column="3" Content="X" Cursor="Hand" VerticalAlignment="Top" Margin="10,5,0,0" FontSize="15"
                         Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"

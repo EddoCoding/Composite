@@ -503,6 +503,58 @@ namespace Composite.Views.Notes
                     if (listView?.DataContext is AddHardNoteViewModel viewModel) viewModel.ExecuteCommand("ALT-");
                     e.Handled = true;
                 }
+                if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.W))
+                {
+                    var listView = FindParent<ListView>(textBox1);
+                    var currentComposite = textBox1.DataContext as CompositeBaseVM;
+                    if (listView?.DataContext is AddHardNoteViewModel viewModel)
+                    {
+                        var composite = viewModel.HardNoteVM.SwapComposite(currentComposite, "UP");
+                        if (composite == null) return;
+
+                        Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            var container = listView.ItemContainerGenerator.ContainerFromItem(composite) as ListViewItem;
+                            if (container != null)
+                            {
+                                var textBox = FindChildInColumn<TextBox>(container, 2);
+                                if (textBox != null)
+                                {
+                                    textBox.Focus();
+                                    textBox.CaretIndex = textBox.Text.Length;
+                                }
+                            }
+                        }), DispatcherPriority.Background);
+                    }
+
+                    e.Handled = true;
+                }
+                if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.S))
+                {
+                    var listView = FindParent<ListView>(textBox1);
+                    var currentComposite = textBox1.DataContext as CompositeBaseVM;
+                    if (listView?.DataContext is AddHardNoteViewModel viewModel)
+                    {
+                        var composite = viewModel.HardNoteVM.SwapComposite(currentComposite, "DOWN");
+                        if (composite == null) return;
+
+                        Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            var container = listView.ItemContainerGenerator.ContainerFromItem(composite) as ListViewItem;
+                            if (container != null)
+                            {
+                                var textBox = FindChildInColumn<TextBox>(container, 2);
+                                if (textBox != null)
+                                {
+                                    textBox.Focus();
+                                    textBox.CaretIndex = textBox.Text.Length;
+                                }
+                            }
+                        }), DispatcherPriority.Background);
+                    }
+
+                    e.Handled = true;
+                }
             }
             else if(sender is RichTextBox rtb)
             {
@@ -644,6 +696,225 @@ namespace Composite.Views.Notes
                         if (listView?.DataContext is AddHardNoteViewModel viewModel) viewModel.ExecuteCommand("ALT-");
                         e.Handled = true;
                     }
+                }
+                if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.W))
+                {
+                    var listView = FindParent<ListView>(rtb);
+                    var currentComposite = rtb.DataContext as CompositeBaseVM;
+                    if (listView?.DataContext is AddHardNoteViewModel viewModel)
+                    {
+                        var composite = viewModel.HardNoteVM.SwapComposite(currentComposite, "UP");
+                        if (composite == null) return;
+
+                        Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            var container = listView.ItemContainerGenerator.ContainerFromItem(composite) as ListViewItem;
+                            if (container != null)
+                            {
+                                var richTextBox = FindChildInColumn<RichTextBox>(container, 2);
+                                if (richTextBox != null) richTextBox.Focus();
+                            }
+                        }), DispatcherPriority.Background);
+                    }
+
+                    e.Handled = true;
+                }
+                if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.S))
+                {
+                    var listView = FindParent<ListView>(rtb);
+                    var currentComposite = rtb.DataContext as CompositeBaseVM;
+                    if (listView?.DataContext is AddHardNoteViewModel viewModel)
+                    {
+                        var composite = viewModel.HardNoteVM.SwapComposite(currentComposite, "DOWN");
+                        if (composite == null) return;
+
+                        Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            var container = listView.ItemContainerGenerator.ContainerFromItem(composite) as ListViewItem;
+                            if (container != null)
+                            {
+                                var richTextBox = FindChildInColumn<RichTextBox>(container, 2);
+                                if (richTextBox != null) richTextBox.Focus();
+                            }
+                        }), DispatcherPriority.Background);
+                    }
+
+                    e.Handled = true;
+                }
+            }
+        }
+        void ListView_TextBox_PreviewKeyDown_ForCodeBlock(object sender, KeyEventArgs e)
+        {
+            if (sender is TextBox textBox1)
+            {
+                if (e.Key == Key.Back)
+                {
+                    var textBox2 = sender as TextBox;
+                    var currentComposite = textBox2.DataContext as CompositeBaseVM;
+                    if (currentComposite == null) return;
+                    var listView = FindParent<ListView>(textBox2);
+                    if (listView?.DataContext is AddHardNoteViewModel viewModel)
+                    {
+                        int currentIndex = viewModel.HardNoteVM.GetIndexComposite(currentComposite);
+
+                        if (string.IsNullOrEmpty(textBox2.Text))
+                        {
+                            DeleteComposite(viewModel, currentComposite);
+
+                            if (currentIndex == 0) FocusTitleTextBox();
+                            else if (viewModel.HardNoteVM.Composites.Count > 0)
+                            {
+                                int previousTextBoxIndex = FindPreviousTextBoxIndex(viewModel.HardNoteVM.Composites, currentIndex);
+                                if (previousTextBoxIndex != -1) MoveFocusToTextBox(previousTextBoxIndex);
+                                else FocusTitleTextBox();
+                            }
+                            else FocusTitleTextBox();
+                            e.Handled = true;
+                        }
+                        else if (textBox2.CaretIndex == 0 && currentIndex > 0 && currentComposite is TextCompositeVM currentTextComposite)
+                        {
+                            var previousTextComposite = FindPreviousTextComposite(viewModel.HardNoteVM.Composites, currentIndex);
+                            if (previousTextComposite != null)
+                            {
+                                int originalCaretPosition = previousTextComposite.Text.Length;
+                                previousTextComposite.Text += currentTextComposite.Text;
+                                viewModel.HardNoteVM.DeleteComposite(currentTextComposite);
+
+                                int previousIndex = viewModel.HardNoteVM.GetIndexComposite(previousTextComposite);
+                                textBox2.Dispatcher.BeginInvoke(new Action(() =>
+                                {
+                                    MoveFocusToTextBox(previousIndex);
+                                    var container = listComposite.ItemContainerGenerator.ContainerFromItem(previousTextComposite) as ListViewItem;
+                                    if (container != null)
+                                    {
+                                        var targetTextBox = FindChildInColumn<TextBox>(container, 2);
+                                        if (targetTextBox != null) targetTextBox.CaretIndex = originalCaretPosition;
+                                    }
+                                }), DispatcherPriority.Input);
+                                e.Handled = true;
+                            }
+                        }
+                    }
+                }
+                if (Keyboard.IsKeyDown(Key.LeftCtrl) && Keyboard.IsKeyDown(Key.D))
+                {
+                    if (textBox1.DataContext is CompositeBaseVM currentComposite)
+                    {
+                        var listView = FindParent<ListView>(textBox1);
+                        if (listView?.DataContext is AddHardNoteViewModel viewModel)
+                        {
+                            var duplicateComposite = viewModel.HardNoteVM.DuplicateComposite(currentComposite);
+
+                            Dispatcher.BeginInvoke(new Action(() =>
+                            {
+                                var container = listView.ItemContainerGenerator.ContainerFromItem(duplicateComposite) as ListViewItem;
+                                if (container != null)
+                                {
+                                    var textBox = FindChildInColumn<TextBox>(container, 2);
+                                    if (textBox != null)
+                                    {
+                                        textBox.Focus();
+                                        textBox.CaretIndex = textBox.Text.Length;
+                                    }
+                                }
+                            }), DispatcherPriority.Background);
+                        }
+                    }
+                    e.Handled = true;
+                }
+                if (Keyboard.IsKeyDown(Key.LeftCtrl) && Keyboard.IsKeyDown(Key.Space))
+                {
+                    var listView = FindParent<ListView>(textBox1);
+                    if (listView?.DataContext is AddHardNoteViewModel viewModel) viewModel.ExecuteCommand("CTRLSPACE");
+                    e.Handled = true;
+                }
+                if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.Z))
+                {
+                    var listView = FindParent<ListView>(textBox1);
+                    if (listView?.DataContext is AddHardNoteViewModel viewModel) viewModel.ExecuteCommand("ALTZ");
+                    e.Handled = true;
+                }
+                if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.X))
+                {
+                    var listView = FindParent<ListView>(textBox1);
+                    if (listView?.DataContext is AddHardNoteViewModel viewModel) viewModel.ExecuteCommand("ALTX");
+                    e.Handled = true;
+                }
+                if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.C))
+                {
+                    var listView = FindParent<ListView>(textBox1);
+                    if (listView?.DataContext is AddHardNoteViewModel viewModel) viewModel.ExecuteCommand("ALTC");
+                    e.Handled = true;
+                }
+                if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.V))
+                {
+                    var listView = FindParent<ListView>(textBox1);
+                    if (listView?.DataContext is AddHardNoteViewModel viewModel) viewModel.ExecuteCommand("ALTV");
+                    e.Handled = true;
+                }
+                if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.Up))
+                {
+                    var listView = FindParent<ListView>(textBox1);
+                    if (listView?.DataContext is AddHardNoteViewModel viewModel) viewModel.ExecuteCommand("ALT+");
+                    e.Handled = true;
+                }
+                if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.Down))
+                {
+                    var listView = FindParent<ListView>(textBox1);
+                    if (listView?.DataContext is AddHardNoteViewModel viewModel) viewModel.ExecuteCommand("ALT-");
+                    e.Handled = true;
+                }
+                if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.W))
+                {
+                    var listView = FindParent<ListView>(textBox1);
+                    var currentComposite = textBox1.DataContext as CompositeBaseVM;
+                    if (listView?.DataContext is AddHardNoteViewModel viewModel)
+                    {
+                        var composite = viewModel.HardNoteVM.SwapComposite(currentComposite, "UP");
+                        if (composite == null) return;
+
+                        Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            var container = listView.ItemContainerGenerator.ContainerFromItem(composite) as ListViewItem;
+                            if (container != null)
+                            {
+                                var textBox = FindChildInColumn<TextBox>(container, 2);
+                                if (textBox != null)
+                                {
+                                    textBox.Focus();
+                                    textBox.CaretIndex = textBox.Text.Length;
+                                }
+                            }
+                        }), DispatcherPriority.Background);
+                    }
+
+                    e.Handled = true;
+                }
+                if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.S))
+                {
+                    var listView = FindParent<ListView>(textBox1);
+                    var currentComposite = textBox1.DataContext as CompositeBaseVM;
+                    if (listView?.DataContext is AddHardNoteViewModel viewModel)
+                    {
+                        var composite = viewModel.HardNoteVM.SwapComposite(currentComposite, "DOWN");
+                        if (composite == null) return;
+
+                        Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            var container = listView.ItemContainerGenerator.ContainerFromItem(composite) as ListViewItem;
+                            if (container != null)
+                            {
+                                var textBox = FindChildInColumn<TextBox>(container, 2);
+                                if (textBox != null)
+                                {
+                                    textBox.Focus();
+                                    textBox.CaretIndex = textBox.Text.Length;
+                                }
+                            }
+                        }), DispatcherPriority.Background);
+                    }
+
+                    e.Handled = true;
                 }
             }
         }
