@@ -102,7 +102,7 @@ namespace Composite.ViewModels
             if(!_allNotes.Any()) tabService.CreateTab<AddHardNoteViewModel>("Hard note");
         }
 
-        [RelayCommand] void AddNote() => _tabService.CreateTab<AddHardNoteViewModel>("Hard note");
+        [RelayCommand] void AddNote() => _tabService.CreateTab<AddHardNoteViewModel>("Composite");
         void OpenNote(HardNoteVM note)
         {
             if (_tabService.CreateTab<ChangeHardNoteViewModel>($"{note.Title}")) _messenger.Send(new ChangeNoteMessage(note));

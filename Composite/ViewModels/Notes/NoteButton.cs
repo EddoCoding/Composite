@@ -3,6 +3,6 @@
     public partial class NoteButton : NoteBaseVM
     {
         public override string ItemType => "AddNoteButton";
-        public NoteButton() => Title = "+ Add Note";
+        public NoteButton() => Title = "+ Add Composite";
     }
 }

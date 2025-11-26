@@ -67,6 +67,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Common\Images\composite.png" />
     <Resource Include="Common\Images\actions.png" />
     <Resource Include="Common\Images\add.png" />
     <Resource Include="Common\Images\addIndentation.png" />
@@ -89,7 +90,6 @@
     <Resource Include="Common\Images\code.png" />
     <Resource Include="Common\Images\collapse.png" />
     <Resource Include="Common\Images\comment.png" />
-    <Resource Include="Common\Images\composite.png" />
     <Resource Include="Common\Images\deleteCategory.png" />
     <Resource Include="Common\Images\doc.png" />
     <Resource Include="Common\Images\duplicate.png" />
