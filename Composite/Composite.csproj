@@ -67,6 +67,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Common\Images\actions.png" />
     <Resource Include="Common\Images\add.png" />
     <Resource Include="Common\Images\addIndentation.png" />
     <Resource Include="Common\Images\addRef.png" />
@@ -74,7 +75,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Common\Images\actions.png" />
     <Resource Include="Common\Images\addCategory.png" />
     <Resource Include="Common\Images\alignCenter.png" />
     <Resource Include="Common\Images\alignLeft.png" />

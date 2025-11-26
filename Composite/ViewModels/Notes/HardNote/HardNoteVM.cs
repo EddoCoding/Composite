@@ -7,7 +7,6 @@ using Composite.Services;
 using Composite.Services.TabService;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 
@@ -18,6 +17,11 @@ namespace Composite.ViewModels.Notes.HardNote
         readonly ITabService _tabService;
         readonly IHardNoteService _hardNoteService;
         readonly IMessenger _messenger;
+
+        //Для DragDrop в корзину
+        [ObservableProperty] bool isDragging;
+        public MyDragHandler DragHandler { get; }
+        [ObservableProperty] bool _isTrashPopupOpen;
 
         public override string ItemType => "HardNote";
         public ObservableCollection<CompositeBaseVM> Composites { get; set; }
@@ -31,6 +35,8 @@ namespace Composite.ViewModels.Notes.HardNote
             Id = Guid.NewGuid();
             Composites = new();
             DateCreate = DateTime.Now;
+
+            DragHandler = new MyDragHandler(isDragging => IsDragging = isDragging);
 
             messenger.Register<RefMessage>(this, (r, m) =>
             {

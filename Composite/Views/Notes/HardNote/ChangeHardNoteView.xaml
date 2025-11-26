@@ -17,6 +17,8 @@
         <converter:BoolToVisibilityConverter x:Key="BoolToVis"/>
         <converter:EditingAndHoverToVisibilityConverter x:Key="EditingAndHoverToVisibilityConverter"/>
 
+        <helper:DeleteHandler x:Key="DeleteHandler"/>
+        
         <Style x:Key="PasswordTextBox" TargetType="TextBox">
             <Setter Property="FontSize" Value="17"/>
             <Setter Property="SelectionBrush" Value="LightGray"/>
@@ -369,6 +371,19 @@
             </Setter>
         </Style>
 
+        <ToolTip x:Key="ToolTipDragDrop" x:Shared="False" BorderBrush="Gray" Background="White">
+            <StackPanel>
+                <TextBlock>
+            <Run Text="Click" FontWeight="Bold" Foreground="Gray" FontSize="12"/>
+            <Run Text="to open menu" FontSize="11"/>
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center">
+            <Run Text="Drag" FontWeight="Bold" Foreground="Gray" FontSize="12"/>
+            <Run Text="to move" FontSize="11"/>
+                </TextBlock>
+            </StackPanel>
+        </ToolTip>
+
         <DataTemplate DataType="{x:Type viewModel:TextCompositeVM}">
             <Grid MaxWidth="1400" Background="Transparent">
                 <Grid.ColumnDefinitions>
@@ -383,7 +398,7 @@
                          property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Top"/>
 
                 <Button x:Name="DragButton" Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/actions.png" Height="18" Width="18" VerticalAlignment="Top"
-                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6" Margin="0,2,0,0"
+                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6" Margin="0,2,0,0" ToolTip="{StaticResource ToolTipDragDrop}"
                         Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                         CommandParameter="{Binding}"/>
@@ -610,7 +625,7 @@
                          property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Top"/>
 
                 <Button x:Name="DragButton" Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/actions.png" Height="18" Width="18" VerticalAlignment="Top"
-                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6" Margin="0,4,0,0"
+                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6" Margin="0,4,0,0" ToolTip="{StaticResource ToolTipDragDrop}"
                         Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                         CommandParameter="{Binding}"/>
@@ -684,7 +699,7 @@
                          property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Top"/>
 
                 <Button x:Name="DragButton" Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/actions.png" Height="18" Width="18" VerticalAlignment="Top"
-                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6"
+                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6" ToolTip="{StaticResource ToolTipDragDrop}"
                         Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                         CommandParameter="{Binding}"/>
@@ -777,7 +792,7 @@
                          property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Top"/>
 
                 <Button x:Name="DragButton" Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/actions.png" Height="18" Width="18" VerticalAlignment="Top"
-                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6"
+                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6" ToolTip="{StaticResource ToolTipDragDrop}"
                         Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                         CommandParameter="{Binding}"/>
@@ -908,7 +923,7 @@
                          property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Top"/>
 
                 <Button x:Name="DragButton" Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/actions.png" Height="18" Width="18" VerticalAlignment="Top"
-                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6" Margin="0,6,0,0"
+                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6" Margin="0,6,0,0" ToolTip="{StaticResource ToolTipDragDrop}"
                         Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                         CommandParameter="{Binding}"/>
@@ -982,7 +997,7 @@
                              property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Top"/>
 
                     <Button x:Name="DragButton" Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/actions.png" Height="18" Width="18" VerticalAlignment="Top"
-                            RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6"
+                            RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6" ToolTip="{StaticResource ToolTipDragDrop}"
                             Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
                             Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                             CommandParameter="{Binding}"/>
@@ -1077,7 +1092,7 @@
                          property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Top"/>
 
                 <Button x:Name="DragButton" Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/actions.png" Height="18" Width="18" VerticalAlignment="Top"
-                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6" Margin="0,9,0,0"
+                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6" Margin="0,9,0,0" ToolTip="{StaticResource ToolTipDragDrop}"
                         Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                         CommandParameter="{Binding}"/>
@@ -1441,7 +1456,7 @@
                          property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Top"/>
 
                 <Button x:Name="DragButton" Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/actions.png" Height="18" Width="18" VerticalAlignment="Top"
-                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6" Margin="0,11,0,0"
+                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6" Margin="0,11,0,0" ToolTip="{StaticResource ToolTipDragDrop}"
                         Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                         CommandParameter="{Binding}"/>
@@ -1536,7 +1551,7 @@
                          property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Top"/>
 
                 <Button x:Name="DragButton" Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/actions.png" Height="18" Width="18" VerticalAlignment="Top"
-                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6" Margin="0,6,0,0"
+                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6" Margin="0,6,0,0" ToolTip="{StaticResource ToolTipDragDrop}"
                         Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                         CommandParameter="{Binding}"/>
@@ -1620,7 +1635,7 @@
                          property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Top"/>
 
                 <Button x:Name="DragButton" Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/actions.png" Height="18" Width="18" VerticalAlignment="Top"
-                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6" Margin="0,6,0,0"
+                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6" Margin="0,6,0,0" ToolTip="{StaticResource ToolTipDragDrop}"
                         Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                         CommandParameter="{Binding}"/>
@@ -1704,7 +1719,7 @@
                          property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Top"/>
 
                 <Button x:Name="DragButton" Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/actions.png" Height="18" Width="18" VerticalAlignment="Top"
-                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6" Margin="0,5,0,0"
+                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6" Margin="0,5,0,0" ToolTip="{StaticResource ToolTipDragDrop}"
                         Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                         CommandParameter="{Binding}"/>
@@ -1779,7 +1794,7 @@
                          property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Top"/>
 
                 <Button x:Name="DragButton" Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/actions.png" Height="18" Width="18" VerticalAlignment="Top"
-                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6" Margin="0,9,0,0"
+                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6" Margin="0,9,0,0" ToolTip="{StaticResource ToolTipDragDrop}"
                         Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                         CommandParameter="{Binding}"/>
@@ -1893,7 +1908,7 @@
                          property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Top"/>
 
                 <Button x:Name="DragButton" Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/actions.png" Height="18" Width="18" VerticalAlignment="Top"
-                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6" Margin="0,1,0,0"
+                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6" Margin="0,1,0,0" ToolTip="{StaticResource ToolTipDragDrop}"
                         Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                         CommandParameter="{Binding}"/>
@@ -2221,6 +2236,11 @@
                     Margin="3" RenderOptions.BitmapScalingMode="Fant" TextOptions.TextFormattingMode="Display"
                     Command="{Binding ActionCommand}" Click="PositionPopup"/>
         </DataTemplate>
+        <DataTemplate x:Key="MoveTo">
+            <Border BorderThickness="1" BorderBrush="Black" CornerRadius="4">
+                <TextBlock Text="Move to" Margin="5,3"/>
+            </Border>
+        </DataTemplate>
 
     </UserControl.Resources>
     <UserControl.InputBindings>
@@ -2240,8 +2260,11 @@
                  property:PlaceHolder.PlaceHolder="Headline" property:PlaceHolder.ShowAlways="True" PreviewKeyDown="TitleTextBox_PreviewKeyDown"/>
 
         <ListView Grid.Row="1" x:Name="listComposite" ItemsSource="{Binding HardNoteVM.Composites}" BorderThickness="0" HorizontalContentAlignment="Stretch"
-                  Focusable="False" Cursor="IBeam" ScrollViewer.CanContentScroll="False" Padding="0,0,0,15" Background="WhiteSmoke"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
+                  Focusable="False" Cursor="IBeam" ScrollViewer.CanContentScroll="False" Padding="0,0,0,0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                  dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" 
+                  dd:DragDrop.DragHandler="{Binding HardNoteVM.DragHandler}"
+                  dd:DragDrop.DropHandler="{Binding HardNoteVM.DragHandler}"
+                  dd:DragDrop.EffectMoveAdornerTemplate="{StaticResource MoveTo}"
                   PreviewKeyDown="ListView_PreviewKeyDown" MouseDown="listComposite_MouseDown" PreviewMouseWheel="listComposite_PreviewMouseWheel">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
@@ -2256,11 +2279,6 @@
                     </Style.Setters>
                 </Style>
             </ListView.ItemContainerStyle>
-
-            <dd:DragDrop.DragHandler>
-                <helper:MyDragHandler/>
-            </dd:DragDrop.DragHandler>
-
         </ListView>
 
         <Grid Grid.Row="2" Margin="-5,0,0,0">
