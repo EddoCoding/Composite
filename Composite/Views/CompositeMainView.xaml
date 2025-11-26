@@ -3,10 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Composite.Views" mc:Ignorable="d" 
+             xmlns:local="clr-namespace:Composite.Views" mc:Ignorable="d"
+             xmlns:helper="clr-namespace:Composite.Common.Helpers"
+             xmlns:dd="urn:gong-wpf-dragdrop"
              d:DesignHeight="450" d:DesignWidth="800" FontFamily="Trebuchet MS"
              KeyboardNavigation.TabNavigation="None">
     <UserControl.Resources>
+
+        <helper:MyDragHandler x:Key="MyDragHandler"/>
+
         <Style x:Key="ButtonTab" TargetType="Button">
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
@@ -60,10 +65,21 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <DataTemplate x:Key="MoveTo">
+            <Border BorderThickness="1" BorderBrush="Black" CornerRadius="4">
+                <TextBlock Text="Move to" Margin="5,3"/>
+            </Border>
+        </DataTemplate>
     </UserControl.Resources>
 
     <TabControl Grid.Row="0" Background="WhiteSmoke" Margin="5,0,0,10" BorderThickness="0" ItemContainerStyle="{StaticResource CustomTabItem}"
-            ItemsSource="{Binding TabService.Tabs}" SelectedItem="{Binding TabService.SelectedTab}">
+            ItemsSource="{Binding TabService.Tabs}" SelectedItem="{Binding TabService.SelectedTab}"
+            dd:DragDrop.IsDragSource="True" 
+            dd:DragDrop.IsDropTarget="True" 
+            dd:DragDrop.DragHandler="{Binding DragHandler}"
+            dd:DragDrop.DropHandler="{Binding DragHandler}"
+            dd:DragDrop.EffectMoveAdornerTemplate="{StaticResource MoveTo}">
         <TabControl.ContentTemplate>
             <DataTemplate>
                 <ContentPresenter Content="{Binding ContentTab}"/>

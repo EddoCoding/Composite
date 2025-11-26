@@ -21,7 +21,6 @@ namespace Composite.ViewModels.Notes.HardNote
         //Для DragDrop в корзину
         [ObservableProperty] bool isDragging;
         public MyDragHandler DragHandler { get; }
-        [ObservableProperty] bool _isTrashPopupOpen;
 
         public override string ItemType => "HardNote";
         public ObservableCollection<CompositeBaseVM> Composites { get; set; }

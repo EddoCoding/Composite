@@ -17,8 +17,6 @@
         <converter:BoolToVisibilityConverter x:Key="BoolToVis"/>
         <converter:EditingAndHoverToVisibilityConverter x:Key="EditingAndHoverToVisibilityConverter"/>
 
-        <helper:DeleteHandler x:Key="DeleteHandler"/>
-        
         <Style x:Key="PasswordTextBox" TargetType="TextBox">
             <Setter Property="FontSize" Value="17"/>
             <Setter Property="SelectionBrush" Value="LightGray"/>

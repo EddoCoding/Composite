@@ -16,13 +16,21 @@ namespace Composite.Common.Helpers
 
         public bool CanStartDrag(IDragInfo dragInfo)
         {
-            var src = Mouse.DirectlyOver as DependencyObject;
+            DependencyObject src = Mouse.DirectlyOver as DependencyObject;
+
             var btn = FindParent<Button>(src);
-            return btn?.Name == "DragButton";
+            if (btn?.Name == "DragButton") return true;
+
+            var tab = FindParent<TabItem>(src);
+            if (tab != null) return true;
+
+            return false;
         }
         public void StartDrag(IDragInfo dragInfo)
         {
-            dragInfo.Data = dragInfo?.SourceItem;
+            if (dragInfo.SourceItem is TabItem tab) dragInfo.Data = tab.DataContext;
+            else dragInfo.Data = dragInfo.SourceItem;
+
             dragInfo.Effects = DragDropEffects.Move;
             _setDraggingState?.Invoke(true);
         }
