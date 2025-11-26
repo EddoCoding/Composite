@@ -589,10 +589,10 @@
                                     </helper:ParametersCompositeString>
                                 </Button.CommandParameter>
                             </Button>
-                            <Button Style="{StaticResource SnippetButton}" Content="Marker" Tag="/Common/Images/marker.png" property:ButtonHelper.AdditionalText="/marker"
+                            <Button Style="{StaticResource SnippetButton}" Content="Marker" Tag="/Common/Images/marker.png" property:ButtonHelper.AdditionalText="/mkr"
                                     Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
                                 <Button.CommandParameter>
-                                    <helper:ParametersCompositeString Value="/marker">
+                                    <helper:ParametersCompositeString Value="/mkr">
                                         <helper:ParametersCompositeString.CompositeBaseVM>
                                             <Binding/>
                                         </helper:ParametersCompositeString.CompositeBaseVM>

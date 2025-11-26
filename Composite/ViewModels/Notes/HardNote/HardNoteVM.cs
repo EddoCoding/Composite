@@ -282,7 +282,7 @@ namespace Composite.ViewModels.Notes.HardNote
                     var refListComposite = new RefListCompositeVM(_tabService, _hardNoteService, _messenger);
                     Composites.Insert(indexRefList, refListComposite);
                     return refListComposite;
-                case "/marker":
+                case "/mkr":
                 {
                     int indexMarker = Composites.IndexOf(compositeBaseVM);
                     DeleteComposite(compositeBaseVM);
