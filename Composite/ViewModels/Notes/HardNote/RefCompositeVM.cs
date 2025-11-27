@@ -76,7 +76,6 @@ namespace Composite.ViewModels.Notes.HardNote
                 IsRefPopup = false;
                 IsNotesPopup = false;
                 Notes.Clear();
-                Notes = null;
             }
             base.Dispose(disposing);
         }

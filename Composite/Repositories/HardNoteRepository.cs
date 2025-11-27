@@ -148,6 +148,8 @@ namespace Composite.Repositories
 
             var textComposites = LoadTextComposites(connection, compositeIds);
             var taskComposites = LoadTaskComposites(connection, compositeIds);
+            var taskListComposites = LoadTaskListComposites(connection, compositeIds);
+            var subTaskComposites = LoadSubTaskComposites(connection, compositeIds);
             var refComposites = LoadRefComposites(connection, compositeIds);
             var refListComposites = LoadRefListComposites(connection, compositeIds);
             var quoteComposites = LoadQuoteComposites(connection, compositeIds);
@@ -163,6 +165,8 @@ namespace Composite.Repositories
             var allComposites = new List<CompositeBase>();
             allComposites.AddRange(textComposites);
             allComposites.AddRange(taskComposites);
+            allComposites.AddRange(taskListComposites);
+            allComposites.AddRange(subTaskComposites);
             allComposites.AddRange(refComposites);
             allComposites.AddRange(refListComposites);
             allComposites.AddRange(quoteComposites);
@@ -192,23 +196,17 @@ namespace Composite.Repositories
         }
         List<CompositeBase> BuildTree(List<CompositeBase> allComposites)
         {
-            if (!allComposites.Any())
-                return new List<CompositeBase>();
+            if (!allComposites.Any()) return new List<CompositeBase>();
 
-            var lookup = allComposites.ToLookup(c =>
-                string.IsNullOrEmpty(c.ParentId) ? null : c.ParentId);
+            var lookup = allComposites.ToLookup(c => string.IsNullOrEmpty(c.ParentId) ? null : c.ParentId);
 
             foreach (var composite in allComposites)
             {
                 var childKey = string.IsNullOrEmpty(composite.Id) ? null : composite.Id;
-                composite.Children = lookup[childKey]
-                    .OrderBy(c => c.OrderIndex)
-                    .ToList();
+                composite.Children = lookup[childKey].OrderBy(c => c.OrderIndex).ToList();
             }
 
-            return lookup[null]
-                .OrderBy(c => c.OrderIndex)
-                .ToList();
+            return lookup[null].OrderBy(c => c.OrderIndex).ToList();
         }
 
         List<TextComposite> LoadTextComposites(IDbConnection connection, List<string> ids)
@@ -224,6 +222,13 @@ namespace Composite.Repositories
 
             var query = "Select * From TaskComposites Where Id IN @Ids";
             return connection.Query<TaskComposite>(query, new { Ids = ids }).ToList();
+        }
+        List<SubTaskComposite> LoadSubTaskComposites(IDbConnection connection, List<string> ids)
+        {
+            if (!ids.Any()) return new List<SubTaskComposite>();
+        
+            var query = "Select * From SubTaskComposites Where Id IN @Ids";
+            return connection.Query<SubTaskComposite>(query, new { Ids = ids }).ToList();
         }
         List<RefComposite> LoadRefComposites(IDbConnection connection, List<string> ids)
         {
@@ -303,6 +308,13 @@ namespace Composite.Repositories
             var query = "Select * From ReferencesComposites Where Id IN @Ids";
             return connection.Query<RefListComposite>(query, new { Ids = ids }).ToList();
         }
+        List<TaskListComposite> LoadTaskListComposites(IDbConnection connection, List<string> ids)
+        {
+            if (!ids.Any()) return new List<TaskListComposite>();
+
+            var query = "Select * From TasksComposites Where Id IN @Ids";
+            return connection.Query<TaskListComposite>(query, new { Ids = ids }).ToList();
+        }
 
         async Task DeleteExistingComposites(IDbConnection connection, IDbTransaction transaction, string hardNoteId)
         {
@@ -310,6 +322,7 @@ namespace Composite.Repositories
             {
                 "TextComposites",
                 "TaskComposites",
+                "SubTaskComposites",
                 "ReferenceComposites",
                 "QuoteComposites",
                 "NumericComposites",
@@ -321,7 +334,8 @@ namespace Composite.Repositories
                 "DocumentComposites",
                 "CodeComposites",
 
-                "ReferencesComposites"
+                "ReferencesComposites",
+                "TasksComposites"
             };
 
             foreach (var table in tptTables)
@@ -345,6 +359,12 @@ namespace Composite.Repositories
                     ((TaskComposite)x).Id,
                     ((TaskComposite)x).Completed,
                     ((TaskComposite)x).Text
+                }),
+                [typeof(SubTaskComposite)] = ("Insert Into SubTaskComposites(Id, Text, Completed) Values (@Id, @Text, @Completed)", x => new
+                {
+                    ((SubTaskComposite)x).Id,
+                    ((SubTaskComposite)x).Text,
+                    ((SubTaskComposite)x).Completed
                 }),
                 [typeof(RefComposite)] = ("Insert Into ReferenceComposites(Id, Text, ValueRef) Values (@Id, @Text, @ValueRef)", x => new
                 {
@@ -412,6 +432,10 @@ namespace Composite.Repositories
                 {
                     ((RefListComposite)x).Id
                 }),
+                [typeof(TaskListComposite)] = ("Insert Into TasksComposites(Id, Text, Status, Completed) Values (@Id, @Text, @Status, @Completed)", x => new
+                {
+                    ((TaskListComposite)x).Id, ((TaskListComposite)x).Text, ((TaskListComposite)x).Status, ((TaskListComposite)x).Completed
+                })
             };
 
             const string baseSql = "Insert Into CompositeBase(Id, HardNoteId, ParentId, CompositeType, Tag, Comment, OrderIndex) Values(@Id, @HardNoteId, @ParentId, @CompositeType, @Tag, @Comment, @OrderIndex)";

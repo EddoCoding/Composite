@@ -193,6 +193,30 @@ namespace Composite.Common.Factories
 
                     compositesVM.Add(newRefListCompositeVM);
                 }
+                else if (compositeVM is TaskListCompositeVM taskListCompositeVM)
+                {
+                    var newTaskListCompositeVM = new TaskListCompositeVM()
+                    {
+                        Id = taskListCompositeVM.Id,
+                        Tag = taskListCompositeVM.Tag,
+                        Comment = taskListCompositeVM.Comment,
+                        Text = taskListCompositeVM.Text,
+                        Status = taskListCompositeVM.Status,
+                        IsCompleted = taskListCompositeVM.IsCompleted
+                    };
+
+                    foreach (var subTaskVM in taskListCompositeVM.SubTasks)
+                    {
+                        newTaskListCompositeVM.SubTasks.Add(new SubTaskCompositeVM(taskListCompositeVM.CalculatingPercentTask)
+                        {
+                            Id = subTaskVM.Id,
+                            Text = subTaskVM.Text,
+                            IsCompleted = subTaskVM.IsCompleted
+                        });
+                    }
+
+                    compositesVM.Add(newTaskListCompositeVM);
+                }
             }
 
             return new HardNoteVM(tabService, hardNoteService, messenger)

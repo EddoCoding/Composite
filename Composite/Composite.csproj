@@ -14,6 +14,7 @@
     <None Remove="Common\Images\addCategory.png" />
     <None Remove="Common\Images\addIndentation.png" />
     <None Remove="Common\Images\addRef.png" />
+    <None Remove="Common\Images\addSubTask.png" />
     <None Remove="Common\Images\alignCenter.png" />
     <None Remove="Common\Images\alignJustify.png" />
     <None Remove="Common\Images\alignLeft.png" />
@@ -61,12 +62,14 @@
     <None Remove="Common\Images\sort.png" />
     <None Remove="Common\Images\strikethrough.png" />
     <None Remove="Common\Images\task.png" />
+    <None Remove="Common\Images\tasks.png" />
     <None Remove="Common\Images\text.png" />
     <None Remove="Common\Images\threeDots.png" />
     <None Remove="Common\Images\underlining.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Common\Images\addSubTask.png" />
     <Resource Include="Common\Images\composite.png" />
     <Resource Include="Common\Images\actions.png" />
     <Resource Include="Common\Images\add.png" />
@@ -142,6 +145,7 @@
     <Resource Include="Common\Images\sort.png" />
     <Resource Include="Common\Images\strikethrough.png" />
     <Resource Include="Common\Images\task.png" />
+    <Resource Include="Common\Images\tasks.png" />
     <Resource Include="Common\Images\text.png" />
     <Resource Include="Common\Images\threeDots.png" />
     <Resource Include="Common\Images\underlining.png" />

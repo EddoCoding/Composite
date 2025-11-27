@@ -269,6 +269,38 @@ namespace Composite.Common.Mappers
 
                 return refListComposite;
             }
+            if (compositeBaseVM is TaskListCompositeVM taskListCompositeVM)
+            {
+                var taskListComposite = new TaskListComposite()
+                {
+                    Id = taskListCompositeVM.Id.ToString(),
+                    Tag = taskListCompositeVM.Tag,
+                    Comment = taskListCompositeVM.Comment,
+                    Text = taskListCompositeVM.Text,
+                    Status = taskListCompositeVM.Status,
+                    Completed = taskListCompositeVM.IsCompleted ? 1 : 0,
+                    HardNoteId = id.ToString(),
+                    Children = new List<CompositeBase>()
+                };
+
+                foreach (var subTaskVM in taskListCompositeVM.SubTasks)
+                {
+                    var subTaskComposite = new SubTaskComposite()
+                    {
+                        Id = subTaskVM.Id.ToString(),
+                        Tag = subTaskVM.Tag,
+                        Comment = subTaskVM.Comment,
+                        Text = subTaskVM.Text,
+                        Completed = subTaskVM.IsCompleted ? 1 : 0,
+                        HardNoteId = id.ToString(),
+                        ParentId = taskListComposite.Id
+                    };
+
+                    taskListComposite.Children.Add(subTaskComposite);
+                }
+
+                return taskListComposite;
+            }
 
             return null;
         }
@@ -448,6 +480,38 @@ namespace Composite.Common.Mappers
 
                 return refListComposite;
             }
+            if (compositeBaseVM is TaskListCompositeVM taskListCompositeVM)
+            {
+                var taskListComposite = new TaskListComposite()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Tag = taskListCompositeVM.Tag,
+                    Comment = taskListCompositeVM.Comment,
+                    Text = taskListCompositeVM.Text,
+                    Status = taskListCompositeVM.Status,
+                    Completed = taskListCompositeVM.IsCompleted ? 1 : 0,
+                    HardNoteId = id.ToString(),
+                    Children = new List<CompositeBase>()
+                };
+
+                foreach (var subTaskVM in taskListCompositeVM.SubTasks)
+                {
+                    var subTaskComposite = new SubTaskComposite()
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Tag = subTaskVM.Tag,
+                        Comment = subTaskVM.Comment,
+                        Text = subTaskVM.Text,
+                        Completed = subTaskVM.IsCompleted ? 1 : 0,
+                        HardNoteId = id.ToString(),
+                        ParentId = taskListComposite.Id
+                    };
+
+                    taskListComposite.Children.Add(subTaskComposite);
+                }
+
+                return taskListComposite;
+            }
 
             return null;
         }
@@ -602,6 +666,32 @@ namespace Composite.Common.Mappers
                     }
 
                     return refListVM;
+                case TaskListComposite taskListComposite:
+                    var taskListVM = new TaskListCompositeVM()
+                    {
+                        Id = Guid.Parse(taskListComposite.Id),
+                        Tag = taskListComposite.Tag,
+                        Comment = taskListComposite.Comment,
+                        Text = taskListComposite.Text,
+                        Status = taskListComposite.Status,
+                        IsCompleted = taskListComposite.Completed == 1
+                    };
+
+                    foreach (var child in taskListComposite.Children.OfType<SubTaskComposite>().OrderBy(c => c.OrderIndex))
+                    {
+                        var subTaskVM = new SubTaskCompositeVM(taskListVM.CalculatingPercentTask)
+                        {
+                            Id = Guid.Parse(child.Id),
+                            Tag = child.Tag,
+                            Comment = child.Comment,
+                            Text = child.Text,
+                            IsCompleted = child.Completed == 1
+                        };
+
+                        taskListVM.SubTasks.Add(subTaskVM);
+                    }
+
+                    return taskListVM;
 
                 default:
                     return null;

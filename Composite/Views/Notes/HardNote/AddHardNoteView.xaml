@@ -559,6 +559,16 @@
                                     </helper:ParametersCompositeString>
                                 </Button.CommandParameter>
                             </Button>
+                            <Button Style="{StaticResource SnippetButton}" Content="TaskList" Tag="/Common/Images/tasks.png" property:ButtonHelper.AdditionalText="/tasks"
+                                    Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
+                                <Button.CommandParameter>
+                                    <helper:ParametersCompositeString Value="/tasks">
+                                        <helper:ParametersCompositeString.CompositeBaseVM>
+                                            <Binding/>
+                                        </helper:ParametersCompositeString.CompositeBaseVM>
+                                    </helper:ParametersCompositeString>
+                                </Button.CommandParameter>
+                            </Button>
                             <Button Style="{StaticResource SnippetButton}" Content="Image" Tag="/Common/Images/image.png" property:ButtonHelper.AdditionalText="/img"
                                     Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
                                 <Button.CommandParameter>
@@ -1007,6 +1017,129 @@
 
             </Grid>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:SubTaskCompositeVM}">
+            <Grid Margin="65,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Style="{StaticResource ImageButton}" Content="/Common/Images/deleteCategory.png" Height="18" Width="18" Cursor="Hand" Tag="#E6E6E6"
+                        RenderOptions.BitmapScalingMode="Fant" Command="{Binding DataContext.DeleteSubTaskCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+
+                <CheckBox Grid.Column="1" Style="{StaticResource CheckBoxTask}" IsChecked="{Binding IsCompleted}" Command="{Binding TaskCompletedCommand}"/>
+
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:TaskListCompositeVM}">
+            <Grid MaxWidth="1400" Background="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="18"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox Grid.Column="0" Style="{StaticResource Text}" Text="{Binding Tag}" Margin="5,5,5,0" Width="100" TextWrapping="NoWrap" Foreground="Gray"
+                         property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Top"/>
+
+                <Button x:Name="DragButton" Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/actions.png" Height="18" Width="18" VerticalAlignment="Top"
+                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6" Margin="0,6,0,0" ToolTip="{StaticResource ToolTipDragDrop}"
+                        Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                        CommandParameter="{Binding}"/>
+
+                <Grid Grid.Column="2" Background="Transparent" Margin="7,0,0,5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Style="{StaticResource ImageButton}" Content="/Common/Images/addSubTask.png" Height="20" Width="20" VerticalAlignment="Top" Margin="2,5,0,0" 
+                                RenderOptions.BitmapScalingMode="Fant" Tag="#E6E6E6" Cursor="Hand" Command="{Binding AddSubTaskCommand}"/>
+
+                        <TextBlock Grid.Column="1" Text="{Binding Status}" FontSize="16" VerticalAlignment="Top" Margin="10,6,0,0"/>
+
+                        <CheckBox Grid.Column="2" Style="{StaticResource CheckBoxTask}" IsChecked="{Binding IsCompleted}" Command="{Binding ExecuteAllSubTaskCommand}"/>
+
+                    </Grid>
+
+                    <ListView Grid.Row="1" ItemsSource="{Binding SubTasks}" BorderThickness="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListViewItem">
+                                            <ContentPresenter/>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
+
+                </Grid>
+
+                <Button Grid.Column="3" Content="X" Cursor="Hand" VerticalAlignment="Top" Margin="10,5,0,0" FontSize="15"
+                        Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Command="{Binding DataContext.HardNoteVM.DeleteCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
+                        CommandParameter="{Binding}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <ContentPresenter/>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Foreground" Value="Red"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Grid Grid.Column="4" Margin="5,5,5,0" VerticalAlignment="Top">
+
+                    <TextBox Style="{StaticResource Text}" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" Foreground="Gray" FontSize="12"
+                             Width="150" VerticalAlignment="Center" Visibility="{Binding IsEditing, Converter={StaticResource BoolToVis}}"
+                             property:PlaceHolder.PlaceHolder="Enter comment" property:PlaceHolder.ShowAlways="True">
+                        <i:Interaction.Behaviors>
+                            <helper:FocusTextBoxBehavior/>
+                        </i:Interaction.Behaviors>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="LostFocus">
+                                <i:InvokeCommandAction Command="{Binding DataContext.HardNoteVM.StopEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </TextBox>
+
+                    <Button Style="{StaticResource ImageButton}" Content="/Common/Images/comment.png" Height="18" Width="18" RenderOptions.BitmapScalingMode="Fant" 
+                            VerticalAlignment="Top" Cursor="Hand" Tag="#E6E6E6"
+                            Command="{Binding DataContext.HardNoteVM.StartEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
+                        <Button.Visibility>
+                            <MultiBinding Converter="{StaticResource EditingAndHoverToVisibilityConverter}">
+                                <Binding Path="IsEditing"/>
+                                <Binding Path="IsMouseOver" RelativeSource="{RelativeSource AncestorType=ListViewItem}"/>
+                            </MultiBinding>
+                        </Button.Visibility>
+                    </Button>
+
+                </Grid>
+
+            </Grid>
+        </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:ImageCompositeVM}">
             <Border MaxWidth="1400" BorderThickness="1" BorderBrush="Transparent" Margin="0,5">
                 <Grid Background="Transparent">
@@ -1314,7 +1447,7 @@
 
                 <Button x:Name="RefButton" Grid.Column="0" Style="{StaticResource ImageButton}" Content="/Common/Images/ref.png" Tag="#E6E6E6" Height="17" Width="17" Margin="5,9,5,0"
                         Cursor="Hand" FontSize="14" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top" Command="{Binding OpenRefPopupCommand}"
-                        Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}}"/>
 
                 <Button Grid.Column="1" Margin="0,5,0,5" Cursor="Hand" HorizontalAlignment="Left" MinWidth="100" MaxWidth="300" VerticalAlignment="Top"
                         Command="{Binding CheckValuRefCommand}" CommandParameter="{Binding}">
@@ -1490,7 +1623,7 @@
                         Margin="8,9,8,0" Cursor="Hand" RenderOptions.BitmapScalingMode="Fant" Tag="#E6E6E6"
                         Command="{Binding AddRefCompositeCommand}"/>
 
-                <ListView Grid.Column="3" ItemsSource="{Binding References}" BorderThickness="0" Background="Transparent" VerticalAlignment="Top"
+                <ListView Grid.Column="3" ItemsSource="{Binding References}" BorderThickness="0" Background="Transparent" VerticalAlignment="Top" Margin="0,2,0,0"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>

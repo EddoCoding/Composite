@@ -12,6 +12,7 @@
                 <ResourceDictionary Source="Common/Styles/TextBoxStyles.xaml"/>
                 <ResourceDictionary Source="Common/Styles/ComboBoxStyles.xaml"/>
                 <ResourceDictionary Source="Common/Styles/DatePickerCalendarStyle.xaml"/>
+                <ResourceDictionary Source="Common/Styles/ExpanderStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
         </ResourceDictionary>

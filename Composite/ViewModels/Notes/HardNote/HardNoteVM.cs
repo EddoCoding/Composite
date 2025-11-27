@@ -180,6 +180,25 @@ namespace Composite.ViewModels.Notes.HardNote
                     return textCompositeVM;
                 }
             }
+            if (current is TaskListCompositeVM taskListComposite)
+            {
+                if (taskListComposite.Text != string.Empty)
+                {
+                    var taskListCompositeVM = new TaskListCompositeVM();
+                    int index = Composites.IndexOf(taskListComposite);
+                    Composites.Insert(index + 1, taskListCompositeVM);
+                    UpdateNumericSequence(index + 1);
+                    return taskListCompositeVM;
+                }
+                else
+                {
+                    var textCompositeVM = new TextCompositeVM();
+                    int index = Composites.IndexOf(taskListComposite);
+                    DeleteComposite(current);
+                    Composites.Insert(index, textCompositeVM);
+                    return textCompositeVM;
+                }
+            }
 
             return null;
         }
@@ -247,6 +266,14 @@ namespace Composite.ViewModels.Notes.HardNote
                     Composites.Insert(indexTask, taskComposite);
                     return taskComposite;
                 }
+                case "/tasks":
+                    {
+                        int indexTaskList = Composites.IndexOf(compositeBaseVM);
+                        DeleteComposite(compositeBaseVM);
+                        var taskListComposite = new TaskListCompositeVM();
+                        Composites.Insert(indexTaskList, taskListComposite);
+                        return taskListComposite;
+                    }
                 case "/img":
                 {
                     OpenFileDialog openFileDialog = new OpenFileDialog()

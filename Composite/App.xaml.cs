@@ -105,6 +105,8 @@ namespace Composite
                 connection.Execute("Create Table If Not Exists MarkerComposites(Id Text Primary Key, Text Text, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)");
                 connection.Execute("Create Table If Not Exists NumericComposites(Id Text Primary Key, Number Integer, Text Text, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)");
                 connection.Execute("Create Table If Not Exists TaskComposites(Id Text Primary Key, Completed Integer, Text Text, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)");
+                connection.Execute("Create Table If Not Exists TasksComposites(Id Text Primary Key, Text Text, Completed Integer, Status Text, Foreign Key(Id) References CompositeBase(Id) On Delete Cascade)");
+                connection.Execute("Create Table If Not Exists SubTaskComposites(Id Text Primary Key, Text Text, Completed Integer, Foreign Key(Id) References CompositeBase(Id) On Delete Cascade)");
                 connection.Execute("Create Table If Not Exists LineComposites(Id Text Primary Key, LineSize Integer, LineColor Text, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)");
                 connection.Execute("Create Table If Not Exists DocumentComposites(Id Text Primary Key, Text Text, Data Blob, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)");
                 connection.Execute("Create Table If Not Exists ReferenceComposites(Id Text Primary Key, Text Text, ValueRef Text, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)");
@@ -115,6 +117,7 @@ namespace Composite
                 connection.Execute("Create Table If Not Exists Songs(Id Text Primary Key, Title Text, Data Blob)");
                 connection.Execute("Create Table if Not Exists Categories(NameCategory Text Primary Key)");
                 connection.Execute("Insert Or Ignore Into Categories(NameCategory) Values(@NameCategory)", new { NameCategory = "Uncategorized" });
+
             }
         }
     }
