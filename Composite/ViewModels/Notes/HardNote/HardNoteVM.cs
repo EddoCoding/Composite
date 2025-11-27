@@ -407,10 +407,20 @@ namespace Composite.ViewModels.Notes.HardNote
             var index = Composites.IndexOf(composite);
 
             string? text = null;
+            bool completed = false;
             if (composite is TextCompositeVM textComposite) text = textComposite.Text;
             else if (composite is HeaderCompositeVM headerComposite) text = headerComposite.Text;
             else if (composite is QuoteCompositeVM quoteComposite) text = quoteComposite.Text;
-            else if (composite is TaskCompositeVM taskComposite) text = taskComposite.Text;
+            else if (composite is TaskCompositeVM taskComposite)
+            {
+                text = taskComposite.Text;
+                completed = taskComposite.IsCompleted;
+            }
+            else if (composite is TaskListCompositeVM taskListCompositeVM)
+            {
+                text = taskListCompositeVM.Text;
+                completed = taskListCompositeVM.IsCompleted;
+            }
             else if (composite is MarkerCompositeVM markerComposite) text = markerComposite.Text;
             else if (composite is NumericCompositeVM numericComposite) text = numericComposite.Text;
 
@@ -434,7 +444,10 @@ namespace Composite.ViewModels.Notes.HardNote
                     newComposite = new QuoteCompositeVM() { Text = text };
                     break;
                 case "Task":
-                    newComposite = new TaskCompositeVM() { Text = text };
+                    newComposite = new TaskCompositeVM() { Text = text, IsCompleted = completed };
+                    break;
+                case "TaskList":
+                    newComposite = new TaskListCompositeVM() { Text = text, IsCompleted = completed };
                     break;
                 case "Marker":
                     newComposite = new MarkerCompositeVM() { Text = text };
@@ -547,6 +560,7 @@ namespace Composite.ViewModels.Notes.HardNote
                 composite is HeaderCompositeVM || 
                 composite is QuoteCompositeVM || 
                 composite is TaskCompositeVM ||
+                composite is TaskListCompositeVM ||
                 composite is MarkerCompositeVM||
                 composite is NumericCompositeVM) AddMethodOpenPopupType(composite);
 
@@ -596,6 +610,7 @@ namespace Composite.ViewModels.Notes.HardNote
                 ContextMenuTypes.Add(new CommandContextMenu("Header3", "/Common/Images/header3.png", new RelayCommand(() => { ChangeTypeComposite(composite, "Header3"); })));
                 ContextMenuTypes.Add(new CommandContextMenu("Quote", "/Common/Images/quote.png", new RelayCommand(() => { ChangeTypeComposite(composite, "Quote"); })));
                 ContextMenuTypes.Add(new CommandContextMenu("Task", "/Common/Images/task.png", new RelayCommand(() => { ChangeTypeComposite(composite, "Task"); })));
+                ContextMenuTypes.Add(new CommandContextMenu("TaskList", "/Common/Images/tasks.png", new RelayCommand(() => { ChangeTypeComposite(composite, "TaskList"); })));
                 ContextMenuTypes.Add(new CommandContextMenu("Marker", "/Common/Images/marker.png", new RelayCommand(() => { ChangeTypeComposite(composite, "Marker"); })));
                 ContextMenuTypes.Add(new CommandContextMenu("Numeric", "/Common/Images/numeric.png", new RelayCommand(() => { ChangeTypeComposite(composite, "Numeric"); })));
 

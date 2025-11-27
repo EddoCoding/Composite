@@ -1063,10 +1063,10 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Button Style="{StaticResource ImageButton}" Content="/Common/Images/addSubTask.png" Height="20" Width="20" VerticalAlignment="Top" Margin="2,5,0,0" 
+                        <Button Grid.Column="0" Style="{StaticResource ImageButton}" Content="/Common/Images/addSubTask.png" Height="18" Width="18" VerticalAlignment="Top" Margin="2,7,0,0" 
                                 RenderOptions.BitmapScalingMode="Fant" Tag="#E6E6E6" Cursor="Hand" Command="{Binding AddSubTaskCommand}"/>
 
-                        <TextBlock Grid.Column="1" Text="{Binding Status}" FontSize="16" VerticalAlignment="Top" Margin="10,6,0,0"/>
+                        <TextBlock Grid.Column="1" Text="{Binding Status}" FontSize="16" VerticalAlignment="Top" Margin="5,6,0,0"/>
 
                         <CheckBox Grid.Column="2" Style="{StaticResource CheckBoxTask}" IsChecked="{Binding IsCompleted}" Command="{Binding ExecuteAllSubTaskCommand}"/>
 
