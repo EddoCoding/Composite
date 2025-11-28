@@ -4,7 +4,7 @@ using Composite.Services;
 
 namespace Composite.ViewModels.Notes.HardNote
 {
-    public partial class DocCompositeVM : CompositeBaseVM, IDisposable
+    public partial class DocumentCompositeVM : CompositeBaseVM, IDisposable
     {
         readonly IHardNoteService _hardNoteService;
 
@@ -12,7 +12,7 @@ namespace Composite.ViewModels.Notes.HardNote
         public byte[] Data { get; set; } = Array.Empty<byte>();
         [ObservableProperty] bool _isLoading;
 
-        public DocCompositeVM(IHardNoteService hardNoteService)
+        public DocumentCompositeVM(IHardNoteService hardNoteService)
         {
             _hardNoteService = hardNoteService;
 
@@ -23,7 +23,7 @@ namespace Composite.ViewModels.Notes.HardNote
         {
             var tuple = _hardNoteService.SelectDocument();
 
-            if(tuple.Item1 != string.Empty)
+            if (tuple.Item1 != string.Empty)
             {
                 Text = tuple.Item1;
                 Data = tuple.Item2;
@@ -35,13 +35,22 @@ namespace Composite.ViewModels.Notes.HardNote
 
             IsLoading = true;
 
-            var result = await _hardNoteService.OpenDocument(Text, Data);
-            if (result != null) Data = result;
-
-            IsLoading = false;
+            _ = OpenAndWaitForChanges(() => IsLoading = false);
+        }
+        async Task OpenAndWaitForChanges(Action onCompleted)
+        {
+            try
+            {
+                var result = await _hardNoteService.OpenDocument(Text, Data);
+                if (result != null) Data = result;
+            }
+            finally
+            {
+                onCompleted?.Invoke();
+            }
         }
 
-        public override object Clone() => new DocCompositeVM(_hardNoteService) { Id = Guid.NewGuid(), Tag = Tag, Comment = Comment, Text = Text, Data = Data };
+        public override object Clone() => new DocumentCompositeVM(_hardNoteService) { Id = Guid.NewGuid(), Tag = Tag, Comment = Comment, Text = Text, Data = Data };
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -50,6 +59,7 @@ namespace Composite.ViewModels.Notes.HardNote
                 Comment = string.Empty;
                 Text = string.Empty;
                 Data = Array.Empty<byte>();
+                IsLoading = false;
             }
             base.Dispose(disposing);
         }

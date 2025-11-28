@@ -201,7 +201,6 @@ namespace Composite.Services
         {
             string extension = Path.GetExtension(text);
             string tempFilePath = Path.Combine(Path.GetTempPath(), $"temp_{Guid.NewGuid()}{extension}");
-
             try
             {
                 await File.WriteAllBytesAsync(tempFilePath, data);
@@ -212,35 +211,87 @@ namespace Composite.Services
                     UseShellExecute = true
                 };
 
-                using var process = Process.Start(processInfo);
-                if (process != null) await process.WaitForExitAsync();
+                Process.Start(processInfo);
 
-                return await File.ReadAllBytesAsync(tempFilePath);
+                byte[]? result = await WaitForFileAccessAndRead(tempFilePath);
+
+                return result;
             }
-            catch(FileNotFoundException)
+            catch (Exception ex)
             {
-                MessageBox.Show("Ошибка доступа.");
-                return null;
-            }
-            catch (UnauthorizedAccessException)
-            {
-                MessageBox.Show("У Вас нет прав на чтение этого документа.");
-                return null;
-            }
-            catch (Win32Exception)
-            {
-                MessageBox.Show("Ошибка открытия документа.");
-                return null;
-            }
-            catch (InvalidOperationException)
-            {
-                MessageBox.Show("Ошибка открытия документа.");
+                Debug.WriteLine($"Ошибка при работе с документом: {ex.Message}");
                 return null;
             }
             finally
             {
-                if (File.Exists(tempFilePath)) File.Delete(tempFilePath);
+                TryDeleteFileWithRetry(tempFilePath);
             }
+        }
+        async Task<byte[]?> WaitForFileAccessAndRead(string filePath)
+        {
+            await Task.Delay(2000);
+
+            DateTime lastModified = File.GetLastWriteTime(filePath);
+            bool fileWasModified = false;
+            int attemptsWithoutLock = 0;
+
+            while (true)
+            {
+                await Task.Delay(1000);
+
+                try
+                {
+                    DateTime currentModified = File.GetLastWriteTime(filePath);
+
+                    if (currentModified > lastModified)
+                    {
+                        fileWasModified = true;
+                        lastModified = currentModified;
+                        attemptsWithoutLock = 0;
+                    }
+
+                    using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.None))
+                    {
+                        attemptsWithoutLock++;
+                        if (attemptsWithoutLock >= 2)
+                        {
+                            byte[] buffer = new byte[stream.Length];
+                            await stream.ReadAsync(buffer, 0, (int)stream.Length);
+                            return buffer;
+                        }
+                    }
+                }
+                catch (IOException)
+                {
+                    attemptsWithoutLock = 0;
+                    continue;
+                }
+            }
+        }
+        private async void TryDeleteFileWithRetry(string filePath)
+        {
+            await Task.Run(async () =>
+            {
+                for (int i = 0; i < 15; i++)
+                {
+                    try
+                    {
+                        if (File.Exists(filePath))
+                        {
+                            File.Delete(filePath);
+                            break;
+                        }
+                    }
+                    catch (IOException)
+                    {
+                        await Task.Delay(1000);
+                    }
+                    catch
+                    {
+                        break;
+                    }
+                }
+            });
         }
 
         public async Task<HardNoteVM> DuplicateHardNoteVM(NoteBaseVM hardNoteVM)

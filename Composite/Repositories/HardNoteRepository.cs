@@ -160,6 +160,8 @@ namespace Composite.Repositories
             var headerComposites = LoadHeaderComposites(connection, compositeIds);
             var formattedTextComposites = LoadFormattedTextComposites(connection, compositeIds);
             var docComposites = LoadDocComposites(connection, compositeIds);
+            var docListComposites = LoadDocListComposites(connection, compositeIds);
+            var documentMiniComposites = LoadDocumentComposites(connection, compositeIds);
             var codeComposites = LoadCodeComposites(connection, compositeIds);
 
             var allComposites = new List<CompositeBase>();
@@ -177,6 +179,8 @@ namespace Composite.Repositories
             allComposites.AddRange(headerComposites);
             allComposites.AddRange(formattedTextComposites);
             allComposites.AddRange(docComposites);
+            allComposites.AddRange(docListComposites);
+            allComposites.AddRange(documentMiniComposites);
             allComposites.AddRange(codeComposites);
 
             foreach (var composite in allComposites)
@@ -293,6 +297,13 @@ namespace Composite.Repositories
             var query = "Select * From DocumentComposites Where Id IN @Ids";
             return connection.Query<DocComposite>(query, new { Ids = ids }).ToList();
         }
+        List<DocumentComposite> LoadDocumentComposites(IDbConnection connection, List<string> ids)
+        {
+            if (!ids.Any()) return new List<DocumentComposite>();
+
+            var query = "Select * From DocumentMiniComposites Where Id IN @Ids";
+            return connection.Query<DocumentComposite>(query, new { Ids = ids }).ToList();
+        }
         List<CodeComposite> LoadCodeComposites(IDbConnection connection, List<string> ids)
         {
             if (!ids.Any()) return new List<CodeComposite>();
@@ -315,6 +326,13 @@ namespace Composite.Repositories
             var query = "Select * From TasksComposites Where Id IN @Ids";
             return connection.Query<TaskListComposite>(query, new { Ids = ids }).ToList();
         }
+        List<DocListComposite> LoadDocListComposites(IDbConnection connection, List<string> ids)
+        {
+            if (!ids.Any()) return new List<DocListComposite>();
+
+            var query = "Select * From DocumentsComposites Where Id IN @Ids";
+            return connection.Query<DocListComposite>(query, new { Ids = ids }).ToList();
+        }
 
         async Task DeleteExistingComposites(IDbConnection connection, IDbTransaction transaction, string hardNoteId)
         {
@@ -332,10 +350,12 @@ namespace Composite.Repositories
                 "HeaderComposites",
                 "FormattedTextComposites",
                 "DocumentComposites",
+                "DocumentMiniComposites",
                 "CodeComposites",
 
                 "ReferencesComposites",
-                "TasksComposites"
+                "TasksComposites",
+                "DocumentsComposites"
             };
 
             foreach (var table in tptTables)
@@ -422,6 +442,12 @@ namespace Composite.Repositories
                     ((DocComposite)x).Text,
                     ((DocComposite)x).Data
                 }),
+                [typeof(DocumentComposite)] = ("Insert Into DocumentMiniComposites(Id, Text, Data) Values (@Id, @Text, @Data)", x => new
+                {
+                    ((DocumentComposite)x).Id,
+                    ((DocumentComposite)x).Text,
+                    ((DocumentComposite)x).Data
+                }),
                 [typeof(CodeComposite)] = ("Insert Into CodeComposites(Id, Text) Values (@Id, @Text)", x => new
                 {
                     ((CodeComposite)x).Id,
@@ -435,6 +461,11 @@ namespace Composite.Repositories
                 [typeof(TaskListComposite)] = ("Insert Into TasksComposites(Id, Text, Status, Completed) Values (@Id, @Text, @Status, @Completed)", x => new
                 {
                     ((TaskListComposite)x).Id, ((TaskListComposite)x).Text, ((TaskListComposite)x).Status, ((TaskListComposite)x).Completed
+                }),
+                [typeof(DocListComposite)] = ("Insert Into DocumentsComposites(Id, Text) Values (@Id, @Text)", x => new
+                {
+                    ((DocListComposite)x).Id,
+                    ((DocListComposite)x).Text
                 })
             };
 

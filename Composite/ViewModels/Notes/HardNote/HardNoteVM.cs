@@ -199,6 +199,13 @@ namespace Composite.ViewModels.Notes.HardNote
                     return textCompositeVM;
                 }
             }
+            if (current is DocListCompositeVM docListComposite)
+            {
+                int index = Composites.IndexOf(docListComposite);
+                var newTextComposite = new TextCompositeVM { Text = string.Empty };
+                Composites.Insert(index + 1, newTextComposite);
+                return newTextComposite;
+            }
 
             return null;
         }
@@ -340,6 +347,12 @@ namespace Composite.ViewModels.Notes.HardNote
                     var docComposite = new DocCompositeVM(_hardNoteService);
                     Composites.Insert(indexDoc, docComposite);
                     return docComposite;
+                case "/docs":
+                    int indexDocList = Composites.IndexOf(compositeBaseVM);
+                    DeleteComposite(compositeBaseVM);
+                    var doclistComposite = new DocListCompositeVM(_hardNoteService);
+                    Composites.Insert(indexDocList, doclistComposite);
+                    return doclistComposite;
                 case "/ft":
                     int indexFT = Composites.IndexOf(compositeBaseVM);
                     DeleteComposite(compositeBaseVM);

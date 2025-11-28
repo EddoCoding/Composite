@@ -33,6 +33,7 @@
     <None Remove="Common\Images\composite.png" />
     <None Remove="Common\Images\deleteCategory.png" />
     <None Remove="Common\Images\doc.png" />
+    <None Remove="Common\Images\docs.png" />
     <None Remove="Common\Images\duplicate.png" />
     <None Remove="Common\Images\ft.png" />
     <None Remove="Common\Images\hardNoteImage.png" />
@@ -95,6 +96,7 @@
     <Resource Include="Common\Images\comment.png" />
     <Resource Include="Common\Images\deleteCategory.png" />
     <Resource Include="Common\Images\doc.png" />
+    <Resource Include="Common\Images\docs.png" />
     <Resource Include="Common\Images\duplicate.png" />
     <Resource Include="Common\Images\ft.png" />
     <Resource Include="Common\Images\hardNoteImage.png" />

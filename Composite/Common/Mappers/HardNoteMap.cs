@@ -301,6 +301,36 @@ namespace Composite.Common.Mappers
 
                 return taskListComposite;
             }
+            if (compositeBaseVM is DocListCompositeVM docListCompositeVM)
+            {
+                var docListComposite = new DocListComposite()
+                {
+                    Id = docListCompositeVM.Id.ToString(),
+                    Tag = docListCompositeVM.Tag,
+                    Comment = docListCompositeVM.Comment,
+                    Text = docListCompositeVM.Text,
+                    HardNoteId = id.ToString(),
+                    Children = new List<CompositeBase>()
+                };
+
+                foreach (var documentVM in docListCompositeVM.Documents)
+                {
+                    var documentComposite = new DocumentComposite()
+                    {
+                        Id = documentVM.Id.ToString(),
+                        Tag = documentVM.Tag,
+                        Comment = documentVM.Comment,
+                        Text = documentVM.Text,
+                        Data = documentVM.Data,
+                        HardNoteId = id.ToString(),
+                        ParentId = docListComposite.Id
+                    };
+
+                    docListComposite.Children.Add(documentComposite);
+                }
+
+                return docListComposite;
+            }
 
             return null;
         }
@@ -512,6 +542,36 @@ namespace Composite.Common.Mappers
 
                 return taskListComposite;
             }
+            if (compositeBaseVM is DocListCompositeVM docListCompositeVM)
+            {
+                var docListComposite = new DocListComposite()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Tag = docListCompositeVM.Tag,
+                    Comment = docListCompositeVM.Comment,
+                    Text = docListCompositeVM.Text,
+                    HardNoteId = id.ToString(),
+                    Children = new List<CompositeBase>()
+                };
+
+                foreach (var documentVM in docListCompositeVM.Documents)
+                {
+                    var documentComposite = new DocumentComposite()
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Tag = documentVM.Tag,
+                        Comment = documentVM.Comment,
+                        Text = documentVM.Text,
+                        Data = documentVM.Data,
+                        HardNoteId = id.ToString(),
+                        ParentId = docListComposite.Id
+                    };
+
+                    docListComposite.Children.Add(documentComposite);
+                }
+
+                return docListComposite;
+            }
 
             return null;
         }
@@ -692,6 +752,30 @@ namespace Composite.Common.Mappers
                     }
 
                     return taskListVM;
+                case DocListComposite docListComposite:
+                    var docListVM = new DocListCompositeVM(hardNoteService)
+                    {
+                        Id = Guid.Parse(docListComposite.Id),
+                        Tag = docListComposite.Tag,
+                        Comment = docListComposite.Comment,
+                        Text = docListComposite.Text
+                    };
+
+                    foreach (var child in docListComposite.Children.OfType<DocumentComposite>().OrderBy(c => c.OrderIndex))
+                    {
+                        var documentVM = new DocumentCompositeVM(hardNoteService)
+                        {
+                            Id = Guid.Parse(child.Id),
+                            Tag = child.Tag,
+                            Comment = child.Comment,
+                            Text = child.Text,
+                            Data = child.Data
+                        };
+
+                        docListVM.Documents.Add(documentVM);
+                    }
+
+                    return docListVM;
 
                 default:
                     return null;

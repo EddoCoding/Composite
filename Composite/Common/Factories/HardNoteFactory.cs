@@ -217,6 +217,28 @@ namespace Composite.Common.Factories
 
                     compositesVM.Add(newTaskListCompositeVM);
                 }
+                else if (compositeVM is DocListCompositeVM docListCompositeVM)
+                {
+                    var newDocListCompositeVM = new DocListCompositeVM(hardNoteService)
+                    {
+                        Id = docListCompositeVM.Id,
+                        Tag = docListCompositeVM.Tag,
+                        Comment = docListCompositeVM.Comment,
+                        Text = docListCompositeVM.Text
+                    };
+
+                    foreach (var documentVM in docListCompositeVM.Documents)
+                    {
+                        newDocListCompositeVM.Documents.Add(new DocumentCompositeVM(hardNoteService)
+                        {
+                            Id = documentVM.Id,
+                            Text = documentVM.Text,
+                            Data = documentVM.Data
+                        });
+                    }
+
+                    compositesVM.Add(newDocListCompositeVM);
+                }
             }
 
             return new HardNoteVM(tabService, hardNoteService, messenger)
