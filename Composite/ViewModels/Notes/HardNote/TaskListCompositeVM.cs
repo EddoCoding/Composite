@@ -84,7 +84,18 @@ namespace Composite.ViewModels.Notes.HardNote
                 IsCompleted = IsCompleted
             };
 
-            foreach (var subTask in SubTasks) taskList.SubTasks.Add((SubTaskCompositeVM)subTask.Clone());
+            foreach (var subTask in SubTasks)
+            {
+                var clonedSubTask = new SubTaskCompositeVM(taskList.CalculatingPercentTask)
+                {
+                    Id = Guid.NewGuid(),
+                    Tag = subTask.Tag,
+                    Comment = subTask.Comment,
+                    Text = subTask.Text,
+                    IsCompleted = subTask.IsCompleted
+                };
+                taskList.SubTasks.Add(clonedSubTask);
+            }
 
             return taskList;
         }

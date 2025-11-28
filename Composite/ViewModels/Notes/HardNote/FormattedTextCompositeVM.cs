@@ -114,13 +114,13 @@ namespace Composite.ViewModels.Notes.HardNote
                 Tag = string.Empty;
                 Comment = string.Empty;
                 Document.Blocks.Clear();
-                _xamlPackageContent = Array.Empty<byte>();
+                _xamlPackageContent.AsSpan().Clear();
                 IsModified = false;
                 Fonts.Clear();
-                FontSizes = Array.Empty<double>();
-                Borders = Array.Empty<double>();
-                Corners = Array.Empty<double>();
-                Colors = Array.Empty<string>();
+                FontSizes.AsSpan().Clear();
+                Borders.AsSpan().Clear();
+                Corners.AsSpan().Clear();
+                Array.Fill(Colors, string.Empty);
             }
             base.Dispose(disposing);
         }

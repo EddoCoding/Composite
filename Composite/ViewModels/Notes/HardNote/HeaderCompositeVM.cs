@@ -10,9 +10,7 @@ namespace Composite.ViewModels.Notes.HardNote
 
         public HeaderCompositeVM() => Id = Guid.NewGuid();
 
-        public override object Clone() => new HeaderCompositeVM() { Id = Guid.NewGuid(), Tag = Tag, Comment = Comment, Text = Text, 
-            FontWeight = FontWeight, FontSize = FontSize };
-
+        public override object Clone() => new HeaderCompositeVM() { Id = Guid.NewGuid(), Tag = Tag, Comment = Comment, Text = Text, FontWeight = FontWeight, FontSize = FontSize };
         protected override void Dispose(bool disposing)
         {
             if (disposing)

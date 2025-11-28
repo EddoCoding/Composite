@@ -211,7 +211,8 @@ namespace Composite.Common.Factories
                         {
                             Id = subTaskVM.Id,
                             Text = subTaskVM.Text,
-                            IsCompleted = subTaskVM.IsCompleted
+                            IsCompleted = subTaskVM.IsCompleted,
+                            callBack = newTaskListCompositeVM.CalculatingPercentTask
                         });
                     }
 

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.VisualBasic;
 using System.Reflection;
 using System.Windows.Media;
 
@@ -22,16 +23,17 @@ namespace Composite.ViewModels.Notes.HardNote
             Colors = colorProperties.Select(prop => prop.Name).OrderBy(name => name).ToArray();
         }
 
-        public override object Clone() => new LineCompositeVM() { Id = Guid.NewGuid(), Tag = Tag, Comment = Comment, 
-            SelectedLineColor = SelectedLineColor, SelectedLineSize = SelectedLineSize };
+        public override object Clone() => new LineCompositeVM() { Id = Guid.NewGuid(), Tag = Tag, Comment = Comment, SelectedLineColor = SelectedLineColor, SelectedLineSize = SelectedLineSize };
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
                 Tag = string.Empty;
                 Comment = string.Empty;
-                Lines = Array.Empty<double>();
-                Colors = Array.Empty<string>();
+                SelectedLineSize = 0.0;
+                SelectedLineColor = string.Empty;
+                Lines.AsSpan().Clear();
+                Array.Fill(Colors, string.Empty);
             }
             base.Dispose(disposing);
         }

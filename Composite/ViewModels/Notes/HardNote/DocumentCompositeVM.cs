@@ -58,7 +58,7 @@ namespace Composite.ViewModels.Notes.HardNote
                 Tag = string.Empty;
                 Comment = string.Empty;
                 Text = string.Empty;
-                Data = Array.Empty<byte>();
+                Data.AsSpan().Clear();
                 IsLoading = false;
             }
             base.Dispose(disposing);

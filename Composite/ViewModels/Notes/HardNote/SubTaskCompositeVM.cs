@@ -5,7 +5,7 @@ namespace Composite.ViewModels.Notes.HardNote
 {
     public partial class SubTaskCompositeVM : CompositeBaseVM, IDisposable
     {
-        Action callBack;
+        public Action callBack;
 
         [ObservableProperty] string _text = "Подзадача";
         [ObservableProperty] bool _isCompleted;

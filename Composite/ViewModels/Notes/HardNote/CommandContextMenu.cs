@@ -2,7 +2,7 @@
 
 namespace Composite.ViewModels.Notes.HardNote
 {
-    public class CommandContextMenu
+    public class CommandContextMenu : IDisposable
     {
         public string NameCommand { get; set; } = string.Empty;
         public string PathImage { get; set; } = string.Empty;
@@ -13,6 +13,13 @@ namespace Composite.ViewModels.Notes.HardNote
             NameCommand = name;
             PathImage = pathImage;
             ActionCommand = command;
+        }
+
+        public void Dispose()
+        {
+            NameCommand = string.Empty;
+            PathImage = string.Empty;
+            ActionCommand = null;
         }
     }
 }
