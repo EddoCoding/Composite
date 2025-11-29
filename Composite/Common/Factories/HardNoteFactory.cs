@@ -173,7 +173,7 @@ namespace Composite.Common.Factories
                 }
                 else if (compositeVM is SongCompositeVM songCompositeVM)
                 {
-                    var newSongCompositeVM = new SongCompositeVM(hardNoteService)
+                    var newSongCompositeVM = new SongCompositeVM()
                     {
                         Id = songCompositeVM.Id,
                         Tag = songCompositeVM.Tag,
@@ -251,6 +251,28 @@ namespace Composite.Common.Factories
                     }
 
                     compositesVM.Add(newDocListCompositeVM);
+                }
+                else if (compositeVM is SongListCompositeVM songListCompositeVM)
+                {
+                    var newSongListCompositeVM = new SongListCompositeVM()
+                    {
+                        Id = songListCompositeVM.Id,
+                        Tag = songListCompositeVM.Tag,
+                        Comment = songListCompositeVM.Comment,
+                        Text = songListCompositeVM.Text
+                    };
+
+                    foreach (var songVM in songListCompositeVM.Songs)
+                    {
+                        newSongListCompositeVM.Songs.Add(new SongMiniCompositeVM
+                        {
+                            Id = songVM.Id,
+                            Title = songVM.Title,
+                            Data = songVM.Data
+                        });
+                    }
+
+                    compositesVM.Add(newSongListCompositeVM);
                 }
             }
 

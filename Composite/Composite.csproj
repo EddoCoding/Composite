@@ -14,6 +14,7 @@
     <None Remove="Common\Images\addCategory.png" />
     <None Remove="Common\Images\addIndentation.png" />
     <None Remove="Common\Images\addRef.png" />
+    <None Remove="Common\Images\addSong.png" />
     <None Remove="Common\Images\addSubTask.png" />
     <None Remove="Common\Images\alignCenter.png" />
     <None Remove="Common\Images\alignJustify.png" />
@@ -73,6 +74,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Common\Images\addSong.png" />
     <Resource Include="Common\Images\addSubTask.png" />
     <Resource Include="Common\Images\choose.png" />
     <Resource Include="Common\Images\composite.png" />

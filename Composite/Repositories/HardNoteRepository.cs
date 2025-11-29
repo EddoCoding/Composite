@@ -164,6 +164,7 @@ namespace Composite.Repositories
             var documentMiniComposites = LoadDocumentComposites(connection, compositeIds);
             var codeComposites = LoadCodeComposites(connection, compositeIds);
             var songComposites = LoadSongComposites(connection, compositeIds);
+            var songListComposites = LoadSongListComposites(connection, compositeIds);
 
             var allComposites = new List<CompositeBase>();
             allComposites.AddRange(textComposites);
@@ -184,6 +185,7 @@ namespace Composite.Repositories
             allComposites.AddRange(documentMiniComposites);
             allComposites.AddRange(codeComposites);
             allComposites.AddRange(songComposites);
+            allComposites.AddRange(songListComposites);
 
             foreach (var composite in allComposites)
             {
@@ -342,6 +344,13 @@ namespace Composite.Repositories
             var query = "Select * From DocumentsComposites Where Id IN @Ids";
             return connection.Query<DocListComposite>(query, new { Ids = ids }).ToList();
         }
+        List<SongListComposite> LoadSongListComposites(IDbConnection connection, List<string> ids)
+        {
+            if (!ids.Any()) return new List<SongListComposite>();
+
+            var query = "Select * From SongsComposites Where Id IN @Ids";
+            return connection.Query<SongListComposite>(query, new { Ids = ids }).ToList();
+        }
 
         async Task DeleteExistingComposites(IDbConnection connection, IDbTransaction transaction, string hardNoteId)
         {
@@ -365,7 +374,8 @@ namespace Composite.Repositories
 
                 "ReferencesComposites",
                 "TasksComposites",
-                "DocumentsComposites"
+                "DocumentsComposites",
+                "SongsComposites",
             };
 
             foreach (var table in tptTables)
@@ -482,6 +492,11 @@ namespace Composite.Repositories
                 {
                     ((DocListComposite)x).Id,
                     ((DocListComposite)x).Text
+                }),
+                [typeof(SongListComposite)] = ("Insert Into SongsComposites(Id, Text) Values (@Id, @Text)", x => new
+                {
+                    ((SongListComposite)x).Id,
+                    ((SongListComposite)x).Text
                 })
             };
 

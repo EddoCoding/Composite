@@ -343,6 +343,36 @@ namespace Composite.Common.Mappers
 
                 return docListComposite;
             }
+            if (compositeBaseVM is SongListCompositeVM songListCompositeVM)
+            {
+                var songListComposite = new SongListComposite()
+                {
+                    Id = songListCompositeVM.Id.ToString(),
+                    Tag = songListCompositeVM.Tag,
+                    Comment = songListCompositeVM.Comment,
+                    Text = songListCompositeVM.Text,
+                    HardNoteId = id.ToString(),
+                    Children = new List<CompositeBase>()
+                };
+
+                foreach (var songVM in songListCompositeVM.Songs)
+                {
+                    var songComposite = new SongComposite()
+                    {
+                        Id = songVM.Id.ToString(),
+                        Tag = songVM.Tag,
+                        Comment = songVM.Comment,
+                        Title = songVM.Title,
+                        Data = songVM.Data,
+                        HardNoteId = id.ToString(),
+                        ParentId = songListComposite.Id
+                    };
+
+                    songListComposite.Children.Add(songComposite);
+                }
+
+                return songListComposite;
+            }
 
             return null;
         }
@@ -596,6 +626,36 @@ namespace Composite.Common.Mappers
 
                 return docListComposite;
             }
+            if (compositeBaseVM is SongListCompositeVM songListCompositeVM)
+            {
+                var songListComposite = new SongListComposite()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Tag = songListCompositeVM.Tag,
+                    Comment = songListCompositeVM.Comment,
+                    Text = songListCompositeVM.Text,
+                    HardNoteId = id.ToString(),
+                    Children = new List<CompositeBase>()
+                };
+
+                foreach (var songVM in songListCompositeVM.Songs)
+                {
+                    var songComposite = new SongComposite()
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Tag = songVM.Tag,
+                        Comment = songVM.Comment,
+                        Title = songVM.Title,
+                        Data = songVM.Data,
+                        HardNoteId = id.ToString(),
+                        ParentId = songListComposite.Id
+                    };
+
+                    songListComposite.Children.Add(songComposite);
+                }
+
+                return songListComposite;
+            }
 
             return null;
         }
@@ -727,7 +787,7 @@ namespace Composite.Common.Mappers
                         IsModified = false
                     };
                 case SongComposite songComposite:
-                    return new SongCompositeVM(hardNoteService)
+                    return new SongCompositeVM()
                     {
                         Id = Guid.Parse(songComposite.Id),
                         Tag = songComposite.Tag,
@@ -809,6 +869,30 @@ namespace Composite.Common.Mappers
                     }
 
                     return docListVM;
+                case SongListComposite songListComposite:
+                    var songListVM = new SongListCompositeVM()
+                    {
+                        Id = Guid.Parse(songListComposite.Id),
+                        Tag = songListComposite.Tag,
+                        Comment = songListComposite.Comment,
+                        Text = songListComposite.Text
+                    };
+
+                    foreach (var child in songListComposite.Children.OfType<SongComposite>().OrderBy(c => c.OrderIndex))
+                    {
+                        var songVM = new SongMiniCompositeVM()
+                        {
+                            Id = Guid.Parse(child.Id),
+                            Tag = child.Tag,
+                            Comment = child.Comment,
+                            Title = child.Title,
+                            Data = child.Data
+                        };
+
+                        songListVM.Songs.Add(songVM);
+                    }
+
+                    return songListVM;
 
                 default:
                     return null;

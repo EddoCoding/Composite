@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Composite.Services;
 using Microsoft.Win32;
 using NAudio.Wave;
 using System.IO;
@@ -8,7 +7,7 @@ using System.Windows.Threading;
 
 namespace Composite.ViewModels.Notes.HardNote
 {
-    public partial class SongCompositeVM : CompositeBaseVM, IDisposable
+    public partial class SongMiniCompositeVM : CompositeBaseVM, IDisposable
     {
         [ObservableProperty] string _title = string.Empty;
         [ObservableProperty] double _position = 0;
@@ -25,7 +24,7 @@ namespace Composite.ViewModels.Notes.HardNote
         DispatcherTimer _timer;
         bool _isDragging = false;
 
-        public SongCompositeVM()
+        public SongMiniCompositeVM()
         {
             Id = Guid.NewGuid();
 
@@ -185,8 +184,8 @@ namespace Composite.ViewModels.Notes.HardNote
         }
 
 
-        public override object Clone() => new SongCompositeVM() { Id = Guid.NewGuid(), Title = Title, Position = Position, Duration = Duration,
-            IsPlaying = IsPlaying, CurrentTime = CurrentTime, TotalTime = TotalTime, Data = Data };
+        public override object Clone() => new SongMiniCompositeVM() { Id = Guid.NewGuid(), Title = Title, Position = Position, Duration = Duration, IsPlaying = IsPlaying,
+            CurrentTime = CurrentTime, TotalTime = TotalTime, Data = Data };
         protected override void Dispose(bool disposing)
         {
             if (disposing)

@@ -362,9 +362,15 @@ namespace Composite.ViewModels.Notes.HardNote
                 case "/song":
                     int indexSong = Composites.IndexOf(compositeBaseVM);
                     DeleteComposite(compositeBaseVM);
-                    var songComposite = new SongCompositeVM(_hardNoteService);
+                    var songComposite = new SongCompositeVM();
                     Composites.Insert(indexSong, songComposite);
                     return songComposite;
+                case "/songs":
+                    int indexSongList = Composites.IndexOf(compositeBaseVM);
+                    DeleteComposite(compositeBaseVM);
+                    var songListComposite = new SongListCompositeVM();
+                    Composites.Insert(indexSongList, songListComposite);
+                    return songListComposite;
 
                 default: return null;
             }
@@ -649,6 +655,15 @@ namespace Composite.ViewModels.Notes.HardNote
             foreach (var composite in Composites.OfType<SongCompositeVM>())
             {
                 if (composite.IsPlaying) composite.Stop();
+            }
+
+            var songList = Composites.OfType<SongListCompositeVM>();
+            foreach (var songListComposite in songList)
+            {
+                foreach (var song in songListComposite.Songs)
+                {
+                    if (song.IsPlaying) song.Stop();
+                }
             }
         }
 

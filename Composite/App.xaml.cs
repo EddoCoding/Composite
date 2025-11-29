@@ -109,14 +109,15 @@ namespace Composite
                 connection.Execute("Create Table If Not Exists SubTaskComposites(Id Text Primary Key, Text Text, Completed Integer, Foreign Key(Id) References CompositeBase(Id) On Delete Cascade)");
                 connection.Execute("Create Table If Not Exists LineComposites(Id Text Primary Key, LineSize Integer, LineColor Text, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)");
                 connection.Execute("Create Table If Not Exists DocumentComposites(Id Text Primary Key, Text Text, Data Blob, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)");
+                connection.Execute("Create Table If Not Exists DocumentsComposites(Id Text Primary Key, Text Text, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)");              
+                connection.Execute("Create Table If Not Exists DocumentMiniComposites(Id Text Primary Key, Text Text, Data Blob, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)");
                 connection.Execute("Create Table If Not Exists ReferenceComposites(Id Text Primary Key, Text Text, ValueRef Text, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)");
                 connection.Execute("Create Table If Not Exists ReferencesComposites(Id Text Primary Key, Foreign Key(Id) References CompositeBase(Id) On Delete Cascade)");
                 connection.Execute("Create Table If Not Exists ImageComposites(Id Text Primary Key, HorizontalAlignment Text, Data Blob, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)");
                 connection.Execute("Create Table If Not Exists FormattedTextComposites(Id Text Primary Key, BorderSize Integer, CornerRadius Integer, BorderColor Text, BackgroundColor Text, Data Blob, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)");
-                connection.Execute("Create Table If Not Exists SongComposites(Id Text Primary Key, Title Text, Data Blob)");
-                
-                connection.Execute("Create Table If Not Exists DocumentsComposites(Id Text Primary Key, Text Text, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)");              
-                connection.Execute("Create Table If Not Exists DocumentMiniComposites(Id Text Primary Key, Text Text, Data Blob, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)");
+                connection.Execute("Create Table If Not Exists SongComposites(Id Text Primary Key, Title Text, Data Blob, Foreign Key (Id) References CompositeBase(Id) On Delete Cascade)");
+                connection.Execute("Create Table If Not Exists SongsComposites(Id Text Primary Key, Text Text, Foreign Key(Id) References CompositeBase(Id) On Delete Cascade)");
+
 
                 connection.Execute("Create Table If Not Exists Songs(Id Text Primary Key, Title Text, Data Blob)");
                 connection.Execute("Create Table if Not Exists Categories(NameCategory Text Primary Key)");
