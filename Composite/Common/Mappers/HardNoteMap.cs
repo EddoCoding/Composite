@@ -239,6 +239,18 @@ namespace Composite.Common.Mappers
                     HardNoteId = id.ToString()
                 };
             }
+            if (compositeBaseVM is SongCompositeVM songCompositeVM)
+            {
+                return new SongComposite()
+                {
+                    Id = songCompositeVM.Id.ToString(),
+                    Tag = songCompositeVM.Tag,
+                    Comment = songCompositeVM.Comment,
+                    Title = songCompositeVM.Title,
+                    Data = songCompositeVM.Data,
+                    HardNoteId = id.ToString()
+                };
+            }
 
             if (compositeBaseVM is RefListCompositeVM refListCompositeVM)
             {
@@ -480,6 +492,18 @@ namespace Composite.Common.Mappers
                     HardNoteId = id.ToString()
                 };
             }
+            if (compositeBaseVM is SongCompositeVM songCompositeVM)
+            {
+                return new SongComposite()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Tag = songCompositeVM.Tag,
+                    Comment = songCompositeVM.Comment,
+                    Title = songCompositeVM.Title,
+                    Data = songCompositeVM.Data,
+                    HardNoteId = id.ToString()
+                };
+            }
 
             if (compositeBaseVM is RefListCompositeVM refListCompositeVM)
             {
@@ -701,6 +725,15 @@ namespace Composite.Common.Mappers
                         SelectedBgColor = formattedTextComposite.BackgroundColor,
                         XamlPackageContent = formattedTextComposite.Data,
                         IsModified = false
+                    };
+                case SongComposite songComposite:
+                    return new SongCompositeVM()
+                    {
+                        Id = Guid.Parse(songComposite.Id),
+                        Tag = songComposite.Tag,
+                        Comment = songComposite.Comment,
+                        Title = songComposite.Title,
+                        Data = songComposite.Data
                     };
 
                 case RefListComposite refListComposite:

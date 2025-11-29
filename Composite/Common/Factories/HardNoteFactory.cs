@@ -171,6 +171,18 @@ namespace Composite.Common.Factories
 
                     compositesVM.Add(newFTCompositeVM);
                 }
+                else if (compositeVM is SongCompositeVM songCompositeVM)
+                {
+                    var newSongCompositeVM = new SongCompositeVM()
+                    {
+                        Id = songCompositeVM.Id,
+                        Tag = songCompositeVM.Tag,
+                        Comment = songCompositeVM.Comment,
+                        Title = songCompositeVM.Title,
+                        Data = songCompositeVM.Data
+                    };
+                    compositesVM.Add(newSongCompositeVM);
+                }
 
                 else if (compositeVM is RefListCompositeVM refListCompositeVM)
                 {

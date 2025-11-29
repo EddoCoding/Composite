@@ -926,7 +926,8 @@ namespace Composite.Views.Notes.Notes
             while (targetIndex >= 0 && targetIndex < items.Count)
             {
                 var item = items[targetIndex];
-                if (item is not LineCompositeVM && item is not ImageCompositeVM && item is not RefCompositeVM && item is not RefListCompositeVM) return targetIndex;
+                if (item is not LineCompositeVM && item is not ImageCompositeVM && item is not RefCompositeVM && item is not RefListCompositeVM
+                    && item is not SongCompositeVM) return targetIndex;
                 targetIndex += direction;
             }
 
@@ -1019,6 +1020,16 @@ namespace Composite.Views.Notes.Notes
                 if (result != null) return result;
             }
             return null;
+        }
+
+        //Для ползунка песни
+        void Slider_DragStarted(object sender, DragStartedEventArgs e)
+        {
+            if (((FrameworkElement)sender).DataContext is SongCompositeVM vm) vm.StartDragging();
+        }
+        void Slider_DragCompleted(object sender, DragCompletedEventArgs e)
+        {
+            if (((FrameworkElement)sender).DataContext is SongCompositeVM vm) vm.StopDragging();
         }
     }
 }

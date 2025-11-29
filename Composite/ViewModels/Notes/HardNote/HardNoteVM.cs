@@ -359,6 +359,12 @@ namespace Composite.ViewModels.Notes.HardNote
                     var ftComposite = new FormattedTextCompositeVM();
                     Composites.Insert(indexFT, ftComposite);
                     return ftComposite;
+                case "/song":
+                    int indexSong = Composites.IndexOf(compositeBaseVM);
+                    DeleteComposite(compositeBaseVM);
+                    var songComposite = new SongCompositeVM();
+                    Composites.Insert(indexSong, songComposite);
+                    return songComposite;
 
                 default: return null;
             }
@@ -633,8 +639,18 @@ namespace Composite.ViewModels.Notes.HardNote
             })));
         }
 
+        //Для открытия и закрытия комментария
         [RelayCommand] void StartEditing(CompositeBaseVM composite) => composite.IsEditing = true;
         [RelayCommand] void StopEditing(CompositeBaseVM composite) => composite.IsEditing = false;
+
+        //Для песен
+        public void StopAllSongs()
+        {
+            foreach (var composite in Composites.OfType<SongCompositeVM>())
+            {
+                if (composite.IsPlaying) composite.Stop();
+            }
+        }
 
         void RemoveFromComposites(CompositeBaseVM composite)
         {

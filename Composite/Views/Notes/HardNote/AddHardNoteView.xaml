@@ -17,6 +17,7 @@
         <converter:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converter:BoolToVisibilityConverter x:Key="BoolToVis"/>
         <converter:EditingAndHoverToVisibilityConverter x:Key="EditingAndHoverToVisibilityConverter"/>
+        <converter:ProgressWidthConverter x:Key="ProgressWidthConverter"/>
         
         <Style x:Key="PasswordTextBox" TargetType="TextBox">
             <Setter Property="FontSize" Value="17"/>
@@ -643,6 +644,16 @@
                                     Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
                                 <Button.CommandParameter>
                                     <helper:ParametersCompositeString Value="/docs">
+                                        <helper:ParametersCompositeString.CompositeBaseVM>
+                                            <Binding/>
+                                        </helper:ParametersCompositeString.CompositeBaseVM>
+                                    </helper:ParametersCompositeString>
+                                </Button.CommandParameter>
+                            </Button>
+                            <Button Style="{StaticResource SnippetButton}" Content="Song" Tag="/Common/Images/song.png" property:ButtonHelper.AdditionalText="/song"
+                                    Command="{Binding DataContext.HardNoteVM.CreateCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}">
+                                <Button.CommandParameter>
+                                    <helper:ParametersCompositeString Value="/song">
                                         <helper:ParametersCompositeString.CompositeBaseVM>
                                             <Binding/>
                                         </helper:ParametersCompositeString.CompositeBaseVM>
@@ -2586,6 +2597,161 @@
 
             </Grid>
             
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:SongCompositeVM}">
+            <Grid MaxWidth="1400" Background="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="18"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox Grid.Column="0" Style="{StaticResource Text}" Text="{Binding Tag}" Margin="5,7,5,0" Width="100" TextWrapping="NoWrap" Foreground="Gray"
+                         property:PlaceHolder.PlaceHolder="Enter tag" MaxLength="10" VerticalAlignment="Top"/>
+
+                <Button x:Name="DragButton" Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/actions.png" Height="18" Width="18" VerticalAlignment="Top"
+                        RenderOptions.BitmapScalingMode="Fant" SnapsToDevicePixels="True" Cursor="Hand" Tag="#E6E6E6" Margin="0,9,0,0" ToolTip="{StaticResource ToolTipDragDrop}"
+                        Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                        CommandParameter="{Binding}"/>
+
+                <Button Grid.Column="2" Style="{StaticResource ImageButton}" Content="/Common/Images/choose.png" Tag="#E6E6E6" Height="18" Width="18" Margin="10,10,0,0"
+                        Cursor="Hand" FontSize="14" RenderOptions.BitmapScalingMode="Fant" VerticalAlignment="Top"
+                        Command="{Binding SelectSongCommand}"/>
+
+                <Grid Grid.Column="3" Margin="10,7,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!--Название песни-->
+                    <TextBlock Grid.Column="1" Text="{Binding DataContext.Title, RelativeSource={RelativeSource TemplatedParent}}" Foreground="Gray" 
+                             FontSize="14" MaxWidth="500" Margin="0,4,0,0" TextTrimming="CharacterEllipsis"/>
+
+                    <!--Кнопка и Дорожка-->
+                    <Grid Grid.Row="1" Margin="0,5,0,0" Width="300" HorizontalAlignment="Left">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Title}" Value="">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <Button Grid.Column="0" Style="{StaticResource ImageButton}" Content="/Common/Images/playStop.png" Height="20" Width="20" RenderOptions.BitmapScalingMode="Fant"
+                                Cursor="Hand" Margin="-3,0,0,0" Tag="#E6E6E6" Command="{Binding PlayStopSongCommand}"/>
+
+                        <TextBlock Grid.Column="1" Text="{Binding CurrentTime}" Foreground="Gray" FontSize="10" VerticalAlignment="Center" Margin="5,0,5,0"/>
+
+                        <Slider Grid.Column="2" Minimum="0" Maximum="{Binding Duration}" Value="{Binding Position, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                                Thumb.DragStarted="Slider_DragStarted" Thumb.DragCompleted="Slider_DragCompleted">
+                            <Slider.Style>
+                                <Style TargetType="Slider">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Slider">
+                                                <Grid>
+                                                    <Border Background="#E0E0E0" Height="1" HorizontalAlignment="Stretch"/>
+
+                                                    <Border Background="Black" Height="1" HorizontalAlignment="Left">
+                                                        <Border.Width>
+                                                            <MultiBinding Converter="{StaticResource ProgressWidthConverter}">
+                                                                <Binding Path="Value" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                                                <Binding Path="Maximum" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                                                <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=Grid}"/>
+                                                            </MultiBinding>
+                                                        </Border.Width>
+                                                    </Border>
+
+                                                    <Track Name="PART_Track" Cursor="Hand">
+                                                        <Track.Thumb>
+                                                            <Thumb Width="10" Height="10">
+                                                                <Thumb.Template>
+                                                                    <ControlTemplate>
+                                                                        <Ellipse Fill="WhiteSmoke" Stroke="Gray" StrokeThickness="1"/>
+                                                                    </ControlTemplate>
+                                                                </Thumb.Template>
+                                                            </Thumb>
+                                                        </Track.Thumb>
+                                                    </Track>
+                                                </Grid>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Slider.Style>
+                        </Slider>
+
+                        <TextBlock Grid.Column="3" Text="{Binding TotalTime}" Foreground="Gray" FontSize="10" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                    
+                    </Grid>
+                    
+                </Grid>
+
+                <Button Grid.Column="5" Content="X" Cursor="Hand" VerticalAlignment="Top" Margin="10,7,0,0" FontSize="15" HorizontalAlignment="Right"
+                        Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Command="{Binding DataContext.HardNoteVM.DeleteCompositeCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
+                        CommandParameter="{Binding}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <ContentPresenter/>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Foreground" Value="Red"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Grid Grid.Column="6" Margin="5,7,5,0" VerticalAlignment="Top">
+
+                    <TextBox Style="{StaticResource Text}" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" Foreground="Gray" FontSize="12"
+                             Width="150" VerticalAlignment="Center" Visibility="{Binding IsEditing, Converter={StaticResource BoolToVis}}"
+                             property:PlaceHolder.PlaceHolder="Enter comment" property:PlaceHolder.ShowAlways="True">
+                        <i:Interaction.Behaviors>
+                            <helper:FocusTextBoxBehavior/>
+                        </i:Interaction.Behaviors>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="LostFocus">
+                                <i:InvokeCommandAction Command="{Binding DataContext.HardNoteVM.StopEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </TextBox>
+
+                    <Button Style="{StaticResource ImageButton}" Content="/Common/Images/comment.png" Height="18" Width="18" RenderOptions.BitmapScalingMode="Fant" 
+                            VerticalAlignment="Top" Cursor="Hand" Tag="#E6E6E6"
+                            Command="{Binding DataContext.HardNoteVM.StartEditingCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
+                        <Button.Visibility>
+                            <MultiBinding Converter="{StaticResource EditingAndHoverToVisibilityConverter}">
+                                <Binding Path="IsEditing"/>
+                                <Binding Path="IsMouseOver" RelativeSource="{RelativeSource AncestorType=ListViewItem}"/>
+                            </MultiBinding>
+                        </Button.Visibility>
+                    </Button>
+
+                </Grid>
+
+            </Grid>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewModel:CommandContextMenu}">

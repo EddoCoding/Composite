@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 
 namespace Composite.ViewModels.Notes.HardNote
 {
-    public partial class ChangeHardNoteViewModel : ObservableObject
+    public partial class ChangeHardNoteViewModel : ObservableObject, IDisposable
     {
         readonly Guid _id;
         readonly ITabService _tabService;
@@ -118,6 +118,7 @@ namespace Composite.ViewModels.Notes.HardNote
                     _messenger.UnregisterAll(this);
                     SelectedCategory = null;
                     Categories.Clear();
+                    HardNoteVM.StopAllSongs();
                 }
                 _disposed = true;
             }

@@ -163,6 +163,7 @@ namespace Composite.Repositories
             var docListComposites = LoadDocListComposites(connection, compositeIds);
             var documentMiniComposites = LoadDocumentComposites(connection, compositeIds);
             var codeComposites = LoadCodeComposites(connection, compositeIds);
+            var songComposites = LoadSongComposites(connection, compositeIds);
 
             var allComposites = new List<CompositeBase>();
             allComposites.AddRange(textComposites);
@@ -182,6 +183,7 @@ namespace Composite.Repositories
             allComposites.AddRange(docListComposites);
             allComposites.AddRange(documentMiniComposites);
             allComposites.AddRange(codeComposites);
+            allComposites.AddRange(songComposites);
 
             foreach (var composite in allComposites)
             {
@@ -311,6 +313,13 @@ namespace Composite.Repositories
             var query = "Select * From CodeComposites Where Id IN @Ids";
             return connection.Query<CodeComposite>(query, new { Ids = ids }).ToList();
         }
+        List<SongComposite> LoadSongComposites(IDbConnection connection, List<string> ids)
+        {
+            if (!ids.Any()) return new List<SongComposite>();
+
+            var query = "Select * From SongComposites Where Id IN @Ids";
+            return connection.Query<SongComposite>(query, new { Ids = ids }).ToList();
+        }
 
         List<RefListComposite> LoadRefListComposites(IDbConnection connection, List<string> ids)
         {
@@ -352,6 +361,7 @@ namespace Composite.Repositories
                 "DocumentComposites",
                 "DocumentMiniComposites",
                 "CodeComposites",
+                "SongComposites",
 
                 "ReferencesComposites",
                 "TasksComposites",
@@ -452,6 +462,12 @@ namespace Composite.Repositories
                 {
                     ((CodeComposite)x).Id,
                     ((CodeComposite)x).Text
+                }),
+                [typeof(SongComposite)] = ("Insert Into SongComposites(Id, Title, Data) Values (@Id, @Title, @Data)", x => new
+                {
+                    ((SongComposite)x).Id,
+                    ((SongComposite)x).Title,
+                    ((SongComposite)x).Data
                 }),
 
                 [typeof(RefListComposite)] = ("Insert Into ReferencesComposites(Id) Values (@Id)", x => new
