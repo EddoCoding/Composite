@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Composite.Services;
 using Microsoft.Win32;
 using NAudio.Wave;
 using System.IO;
@@ -9,6 +10,8 @@ namespace Composite.ViewModels.Notes.HardNote
 {
     public partial class SongCompositeVM : CompositeBaseVM, IDisposable
     {
+        readonly IHardNoteService _hardNoteService;
+
         [ObservableProperty] string _title = string.Empty;
         [ObservableProperty] double _position = 0;
         [ObservableProperty] double _duration = 0;
@@ -18,14 +21,16 @@ namespace Composite.ViewModels.Notes.HardNote
 
         public byte[] Data { get; set; }
 
-        private WaveOutEvent _waveOut;
-        private Mp3FileReader _mp3Reader;
-        private MemoryStream _memoryStream;
-        private DispatcherTimer _timer;
-        private bool _isDragging = false;
+        WaveOutEvent _waveOut;
+        Mp3FileReader _mp3Reader;
+        MemoryStream _memoryStream;
+        DispatcherTimer _timer;
+        bool _isDragging = false;
 
-        public SongCompositeVM()
+        public SongCompositeVM(IHardNoteService hardNoteService)
         {
+            _hardNoteService = hardNoteService;
+
             Id = Guid.NewGuid();
 
             _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(100) };
@@ -37,7 +42,7 @@ namespace Composite.ViewModels.Notes.HardNote
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
                 Multiselect = false,
-                Filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*",
+                Filter = "MP3 files|*.mp3",
                 Title = "Select song"
             };
 
@@ -184,7 +189,7 @@ namespace Composite.ViewModels.Notes.HardNote
         }
 
 
-        public override object Clone() => new SongCompositeVM() { Id = Guid.NewGuid(), Title = Title, Position = Position, Duration = Duration,
+        public override object Clone() => new SongCompositeVM(_hardNoteService) { Id = Guid.NewGuid(), Title = Title, Position = Position, Duration = Duration,
             IsPlaying = IsPlaying, CurrentTime = CurrentTime, TotalTime = TotalTime, Data = Data };
         protected override void Dispose(bool disposing)
         {

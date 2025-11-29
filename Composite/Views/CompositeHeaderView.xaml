@@ -13,18 +13,18 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="5">
                             <ContentPresenter>
                                 <ContentPresenter.Content>
                                     <Image Height="{Binding Height, RelativeSource={RelativeSource AncestorType=Button}}" 
-                                        Width="{Binding Width, RelativeSource={RelativeSource AncestorType=Button}}"
-                                        Source="{Binding Content, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                                   Width="{Binding Width, RelativeSource={RelativeSource AncestorType=Button}}"
+                                   Source="{Binding Content, RelativeSource={RelativeSource AncestorType=Button}}"/>
                                 </ContentPresenter.Content>
                             </ContentPresenter>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="WhiteSmoke"/>
+                                <Setter TargetName="border" Property="Background" Value="{Binding Tag, RelativeSource={RelativeSource AncestorType=Button}}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -258,11 +258,11 @@
             <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="{Binding Visibility}">
 
                 <Button Content="/Common/Images/back.png" Style="{StaticResource ImageButton}" Height="16" Width="16" RenderOptions.BitmapScalingMode="Fant"
-                        Cursor="Hand" Command="{Binding MediaPlayerService.BackCommand}"/>
+                        Cursor="Hand" Tag="#E6E6E6" Command="{Binding MediaPlayerService.BackCommand}"/>
                 <Button Content="/Common/Images/playStop.png" Style="{StaticResource ImageButton}" Height="26" Width="26" RenderOptions.BitmapScalingMode="Fant"
-                        Cursor="Hand" Command="{Binding MediaPlayerService.PlayCommand}"/>
+                        Cursor="Hand" Tag="#E6E6E6" Command="{Binding MediaPlayerService.PlayCommand}"/>
                 <Button Content="/Common/Images/next.png" Style="{StaticResource ImageButton}" Height="16" Width="16" RenderOptions.BitmapScalingMode="Fant"
-                        Cursor="Hand" Command="{Binding MediaPlayerService.NextCommand}"/>
+                        Cursor="Hand" Tag="#E6E6E6" Command="{Binding MediaPlayerService.NextCommand}"/>
 
                 <StackPanel.Style>
                     <Style TargetType="StackPanel">
@@ -276,7 +276,8 @@
             </StackPanel>
 
             <Button Grid.Column="3" Content="{Binding MediaPlayerService.PathImageRepeat}" Style="{StaticResource ImageButton}" Height="17" Width="17" Margin="5,0,0,0"
-                    RenderOptions.BitmapScalingMode="Fant" Visibility="{Binding Visibility}" Cursor="Hand" Command="{Binding MediaPlayerService.RepeatCommand}"/>
+                    RenderOptions.BitmapScalingMode="Fant" Visibility="{Binding Visibility}" Cursor="Hand" Tag="#E6E6E6"
+                    Command="{Binding MediaPlayerService.RepeatCommand}"/>
 
             <Slider Grid.Column="4" Value="{Binding MediaPlayerService.Volume}" Style="{StaticResource customSlider}" Width="80" Visibility="{Binding Visibility}"/>
 

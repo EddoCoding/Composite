@@ -727,7 +727,7 @@ namespace Composite.Common.Mappers
                         IsModified = false
                     };
                 case SongComposite songComposite:
-                    return new SongCompositeVM()
+                    return new SongCompositeVM(hardNoteService)
                     {
                         Id = Guid.Parse(songComposite.Id),
                         Tag = songComposite.Tag,

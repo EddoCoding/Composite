@@ -42,9 +42,9 @@ namespace Composite.Services
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                Multiselect = true,
-                Filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*",
-                Title = "Select songs"
+                Filter = "MP3 files|*.mp3",
+                Title = "Select songs",
+                Multiselect = true
             };
 
             if (openFileDialog.ShowDialog() != true) return Enumerable.Empty<SongVM>();

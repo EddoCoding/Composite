@@ -362,7 +362,7 @@ namespace Composite.ViewModels.Notes.HardNote
                 case "/song":
                     int indexSong = Composites.IndexOf(compositeBaseVM);
                     DeleteComposite(compositeBaseVM);
-                    var songComposite = new SongCompositeVM();
+                    var songComposite = new SongCompositeVM(_hardNoteService);
                     Composites.Insert(indexSong, songComposite);
                     return songComposite;
 

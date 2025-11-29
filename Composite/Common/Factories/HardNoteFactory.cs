@@ -173,7 +173,7 @@ namespace Composite.Common.Factories
                 }
                 else if (compositeVM is SongCompositeVM songCompositeVM)
                 {
-                    var newSongCompositeVM = new SongCompositeVM()
+                    var newSongCompositeVM = new SongCompositeVM(hardNoteService)
                     {
                         Id = songCompositeVM.Id,
                         Tag = songCompositeVM.Tag,

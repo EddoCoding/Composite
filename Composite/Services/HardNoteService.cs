@@ -268,7 +268,7 @@ namespace Composite.Services
                 }
             }
         }
-        private async void TryDeleteFileWithRetry(string filePath)
+        async void TryDeleteFileWithRetry(string filePath)
         {
             await Task.Run(async () =>
             {
