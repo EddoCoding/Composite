@@ -1,4 +1,5 @@
-﻿using Composite.ViewModels.Notes.HardNote;
+﻿using Composite.Services.Common;
+using Composite.ViewModels.Notes.HardNote;
 using Composite.ViewModels.Notes.Note;
 using System.Windows;
 using System.Windows.Controls;
@@ -1029,11 +1030,11 @@ namespace Composite.Views.Notes
         //Для ползунка песни
         void Slider_DragStarted(object sender, DragStartedEventArgs e)
         {
-            if (((FrameworkElement)sender).DataContext is SongCompositeVM vm) vm.StartDragging();
+            if (((FrameworkElement)sender).DataContext is IDragSlider vm) vm.StartDragging();
         }
         void Slider_DragCompleted(object sender, DragCompletedEventArgs e)
         {
-            if (((FrameworkElement)sender).DataContext is SongCompositeVM vm) vm.StopDragging();
+            if (((FrameworkElement)sender).DataContext is IDragSlider vm) vm.StopDragging();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Composite.Services.Common;
 using Microsoft.Win32;
 using NAudio.Wave;
 using System.IO;
@@ -7,7 +8,7 @@ using System.Windows.Threading;
 
 namespace Composite.ViewModels.Notes.HardNote
 {
-    public partial class SongMiniCompositeVM : CompositeBaseVM, IDisposable
+    public partial class SongMiniCompositeVM : CompositeBaseVM, IDragSlider, IDisposable
     {
         [ObservableProperty] string _title = string.Empty;
         [ObservableProperty] double _position = 0;

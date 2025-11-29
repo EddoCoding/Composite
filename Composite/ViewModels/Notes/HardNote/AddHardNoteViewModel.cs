@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using Composite.Common.Message.Notes;
 using Composite.Common.Message.Notes.Note;
 using Composite.Services;
+using Composite.Services.Common;
 using Composite.Services.TabService;
 using Composite.ViewModels.Notes.HardNote;
 using System.Collections.ObjectModel;
@@ -93,6 +94,7 @@ namespace Composite.ViewModels.Notes.Note
             else PasswordVisible = "Collapsed";
         }
         [RelayCommand] void CloseTab() => _tabService.RemoveTab(this);
+
 
         bool _disposed = false;
         public virtual void Dispose()
