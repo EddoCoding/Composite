@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:svgc="http://sharpvectors.codeplex.com/svgc/">
 
     <Style x:Key="ImageButton" TargetType="Button">
         <Setter Property="Background" Value="Transparent"/>
@@ -67,6 +68,29 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="border" Property="Background" Value="WhiteSmoke"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="SVGImageButton" TargetType="Button">
+        <Setter Property="Background" Value="WhiteSmoke"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="5">
+                        <ContentPresenter>
+                            <ContentPresenter.Content>
+                                <svgc:SvgViewbox Source="{Binding Content, RelativeSource={RelativeSource AncestorType=Button}}"
+                                             Height="{Binding Height, RelativeSource={RelativeSource AncestorType=Button}}" 
+                                             Width="{Binding Width, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                            </ContentPresenter.Content>
+                        </ContentPresenter>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{Binding Path=Tag, RelativeSource={RelativeSource TemplatedParent}}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

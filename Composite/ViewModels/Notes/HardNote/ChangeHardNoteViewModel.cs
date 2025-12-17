@@ -77,7 +77,8 @@ namespace Composite.ViewModels.Notes.HardNote
             messenger.Register<DeleteCategoryNoteMessage>(this, (r, m) =>
             {
                 if (SelectedCategory.NameCategory == m.Category.NameCategory) SelectedCategory = Categories?.FirstOrDefault();
-                Categories.Remove(m.Category);
+                var category = Categories.FirstOrDefault(x => x.NameCategory == m.Category.NameCategory);
+                if(category != null) Categories.Remove(category);
             });
         }
 

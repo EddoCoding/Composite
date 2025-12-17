@@ -482,50 +482,60 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        
-        <ListView Grid.Row="1" ItemsSource="{Binding Notes}" BorderThickness="0" Margin="5,10,5,0" Background="WhiteSmoke"
+
+        <Button Grid.Row="0" Style="{StaticResource SVGImageButton}" Content="/Common/Images/widthMenu.svg" Height="17" Width="17" 
+                Tag="#E6E6E6" Cursor="Hand" HorizontalAlignment="Left" Margin="10,0" Command="{Binding ChangeWidthMenuCommand}" />
+
+        <Grid Grid.Row="1" Width="{Binding WidthMenu}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <ListView Grid.Row="1" ItemsSource="{Binding Notes}" BorderThickness="0" Margin="5,10,5,0" Background="WhiteSmoke"
                   ItemContainerStyle="{StaticResource NoteListViewItem}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
 
-        <Button Grid.Row="2" Content="/Common/Images/scale.png" Height="30" Margin="5,0,5,5" VerticalAlignment="Bottom" 
+            <Button Grid.Row="2" Content="/Common/Images/scale.png" Height="30" Margin="5,0,5,5" VerticalAlignment="Bottom" 
                 Style="{StaticResource ImageModule}" ToolTip="Scale" Command="{Binding ScaleCommand}" Tag="Orange"/>
 
-        <Button Grid.Row="3" Content="/Common/Images/collapse.png" Height="30" Margin="5,0,5,5" VerticalAlignment="Bottom" 
+            <Button Grid.Row="3" Content="/Common/Images/collapse.png" Height="30" Margin="5,0,5,5" VerticalAlignment="Bottom" 
                 Style="{StaticResource ImageModule}" ToolTip="Collapse" Command="{Binding CollapseCommand}" Tag="Tomato"/>
 
-        <Button Grid.Row="4" Content="/Common/Images/close.png" Height="30" Margin="5,0,5,5" VerticalAlignment="Bottom"
+            <Button Grid.Row="4" Content="/Common/Images/close.png" Height="30" Margin="5,0,5,5" VerticalAlignment="Bottom"
                 Style="{StaticResource ImageModule}" ToolTip="Exit" Command="{Binding CloseCommand}" Tag="Red"/>
 
-        <Popup IsOpen="{Binding IsPasswordPopupOpen}" AllowsTransparency="True" Placement="Center" StaysOpen="False">
-            <Border CornerRadius="8" Background="WhiteSmoke" BorderBrush="Gray" BorderThickness="1">
-                <Grid Margin="5">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+            <Popup IsOpen="{Binding IsPasswordPopupOpen}" AllowsTransparency="True" Placement="Center" StaysOpen="False">
+                <Border CornerRadius="8" Background="WhiteSmoke" BorderBrush="Gray" BorderThickness="1">
+                    <Grid Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Text="Password" Margin="5,5,0,0"/>
-                    <Grid Grid.Row="1" Width="200">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" Text="Password" Margin="5,5,0,0"/>
+                        <Grid Grid.Row="1" Width="200">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
 
-                        <TextBox Grid.Column="0" Style="{StaticResource CustomTextBoxSearch}" Text="{Binding Password}" Margin="5,0,5,3" MaxLength="13"
+                            <TextBox Grid.Column="0" Style="{StaticResource CustomTextBoxSearch}" Text="{Binding Password}" Margin="5,0,5,3" MaxLength="13"
                                  Background="WhiteSmoke" property:PlaceHolder.PlaceHolder="Enter password" property:PlaceHolder.ShowAlways="True"/>
-                        <Button Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/input.png" Height="20" Width="20" Margin="5,0,3,0"
+                            <Button Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/input.png" Height="20" Width="20" Margin="5,0,3,0"
                                 Tag="WhiteSmoke" Cursor="Hand" RenderOptions.BitmapScalingMode="Fant"
                                 Command="{Binding CheckPasswordCommand}"/>
 
+                        </Grid>
                     </Grid>
-                </Grid>
-            </Border>
-        </Popup>
+                </Border>
+            </Popup>
+
+        </Grid>
 
     </Grid>
-
 
 </UserControl>

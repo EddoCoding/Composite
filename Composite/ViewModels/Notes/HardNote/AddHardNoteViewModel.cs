@@ -4,7 +4,6 @@ using CommunityToolkit.Mvvm.Messaging;
 using Composite.Common.Message.Notes;
 using Composite.Common.Message.Notes.Note;
 using Composite.Services;
-using Composite.Services.Common;
 using Composite.Services.TabService;
 using Composite.ViewModels.Notes.HardNote;
 using System.Collections.ObjectModel;
@@ -73,7 +72,8 @@ namespace Composite.ViewModels.Notes.Note
             messenger.Register<DeleteCategoryNoteMessage>(this, (r, m) =>
             {
                 if (SelectedCategory.NameCategory == m.Category.NameCategory) SelectedCategory = Categories?.FirstOrDefault();
-                Categories.Remove(m.Category);
+                var category = Categories.FirstOrDefault(x => x.NameCategory == m.Category.NameCategory);
+                if (category != null) Categories.Remove(category);
             });
         }
 

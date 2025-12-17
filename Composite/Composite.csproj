@@ -71,6 +71,7 @@
     <None Remove="Common\Images\text.png" />
     <None Remove="Common\Images\threeDots.png" />
     <None Remove="Common\Images\underlining.png" />
+    <None Remove="Common\Images\widthMenu.svg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -133,6 +134,7 @@
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
     <PackageReference Include="NAudio" Version="2.2.1" />
     <PackageReference Include="NAudio.Lame" Version="2.1.0" />
+    <PackageReference Include="SharpVectors.Wpf" Version="1.8.5" />
     <PackageReference Include="SQLitePCLRaw.core" Version="2.1.11" />
   </ItemGroup>
 
@@ -159,6 +161,7 @@
     <Resource Include="Common\Images\text.png" />
     <Resource Include="Common\Images\threeDots.png" />
     <Resource Include="Common\Images\underlining.png" />
+    <Resource Include="Common\Images\widthMenu.svg" />
   </ItemGroup>
 
   <ItemGroup>

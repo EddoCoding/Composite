@@ -29,6 +29,7 @@ namespace Composite.ViewModels
         [ObservableProperty] string _password;
         [ObservableProperty] HardNoteVM _note;
         [ObservableProperty] string _identifier;
+        [ObservableProperty] int _widthMenu = 247;
 
         public CompositeMenuViewModel(IViewService viewService, ITabService tabService, IMessenger messenger, 
             IHardNoteService hardNoteService, ICategoryNoteService categoryNoteService)
@@ -99,9 +100,14 @@ namespace Composite.ViewModels
             GetAddButtonNote();
             GetHardNotes();
 
-            if(!_allNotes.Any()) tabService.CreateTab<AddHardNoteViewModel>("Hard note");
+            if(!_allNotes.Any()) tabService.CreateTab<AddHardNoteViewModel>("Composite");
         }
 
+        [RelayCommand] void ChangeWidthMenu()
+        {
+            if (WidthMenu == 247) WidthMenu = 0;
+            else WidthMenu = 247;
+        }
         [RelayCommand] void AddNote() => _tabService.CreateTab<AddHardNoteViewModel>("Composite");
         void OpenNote(HardNoteVM note)
         {
