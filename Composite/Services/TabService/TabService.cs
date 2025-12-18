@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Composite.ViewModels.Notes.Note;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows.Controls;
@@ -17,9 +18,9 @@ namespace Composite.Services.TabService
             Tabs.CollectionChanged += OnTabsChanged;
         }
 
-        public bool CreateTab<ViewModel>(string titleTab)
+        public bool CreateTab<ViewModel>(Guid id, string titleTab)
         {
-            var doubleTab = Tabs.FirstOrDefault(x => x.TitleTab == titleTab);
+            var doubleTab = Tabs.FirstOrDefault(x => x.Id == id);
             if (doubleTab != null)
             {
                 SelectedTab = doubleTab;
@@ -27,7 +28,10 @@ namespace Composite.Services.TabService
             }
 
             var userControl = _serviceView.GetUserControl<ViewModel>();
-            var tab = new TabViewModel(titleTab, userControl);
+
+            if(userControl.DataContext is AddHardNoteViewModel vm) vm.HardNoteVM.Id = id;
+
+            var tab = new TabViewModel(id, titleTab, userControl);
             SelectedTab = tab;
             Tabs.Add(tab);
             return true;
@@ -50,9 +54,9 @@ namespace Composite.Services.TabService
                 }
             }
         }
-        public void RemoveTab(string tabTitle)
+        public void RemoveTab(Guid id)
         {
-            var tab = Tabs.FirstOrDefault(x => x.TitleTab == tabTitle);
+            var tab = Tabs.FirstOrDefault(x => x.Id == id);
             if(tab != null) RemoveTab(tab);
         }
 

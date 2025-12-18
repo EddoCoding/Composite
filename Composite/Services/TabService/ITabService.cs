@@ -7,9 +7,9 @@ namespace Composite.Services.TabService
         ObservableCollection<TabViewModel> Tabs { get; set; }
         TabViewModel SelectedTab { get; set; }
 
-        bool CreateTab<ViewModel>(string titleTab);
+        bool CreateTab<ViewModel>(Guid id, string titleTab);
         void RemoveTab(TabViewModel tab);
         void RemoveTab(object viewModel);
-        void RemoveTab(string tabTitle);
+        void RemoveTab(Guid id);
     }
 }

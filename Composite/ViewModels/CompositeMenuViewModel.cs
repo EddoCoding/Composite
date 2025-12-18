@@ -7,7 +7,6 @@ using Composite.Services;
 using Composite.Services.TabService;
 using Composite.ViewModels.Notes;
 using Composite.ViewModels.Notes.HardNote;
-using Composite.ViewModels.Notes.Note;
 using System.Collections.ObjectModel;
 
 namespace Composite.ViewModels
@@ -49,10 +48,8 @@ namespace Composite.ViewModels
                     messenger.Send(new CheckNoteBackMessage(m.Id, false, "Пустой заголовок."));
                     return;
                 }
-            
-                var checkTitleNote = Notes.FirstOrDefault(x => x.Title == m.TitleNote);
-                if (checkTitleNote != null) messenger.Send(new CheckNoteBackMessage(m.Id, false, "Заметка с таким заголовком уже существует."));
-                else messenger.Send(new CheckNoteBackMessage(m.Id, true));
+
+                messenger.Send(new CheckNoteBackMessage(m.Id, true));
             });         //Для валидации заметки при создании
             messenger.Register<CheckChangeNoteMessage>(this, (r, m) =>
             {
@@ -69,9 +66,7 @@ namespace Composite.ViewModels
                     return;
                 }
 
-                var checkTitleNote = Notes.FirstOrDefault(x => x.Title == m.TitleNote);
-                if (checkTitleNote != null) messenger.Send(new CheckChangeNoteBackMessage(m.Id, false, "Заметка с таким заголовком уже существует."));
-                else messenger.Send(new CheckChangeNoteBackMessage(m.Id, true));
+                messenger.Send(new CheckChangeNoteBackMessage(m.Id, true));
             });   //Для валидации заметки при изменении
             messenger.Register<NoteMessage>(this, (r, m) =>
             {
@@ -99,8 +94,6 @@ namespace Composite.ViewModels
 
             GetAddButtonNote();
             GetHardNotes();
-
-            if(!_allNotes.Any()) tabService.CreateTab<AddHardNoteViewModel>("Composite");
         }
 
         [RelayCommand] void ChangeWidthMenu()
@@ -108,10 +101,22 @@ namespace Composite.ViewModels
             if (WidthMenu == 247) WidthMenu = 0;
             else WidthMenu = 247;
         }
-        [RelayCommand] void AddNote() => _tabService.CreateTab<AddHardNoteViewModel>("Composite");
+
+        [RelayCommand] async Task AddNote()
+        {
+            var note = new HardNoteVM(_tabService, _hardNoteService, _messenger);
+
+            await _hardNoteService.AddHardNoteAsync(note);
+
+            _allNotes.Add(note);
+            Notes.Add(note);
+
+            OpenNote(note);
+        }
+
         void OpenNote(HardNoteVM note)
         {
-            if (_tabService.CreateTab<ChangeHardNoteViewModel>($"{note.Title}")) _messenger.Send(new ChangeNoteMessage(note));
+            if (_tabService.CreateTab<ChangeHardNoteViewModel>(note.Id ,$"{note.Title}")) _messenger.Send(new ChangeNoteMessage(note));
         }
         [RelayCommand] void OpenPopupPassword((HardNoteVM note, string identifier) parameters)
         {
@@ -253,7 +258,7 @@ namespace Composite.ViewModels
                 }
             }
 
-            _tabService.RemoveTab(noteVM.Title);
+            _tabService.RemoveTab(noteVM.Id);
         }
 
         [RelayCommand] void Scale() => _viewService.ScaleView<CompositeViewModel>();

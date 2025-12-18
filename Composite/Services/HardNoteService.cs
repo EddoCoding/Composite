@@ -141,7 +141,7 @@ namespace Composite.Services
             var hardNoteVM = await GetNoteById(result);
             if (hardNoteVM != null)
             {
-                if (_tabService.CreateTab<ChangeHardNoteViewModel>($"{hardNoteVM.Title}")) _messenger.Send(new ChangeNoteMessage(hardNoteVM));
+                if (_tabService.CreateTab<ChangeHardNoteViewModel>(hardNoteVM.Id, $"{hardNoteVM.Title}")) _messenger.Send(new ChangeNoteMessage(hardNoteVM));
                 return;
             }
         }
