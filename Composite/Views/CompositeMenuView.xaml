@@ -6,10 +6,10 @@
              xmlns:local="clr-namespace:Composite.Views" mc:Ignorable="d"
              xmlns:converter="clr-namespace:Composite.Common.Converters"
              xmlns:property="clr-namespace:Composite.Common.Properties"
+             xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
              d:DesignHeight="450" d:DesignWidth="800" FontFamily="Trebuchet MS"
              KeyboardNavigation.TabNavigation="None">
     <UserControl.Resources>
-        <converter:NoteTypeToIconConverter x:Key="NoteTypeToIconConverter"/>
         <converter:TupleForCheckPasswordConverter x:Key="TupleForCheckPasswordConverter"/>
 
         <Style x:Key="ImageModule" TargetType="Button">
@@ -30,7 +30,6 @@
                                            Foreground="{TemplateBinding Foreground}" HorizontalAlignment="Right" TextOptions.TextFormattingMode="Ideal"/>
                                 <Image Grid.Column="1" Source="{Binding Content, RelativeSource={RelativeSource AncestorType=Button}}" HorizontalAlignment="Center" VerticalAlignment="Center"
                                        Margin="10,0,5,0" RenderOptions.BitmapScalingMode="Fant"/>
-
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -403,19 +402,19 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="6" Margin="0,2">
+                        <Border Background="{TemplateBinding Background}" Margin="0,2">
                             <Grid Width="234" HorizontalAlignment="Left">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="170"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-
-                                <Image Grid.Column="0" Source="{Binding ItemType, Converter={StaticResource NoteTypeToIconConverter}}" Height="24" Width="24" RenderOptions.BitmapScalingMode="Fant"/>
-                                <TextBlock Grid.Column="1" Text="{Binding Title}" FontSize="16" Margin="5" TextTrimming="CharacterEllipsis" Foreground="{TemplateBinding Foreground}"
-                                           TextOptions.TextFormattingMode="Ideal"/>
+                                
+                                <Image Grid.Column="0" Source="/Common/Images/noteImage.png" Height="23" Width="23" RenderOptions.BitmapScalingMode="Fant"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Title}" FontSize="16" Margin="5,0,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" 
+                                           Foreground="{TemplateBinding Foreground}" TextOptions.TextFormattingMode="Ideal"/>
                                 <Button x:Name="button" Grid.Column="2" Style="{StaticResource ImageButton}" Content="/Common/Images/threeDots.png" Tag="#E6E6E6"
-                                        Height="20" Width="20" RenderOptions.BitmapScalingMode="Fant" Visibility="Collapsed" Click="button_Click"/>
+                                        Height="20" Width="20" RenderOptions.BitmapScalingMode="Fant" Visibility="Collapsed" Margin="1,0,0,0" Click="button_Click"/>
 
                                 <Popup x:Name="NotePopup" PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=Button}}" 
                                        Placement="Right" StaysOpen="False" AllowsTransparency="True">
@@ -500,13 +499,13 @@
                   ItemContainerStyle="{StaticResource NoteListViewItem}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
 
             <Button Grid.Row="2" Content="/Common/Images/scale.png" Height="30" Margin="5,0,5,5" VerticalAlignment="Bottom" 
-                Style="{StaticResource ImageModule}" ToolTip="Scale" Command="{Binding ScaleCommand}" Tag="Orange"/>
+                    Style="{StaticResource ImageModule}" ToolTip="Scale" Command="{Binding ScaleCommand}" Tag="Orange"/>
 
             <Button Grid.Row="3" Content="/Common/Images/collapse.png" Height="30" Margin="5,0,5,5" VerticalAlignment="Bottom" 
-                Style="{StaticResource ImageModule}" ToolTip="Collapse" Command="{Binding CollapseCommand}" Tag="Tomato"/>
+                    Style="{StaticResource ImageModule}" ToolTip="Collapse" Command="{Binding CollapseCommand}" Tag="Tomato"/>
 
             <Button Grid.Row="4" Content="/Common/Images/close.png" Height="30" Margin="5,0,5,5" VerticalAlignment="Bottom"
-                Style="{StaticResource ImageModule}" ToolTip="Exit" Command="{Binding CloseCommand}" Tag="Red"/>
+                    Style="{StaticResource ImageModule}" ToolTip="Exit" Command="{Binding CloseCommand}" Tag="Red"/>
 
             <Popup IsOpen="{Binding IsPasswordPopupOpen}" AllowsTransparency="True" Placement="Center" StaysOpen="False">
                 <Border CornerRadius="8" Background="WhiteSmoke" BorderBrush="Gray" BorderThickness="1">
@@ -526,8 +525,7 @@
                             <TextBox Grid.Column="0" Style="{StaticResource CustomTextBoxSearch}" Text="{Binding Password}" Margin="5,0,5,3" MaxLength="13"
                                  Background="WhiteSmoke" property:PlaceHolder.PlaceHolder="Enter password" property:PlaceHolder.ShowAlways="True"/>
                             <Button Grid.Column="1" Style="{StaticResource ImageButton}" Content="/Common/Images/input.png" Height="20" Width="20" Margin="5,0,3,0"
-                                Tag="WhiteSmoke" Cursor="Hand" RenderOptions.BitmapScalingMode="Fant"
-                                Command="{Binding CheckPasswordCommand}"/>
+                                Tag="#E6E6E6" Cursor="Hand" RenderOptions.BitmapScalingMode="Fant" Command="{Binding CheckPasswordCommand}"/>
 
                         </Grid>
                     </Grid>

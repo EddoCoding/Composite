@@ -1094,7 +1094,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Button Grid.Column="0" Style="{StaticResource ImageButton}" Content="/Common/Images/add.png" Height="20" Width="20" VerticalAlignment="Top" Margin="2,7,0,0" 
+                        <Button Grid.Column="0" Style="{StaticResource SVGImageButton}" Content="/Common/Images/add.svg" Height="18" Width="18" VerticalAlignment="Top" Margin="2,7,0,0" 
                                 RenderOptions.BitmapScalingMode="Fant" Tag="#E6E6E6" Cursor="Hand" Command="{Binding AddSubTaskCommand}"/>
 
                         <TextBlock Grid.Column="1" Text="{Binding Status}" FontSize="16" VerticalAlignment="Top" Margin="13,6,0,0"/>
@@ -1650,8 +1650,8 @@
                         Command="{Binding DataContext.HardNoteVM.OpenPopupCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
                         CommandParameter="{Binding}"/>
 
-                <Button Grid.Column="2" Style="{StaticResource ImageButton}" Content="/Common/Images/add.png" Height="21" Width="21" VerticalAlignment="Top" 
-                        Margin="8,6,8,0" Cursor="Hand" RenderOptions.BitmapScalingMode="Fant" Tag="#E6E6E6"
+                <Button Grid.Column="2" Style="{StaticResource SVGImageButton}" Content="/Common/Images/add.svg" Height="18" Width="18" VerticalAlignment="Top" 
+                        Margin="8,8,8,0" Cursor="Hand" RenderOptions.BitmapScalingMode="Fant" Tag="#E6E6E6"
                         Command="{Binding AddRefCompositeCommand}"/>
 
                 <ListView Grid.Column="3" ItemsSource="{Binding References}" BorderThickness="0" Background="Transparent" VerticalAlignment="Top" Margin="0,2,0,0"
@@ -2184,8 +2184,8 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <TextBox Grid.Row="0" Style="{StaticResource Text}" Text="{Binding Text}" 
-                             property:PlaceHolder.PlaceHolder="About documents" PreviewKeyDown="ListView_TextBox_PreviewKeyDown"/>
+                    <TextBox Grid.Row="0" Style="{StaticResource Text}" Text="{Binding Text}" property:PlaceHolder.PlaceHolder="About documents" 
+                             PreviewKeyDown="ListView_TextBox_PreviewKeyDown"/>
 
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
@@ -2193,8 +2193,8 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Button Grid.Column="0" Style="{StaticResource ImageButton}" Content="/Common/Images/add.png" Height="20" Width="20" RenderOptions.BitmapScalingMode="Fant"
-                                Margin="0,4,0,0" Cursor="Hand" VerticalAlignment="Top" Tag="#E6E6E6" Command="{Binding AddDocumentCompositeCommand}"/>
+                        <Button Grid.Column="0" Style="{StaticResource SVGImageButton}" Content="/Common/Images/svg.png" Height="18" Width="18" RenderOptions.BitmapScalingMode="Fant"
+                                Margin="0,6,0,0" Cursor="Hand" VerticalAlignment="Top" Tag="#E6E6E6" Command="{Binding AddDocumentCompositeCommand}"/>
 
                         <ListView Grid.Column="1" ItemsSource="{Binding Documents}" Margin="10,0,0,0" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                   BorderThickness="0" Background="Transparent">
@@ -2661,7 +2661,7 @@
                             </Style>
                         </Grid.Style>
 
-                        <Button Grid.Column="0" Style="{StaticResource ImageButton}" Content="/Common/Images/playStop.png" Height="20" Width="20" RenderOptions.BitmapScalingMode="Fant"
+                        <Button Grid.Column="0" Style="{StaticResource SVGImageButton}" Content="/Common/Images/playStop.svg" Height="11" Width="11" RenderOptions.BitmapScalingMode="Fant"
                                 Cursor="Hand" Margin="-3,0,0,0" Tag="#E6E6E6" Command="{Binding PlayStopSongCommand}"/>
 
                         <TextBlock Grid.Column="1" Text="{Binding CurrentTime}" Foreground="Gray" FontSize="10" VerticalAlignment="Center" Margin="5,0,5,0"/>
@@ -2803,7 +2803,7 @@
                             </Style>
                         </Grid.Style>
 
-                        <Button Grid.Column="0" Style="{StaticResource ImageButton}" Content="/Common/Images/playStop.png" Height="20" Width="20" RenderOptions.BitmapScalingMode="Fant"
+                        <Button Grid.Column="0" Style="{StaticResource SVGImageButton}" Content="/Common/Images/playStop.svg" Height="11" Width="11" RenderOptions.BitmapScalingMode="Fant"
                                 Cursor="Hand" Margin="-3,0,0,0" Tag="#E6E6E6" Command="{Binding PlayStopSongCommand}"/>
 
                         <TextBlock Grid.Column="1" Text="{Binding CurrentTime}" Foreground="Gray" FontSize="10" VerticalAlignment="Center" Margin="5,0,5,0"/>
@@ -2902,13 +2902,13 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <TextBox Grid.Row="0" Style="{StaticResource Text}" Text="{Binding Text}" 
-                             property:PlaceHolder.PlaceHolder="About songs" PreviewKeyDown="ListView_TextBox_PreviewKeyDown"/>
+                    <TextBox Grid.Row="0" Style="{StaticResource Text}" Text="{Binding Text}" property:PlaceHolder.PlaceHolder="About songs" 
+                             PreviewKeyDown="ListView_TextBox_PreviewKeyDown"/>
 
                     <StackPanel Grid.Row="1" Orientation="Horizontal">
 
-                        <Button Style="{StaticResource ImageButton}" Content="/Common/Images/addSong.png" Height="22" Width="22" RenderOptions.BitmapScalingMode="Fant"
-                                Margin="0,4,0,0" Cursor="Hand" VerticalAlignment="Top" Tag="#E6E6E6" Command="{Binding AddSongCompositeCommand}"/>
+                        <Button Style="{StaticResource SVGImageButton}" Content="/Common/Images/addSong.svg" Height="15" Width="15" RenderOptions.BitmapScalingMode="Fant"
+                                Margin="0,8,0,0" Cursor="Hand" VerticalAlignment="Top" Tag="#E6E6E6" Command="{Binding AddSongCompositeCommand}"/>
 
                         <ListView ItemsSource="{Binding Songs}" Margin="10,0,0,0"
                                   BorderThickness="0" Background="Transparent">

@@ -11,10 +11,12 @@
   <ItemGroup>
     <None Remove="Common\Images\actions.png" />
     <None Remove="Common\Images\add.png" />
+    <None Remove="Common\Images\add.svg" />
     <None Remove="Common\Images\addCategory.png" />
     <None Remove="Common\Images\addIndentation.png" />
     <None Remove="Common\Images\addRef.png" />
     <None Remove="Common\Images\addSong.png" />
+    <None Remove="Common\Images\addSong.svg" />
     <None Remove="Common\Images\addSubTask.png" />
     <None Remove="Common\Images\alignCenter.png" />
     <None Remove="Common\Images\alignJustify.png" />
@@ -23,7 +25,7 @@
     <None Remove="Common\Images\AlignmentLeft.png" />
     <None Remove="Common\Images\AlignmentRight.png" />
     <None Remove="Common\Images\alignRight.png" />
-    <None Remove="Common\Images\back.png" />
+    <None Remove="Common\Images\back.svg" />
     <None Remove="Common\Images\bold.png" />
     <None Remove="Common\Images\calendar.png" />
     <None Remove="Common\Images\changeType.png" />
@@ -33,12 +35,12 @@
     <None Remove="Common\Images\collapse.png" />
     <None Remove="Common\Images\comment.png" />
     <None Remove="Common\Images\composite.png" />
+    <None Remove="Common\Images\composite.svg" />
     <None Remove="Common\Images\deleteCategory.png" />
     <None Remove="Common\Images\doc.png" />
     <None Remove="Common\Images\docs.png" />
     <None Remove="Common\Images\duplicate.png" />
     <None Remove="Common\Images\ft.png" />
-    <None Remove="Common\Images\hardNoteImage.png" />
     <None Remove="Common\Images\header1.png" />
     <None Remove="Common\Images\header2.png" />
     <None Remove="Common\Images\header3.png" />
@@ -47,19 +49,21 @@
     <None Remove="Common\Images\italic.png" />
     <None Remove="Common\Images\line.png" />
     <None Remove="Common\Images\lock.png" />
+    <None Remove="Common\Images\lock.svg" />
     <None Remove="Common\Images\marker.png" />
-    <None Remove="Common\Images\next.png" />
+    <None Remove="Common\Images\next.svg" />
     <None Remove="Common\Images\noteImage.png" />
-    <None Remove="Common\Images\notRepeat.png" />
+    <None Remove="Common\Images\notRepeat.svg" />
     <None Remove="Common\Images\numeric.png" />
     <None Remove="Common\Images\openImage.png" />
     <None Remove="Common\Images\overline.png" />
-    <None Remove="Common\Images\playStop.png" />
+    <None Remove="Common\Images\playStop.svg" />
     <None Remove="Common\Images\quote.png" />
     <None Remove="Common\Images\ref.png" />
+    <None Remove="Common\Images\ref.svg" />
     <None Remove="Common\Images\refList.png" />
     <None Remove="Common\Images\removeIndentation.png" />
-    <None Remove="Common\Images\repeat.png" />
+    <None Remove="Common\Images\repeat.svg" />
     <None Remove="Common\Images\scale.png" />
     <None Remove="Common\Images\setting.png" />
     <None Remove="Common\Images\song.png" />
@@ -75,10 +79,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Common\Images\add.svg" />
+    <Resource Include="Common\Images\addSong.svg" />
+    <Resource Include="Common\Images\back.svg" />
+    <Resource Include="Common\Images\composite.png" />
+    <Resource Include="Common\Images\composite.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Common\Images\addSong.png" />
     <Resource Include="Common\Images\addSubTask.png" />
     <Resource Include="Common\Images\choose.png" />
-    <Resource Include="Common\Images\composite.png" />
     <Resource Include="Common\Images\actions.png" />
     <Resource Include="Common\Images\add.png" />
     <Resource Include="Common\Images\addIndentation.png" />
@@ -94,7 +105,6 @@
     <Resource Include="Common\Images\AlignmentLeft.png" />
     <Resource Include="Common\Images\AlignmentRight.png" />
     <Resource Include="Common\Images\alignRight.png" />
-    <Resource Include="Common\Images\back.png" />
     <Resource Include="Common\Images\bold.png" />
     <Resource Include="Common\Images\calendar.png" />
     <Resource Include="Common\Images\changeType.png" />
@@ -106,7 +116,6 @@
     <Resource Include="Common\Images\docs.png" />
     <Resource Include="Common\Images\duplicate.png" />
     <Resource Include="Common\Images\ft.png" />
-    <Resource Include="Common\Images\hardNoteImage.png" />
     <Resource Include="Common\Images\header1.png" />
     <Resource Include="Common\Images\header2.png" />
     <Resource Include="Common\Images\header3.png" />
@@ -119,8 +128,9 @@
 
   <ItemGroup>
     <Resource Include="Common\Images\close.png" />
+    <Resource Include="Common\Images\lock.svg" />
     <Resource Include="Common\Images\marker.png" />
-    <Resource Include="Common\Images\next.png" />
+    <Resource Include="Common\Images\next.svg" />
     <Resource Include="Common\Images\noteImage.png" />
   </ItemGroup>
 
@@ -139,16 +149,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Common\Images\notRepeat.png" />
+    <Resource Include="Common\Images\notRepeat.svg" />
     <Resource Include="Common\Images\numeric.png" />
     <Resource Include="Common\Images\openImage.png" />
     <Resource Include="Common\Images\overline.png" />
-    <Resource Include="Common\Images\playStop.png" />
+    <Resource Include="Common\Images\playStop.svg" />
     <Resource Include="Common\Images\quote.png" />
     <Resource Include="Common\Images\ref.png" />
+    <Resource Include="Common\Images\ref.svg" />
     <Resource Include="Common\Images\refList.png" />
     <Resource Include="Common\Images\removeIndentation.png" />
-    <Resource Include="Common\Images\repeat.png" />
+    <Resource Include="Common\Images\repeat.svg" />
     <Resource Include="Common\Images\scale.png" />
     <Resource Include="Common\Images\search.png" />
     <Resource Include="Common\Images\setting.png" />

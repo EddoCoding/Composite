@@ -31,7 +31,7 @@ namespace Composite.Services
         [ObservableProperty] double _duration;
         [ObservableProperty] string _currentTime = "0:00";
         [ObservableProperty] string _totalTime = "0:00";
-        [ObservableProperty] string _pathImageRepeat = "/Common/Images/notRepeat.png";
+        [ObservableProperty] string _pathImageRepeat = "/Common/Images/notRepeat.svg";
 
         public MediaPlayerService(ISettingMediaPlayerService settingMediaPlayerService, ICommandService commandService)
         {
@@ -99,14 +99,14 @@ namespace Composite.Services
         }           //Предыдущая песня
         [RelayCommand] public void Repeat()
         {
-            if (PathImageRepeat == "/Common/Images/notRepeat.png")
+            if (PathImageRepeat == "/Common/Images/notRepeat.svg")
             {
                 _isRepeat = true;
-                PathImageRepeat = "/Common/Images/repeat.png";
+                PathImageRepeat = "/Common/Images/repeat.svg";
             }
             else
             {
-                PathImageRepeat = "/Common/Images/notRepeat.png";
+                PathImageRepeat = "/Common/Images/notRepeat.svg";
                 _isRepeat = false;
             }
         }               //Повторять песню
