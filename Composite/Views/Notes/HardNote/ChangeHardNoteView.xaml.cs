@@ -345,15 +345,16 @@ namespace Composite.Views.Notes.Notes
                     var textBox2 = sender as TextBox;
                     var currentComposite = textBox2.DataContext as CompositeBaseVM;
                     if (currentComposite == null) return;
+
                     var listView = FindParent<ListView>(textBox2);
                     if (listView?.DataContext is ChangeHardNoteViewModel viewModel)
                     {
                         int currentIndex = viewModel.HardNoteVM.GetIndexComposite(currentComposite);
+                        bool hasSelection = textBox2.SelectionLength > 0;
 
                         if (string.IsNullOrEmpty(textBox2.Text))
                         {
                             DeleteComposite(viewModel, currentComposite);
-
                             if (currentIndex == 0) FocusTitleTextBox();
                             else if (viewModel.HardNoteVM.Composites.Count > 0)
                             {
@@ -364,7 +365,7 @@ namespace Composite.Views.Notes.Notes
                             else FocusTitleTextBox();
                             e.Handled = true;
                         }
-                        else if (textBox2.CaretIndex == 0 && currentIndex > 0 && currentComposite is TextCompositeVM currentTextComposite)
+                        else if (!hasSelection && textBox2.CaretIndex == 0 && currentIndex > 0 && currentComposite is TextCompositeVM currentTextComposite)
                         {
                             var previousTextComposite = FindPreviousTextComposite(viewModel.HardNoteVM.Composites, currentIndex);
                             if (previousTextComposite != null)
@@ -372,8 +373,8 @@ namespace Composite.Views.Notes.Notes
                                 int originalCaretPosition = previousTextComposite.Text.Length;
                                 previousTextComposite.Text += currentTextComposite.Text;
                                 viewModel.HardNoteVM.DeleteComposite(currentTextComposite);
-
                                 int previousIndex = viewModel.HardNoteVM.GetIndexComposite(previousTextComposite);
+
                                 textBox2.Dispatcher.BeginInvoke(new Action(() =>
                                 {
                                     MoveFocusToTextBox(previousIndex);

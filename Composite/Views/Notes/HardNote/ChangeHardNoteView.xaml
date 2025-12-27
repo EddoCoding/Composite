@@ -345,7 +345,7 @@
             <Setter Property="CaretBrush" Value="Gray"/>
             <Setter Property="AcceptsReturn" Value="True"/>
             <Setter Property="Background" Value="WhiteSmoke"/>
-            <Setter Property="Margin" Value="10,5,0,5"/>
+            <Setter Property="Margin" Value="10,5"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="Template">
                 <Setter.Value>
