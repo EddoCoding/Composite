@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace Composite.Common.Factories
+namespace Composite.DataBase
 {
     public interface IDbConnectionFactory
     {

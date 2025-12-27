@@ -1,7 +1,7 @@
 ﻿using Microsoft.Data.Sqlite;
 using System.Data;
 
-namespace Composite.Common.Factories
+namespace Composite.DataBase
 {
     public class DbConnectionFactory : IDbConnectionFactory
     {

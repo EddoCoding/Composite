@@ -1,4 +1,4 @@
-﻿using Composite.Common.Factories;
+﻿using Composite.DataBase;
 using Composite.Models;
 using Composite.Models.Notes.HardNote;
 using Dapper;
