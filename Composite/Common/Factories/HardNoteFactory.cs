@@ -20,8 +20,6 @@ namespace Composite.Common.Factories
                     var newTextCompositeVM = new TextCompositeVM()
                     {
                         Id = textCompositeVM.Id,
-                        Tag = textCompositeVM.Tag,
-                        Comment = textCompositeVM.Comment,
                         Text = textCompositeVM.Text
                     };
                     compositesVM.Add(newTextCompositeVM);
@@ -31,8 +29,6 @@ namespace Composite.Common.Factories
                     var newHeaderCompositeVM = new HeaderCompositeVM()
                     {
                         Id = headerCompositeVM.Id,
-                        Tag = headerCompositeVM.Tag,
-                        Comment = headerCompositeVM.Comment,
                         Text = headerCompositeVM.Text,
                         FontWeight = headerCompositeVM.FontWeight,
                         FontSize = headerCompositeVM.FontSize
@@ -44,8 +40,6 @@ namespace Composite.Common.Factories
                     var newQuoteCompositeVM = new QuoteCompositeVM()
                     {
                         Id = quoteCompositeVM.Id,
-                        Tag = quoteCompositeVM.Tag,
-                        Comment = quoteCompositeVM.Comment,
                         Text = quoteCompositeVM.Text
                     };
                     compositesVM.Add(newQuoteCompositeVM);
@@ -55,8 +49,6 @@ namespace Composite.Common.Factories
                     var newLineCompositeVM = new LineCompositeVM()
                     {
                         Id = lineCompositeVM.Id,
-                        Tag = lineCompositeVM.Tag,
-                        Comment = lineCompositeVM.Comment,
                         SelectedLineSize = lineCompositeVM.SelectedLineSize,
                         SelectedLineColor = lineCompositeVM.SelectedLineColor
                     };
@@ -67,8 +59,6 @@ namespace Composite.Common.Factories
                     var newTaskCompositeVM = new TaskCompositeVM()
                     {
                         Id = taskCompositeVM.Id,
-                        Tag = taskCompositeVM.Tag,
-                        Comment = taskCompositeVM.Comment,
                         Text = taskCompositeVM.Text,
                         IsCompleted = taskCompositeVM.IsCompleted
                     };
@@ -79,8 +69,6 @@ namespace Composite.Common.Factories
                     var newImageCompositeVM = new ImageCompositeVM()
                     {
                         Id = imageCompositeVM.Id,
-                        Tag = imageCompositeVM.Tag,
-                        Comment = imageCompositeVM.Comment,
                         ImageSource = imageCompositeVM.ImageSource,
                         OriginalWidth = imageCompositeVM.OriginalWidth,
                         OriginalHeight = imageCompositeVM.OriginalHeight,
@@ -93,8 +81,6 @@ namespace Composite.Common.Factories
                     var newRefCompositeVM = new RefCompositeVM(tabService, hardNoteService, messenger)
                     {
                         Id = refCompositeVM.Id,
-                        Tag = refCompositeVM.Tag,
-                        Comment = refCompositeVM.Comment,
                         ValueRef = refCompositeVM.ValueRef,
                         Text = refCompositeVM.Text
                     };
@@ -105,8 +91,6 @@ namespace Composite.Common.Factories
                     var newMarkerCompositeVM = new MarkerCompositeVM()
                     {
                         Id = markerCompositeVM.Id,
-                        Tag = markerCompositeVM.Tag,
-                        Comment = markerCompositeVM.Comment,
                         Text = markerCompositeVM.Text
                     };
                     compositesVM.Add(newMarkerCompositeVM);
@@ -116,8 +100,6 @@ namespace Composite.Common.Factories
                     var newNumericCompositeVM = new NumericCompositeVM()
                     {
                         Id = numericCompositeVM.Id,
-                        Tag = numericCompositeVM.Tag,
-                        Comment = numericCompositeVM.Comment,
                         Number = numericCompositeVM.Number,
                         Text = numericCompositeVM.Text
                     };
@@ -128,8 +110,6 @@ namespace Composite.Common.Factories
                     var newCodeCompositeVM = new CodeCompositeVM()
                     {
                         Id = codeCompositeVM.Id,
-                        Tag = codeCompositeVM.Tag,
-                        Comment = codeCompositeVM.Comment,
                         Text = codeCompositeVM.Text
                     };
                     compositesVM.Add(newCodeCompositeVM);
@@ -139,9 +119,7 @@ namespace Composite.Common.Factories
                     var newDocCompositeVM = new DocCompositeVM(hardNoteService)
                     {
                         Id = docCompositeVM.Id,
-                        Tag = docCompositeVM.Tag,
                         Text = docCompositeVM.Text,
-                        Comment = docCompositeVM.Comment,
                         Data = docCompositeVM.Data
                     };
                     compositesVM.Add(newDocCompositeVM);
@@ -159,8 +137,6 @@ namespace Composite.Common.Factories
                     var newFTCompositeVM = new FormattedTextCompositeVM()
                     {
                         Id = ftCompositeVM.Id,
-                        Tag = ftCompositeVM.Tag,
-                        Comment = ftCompositeVM.Comment,
                         Document = document,
                         SelectedBrSize = ftCompositeVM.SelectedBrSize,
                         SelectedBrCornerRadius = ftCompositeVM.SelectedBrCornerRadius,
@@ -176,8 +152,6 @@ namespace Composite.Common.Factories
                     var newSongCompositeVM = new SongCompositeVM()
                     {
                         Id = songCompositeVM.Id,
-                        Tag = songCompositeVM.Tag,
-                        Comment = songCompositeVM.Comment,
                         Title = songCompositeVM.Title,
                         Data = songCompositeVM.Data
                     };
@@ -188,9 +162,7 @@ namespace Composite.Common.Factories
                 {
                     var newRefListCompositeVM = new RefListCompositeVM(tabService, hardNoteService, messenger)
                     {
-                        Id = refListCompositeVM.Id,
-                        Tag = refListCompositeVM.Tag,
-                        Comment = refListCompositeVM.Comment
+                        Id = refListCompositeVM.Id
                     };
 
                     foreach(var referenceVM in refListCompositeVM.References)
@@ -210,8 +182,6 @@ namespace Composite.Common.Factories
                     var newTaskListCompositeVM = new TaskListCompositeVM()
                     {
                         Id = taskListCompositeVM.Id,
-                        Tag = taskListCompositeVM.Tag,
-                        Comment = taskListCompositeVM.Comment,
                         Text = taskListCompositeVM.Text,
                         Status = taskListCompositeVM.Status,
                         IsCompleted = taskListCompositeVM.IsCompleted
@@ -235,8 +205,6 @@ namespace Composite.Common.Factories
                     var newDocListCompositeVM = new DocListCompositeVM(hardNoteService)
                     {
                         Id = docListCompositeVM.Id,
-                        Tag = docListCompositeVM.Tag,
-                        Comment = docListCompositeVM.Comment,
                         Text = docListCompositeVM.Text
                     };
 
@@ -257,8 +225,6 @@ namespace Composite.Common.Factories
                     var newSongListCompositeVM = new SongListCompositeVM()
                     {
                         Id = songListCompositeVM.Id,
-                        Tag = songListCompositeVM.Tag,
-                        Comment = songListCompositeVM.Comment,
                         Text = songListCompositeVM.Text
                     };
 

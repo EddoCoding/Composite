@@ -60,8 +60,6 @@ namespace Composite.ViewModels.Notes.HardNote
         public override object Clone() => new ReferenceCompositeVM(_tabService, _hardNoteService, _messenger)
         {
             Id = Guid.NewGuid(),
-            Tag = Tag,
-            Comment = Comment,
             ValueRef = ValueRef,
             Text = Text
         };
@@ -69,8 +67,6 @@ namespace Composite.ViewModels.Notes.HardNote
         {
             if (disposing)
             {
-                Tag = string.Empty;
-                Comment = string.Empty;
                 ValueRef = string.Empty;
                 Text = string.Empty;
                 IsRefPopup = false;

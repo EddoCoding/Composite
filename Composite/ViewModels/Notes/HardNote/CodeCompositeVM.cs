@@ -8,15 +8,10 @@ namespace Composite.ViewModels.Notes.HardNote
 
         public CodeCompositeVM() => Id = Guid.NewGuid();
 
-        public override object Clone() => new CodeCompositeVM() { Id = Guid.NewGuid(), Tag = Tag, Comment = Comment, Text = Text };
+        public override object Clone() => new CodeCompositeVM() { Id = Guid.NewGuid(), Text = Text };
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                Tag = string.Empty;
-                Comment = string.Empty;
-                Text = string.Empty;
-            }
+            if (disposing) Text = string.Empty;
             base.Dispose(disposing);
         }
     }

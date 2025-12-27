@@ -24,13 +24,11 @@ namespace Composite.Common.Helpers
             get => (CompositeBaseVM)GetValue(CompositeBaseVMProperty);
             set => SetValue(CompositeBaseVMProperty, value);
         }
-
         public string Value
         {
             get => (string)GetValue(ValueProperty);
             set => SetValue(ValueProperty, value);
         }
-
         protected override Freezable CreateInstanceCore() => new ParametersCompositeString();
     }
 }

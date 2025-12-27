@@ -29,7 +29,6 @@ namespace Composite.Common.Properties
             textBox.MouseEnter += (s, _) => ShowOrHidePlaceholder(textBox);
             textBox.MouseLeave += (s, _) => ShowOrHidePlaceholder(textBox);
         }
-
         static void ShowOrHidePlaceholder(TextBox textBox)
         {
             var layer = AdornerLayer.GetAdornerLayer(textBox);
@@ -45,8 +44,7 @@ namespace Composite.Common.Properties
                 if (existing != null)
                 {
                     foreach (var adorner in existing)
-                        if (adorner is PlaceHolderAdorner)
-                            layer.Remove(adorner);
+                        if (adorner is PlaceHolderAdorner) layer.Remove(adorner);
                 }
             }
             else

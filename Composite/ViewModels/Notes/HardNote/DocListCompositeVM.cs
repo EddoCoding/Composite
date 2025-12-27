@@ -31,8 +31,6 @@ namespace Composite.ViewModels.Notes.HardNote
         {
             var docList = new DocListCompositeVM(_hardNoteService)
             {
-                Tag = Tag,
-                Comment = Comment,
                 Text = Text
             };
 
@@ -44,8 +42,6 @@ namespace Composite.ViewModels.Notes.HardNote
         {
             if (disposing)
             {
-                Tag = string.Empty;
-                Comment = string.Empty;
                 Text = string.Empty;
                 foreach (var documentVM in Documents) documentVM.Dispose();
                 Documents.Clear();

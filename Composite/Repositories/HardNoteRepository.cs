@@ -20,10 +20,7 @@ namespace Composite.Repositories
                     var queryAddHardNote = "Insert Into HardNotes(Id, Title, Category, DateCreate, Password) Values (@Id, @Title, @Category, @DateCreate, @Password)";
                     var resultAddHardNote = await connection.ExecuteAsync(queryAddHardNote, hardNote, transaction);
 
-                    if (hardNote.Composites?.Any() == true)
-                    {
-                        await InsertCompositesRecursive(connection, transaction, hardNote.Composites, hardNote.Id, parentCompositeId: null);
-                    }
+                    if (hardNote.Composites?.Any() == true) await InsertCompositesRecursive(connection, transaction, hardNote.Composites, hardNote.Id, parentCompositeId: null);
 
                     transaction.Commit();
                     return resultAddHardNote > 0;
@@ -55,10 +52,7 @@ namespace Composite.Repositories
 
                 await DeleteExistingComposites(connection, transaction, hardNote.Id);
 
-                if (hardNote.Composites?.Any() == true)
-                {
-                    await InsertCompositesRecursive(connection, transaction, hardNote.Composites, hardNote.Id, parentCompositeId: null );
-                }
+                if (hardNote.Composites?.Any() == true) await InsertCompositesRecursive(connection, transaction, hardNote.Composites, hardNote.Id, parentCompositeId: null);
 
                 transaction.Commit();
                 return true;
@@ -139,7 +133,7 @@ namespace Composite.Repositories
         }
         List<CompositeBase> LoadAllComposites(IDbConnection connection, string hardNoteId)
         {
-            var queryBase = "Select Id, HardNoteId, ParentId, CompositeType, Tag, Comment, OrderIndex From CompositeBase Where HardNoteId = @HardNoteId Order By OrderIndex";
+            var queryBase = "Select Id, HardNoteId, ParentId, CompositeType, OrderIndex From CompositeBase Where HardNoteId = @HardNoteId Order By OrderIndex";
             var baseComposites = connection.Query<CompositeBase>(queryBase, new { HardNoteId = hardNoteId }).ToList();
 
             if (!baseComposites.Any()) return new List<CompositeBase>();
@@ -192,8 +186,6 @@ namespace Composite.Repositories
                 var baseInfo = baseComposites.FirstOrDefault(b => b.Id == composite.Id);
                 if (baseInfo != null)
                 {
-                    composite.Tag = baseInfo.Tag;
-                    composite.Comment = baseInfo.Comment;
                     composite.OrderIndex = baseInfo.OrderIndex;
                     composite.ParentId = baseInfo.ParentId;
                     composite.HardNoteId = baseInfo.HardNoteId;
@@ -500,7 +492,7 @@ namespace Composite.Repositories
                 })
             };
 
-            const string baseSql = "Insert Into CompositeBase(Id, HardNoteId, ParentId, CompositeType, Tag, Comment, OrderIndex) Values(@Id, @HardNoteId, @ParentId, @CompositeType, @Tag, @Comment, @OrderIndex)";
+            const string baseSql = "Insert Into CompositeBase(Id, HardNoteId, ParentId, CompositeType, OrderIndex) Values(@Id, @HardNoteId, @ParentId, @CompositeType, @OrderIndex)";
 
             foreach (var (composite, index) in composites.Select((c, i) => (c, i)))
             {
@@ -517,10 +509,7 @@ namespace Composite.Repositories
                     await connection.ExecuteAsync(sql, parameters, transaction);
                 }
 
-                if (composite.Children?.Any() == true)
-                {
-                    await InsertCompositesRecursive(connection, transaction, composite.Children, hardNoteId, composite.Id);
-                }
+                if (composite.Children?.Any() == true) await InsertCompositesRecursive(connection, transaction, composite.Children, hardNoteId, composite.Id);
             }
         }
     }

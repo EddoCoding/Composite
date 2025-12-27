@@ -33,7 +33,6 @@
     <None Remove="Common\Images\close.png" />
     <None Remove="Common\Images\code.png" />
     <None Remove="Common\Images\collapse.png" />
-    <None Remove="Common\Images\comment.png" />
     <None Remove="Common\Images\composite.png" />
     <None Remove="Common\Images\composite.svg" />
     <None Remove="Common\Images\deleteCategory.png" />
@@ -110,7 +109,6 @@
     <Resource Include="Common\Images\changeType.png" />
     <Resource Include="Common\Images\code.png" />
     <Resource Include="Common\Images\collapse.png" />
-    <Resource Include="Common\Images\comment.png" />
     <Resource Include="Common\Images\deleteCategory.png" />
     <Resource Include="Common\Images\doc.png" />
     <Resource Include="Common\Images\docs.png" />

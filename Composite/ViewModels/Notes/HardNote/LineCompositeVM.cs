@@ -23,13 +23,11 @@ namespace Composite.ViewModels.Notes.HardNote
             Colors = colorProperties.Select(prop => prop.Name).OrderBy(name => name).ToArray();
         }
 
-        public override object Clone() => new LineCompositeVM() { Id = Guid.NewGuid(), Tag = Tag, Comment = Comment, SelectedLineColor = SelectedLineColor, SelectedLineSize = SelectedLineSize };
+        public override object Clone() => new LineCompositeVM() { Id = Guid.NewGuid(), SelectedLineColor = SelectedLineColor, SelectedLineSize = SelectedLineSize };
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                Tag = string.Empty;
-                Comment = string.Empty;
                 SelectedLineSize = 0.0;
                 SelectedLineColor = string.Empty;
                 Lines.AsSpan().Clear();

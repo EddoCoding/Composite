@@ -114,7 +114,7 @@ namespace Composite.Views.Notes.Notes
                     var container = listComposite.ItemContainerGenerator.ContainerFromItem(targetItem) as ListViewItem;
                     if (container != null)
                     {
-                        var targetTextBox = FindChildInColumn<TextBox>(container, 2);
+                        var targetTextBox = FindChildInColumn<TextBox>(container, 1);
                         if (targetTextBox != null)
                         {
                             targetTextBox.Focus();
@@ -122,7 +122,7 @@ namespace Composite.Views.Notes.Notes
                         }
                         else
                         {
-                            var targetRichTextBox = FindChildInColumn<RichTextBox>(container, 2);
+                            var targetRichTextBox = FindChildInColumn<RichTextBox>(container, 1);
                             if (targetRichTextBox != null) targetRichTextBox.Focus();
                         }
                     }
@@ -151,7 +151,7 @@ namespace Composite.Views.Notes.Notes
                         var container = listComposite.ItemContainerGenerator.ContainerFromItem(newItem) as ListViewItem;
                         if (container != null)
                         {
-                            var newTextBox = FindChildInColumn<TextBox>(container, 2);
+                            var newTextBox = FindChildInColumn<TextBox>(container, 1);
                             if (newTextBox != null)
                             {
                                 newTextBox.Focus();
@@ -199,7 +199,7 @@ namespace Composite.Views.Notes.Notes
                 var container = listComposite.ItemContainerGenerator.ContainerFromItem(targetItem) as ListViewItem;
                 if (container == null) return;
 
-                var targetTextBox = FindChildInColumn<TextBox>(container, 2);
+                var targetTextBox = FindChildInColumn<TextBox>(container, 1);
                 if (targetTextBox != null)
                 {
                     targetTextBox.Focus();
@@ -207,7 +207,7 @@ namespace Composite.Views.Notes.Notes
                     return;
                 }
 
-                var targetRichTextBox = FindChildInColumn<RichTextBox>(container, 2);
+                var targetRichTextBox = FindChildInColumn<RichTextBox>(container, 1);
                 if (targetRichTextBox != null)
                 {
                     targetRichTextBox.Focus();
@@ -260,7 +260,7 @@ namespace Composite.Views.Notes.Notes
                     var container = listComposite.ItemContainerGenerator.ContainerFromItem(firstItem) as ListViewItem;
                     if (container != null)
                     {
-                        var textBox = FindChildInColumn<TextBox>(container, 2);
+                        var textBox = FindChildInColumn<TextBox>(container, 1);
                         if (textBox != null)
                         {
                             textBox.Focus();
@@ -304,7 +304,7 @@ namespace Composite.Views.Notes.Notes
                                     var container = listView.ItemContainerGenerator.ContainerFromItem(createdComposite) as ListViewItem;
                                     if (container != null)
                                     {
-                                        var newTextBox = FindChildInColumn<TextBox>(container, 2);
+                                        var newTextBox = FindChildInColumn<TextBox>(container, 1);
                                         if (newTextBox != null)
                                         {
                                             newTextBox.Focus();
@@ -312,7 +312,7 @@ namespace Composite.Views.Notes.Notes
                                         }
                                         else
                                         {
-                                            var newRichTextBox = FindChildInColumn<RichTextBox>(container, 2);
+                                            var newRichTextBox = FindChildInColumn<RichTextBox>(container, 1);
                                             if (newRichTextBox != null) newRichTextBox.Focus();
                                         }
                                     }
@@ -328,7 +328,7 @@ namespace Composite.Views.Notes.Notes
                                 var container = listView.ItemContainerGenerator.ContainerFromItem(newItem) as ListViewItem;
                                 if (container != null)
                                 {
-                                    var newTextBox = FindChildInColumn<TextBox>(container, 2);
+                                    var newTextBox = FindChildInColumn<TextBox>(container, 1);
                                     if (newTextBox != null)
                                     {
                                         newTextBox.Focus();
@@ -380,7 +380,7 @@ namespace Composite.Views.Notes.Notes
                                     var container = listComposite.ItemContainerGenerator.ContainerFromItem(previousTextComposite) as ListViewItem;
                                     if (container != null)
                                     {
-                                        var targetTextBox = FindChildInColumn<TextBox>(container, 2);
+                                        var targetTextBox = FindChildInColumn<TextBox>(container, 1);
                                         if (targetTextBox != null) targetTextBox.CaretIndex = originalCaretPosition;
                                     }
                                 }), DispatcherPriority.Input);
@@ -447,7 +447,7 @@ namespace Composite.Views.Notes.Notes
                                 var container = listView.ItemContainerGenerator.ContainerFromItem(duplicateComposite) as ListViewItem;
                                 if (container != null)
                                 {
-                                    var textBox = FindChildInColumn<TextBox>(container, 2);
+                                    var textBox = FindChildInColumn<TextBox>(container, 1);
                                     if (textBox != null)
                                     {
                                         textBox.Focus();
@@ -515,7 +515,7 @@ namespace Composite.Views.Notes.Notes
                             var container = listView.ItemContainerGenerator.ContainerFromItem(composite) as ListViewItem;
                             if (container != null)
                             {
-                                var textBox = FindChildInColumn<TextBox>(container, 2);
+                                var textBox = FindChildInColumn<TextBox>(container, 1);
                                 if (textBox != null)
                                 {
                                     textBox.Focus();
@@ -541,7 +541,7 @@ namespace Composite.Views.Notes.Notes
                             var container = listView.ItemContainerGenerator.ContainerFromItem(composite) as ListViewItem;
                             if (container != null)
                             {
-                                var textBox = FindChildInColumn<TextBox>(container, 2);
+                                var textBox = FindChildInColumn<TextBox>(container, 1);
                                 if (textBox != null)
                                 {
                                     textBox.Focus();
@@ -618,7 +618,7 @@ namespace Composite.Views.Notes.Notes
                                 var container = listView.ItemContainerGenerator.ContainerFromItem(duplicateComposite) as ListViewItem;
                                 if (container != null)
                                 {
-                                    var richTextBox = FindChildInColumn<RichTextBox>(container, 2);
+                                    var richTextBox = FindChildInColumn<RichTextBox>(container, 1);
                                     if (richTextBox != null)
                                     {
                                         richTextBox.Focus();
@@ -709,7 +709,7 @@ namespace Composite.Views.Notes.Notes
                             var container = listView.ItemContainerGenerator.ContainerFromItem(composite) as ListViewItem;
                             if (container != null)
                             {
-                                var richTextBox = FindChildInColumn<RichTextBox>(container, 2);
+                                var richTextBox = FindChildInColumn<RichTextBox>(container, 1);
                                 if (richTextBox != null) richTextBox.Focus();
                             }
                         }), DispatcherPriority.Background);
@@ -731,7 +731,7 @@ namespace Composite.Views.Notes.Notes
                             var container = listView.ItemContainerGenerator.ContainerFromItem(composite) as ListViewItem;
                             if (container != null)
                             {
-                                var richTextBox = FindChildInColumn<RichTextBox>(container, 2);
+                                var richTextBox = FindChildInColumn<RichTextBox>(container, 1);
                                 if (richTextBox != null) richTextBox.Focus();
                             }
                         }), DispatcherPriority.Background);
@@ -785,7 +785,7 @@ namespace Composite.Views.Notes.Notes
                                     var container = listComposite.ItemContainerGenerator.ContainerFromItem(previousTextComposite) as ListViewItem;
                                     if (container != null)
                                     {
-                                        var targetTextBox = FindChildInColumn<TextBox>(container, 2);
+                                        var targetTextBox = FindChildInColumn<TextBox>(container, 1);
                                         if (targetTextBox != null) targetTextBox.CaretIndex = originalCaretPosition;
                                     }
                                 }), DispatcherPriority.Input);
@@ -808,7 +808,7 @@ namespace Composite.Views.Notes.Notes
                                 var container = listView.ItemContainerGenerator.ContainerFromItem(duplicateComposite) as ListViewItem;
                                 if (container != null)
                                 {
-                                    var textBox = FindChildInColumn<TextBox>(container, 2);
+                                    var textBox = FindChildInColumn<TextBox>(container, 1);
                                     if (textBox != null)
                                     {
                                         textBox.Focus();
@@ -876,7 +876,7 @@ namespace Composite.Views.Notes.Notes
                             var container = listView.ItemContainerGenerator.ContainerFromItem(composite) as ListViewItem;
                             if (container != null)
                             {
-                                var textBox = FindChildInColumn<TextBox>(container, 2);
+                                var textBox = FindChildInColumn<TextBox>(container, 1);
                                 if (textBox != null)
                                 {
                                     textBox.Focus();
@@ -902,7 +902,7 @@ namespace Composite.Views.Notes.Notes
                             var container = listView.ItemContainerGenerator.ContainerFromItem(composite) as ListViewItem;
                             if (container != null)
                             {
-                                var textBox = FindChildInColumn<TextBox>(container, 2);
+                                var textBox = FindChildInColumn<TextBox>(container, 1);
                                 if (textBox != null)
                                 {
                                     textBox.Focus();
@@ -919,6 +919,7 @@ namespace Composite.Views.Notes.Notes
 
         void DeleteComposite(ChangeHardNoteViewModel viewModel, CompositeBaseVM composite) => viewModel.HardNoteVM.DeleteComposite(composite);
 
+        //Для перескакивания элементов
         int FindNextTextBoxIndex(IList<CompositeBaseVM> items, int currentIndex, bool goingUp)
         {
             int direction = goingUp ? -1 : 1;
@@ -928,19 +929,22 @@ namespace Composite.Views.Notes.Notes
             {
                 var item = items[targetIndex];
                 if (item is not LineCompositeVM && item is not ImageCompositeVM && item is not RefCompositeVM && item is not RefListCompositeVM
-                    && item is not SongCompositeVM) return targetIndex;
+                    && item is not DocCompositeVM && item is not SongCompositeVM) return targetIndex;
                 targetIndex += direction;
             }
 
             return -1;
         }
+
+        //Ставить каретку
         int FindNextTextBoxIndex(IList<CompositeBaseVM> items, int startIndex)
         {
             for (int i = startIndex; i < items.Count; i++)
             {
                 var item = items[i];
                 if (item is TextCompositeVM || item is HeaderCompositeVM || item is QuoteCompositeVM || item is TaskCompositeVM || item is MarkerCompositeVM
-                    || item is NumericCompositeVM || item is CodeCompositeVM || item is FormattedTextCompositeVM) return i;
+                    || item is NumericCompositeVM || item is CodeCompositeVM || item is FormattedTextCompositeVM || item is DocListCompositeVM
+                    || item is SongListCompositeVM) return i;
             }
             return -1;
         }
@@ -950,10 +954,12 @@ namespace Composite.Views.Notes.Notes
             {
                 var item = items[i];
                 if (item is TextCompositeVM || item is HeaderCompositeVM || item is QuoteCompositeVM || item is TaskCompositeVM || item is MarkerCompositeVM
-                    || item is NumericCompositeVM || item is CodeCompositeVM || item is FormattedTextCompositeVM) return i;
+                    || item is NumericCompositeVM || item is CodeCompositeVM || item is FormattedTextCompositeVM || item is DocListCompositeVM
+                    || item is SongListCompositeVM) return i;
             }
             return -1;
         }
+
         TextCompositeVM FindPreviousTextComposite(IList<CompositeBaseVM> items, int startIndex)
         {
             for (int i = startIndex - 1; i >= 0; i--)

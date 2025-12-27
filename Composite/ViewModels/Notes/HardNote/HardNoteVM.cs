@@ -645,10 +645,6 @@ namespace Composite.ViewModels.Notes.HardNote
             })));
         }
 
-        //Для открытия и закрытия комментария
-        [RelayCommand] void StartEditing(CompositeBaseVM composite) => composite.IsEditing = true;
-        [RelayCommand] void StopEditing(CompositeBaseVM composite) => composite.IsEditing = false;
-
         //Для песен
         public void StopAllSongs()
         {

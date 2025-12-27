@@ -32,11 +32,7 @@ namespace Composite.ViewModels.Notes.HardNote
 
         public override object Clone()
         {
-            var refList = new RefListCompositeVM(_tabService, _hardNoteService, _messenger)
-            {
-                Tag = Tag,
-                Comment = Comment
-            };
+            var refList = new RefListCompositeVM(_tabService, _hardNoteService, _messenger);
 
             foreach (var reference in References) refList.References.Add((ReferenceCompositeVM)reference.Clone());
 
@@ -46,8 +42,6 @@ namespace Composite.ViewModels.Notes.HardNote
         {
             if (disposing)
             {
-                Tag = string.Empty;
-                Comment = string.Empty;
                 foreach (var referenceVM in References) referenceVM.Dispose();
                 References.Clear();
                 References = null;

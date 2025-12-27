@@ -77,8 +77,6 @@ namespace Composite.ViewModels.Notes.HardNote
         {
             var taskList = new TaskListCompositeVM()
             {
-                Tag = Tag,
-                Comment = Comment,
                 Text = Text,
                 Status = Status,
                 IsCompleted = IsCompleted
@@ -89,8 +87,6 @@ namespace Composite.ViewModels.Notes.HardNote
                 var clonedSubTask = new SubTaskCompositeVM(taskList.CalculatingPercentTask)
                 {
                     Id = Guid.NewGuid(),
-                    Tag = subTask.Tag,
-                    Comment = subTask.Comment,
                     Text = subTask.Text,
                     IsCompleted = subTask.IsCompleted
                 };
@@ -106,8 +102,6 @@ namespace Composite.ViewModels.Notes.HardNote
                 Text = string.Empty;
                 Status = string.Empty;
                 IsCompleted = false;
-                Tag = string.Empty;
-                Comment = string.Empty;
                 foreach (var subTask in SubTasks) subTask.Dispose();
                 SubTasks.Clear();
                 SubTasks = null;

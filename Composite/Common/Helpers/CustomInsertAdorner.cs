@@ -79,10 +79,7 @@ namespace Composite.Common.Helpers
         }
 
         // ---------------- HELPERS ---------------------------------------
-        bool HasTabPanel(ItemsControl items)
-        {
-            return FindChild<TabPanel>(items) != null;
-        }
+        bool HasTabPanel(ItemsControl items) => FindChild<TabPanel>(items) != null;
         T FindChild<T>(DependencyObject parent) where T : DependencyObject
         {
             if (parent == null) return null;
@@ -91,12 +88,10 @@ namespace Composite.Common.Helpers
             {
                 var child = VisualTreeHelper.GetChild(parent, i);
 
-                if (child is T t)
-                    return t;
+                if (child is T t) return t;
 
                 var result = FindChild<T>(child);
-                if (result != null)
-                    return result;
+                if (result != null) return result;
             }
 
             return null;

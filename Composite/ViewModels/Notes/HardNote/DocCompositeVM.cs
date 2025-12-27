@@ -41,13 +41,11 @@ namespace Composite.ViewModels.Notes.HardNote
             IsLoading = false;
         }
 
-        public override object Clone() => new DocCompositeVM(_hardNoteService) { Id = Guid.NewGuid(), Tag = Tag, Comment = Comment, Text = Text, Data = Data };
+        public override object Clone() => new DocCompositeVM(_hardNoteService) { Id = Guid.NewGuid(), Text = Text, Data = Data };
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                Tag = string.Empty;
-                Comment = string.Empty;
                 Text = string.Empty;
                 Data.AsSpan().Clear();
                 IsLoading = false;

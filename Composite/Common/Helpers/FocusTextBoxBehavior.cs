@@ -13,7 +13,7 @@ namespace Composite.Common.Helpers
             AssociatedObject.IsVisibleChanged += AssociatedObject_IsVisibleChanged;
         }
 
-        private void AssociatedObject_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        void AssociatedObject_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (AssociatedObject.IsVisible)
             {

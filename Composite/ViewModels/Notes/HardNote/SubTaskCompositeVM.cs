@@ -20,7 +20,7 @@ namespace Composite.ViewModels.Notes.HardNote
         [RelayCommand] void TaskCompleted() => callBack?.Invoke();
 
 
-        public override object Clone() => new SubTaskCompositeVM(callBack) { Id = Guid.NewGuid(), Tag = Tag, Comment = Comment, Text = Text, IsCompleted = IsCompleted };
+        public override object Clone() => new SubTaskCompositeVM(callBack) { Id = Guid.NewGuid(), Text = Text, IsCompleted = IsCompleted };
         protected override void Dispose(bool disposing)
         {
             if (disposing)

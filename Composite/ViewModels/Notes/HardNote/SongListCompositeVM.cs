@@ -21,12 +21,7 @@ namespace Composite.ViewModels.Notes.HardNote
 
         public override object Clone()
         {
-            var songList = new SongListCompositeVM()
-            {
-                Tag = Tag,
-                Comment = Comment,
-                Text = Text
-            };
+            var songList = new SongListCompositeVM() { Text = Text };
             
             foreach (var song in Songs) songList.Songs.Add((SongMiniCompositeVM)song.Clone());
             
@@ -36,8 +31,6 @@ namespace Composite.ViewModels.Notes.HardNote
         {
             if (disposing)
             {
-                Tag = string.Empty;
-                Comment = string.Empty;
                 Text = string.Empty;
                 foreach (var songVM in Songs) songVM.Dispose();
                 Songs.Clear();

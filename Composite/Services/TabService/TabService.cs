@@ -40,6 +40,7 @@ namespace Composite.Services.TabService
         {
             var uc = (UserControl)tab.ContentTab;
             if(uc.DataContext is IDisposable vm) vm.Dispose();
+            tab.Dispose();
             Tabs.Remove(tab);
         }
         public void RemoveTab(object viewModel)

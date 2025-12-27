@@ -9,13 +9,11 @@ namespace Composite.ViewModels.Notes.HardNote
 
         public NumericCompositeVM() => Id = Guid.NewGuid();
 
-        public override object Clone() => new NumericCompositeVM() { Id = Guid.NewGuid(), Tag = Tag, Comment = Comment, Text = Text};
+        public override object Clone() => new NumericCompositeVM() { Id = Guid.NewGuid(), Text = Text};
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                Tag = string.Empty;
-                Comment = string.Empty;
                 Number = 0;
                 Text = string.Empty;
             }

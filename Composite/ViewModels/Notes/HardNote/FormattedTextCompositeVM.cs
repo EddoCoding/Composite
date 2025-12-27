@@ -89,8 +89,6 @@ namespace Composite.ViewModels.Notes.HardNote
             var clone = new FormattedTextCompositeVM()
             {
                 Id = Guid.NewGuid(),
-                Tag = Tag,
-                Comment = Comment,
                 IsModified = IsModified,
                 SelectedBrSize = SelectedBrSize,
                 SelectedBrCornerRadius = SelectedBrCornerRadius,
@@ -111,8 +109,6 @@ namespace Composite.ViewModels.Notes.HardNote
         {
             if (disposing)
             {
-                Tag = string.Empty;
-                Comment = string.Empty;
                 Document.Blocks.Clear();
                 _xamlPackageContent.AsSpan().Clear();
                 IsModified = false;
